@@ -2,6 +2,22 @@
 
 本文件记录版本变更历史，遵循 [语义化版本 2.0.0](https://semver.org/lang/zh-CN/) 规范。
 
+## [0.10.0] - 2026-03-12
+
+### 新增
+- **信号处理 (Signal Handling)**：框架级 `SignalHandler` 抽象，支持 SIGINT(130)/SIGTERM(143) 信号模拟与退出码。`simulateSignal()` 用于 mockRun 测试，生命周期检查点自动检测中断
+- **错误聚合 (Error Aggregation)**：`AggregateException` 收集多个验证错误（必填、约束、组）后统一报告。摘要格式 "Found X errors and Y warnings"
+- **Env 类型自动协变**：环境变量值根据 Flag 的 `valueType` 自动执行类型转换（Int64/Bool/Float64），转换失败时生成包含环境变量名和目标 Flag 的友好诊断
+
+### 变更
+- `Parser.finalize()` 重构为错误聚合模式：内部使用 `collectRequiredFlagErrors`/`collectFlagConstraintErrors`/`collectFlagGroupErrors` 收集所有验证错误
+- `App.applyEnvVars()` 新增类型协变：调用 `coerceEnvValue()` 根据 Flag 类型转换环境变量值
+- `App.mockRunWithConfig()` 新增 `AggregateException` 处理分支，格式化多错误输出
+
+### 测试
+- 新增 `SignalHandlerTest` (6)、`ErrorAggregationTest` (5)、`EnvAutoMappingTest` (4)、`EnvTypeCoercionTest` (6)、`Phase10IntegrationTest` (5)
+- 测试总数：352 → 378 (新增 26 用例，通过率 100%)
+
 ## [0.9.0] - 2026-03-12
 
 ### 新增

@@ -1,5 +1,7 @@
 package cli
 
+import std.collection.*
+
 // CLI 框架异常基类
 public open class CliException <: Exception {
     public init(message: String) {
@@ -56,4 +58,50 @@ public class TerminateException <: CliException {
     public override func getClassName(): String {
         "TerminateException"
     }
+}
+
+// Phase 10: 聚合错误（收集多个验证错误后统一报告）
+public class AggregateException <: CliException {
+    let _errors: ArrayList<String>
+    let _warnings: ArrayList<String>
+
+    public init(errors: ArrayList<String>, warnings: ArrayList<String>) {
+        super(formatSummary(errors, warnings))
+        _errors = errors
+        _warnings = warnings
+    }
+
+    public init(errors: ArrayList<String>) {
+        super(formatSummary(errors, ArrayList<String>()))
+        _errors = errors
+        _warnings = ArrayList<String>()
+    }
+
+    public func getErrors(): ArrayList<String> { _errors }
+    public func getWarnings(): ArrayList<String> { _warnings }
+    public func errorCount(): Int64 { _errors.size }
+    public func warningCount(): Int64 { _warnings.size }
+
+    public override func getClassName(): String {
+        "AggregateException"
+    }
+}
+
+// 格式化聚合错误摘要
+func formatSummary(errors: ArrayList<String>, warnings: ArrayList<String>): String {
+    var parts = ArrayList<String>()
+    if (errors.size > 0) {
+        parts.add("${errors.size} error${if (errors.size > 1) { "s" } else { "" }}")
+    }
+    if (warnings.size > 0) {
+        parts.add("${warnings.size} warning${if (warnings.size > 1) { "s" } else { "" }}")
+    }
+    var summary = "Found "
+    var first = true
+    for (p in parts) {
+        if (!first) { summary = summary + " and " }
+        summary = summary + p
+        first = false
+    }
+    summary
 }

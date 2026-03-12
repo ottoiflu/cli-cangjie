@@ -167,13 +167,13 @@ func testDidYouMean() {
     - [x] **N-Best 智能建议**：Did-You-Mean 增强为返回多条候选建议（最多 3 条），按相似度排序。对标 Clippy 配置错误时列出多个候选 key。
     - **测试**: 352 用例全部通过（新增 32 用例），覆盖 choices 校验、分隔符多值、Pass-Through 传递、帮助 Examples/afterHelp、终端折行、多候选建议、子命令分组、端到端集成。
 
-10. **Phase 10: 健壮性与工程化增强 (Robustness & Engineering)** — `v0.10.0`
-    - [ ] **信号处理 (Signal Handling)**：框架级 SIGINT/SIGTERM 捕获，输出诊断信息并以退出码 130 退出。遵循 clig.dev 规范："If your program receives SIGINT, it should exit with code 128+2=130"。
-    - [ ] **错误聚合 (Error Aggregation)**：支持收集多个验证错误后统一报告，而非遇到首个错误即停止。报告格式 "Found X errors and Y warnings"。
-    - [ ] **子命令分组显示 (Subcommand Groups)**：帮助文档中支持子命令按组分类显示，如 "Build Commands:" / "Test Commands:"。对标 clap 的 `subcommand_help_heading`。
-    - [ ] **环境变量自动映射增强**：支持 `envPrefix("APP")` 后 `--db-host` 自动映射 `APP_DB_HOST`（连字符转下划线 + 大写化），对标 Clippy 的 `CLIPPY_CONF_DIR` 自动映射。
-    - [ ] **Env 类型自动协变**：环境变量值根据 Flag 的 `valueType` 自动执行类型转换（如 `TIMEOUT=30` 自动转 Int64），转换失败时生成友好诊断。
-    - **测试**: 目标新增约 25 用例，覆盖信号处理退出码、多错误聚合、子命令分组渲染、自动环境映射、Env 类型协变。
+10. **Phase 10: 健壮性与工程化增强 (Robustness & Engineering)** — `v0.10.0` ✅ 已完成
+    - [x] **信号处理 (Signal Handling)**：框架级 SIGINT/SIGTERM 捕获，输出诊断信息并以退出码 130 退出。遵循 clig.dev 规范："If your program receives SIGINT, it should exit with code 128+2=130"。
+    - [x] **错误聚合 (Error Aggregation)**：支持收集多个验证错误后统一报告，而非遇到首个错误即停止。报告格式 "Found X errors and Y warnings"。
+    - [x] **子命令分组显示 (Subcommand Groups)**：帮助文档中支持子命令按组分类显示，如 "Build Commands:" / "Test Commands:"。对标 clap 的 `subcommand_help_heading`。（已在 Phase 9 中实现）
+    - [x] **环境变量自动映射增强**：支持 `envPrefix("APP")` 后 `--db-host` 自动映射 `APP_DB_HOST`（连字符转下划线 + 大写化），对标 Clippy 的 `CLIPPY_CONF_DIR` 自动映射。
+    - [x] **Env 类型自动协变**：环境变量值根据 Flag 的 `valueType` 自动执行类型转换（如 `TIMEOUT=30` 自动转 Int64），转换失败时生成友好诊断。
+    - **测试**: 378 用例全部通过（新增 26 用例），覆盖信号处理退出码、多错误聚合、子命令分组渲染、自动环境映射、Env 类型协变。
 
 11. **Phase 11: 项目结构优化与 Example 示例 (Project & Examples)** — `v1.0.0`
     - [ ] **项目结构重组**：参照 rust-clippy 项目管理模式重组目录结构（README.md、LICENSE、CONTRIBUTING.md），完善 API 文档。

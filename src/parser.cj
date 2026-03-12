@@ -236,15 +236,25 @@ public class Parser {
             applyDefaultFlags(rootCmd, ctx)
         }
 
+        // Phase 10: 错误聚合 — 收集所有验证错误后统一报告
+        let collectedErrors = ArrayList<String>()
+
         // 验证必填 flag
-        validateRequiredFlags(matchedCmd, ctx)
+        collectRequiredFlagErrors(matchedCmd, ctx, collectedErrors)
 
         // 验证 Flag 约束
-        validateFlagConstraints(matchedCmd, ctx)
+        collectFlagConstraintErrors(matchedCmd, ctx, collectedErrors)
         if (matchedCmd.getName() != rootCmd.getName()) {
-            validateFlagConstraints(rootCmd, ctx)
+            collectFlagConstraintErrors(rootCmd, ctx, collectedErrors)
         }
-        validateFlagGroups(matchedCmd, ctx)
+        collectFlagGroupErrors(matchedCmd, ctx, collectedErrors)
+
+        // 如果有多个错误，抛出聚合异常
+        if (collectedErrors.size > 1) {
+            throw AggregateException(collectedErrors)
+        } else if (collectedErrors.size == 1) {
+            throw ValidationException(collectedErrors[0])
+        }
 
         // 处理位置参数
         processPositionalArgs(matchedCmd, positionalArgs, ctx)
@@ -620,6 +630,97 @@ public class Parser {
                         throw ValidationException(
                             "Flags '--${setMembers[0]}' and '--${setMembers[1]}' are mutually exclusive (group '${groupName}')."
                         )
+                    }
+                case None => ()
+            }
+        }
+    }
+
+    // Phase 10: 错误聚合版本的验证方法 — 收集错误而非直接抛出
+
+    func collectRequiredFlagErrors(cmd: Command, ctx: Context, errors: ArrayList<String>): Unit {
+        for (f in cmd.getFlags()) {
+            if (f.isRequired() && !ctx.hasFlag(f.getLongName())) {
+                errors.add("Required flag '--${f.getLongName()}' was not provided.")
+            }
+        }
+    }
+
+    func collectFlagConstraintErrors(cmd: Command, ctx: Context, errors: ArrayList<String>): Unit {
+        for (f in cmd.getFlags()) {
+            let flagName = f.getLongName()
+            if (!ctx.isExplicit(flagName)) {
+                continue
+            }
+            // 互斥检查
+            for (conflict in f.getConflicts()) {
+                if (ctx.isExplicit(conflict)) {
+                    errors.add("Flag '--${flagName}' cannot be used together with '--${conflict}'.")
+                }
+            }
+            // 依赖检查
+            for (req in f.getRequires()) {
+                if (!ctx.hasFlag(req)) {
+                    errors.add("Flag '--${flagName}' requires '--${req}' to be set.")
+                }
+            }
+            // 自定义验证器
+            match (f.getValidator()) {
+                case Some(validatorFn) =>
+                    match (ctx.getFlag(flagName)) {
+                        case Some(value) =>
+                            if (!validatorFn(value)) {
+                                let msg = f.getValidatorMessage()
+                                if (msg.size > 0) {
+                                    errors.add("Invalid value for '--${flagName}': ${msg}")
+                                } else {
+                                    errors.add("Invalid value for '--${flagName}'.")
+                                }
+                            }
+                        case None => ()
+                    }
+                case None => ()
+            }
+        }
+    }
+
+    func collectFlagGroupErrors(cmd: Command, ctx: Context, errors: ArrayList<String>): Unit {
+        // requireGroup: 至少选一
+        for (groupName in cmd.getRequireGroupNames()) {
+            match (cmd.getRequireGroups().get(groupName)) {
+                case Some(members) =>
+                    var anyExplicit = false
+                    for (m in members) {
+                        if (ctx.isExplicit(m)) {
+                            anyExplicit = true
+                            break
+                        }
+                    }
+                    if (!anyExplicit) {
+                        var memberStr = ""
+                        var first = true
+                        for (m in members) {
+                            if (!first) { memberStr = memberStr + ", " }
+                            memberStr = memberStr + "--" + m
+                            first = false
+                        }
+                        errors.add("At least one flag from group '${groupName}' is required: ${memberStr}.")
+                    }
+                case None => ()
+            }
+        }
+        // mutuallyExclusiveGroup: 最多选一
+        for (groupName in cmd.getExclusiveGroupNames()) {
+            match (cmd.getExclusiveGroups().get(groupName)) {
+                case Some(members) =>
+                    let setMembers = ArrayList<String>()
+                    for (m in members) {
+                        if (ctx.isExplicit(m)) {
+                            setMembers.add(m)
+                        }
+                    }
+                    if (setMembers.size > 1) {
+                        errors.add("Flags '--${setMembers[0]}' and '--${setMembers[1]}' are mutually exclusive (group '${groupName}').")
                     }
                 case None => ()
             }

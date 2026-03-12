@@ -3,6 +3,55 @@ package cli
 import std.collection.*
 import std.env.*
 
+// Phase 10: 信号类型枚举
+public enum SignalType {
+    | SIGINT    // Ctrl+C 中断 (退出码 130)
+    | SIGTERM   // 终止信号 (退出码 143)
+}
+
+// Phase 10: 信号处理器 — 框架级信号捕获抽象
+// 在 mockRun 中支持 simulateSignal() 模拟信号到达
+public class SignalHandler {
+    var _interrupted: Bool = false
+    var _signalType: Option<SignalType> = None
+    let _callbacks: ArrayList<(SignalType) -> Unit> = ArrayList<(SignalType) -> Unit>()
+
+    // 注册信号回调
+    public func onSignal(callback: (SignalType) -> Unit): Unit {
+        _callbacks.add(callback)
+    }
+
+    // 模拟信号到达（用于测试）
+    public func simulateSignal(sig: SignalType): Unit {
+        _interrupted = true
+        _signalType = Some(sig)
+        for (cb in _callbacks) {
+            cb(sig)
+        }
+    }
+
+    // 检查是否被中断
+    public func isInterrupted(): Bool { _interrupted }
+
+    // 获取信号类型
+    public func getSignalType(): Option<SignalType> { _signalType }
+
+    // 获取退出码（SIGINT=130, SIGTERM=143）
+    public func getExitCode(): Int64 {
+        match (_signalType) {
+            case Some(SIGINT) => 130
+            case Some(SIGTERM) => 143
+            case None => 0
+        }
+    }
+
+    // 重置状态
+    public func reset(): Unit {
+        _interrupted = false
+        _signalType = None
+    }
+}
+
 // 测试结果：捕获退出码和标准输出/错误输出
 public class TestResult {
     public let exitCode: Int64
@@ -29,6 +78,8 @@ public class App {
     let _globalFlags: ArrayList<Flag> = ArrayList<Flag>()
     // Phase 8: 弃用警告收集
     let _deprecationCollector: DeprecationCollector = DeprecationCollector()
+    // Phase 10: 信号处理器
+    var _signalHandler: Option<SignalHandler> = None
 
     public init(name: String) {
         _rootCommand = Command(name)
@@ -157,6 +208,15 @@ public class App {
         this
     }
 
+    // Phase 10: 设置信号处理器
+    public func signalHandler(handler: SignalHandler): This {
+        _signalHandler = Some(handler)
+        this
+    }
+
+    // Phase 10: 获取信号处理器（便于在 action 中检查信号）
+    public func getSignalHandler(): Option<SignalHandler> { _signalHandler }
+
     // 全局生命周期钩子
     public func persistentPreRun(hook: HookHandler): This {
         _rootCommand.persistentPreRun(hook)
@@ -224,15 +284,28 @@ public class App {
                 case Some(hook) => hook(ctx)
                 case None => ()
             }
+            // Phase 10: 信号检查点
+            if (checkSignalInterrupt()) {
+                return buildSignalResult()
+            }
 
             // 2. PreRun (当前命令的)
             match (matchedCmd.getPreRun()) {
                 case Some(hook) => hook(ctx)
                 case None => ()
             }
+            // Phase 10: 信号检查点
+            if (checkSignalInterrupt()) {
+                return buildSignalResult()
+            }
 
             // 3. 构建中间件链 + Action 执行
             let exitCode = executeWithMiddleware(_rootCommand, matchedCmd, ctx)
+
+            // Phase 10: 信号检查点（action 执行后）
+            if (checkSignalInterrupt()) {
+                return buildSignalResult()
+            }
 
             // 4. PostRun (当前命令的)
             match (matchedCmd.getPostRun()) {
@@ -260,6 +333,10 @@ public class App {
         } catch (e: ConfigException) {
             // 配置文件错误：使用专用格式化
             let stderrBuf = e.formatAll()
+            TestResult(2, "", stderrBuf)
+        } catch (e: AggregateException) {
+            // Phase 10: 多错误聚合报告
+            let stderrBuf = formatAggregateError(e, args)
             TestResult(2, "", stderrBuf)
         } catch (e: CliException) {
             let stderrBuf = formatError(e, args)
@@ -310,6 +387,7 @@ public class App {
     }
 
     // 应用环境变量合并: 对于未通过命令行设置的 Flag，尝试从环境变量读取
+    // Phase 10: 环境变量值根据 Flag 的 valueType 自动执行类型转换
     func applyEnvVars(cmd: Command, ctx: Context): Unit {
         for (f in cmd.getFlags()) {
             if (!ctx.hasFlag(f.getLongName())) {
@@ -318,7 +396,8 @@ public class App {
                     case Some(envName) =>
                         match (getVariable(envName)) {
                             case Some(envVal) =>
-                                ctx.setFlag(f.getLongName(), envVal)
+                                let coerced = coerceEnvValue(envVal, f)
+                                ctx.setFlag(f.getLongName(), coerced)
                             case None => ()
                         }
                     case None =>
@@ -328,7 +407,8 @@ public class App {
                                 let autoEnvName = prefix + "_" + flagNameToEnvKey(f.getLongName())
                                 match (getVariable(autoEnvName)) {
                                     case Some(envVal) =>
-                                        ctx.setFlag(f.getLongName(), envVal)
+                                        let coerced = coerceEnvValue(envVal, f)
+                                        ctx.setFlag(f.getLongName(), coerced)
                                     case None => ()
                                 }
                             case None => ()
@@ -338,9 +418,50 @@ public class App {
         }
     }
 
+    // Phase 10: 环境变量值类型协变 — 根据 Flag 的 valueType 自动转换
+    func coerceEnvValue(envVal: String, flag: Flag): String {
+        try {
+            validateAndConvert(envVal, flag.getValueType())
+        } catch (e: TypeConversionException) {
+            let envName = match (flag.getEnvVar()) {
+                case Some(n) => n
+                case None =>
+                    match (_envPrefix) {
+                        case Some(prefix) => prefix + "_" + flagNameToEnvKey(flag.getLongName())
+                        case None => "ENV"
+                    }
+            }
+            throw ValidationException(
+                "Environment variable '${envName}' has invalid value '${envVal}' for flag '--${flag.getLongName()}': ${e.message}"
+            )
+        }
+    }
+
     // 将 flag 名转换为环境变量名格式: "db-host" → "DB_HOST"
     func flagNameToEnvKey(name: String): String {
         name.replace("-", "_").toAsciiUpper()
+    }
+
+    // Phase 10: 检查信号处理器是否被中断
+    func checkSignalInterrupt(): Bool {
+        match (_signalHandler) {
+            case Some(handler) => handler.isInterrupted()
+            case None => false
+        }
+    }
+
+    // Phase 10: 构建信号中断结果
+    func buildSignalResult(): TestResult {
+        match (_signalHandler) {
+            case Some(handler) =>
+                let sigName = match (handler.getSignalType()) {
+                    case Some(SIGINT) => "SIGINT"
+                    case Some(SIGTERM) => "SIGTERM"
+                    case None => "UNKNOWN"
+                }
+                TestResult(handler.getExitCode(), "", "Terminated by ${sigName}\n")
+            case None => TestResult(130, "", "Terminated\n")
+        }
     }
 
     // 应用配置文件值: 四级优先级中的第三级（CLI > ENV > Config > Defaults）
@@ -686,6 +807,30 @@ public class App {
 
         diag.hint("For more information, try '--help'.")
         renderer.render(diag)
+    }
+
+    // Phase 10: 格式化聚合错误（多个验证错误统一报告）
+    func formatAggregateError(e: AggregateException, _: Array<String>): String {
+        let style = StyleEngine(false)
+        let renderer = DiagnosticRenderer(style)
+        var result = ""
+
+        // 输出每个独立错误
+        for (errMsg in e.getErrors()) {
+            let diag = errorDiag(errMsg)
+            result = result + renderer.render(diag)
+        }
+
+        // 输出每个警告
+        for (warnMsg in e.getWarnings()) {
+            let diag = warningDiag(warnMsg)
+            result = result + renderer.render(diag)
+        }
+
+        // 输出摘要行
+        result = result + "error: ${e.message}\n"
+        result = result + "\nFor more information, try '--help'.\n"
+        result
     }
 
     // 从错误消息中提取错误 token，然后在参数列表中定位其位置
