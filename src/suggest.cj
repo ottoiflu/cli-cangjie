@@ -2,7 +2,7 @@ package cli
 
 import std.collection.*
 
-// Levenshtein 编辑距离算法：计算两个字符串之间的最小编辑操作数
+// Damerau-Levenshtein 编辑距离算法：支持插入、删除、替换和相邻换位四种操作
 public func levenshteinDistance(a: String, b: String): Int64 {
     let aRunes = a.toRuneArray()
     let bRunes = b.toRuneArray()
@@ -12,7 +12,8 @@ public func levenshteinDistance(a: String, b: String): Int64 {
     if (m == 0) { return n }
     if (n == 0) { return m }
 
-    // 使用单行 DP 优化空间: prev[j] = dp[i-1][j]
+    // 使用两行 DP: prevPrev[j] = dp[i-2][j], prev[j] = dp[i-1][j]
+    var prevPrev = Array<Int64>(n + 1, { _ => 0 })
     var prev = Array<Int64>(n + 1, { i => i })
     var curr = Array<Int64>(n + 1, { _ => 0 })
 
@@ -29,11 +30,17 @@ public func levenshteinDistance(a: String, b: String): Int64 {
             var minVal = deleteCost
             if (insertCost < minVal) { minVal = insertCost }
             if (replaceCost < minVal) { minVal = replaceCost }
+            // Damerau 扩展：相邻字符换位
+            if (i > 1 && j > 1 && aRunes[i - 1] == bRunes[j - 2] && aRunes[i - 2] == bRunes[j - 1]) {
+                let transposeCost = prevPrev[j - 2] + 1
+                if (transposeCost < minVal) { minVal = transposeCost }
+            }
             curr[j] = minVal
             j++
         }
-        // 交换 prev 和 curr
-        let tmp = prev
+        // 滚动三行
+        let tmp = prevPrev
+        prevPrev = prev
         prev = curr
         curr = tmp
         i++
