@@ -130,6 +130,7 @@ func testDidYouMean() {
     - [x] **交互式模拟 (Input Mock)**：支持预设 stdin 输入流数据，自动化测试 Prompt 交互。
     - **测试**: 169 用例全部通过（新增 23 用例），覆盖快照引擎创建/比对/更新/diff、InputMock 队列、Prompt 文本/确认/选择/Action 集成。
 
-5. **Phase 5: 交互式组件集支持补充** — `v0.5.0`
-    - [ ] **交互式终端组件**：Spinner、Progress Bar、Confirm / Select 组件。
-    - [ ] **交互测试 Input Mock 方案**：针对交互式组件的自动化测试方案。
+5. **Phase 5: 交互式组件集支持补充** — `v0.5.0` ✅ 已完成
+    - [x] **交互式终端组件**：Spinner（4 种动画样式）、ProgressBar（可配置宽度/字符/百分比）、Confirm / Select / MultiSelect 组件。
+    - [x] **交互测试 Input Mock 方案**：所有组件与 InputMock 集成，支持在 mockRun 中端到端交互测试。
+    - **测试**: 214 用例全部通过（新增 45 用例），覆盖 Spinner 帧循环/状态、ProgressBar 进度控制/渲染、Confirm y/n/默认值、Select 数字/文本选择、MultiSelect 多选、组件 mockRun 集成。

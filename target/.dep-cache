@@ -5,7 +5,7 @@
       "package": "cli",
       "isMacro": false,
       "accessLevel": "public",
-      "timeStamp": 1773315196,
+      "timeStamp": 1773315505,
       "dependencies": [],
       "std-dependencies": [
         {
@@ -36,6 +36,9 @@
             },
             {
               "file": "/home/otto/文档/Project/cli/src/suggest.cj"
+            },
+            {
+              "file": "/home/otto/文档/Project/cli/src/widget.cj"
             }
           ]
         },
@@ -92,7 +95,7 @@
       "package": "cli",
       "isMacro": false,
       "accessLevel": "public",
-      "timeStamp": 1773315196,
+      "timeStamp": 1773315505,
       "dependencies": [],
       "std-dependencies": [
         {
@@ -123,6 +126,9 @@
             },
             {
               "file": "/home/otto/文档/Project/cli/src/suggest.cj"
+            },
+            {
+              "file": "/home/otto/文档/Project/cli/src/widget.cj"
             }
           ]
         },
@@ -177,7 +183,7 @@
       "package": "cli.test",
       "isMacro": false,
       "accessLevel": "internal",
-      "timeStamp": 1773315282,
+      "timeStamp": 1773315722,
       "dependencies": [
         {
           "orPackage": "",
@@ -219,6 +225,9 @@
             },
             {
               "file": "/home/otto/文档/Project/cli/src/test/types_test.cj"
+            },
+            {
+              "file": "/home/otto/文档/Project/cli/src/test/widget_test.cj"
             }
           ]
         }
@@ -264,6 +273,9 @@
             },
             {
               "file": "/home/otto/文档/Project/cli/src/test/types_test.cj"
+            },
+            {
+              "file": "/home/otto/文档/Project/cli/src/test/widget_test.cj"
             }
           ]
         },
@@ -327,6 +339,9 @@
             },
             {
               "file": "/home/otto/文档/Project/cli/src/test/types_test.cj"
+            },
+            {
+              "file": "/home/otto/文档/Project/cli/src/test/widget_test.cj"
             }
           ]
         },
@@ -370,6 +385,9 @@
             },
             {
               "file": "/home/otto/文档/Project/cli/src/test/types_test.cj"
+            },
+            {
+              "file": "/home/otto/文档/Project/cli/src/test/widget_test.cj"
             }
           ]
         }

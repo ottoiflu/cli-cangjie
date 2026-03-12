@@ -2,6 +2,25 @@
 
 本文件记录版本变更历史，遵循 [语义化版本 2.0.0](https://semver.org/lang/zh-CN/) 规范。
 
+## [0.5.0] - 2026-03-12
+
+### 新增
+- **交互式终端组件** (`widget.cj`)：丰富的 TUI 交互组件集
+  - `Spinner` — 加载指示器：4 种动画样式 (Dots/Line/Arrow/Simple)，tick/finish/reset 状态管理
+  - `ProgressBar` — 进度条：可配置宽度、填充字符、百分比/计数显示、前缀文本
+  - `Confirm` — 确认组件：y/n 交互，支持默认值，与 InputMock 集成
+  - `Select` — 单选组件：数字索引和文本匹配两种选择方式，支持默认选项
+  - `MultiSelect` — 多选组件：逗号分隔数字输入，自动跳过无效序号
+
+### 测试
+- 新增 `SpinnerTest` (10 用例)：4 种样式帧循环、状态管理、render 输出
+- 新增 `ProgressBarTest` (11 用例)：进度控制、百分比计算、render 格式、边界值
+- 新增 `ConfirmWidgetTest` (7 用例)：y/n 输入、默认值、EOF、render 提示
+- 新增 `SelectWidgetTest` (7 用例)：数字/文本选择、默认选项、无效输入
+- 新增 `MultiSelectWidgetTest` (6 用例)：单选/多选、空格处理、无效跳过
+- 新增 `WidgetIntegrationTest` (4 用例)：组件在 mockRun 端到端集成
+- 测试总数：169 → 214 (新增 45 用例，通过率 100%)
+
 ## [0.4.0] - 2026-03-12
 
 ### 新增
