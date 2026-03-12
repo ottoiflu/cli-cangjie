@@ -2,6 +2,26 @@
 
 本文件记录版本变更历史，遵循 [语义化版本 2.0.0](https://semver.org/lang/zh-CN/) 规范。
 
+## [0.9.0] - 2026-03-12
+
+### 新增
+- **枚举值约束 (Choices)**：Flag 支持 `.choices(["text", "json", "markdown"])` 限定可选值集合，非法值时自动生成诊断报错并列出可选项，支持 Did-You-Mean 建议。对标 clap 的 `PossibleValue` / `value_parser`
+- **值分隔符 (Value Delimiters)**：支持 `.delimiter(r',')` 自动按分隔符拆分 `--filter a,b,c` 为多值数组。对标 clap 的 `use_value_delimiter`
+- **Pass-Through 参数**：`--` 后的参数通过 `ctx.getPassthroughArgs()` 直接访问，支持 `tool lint -- -W clippy::all` 模式。对标 Clippy 的 `cargo clippy [ARGS] -- [CLIPPY_ARGS]`
+- **帮助文档增强**：支持 `.example(name, desc)` 添加 Examples 段落、`.afterHelp(text)` / `.beforeHelp(text)` 自定义帮助首尾。对标 clap 的 `after_help` / `before_help`
+- **终端宽度自适应**：`.helpWidth(n)` 控制帮助文档折行宽度，默认 80 列。遵循 clig.dev 规范
+- **N-Best 智能建议**：Did-You-Mean 增强为返回最多 3 条候选建议，按相似度排序。命令、Flag、Choices 均支持多候选
+- **子命令分组显示**：`.subcommandGroup(name)` 支持帮助文档中按组分类显示子命令。对标 clap 的 `subcommand_help_heading`
+
+### 变更
+- `generateHelp()` 重写：支持分组渲染、choices 显示 (`<text|json|markdown>`)、Examples 段落、beforeHelp/afterHelp、终端宽度折行
+- `Parser.resolveFlag()` 和子命令路由升级为 N-Best 建议（使用 `findAllSuggestions()`）
+- `handleFlagValue`/`handleFlagNoEquals`/`handleShortFlagSingle` 新增 delimiter 拆分和 choices 校验
+
+### 测试
+- 新增 `ChoicesValidationTest` (5)、`ValueDelimiterTest` (5)、`PassThroughArgsTest` (4)、`HelpExamplesTest` (4)、`TerminalWidthTest` (2)、`SubcommandGroupTest` (3)、`NBestSuggestionTest` (4)、`Phase9IntegrationTest` (5)
+- 测试总数：320 → 352 (新增 32 用例，通过率 100%)
+
 ## [0.8.0] - 2026-03-12
 
 ### 新增

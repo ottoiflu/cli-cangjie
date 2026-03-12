@@ -157,3 +157,25 @@ func testDidYouMean() {
     - [x] **标志/命令弃用系统 (Deprecation)**：支持 `.deprecated(reason, replacement)` 标记，使用时自动输出 Warning 级别迁移提示。对标 Clippy config 的 `#[conf_deprecated]` 机制。
     - [x] **全局标志传播**：支持将 App 级 Flag（如 `--verbose`、`--color`）自动传播至所有子命令。
     - **测试**: 320 用例全部通过（新增 51 用例），覆盖 Bash/Zsh/Fish 补全生成、JSON/Text 输出格式、VersionInfo 多格式输出、弃用 Flag/Command 警告、全局 Flag 传播（含深层嵌套）、端到端集成。
+
+9. **Phase 9: 增强型 Flag 值域与帮助系统 (Enhanced Flags & Help)** — `v0.9.0` ✅ 已完成
+    - [x] **枚举值约束 (Choices)**：Flag 支持 `.choices(["text", "json", "markdown"])` 限定可选值集合，非法值时自动生成诊断报错并列出可选项。对标 clap 的 `PossibleValue` / `value_parser` 机制。
+    - [x] **值分隔符 (Value Delimiters)**：支持 `--filter a,b,c` 自动按分隔符拆分为多值数组，通过 `.delimiter(',')` 声明。对标 clap 的 `use_value_delimiter` 模式。
+    - [x] **Pass-Through 参数**：`--` 后的参数可通过 `ctx.getPassthroughArgs()` 直接访问，方便实现 `tool lint -- -W clippy::all` 模式。对标 Clippy 的 `cargo clippy [ARGS] -- [CLIPPY_ARGS]` 透传模式。
+    - [x] **帮助文档增强**：支持 `.example("name", "description")` 在帮助输出中添加 Examples 段落；支持 `afterHelp(text)` 追加自定义帮助尾部。对标 clap 的 `after_help` / `before_help`。
+    - [x] **终端宽度自适应**：帮助文档根据终端宽度动态折行（默认 80 列），遵循 clig.dev 规范："Wrap to terminal width, or 80 characters"。
+    - [x] **N-Best 智能建议**：Did-You-Mean 增强为返回多条候选建议（最多 3 条），按相似度排序。对标 Clippy 配置错误时列出多个候选 key。
+    - **测试**: 352 用例全部通过（新增 32 用例），覆盖 choices 校验、分隔符多值、Pass-Through 传递、帮助 Examples/afterHelp、终端折行、多候选建议、子命令分组、端到端集成。
+
+10. **Phase 10: 健壮性与工程化增强 (Robustness & Engineering)** — `v0.10.0`
+    - [ ] **信号处理 (Signal Handling)**：框架级 SIGINT/SIGTERM 捕获，输出诊断信息并以退出码 130 退出。遵循 clig.dev 规范："If your program receives SIGINT, it should exit with code 128+2=130"。
+    - [ ] **错误聚合 (Error Aggregation)**：支持收集多个验证错误后统一报告，而非遇到首个错误即停止。报告格式 "Found X errors and Y warnings"。
+    - [ ] **子命令分组显示 (Subcommand Groups)**：帮助文档中支持子命令按组分类显示，如 "Build Commands:" / "Test Commands:"。对标 clap 的 `subcommand_help_heading`。
+    - [ ] **环境变量自动映射增强**：支持 `envPrefix("APP")` 后 `--db-host` 自动映射 `APP_DB_HOST`（连字符转下划线 + 大写化），对标 Clippy 的 `CLIPPY_CONF_DIR` 自动映射。
+    - [ ] **Env 类型自动协变**：环境变量值根据 Flag 的 `valueType` 自动执行类型转换（如 `TIMEOUT=30` 自动转 Int64），转换失败时生成友好诊断。
+    - **测试**: 目标新增约 25 用例，覆盖信号处理退出码、多错误聚合、子命令分组渲染、自动环境映射、Env 类型协变。
+
+11. **Phase 11: 项目结构优化与 Example 示例 (Project & Examples)** — `v1.0.0`
+    - [ ] **项目结构重组**：参照 rust-clippy 项目管理模式重组目录结构（README.md、LICENSE、CONTRIBUTING.md），完善 API 文档。
+    - [ ] **完整示例应用 (Example)**：创建端到端示例 CLI 工具，演示框架全部核心特性（子命令树、Flag 约束、配置文件、帮助生成、交互组件、Shell 补全等）。
+    - [ ] **综合集成测试**：确保示例应用通过完整的 mockRun 测试套件，作为框架的功能验收基准。

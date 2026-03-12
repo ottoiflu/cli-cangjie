@@ -5,3 +5,6 @@
 /.vscode
 /.cache
 *.macrocall
+/target
+*.log
+*.tmp

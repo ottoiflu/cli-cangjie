@@ -2,14 +2,14 @@
 
 ## 1. 基本信息
 
-| 项目     | 值                                                        |
-| -------- | --------------------------------------------------------- |
-| 项目名称 | cangjie-cli-framework                                     |
-| 阶段     | Phase 6 — Flag 约束与高级验证 (Constraints & Validation)  |
-| 版本     | v0.6.0                                                    |
-| 测试框架 | `std.unittest` (cjpm test)                                |
-| 执行环境 | Linux x86_64                                              |
-| 执行日期 | 2026-03-12                                                |
+| 项目     | 值                                                       |
+| -------- | -------------------------------------------------------- |
+| 项目名称 | cangjie-cli-framework                                    |
+| 阶段     | Phase 6 — Flag 约束与高级验证 (Constraints & Validation) |
+| 版本     | v0.6.0                                                   |
+| 测试框架 | `std.unittest` (cjpm test)                               |
+| 执行环境 | Linux x86_64                                             |
+| 执行日期 | 2026-03-12                                               |
 
 ## 2. 测试执行总览
 
@@ -27,50 +27,50 @@
 
 ### 3.1 ConflictsTest — 4/4 PASSED (新增)
 
-| 用例名                          | 结果   | 耗时 (ns) |
-| ------------------------------- | ------ | ---------- |
-| testConflictingFlagsError       | PASSED | -          |
-| testNoConflictWhenOnlyOneSet    | PASSED | -          |
-| testConflictNotTriggeredByDefault | PASSED | -        |
-| testConflictWithShortFlag       | PASSED | -          |
+| 用例名                            | 结果   | 耗时 (ns) |
+| --------------------------------- | ------ | --------- |
+| testConflictingFlagsError         | PASSED | -         |
+| testNoConflictWhenOnlyOneSet      | PASSED | -         |
+| testConflictNotTriggeredByDefault | PASSED | -         |
+| testConflictWithShortFlag         | PASSED | -         |
 
 ### 3.2 RequiresTest — 4/4 PASSED (新增)
 
-| 用例名                          | 结果   |
-| ------------------------------- | ------ |
-| testRequiresMet                 | PASSED |
-| testRequiresNotMet              | PASSED |
-| testRequiresSatisfiedByDefault  | PASSED |
-| testMultipleRequires            | PASSED |
+| 用例名                         | 结果   |
+| ------------------------------ | ------ |
+| testRequiresMet                | PASSED |
+| testRequiresNotMet             | PASSED |
+| testRequiresSatisfiedByDefault | PASSED |
+| testMultipleRequires           | PASSED |
 
 ### 3.3 ValidatorTest — 5/5 PASSED (新增)
 
-| 用例名                          | 结果   |
-| ------------------------------- | ------ |
-| testValidatorPasses             | PASSED |
-| testValidatorFails              | PASSED |
-| testValidatorWithoutMessage     | PASSED |
-| testValidatorNotRunOnUnsetFlag  | PASSED |
-| testLintNameValidator           | PASSED |
+| 用例名                         | 结果   |
+| ------------------------------ | ------ |
+| testValidatorPasses            | PASSED |
+| testValidatorFails             | PASSED |
+| testValidatorWithoutMessage    | PASSED |
+| testValidatorNotRunOnUnsetFlag | PASSED |
+| testLintNameValidator          | PASSED |
 
 ### 3.4 HiddenTest — 4/4 PASSED (新增)
 
-| 用例名                          | 结果   |
-| ------------------------------- | ------ |
-| testHiddenFlagNotInHelp         | PASSED |
-| testHiddenFlagStillWorks        | PASSED |
-| testHiddenCommandNotInHelp      | PASSED |
-| testHiddenCommandStillWorks     | PASSED |
+| 用例名                      | 结果   |
+| --------------------------- | ------ |
+| testHiddenFlagNotInHelp     | PASSED |
+| testHiddenFlagStillWorks    | PASSED |
+| testHiddenCommandNotInHelp  | PASSED |
+| testHiddenCommandStillWorks | PASSED |
 
 ### 3.5 FlagGroupTest — 5/5 PASSED (新增)
 
-| 用例名                                 | 结果   |
-| -------------------------------------- | ------ |
-| testRequireGroupSatisfied              | PASSED |
-| testRequireGroupNotSatisfied           | PASSED |
-| testMutuallyExclusiveGroupOK           | PASSED |
-| testMutuallyExclusiveGroupViolation    | PASSED |
-| testRequireGroupWithExclusiveCombined  | PASSED |
+| 用例名                                | 结果   |
+| ------------------------------------- | ------ |
+| testRequireGroupSatisfied             | PASSED |
+| testRequireGroupNotSatisfied          | PASSED |
+| testMutuallyExclusiveGroupOK          | PASSED |
+| testMutuallyExclusiveGroupViolation   | PASSED |
+| testRequireGroupWithExclusiveCombined | PASSED |
 
 ### 3.6 ConstraintIntegrationTest — 3/3 PASSED (新增)
 
@@ -82,14 +82,14 @@
 
 ## 4. Phase 6 新增功能覆盖
 
-| 功能模块     | 测试数量 | 关键覆盖点                                                        |
-| ------------ | -------- | ----------------------------------------------------------------- |
-| 互斥标志     | 4        | 双向冲突、短标志冲突、默认值不触发、单独使用无冲突                |
-| 标志依赖     | 4        | 依赖满足/不满足、默认值满足依赖、多重依赖                        |
+| 功能模块     | 测试数量 | 关键覆盖点                                                         |
+| ------------ | -------- | ------------------------------------------------------------------ |
+| 互斥标志     | 4        | 双向冲突、短标志冲突、默认值不触发、单独使用无冲突                 |
+| 标志依赖     | 4        | 依赖满足/不满足、默认值满足依赖、多重依赖                          |
 | 自定义验证器 | 5        | 通过/失败、自定义消息、无消息、未设置不触发、复杂验证器(lint_name) |
-| 隐藏标志     | 4        | Help 不显示/仍可使用、隐藏命令同理                                |
-| 标志组       | 5        | requireGroup/mutuallyExclusive、组合约束(恰好选一)                |
-| 集成测试     | 3        | Clippy lintcheck 模式、输出依赖、全约束组合                       |
+| 隐藏标志     | 4        | Help 不显示/仍可使用、隐藏命令同理                                 |
+| 标志组       | 5        | requireGroup/mutuallyExclusive、组合约束(恰好选一)                 |
+| 集成测试     | 3        | Clippy lintcheck 模式、输出依赖、全约束组合                        |
 
 ## 5. 累计测试统计
 

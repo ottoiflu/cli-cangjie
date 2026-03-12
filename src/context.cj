@@ -15,6 +15,8 @@ public class Context {
     let _values: HashMap<String, String> = HashMap<String, String>()
     // Phase 6: 用户显式设置的 Flag 追踪（区分于默认值）
     let _explicitFlags: ArrayList<String> = ArrayList<String>()
+    // Phase 9: Pass-through 参数（-- 之后的参数）
+    let _passthroughArgs: ArrayList<String> = ArrayList<String>()
 
     // 设置 flag 值（覆盖模式：Set / SetTrue / SetFalse）
     public func setFlag(name: String, value: String): Unit {
@@ -192,6 +194,19 @@ public class Context {
     // Phase 6: 检查 Flag 是否为用户显式设置
     public func isExplicit(name: String): Bool {
         _explicitFlags.contains(name)
+    }
+
+    // Phase 9: Pass-through 参数操作
+    public func addPassthroughArg(arg: String): Unit {
+        _passthroughArgs.add(arg)
+    }
+
+    public func getPassthroughArgs(): ArrayList<String> {
+        _passthroughArgs
+    }
+
+    public func hasPassthroughArgs(): Bool {
+        _passthroughArgs.size > 0
     }
 }
 

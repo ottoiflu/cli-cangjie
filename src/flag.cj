@@ -25,6 +25,10 @@ public class Flag {
     // Phase 8: 弃用
     var _deprecated: Option<DeprecationInfo> = None
 
+    // Phase 9: 可选值约束与分隔符
+    var _choices: ArrayList<String> = ArrayList<String>()
+    var _delimiter: Option<Rune> = None
+
     public init(longName: String) {
         _longName = longName
     }
@@ -136,6 +140,20 @@ public class Flag {
         this
     }
 
+    // Phase 9: 限定可选值集合
+    public func choices(values: Array<String>): This {
+        for (v in values) {
+            _choices.add(v)
+        }
+        this
+    }
+
+    // Phase 9: 设置值分隔符（如逗号分隔多值）
+    public func delimiter(d: Rune): This {
+        _delimiter = Some(d)
+        this
+    }
+
     // Getter 方法
     public func getLongName(): String { _longName }
     public func getShortName(): Option<Rune> { _shortName }
@@ -166,6 +184,11 @@ public class Flag {
     // Phase 8: 弃用 Getter
     public func getDeprecation(): Option<DeprecationInfo> { _deprecated }
     public func isDeprecated(): Bool { _deprecated.isSome() }
+
+    // Phase 9: Getter
+    public func getChoices(): ArrayList<String> { _choices }
+    public func getDelimiter(): Option<Rune> { _delimiter }
+    public func hasChoices(): Bool { _choices.size > 0 }
 
     // 是否为布尔开关型 flag
     public func isBoolFlag(): Bool {

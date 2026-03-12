@@ -23,15 +23,24 @@ public class Parser {
                     ctx.pushCommandPath(sub.getName())
                     argIndex++
                 case None =>
-                    // 若当前命令有子命令但未匹配: Did-You-Mean
+                    // 若当前命令有子命令但未匹配: Phase 9 N-best suggestions
                     if (currentCmd.getSubcommands().size > 0 && currentCmd.getArguments().size == 0) {
                         let cmdNames = currentCmd.allCommandNames()
-                        match (findSuggestion(arg, cmdNames)) {
-                            case Some(suggestion) =>
-                                throw ParseException("Unknown command '${arg}'. Did you mean '${suggestion}'?")
-                            case None =>
-                                throw ParseException("Unknown command '${arg}'.")
+                        let suggestions = findAllSuggestions(arg, cmdNames, 0.7)
+                        if (suggestions.size == 1) {
+                            throw ParseException("Unknown command '${arg}'. Did you mean '${suggestions[0][0]}'?")
+                        } else if (suggestions.size > 1) {
+                            var hint = ""
+                            var cnt: Int64 = 0
+                            for (s in suggestions) {
+                                if (cnt >= 3) { break }
+                                if (cnt > 0) { hint = hint + ", " }
+                                hint = hint + "'${s[0]}'"
+                                cnt++
+                            }
+                            throw ParseException("Unknown command '${arg}'. Did you mean one of: ${hint}?")
                         }
+                        throw ParseException("Unknown command '${arg}'.")
                     }
                     break
             }
@@ -52,7 +61,9 @@ public class Parser {
             }
 
             if (positionalOnly) {
+                // Phase 9: -- 分隔后的参数同时存入 pass-through
                 positionalArgs.add(arg)
+                ctx.addPassthroughArg(arg)
                 argIndex++
                 continue
             }
@@ -143,12 +154,21 @@ public class Parser {
                 case None =>
                     if (currentCmd.getSubcommands().size > 0 && currentCmd.getArguments().size == 0) {
                         let cmdNames = currentCmd.allCommandNames()
-                        match (findSuggestion(arg, cmdNames)) {
-                            case Some(suggestion) =>
-                                throw ParseException("Unknown command '${arg}'. Did you mean '${suggestion}'?")
-                            case None =>
-                                throw ParseException("Unknown command '${arg}'.")
+                        let suggestions2 = findAllSuggestions(arg, cmdNames, 0.7)
+                        if (suggestions2.size == 1) {
+                            throw ParseException("Unknown command '${arg}'. Did you mean '${suggestions2[0][0]}'?")
+                        } else if (suggestions2.size > 1) {
+                            var hint2 = ""
+                            var cnt2: Int64 = 0
+                            for (s in suggestions2) {
+                                if (cnt2 >= 3) { break }
+                                if (cnt2 > 0) { hint2 = hint2 + ", " }
+                                hint2 = hint2 + "'${s[0]}'"
+                                cnt2++
+                            }
+                            throw ParseException("Unknown command '${arg}'. Did you mean one of: ${hint2}?")
                         }
+                        throw ParseException("Unknown command '${arg}'.")
                     }
                     break
             }
@@ -167,6 +187,7 @@ public class Parser {
             }
             if (positionalOnly) {
                 positionalArgs.add(arg)
+                ctx.addPassthroughArg(arg)
                 argIndex++
                 continue
             }
@@ -241,12 +262,29 @@ public class Parser {
                 ctx.setFlag(flag.getLongName(), "false")
                 ctx.markExplicit(flag.getLongName())
             case Append =>
-                let validated = validateAndConvert(rawValue, flag.getValueType())
-                ctx.appendFlag(flag.getLongName(), validated)
+                // Phase 9: 分隔符支持
+                let values = splitByDelimiter(rawValue, flag.getDelimiter())
+                for (v in values) {
+                    let validated = validateAndConvert(v, flag.getValueType())
+                    validateChoices(flag, validated)
+                    ctx.appendFlag(flag.getLongName(), validated)
+                }
                 ctx.markExplicit(flag.getLongName())
             case Set =>
-                let validated = validateAndConvert(rawValue, flag.getValueType())
-                ctx.setFlag(flag.getLongName(), validated)
+                // Phase 9: 分隔符支持（Set 模式下有分隔符则升级为多值）
+                match (flag.getDelimiter()) {
+                    case Some(_) =>
+                        let values = splitByDelimiter(rawValue, flag.getDelimiter())
+                        for (v in values) {
+                            let validated = validateAndConvert(v, flag.getValueType())
+                            validateChoices(flag, validated)
+                            ctx.appendFlag(flag.getLongName(), validated)
+                        }
+                    case None =>
+                        let validated = validateAndConvert(rawValue, flag.getValueType())
+                        validateChoices(flag, validated)
+                        ctx.setFlag(flag.getLongName(), validated)
+                }
                 ctx.markExplicit(flag.getLongName())
         }
     }
@@ -269,10 +307,22 @@ public class Parser {
                     throw ParseException("Flag '--${flagName}' requires a value.")
                 }
                 let nextVal = rawArgs[nextIdx]
-                let validated = validateAndConvert(nextVal, flag.getValueType())
-                match (flag.getAction()) {
-                    case Append => ctx.appendFlag(flag.getLongName(), validated)
-                    case _ => ctx.setFlag(flag.getLongName(), validated)
+                // Phase 9: 分隔符支持
+                match (flag.getDelimiter()) {
+                    case Some(_) =>
+                        let values = splitByDelimiter(nextVal, flag.getDelimiter())
+                        for (v in values) {
+                            let validated = validateAndConvert(v, flag.getValueType())
+                            validateChoices(flag, validated)
+                            ctx.appendFlag(flag.getLongName(), validated)
+                        }
+                    case None =>
+                        let validated = validateAndConvert(nextVal, flag.getValueType())
+                        validateChoices(flag, validated)
+                        match (flag.getAction()) {
+                            case Append => ctx.appendFlag(flag.getLongName(), validated)
+                            case _ => ctx.setFlag(flag.getLongName(), validated)
+                        }
                 }
                 ctx.markExplicit(flag.getLongName())
         }
@@ -296,10 +346,21 @@ public class Parser {
                     throw ParseException("Flag '-${shortChar}' requires a value.")
                 }
                 let nextVal = rawArgs[nextIdx]
-                let validated = validateAndConvert(nextVal, flag.getValueType())
-                match (flag.getAction()) {
-                    case Append => ctx.appendFlag(flag.getLongName(), validated)
-                    case _ => ctx.setFlag(flag.getLongName(), validated)
+                match (flag.getDelimiter()) {
+                    case Some(_) =>
+                        let values = splitByDelimiter(nextVal, flag.getDelimiter())
+                        for (v in values) {
+                            let validated = validateAndConvert(v, flag.getValueType())
+                            validateChoices(flag, validated)
+                            ctx.appendFlag(flag.getLongName(), validated)
+                        }
+                    case None =>
+                        let validated = validateAndConvert(nextVal, flag.getValueType())
+                        validateChoices(flag, validated)
+                        match (flag.getAction()) {
+                            case Append => ctx.appendFlag(flag.getLongName(), validated)
+                            case _ => ctx.setFlag(flag.getLongName(), validated)
+                        }
                 }
                 ctx.markExplicit(flag.getLongName())
         }
@@ -358,19 +419,29 @@ public class Parser {
                 case None => ()
             }
         }
-        // Did-You-Mean: 从所有 flag 名称中找到最相似的候选
+        // Phase 9: N-best suggestions — 显示最多 3 条候选
         let candidates = currentCmd.allFlagNames()
         if (currentCmd.getName() != rootCmd.getName()) {
             for (n in rootCmd.allFlagNames()) {
                 candidates.add(n)
             }
         }
-        match (findSuggestion(name, candidates)) {
-            case Some(suggestion) =>
-                throw ParseException("Unknown option '--${name}'. Did you mean '--${suggestion}'?")
-            case None =>
-                throw ParseException("Unknown option '--${name}'.")
+        let suggestions = findAllSuggestions(name, candidates, 0.7)
+        if (suggestions.size > 0) {
+            if (suggestions.size == 1) {
+                throw ParseException("Unknown option '--${name}'. Did you mean '--${suggestions[0][0]}'?")
+            }
+            var hint = ""
+            var count: Int64 = 0
+            for (s in suggestions) {
+                if (count >= 3) { break }
+                if (count > 0) { hint = hint + ", " }
+                hint = hint + "'--${s[0]}'"
+                count++
+            }
+            throw ParseException("Unknown option '--${name}'. Did you mean one of: ${hint}?")
         }
+        throw ParseException("Unknown option '--${name}'.")
     }
 
     // 在当前命令和根命令中查找短名称匹配的 flag
@@ -584,4 +655,58 @@ func splitOnFirstEquals(s: String): (String, String, Bool) {
         vi++
     }
     (key, value, true)
+}
+
+// Phase 9: 验证 Flag 值是否在可选值列表中
+func validateChoices(flag: Flag, value: String): Unit {
+    if (!flag.hasChoices()) { return }
+    let choices = flag.getChoices()
+    for (c in choices) {
+        if (c == value) { return }
+    }
+    var choiceList = ""
+    var first = true
+    for (c in choices) {
+        if (!first) { choiceList = choiceList + ", " }
+        choiceList = choiceList + "'" + c + "'"
+        first = false
+    }
+    // N-best: 检查是否有接近的可选值
+    let suggestions = findAllSuggestions(value, choices, 0.5)
+    if (suggestions.size > 0) {
+        throw ValidationException(
+            "Invalid value '${value}' for '--${flag.getLongName()}'. Valid options: ${choiceList}. Did you mean '${suggestions[0][0]}'?"
+        )
+    }
+    throw ValidationException(
+        "Invalid value '${value}' for '--${flag.getLongName()}'. Valid options: ${choiceList}."
+    )
+}
+
+// Phase 9: 按分隔符拆分字符串
+func splitByDelimiter(s: String, delimiter: Option<Rune>): ArrayList<String> {
+    let result = ArrayList<String>()
+    match (delimiter) {
+        case Some(delim) =>
+            let runes = s.toRuneArray()
+            var current = ""
+            var i: Int64 = 0
+            while (i < runes.size) {
+                if (runes[i] == delim) {
+                    if (current.size > 0) {
+                        result.add(current)
+                    }
+                    current = ""
+                } else {
+                    current = current + runes[i].toString()
+                }
+                i++
+            }
+            if (current.size > 0) {
+                result.add(current)
+            }
+        case None =>
+            result.add(s)
+    }
+    result
 }

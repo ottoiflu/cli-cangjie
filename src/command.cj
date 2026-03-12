@@ -49,6 +49,13 @@ public class Command {
     // 帮助输出的动态对齐宽度
     var _maxNameWidth: Int64 = 0
 
+    // Phase 9: 帮助文档增强
+    let _examples: ArrayList<(String, String)> = ArrayList<(String, String)>()
+    var _afterHelp: Option<String> = None
+    var _beforeHelp: Option<String> = None
+    // Phase 9: 子命令分组
+    var _group: String = "Commands"
+
     public init(name: String) {
         _name = name
     }
@@ -195,6 +202,28 @@ public class Command {
         this
     }
 
+    // Phase 9: 帮助文档增强
+    public func example(name: String, desc: String): This {
+        _examples.add((name, desc))
+        this
+    }
+
+    public func afterHelp(text: String): This {
+        _afterHelp = Some(text)
+        this
+    }
+
+    public func beforeHelp(text: String): This {
+        _beforeHelp = Some(text)
+        this
+    }
+
+    // Phase 9: 子命令分组标签
+    public func subcommandGroup(g: String): This {
+        _group = g
+        this
+    }
+
     // 声明标志组：至少选一 (at-least-one)
     public func requireGroup(name: String, members: Array<String>): This {
         let memberList = ArrayList<String>()
@@ -279,6 +308,12 @@ public class Command {
     // Phase 8 Getter
     public func getDeprecation(): Option<DeprecationInfo> { _deprecated }
     public func isDeprecated(): Bool { _deprecated.isSome() }
+
+    // Phase 9 Getter
+    public func getExamples(): ArrayList<(String, String)> { _examples }
+    public func getAfterHelp(): Option<String> { _afterHelp }
+    public func getBeforeHelp(): Option<String> { _beforeHelp }
+    public func getSubcommandGroup(): String { _group }
 
     public func getMaxNameWidth(): Int64 { _maxNameWidth }
 

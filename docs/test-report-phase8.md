@@ -85,10 +85,10 @@
 
 ## 新增功能模块
 
-| 模块 | 文件 | 描述 |
-|------|------|------|
-| Shell 补全 | completion.cj | Bash/Zsh/Fish 补全脚本生成 |
-| 输出格式 | advanced.cj | Text/JSON 输出格式切换 |
-| 丰富版本 | advanced.cj | VersionInfo 构建元数据 |
-| 弃用系统 | advanced.cj + flag.cj + command.cj | Flag/Command 弃用标记与警告 |
-| 全局 Flag | app.cj | globalFlag() 自动传播到子命令 |
+| 模块       | 文件                               | 描述                          |
+| ---------- | ---------------------------------- | ----------------------------- |
+| Shell 补全 | completion.cj                      | Bash/Zsh/Fish 补全脚本生成    |
+| 输出格式   | advanced.cj                        | Text/JSON 输出格式切换        |
+| 丰富版本   | advanced.cj                        | VersionInfo 构建元数据        |
+| 弃用系统   | advanced.cj + flag.cj + command.cj | Flag/Command 弃用标记与警告   |
+| 全局 Flag  | app.cj                             | globalFlag() 自动传播到子命令 |

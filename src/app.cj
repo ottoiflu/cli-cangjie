@@ -134,6 +134,14 @@ public class App {
         this
     }
 
+    // Phase 9: 设置帮助文档终端宽度（默认 80）
+    var _helpWidth: Int64 = 80
+
+    public func helpWidth(width: Int64): This {
+        _helpWidth = width
+        this
+    }
+
     // Phase 8: 注册全局 Flag（自动传播到所有子命令）
     public func globalFlag(f: Flag): This {
         _globalFlags.add(f)
@@ -396,13 +404,22 @@ public class App {
         }
     }
 
-    // 生成帮助文档（支持分组和动态对齐）
+    // 生成帮助文档（支持分组、示例、终端宽度折行）
     public func generateHelp(cmd: Command): String {
+        let maxWidth = _helpWidth
         var help = ""
+
+        // Phase 9: beforeHelp
+        match (cmd.getBeforeHelp()) {
+            case Some(text) =>
+                help = help + wrapText(text, maxWidth) + "\n\n"
+            case None => ()
+        }
+
         // 标题（about）
         match (cmd.getDescription()) {
             case Some(desc) =>
-                help = help + desc + "\n\n"
+                help = help + wrapText(desc, maxWidth) + "\n\n"
             case None => ()
         }
 
@@ -429,59 +446,68 @@ public class App {
         }
         help = help + "\n"
 
-        // 子命令列表（支持分组）
+        // 子命令列表（Phase 9: 支持分组显示）
         let subcommands = cmd.getSubcommands()
         if (subcommands.size > 0) {
-            // 计算动态对齐宽度（跳过隐藏命令）
-            var maxWidth: Int64 = 0
+            // 按 group 分组
+            let subGroups = HashMap<String, ArrayList<Command>>()
+            let subGroupOrder = ArrayList<String>()
             for (sub in subcommands) {
                 if (sub.isHidden()) { continue }
-                var w = sub.getName().size
-                if (sub.getAliases().size > 0) {
-                    for (a in sub.getAliases()) {
-                        w = w + 2 + a.size  // ", alias"
-                    }
+                let g = sub.getSubcommandGroup()
+                if (!subGroups.contains(g)) {
+                    subGroups[g] = ArrayList<Command>()
+                    subGroupOrder.add(g)
                 }
-                if (w > maxWidth) {
-                    maxWidth = w
-                }
+                subGroups[g].add(sub)
             }
 
-            help = help + "\nCommands:\n"
-            for (sub in subcommands) {
-                if (sub.isHidden()) { continue }
-                var nameStr = sub.getName()
-                if (sub.getAliases().size > 0) {
-                    nameStr = nameStr + " ("
-                    var first = true
-                    for (a in sub.getAliases()) {
-                        if (!first) {
-                            nameStr = nameStr + ", "
+            for (groupName in subGroupOrder) {
+                match (subGroups.get(groupName)) {
+                    case Some(groupSubs) =>
+                        // 计算动态对齐宽度
+                        var maxW: Int64 = 0
+                        for (sub in groupSubs) {
+                            var w = sub.getName().size
+                            if (sub.getAliases().size > 0) {
+                                for (a in sub.getAliases()) {
+                                    w = w + 2 + a.size
+                                }
+                            }
+                            if (w > maxW) { maxW = w }
                         }
-                        nameStr = nameStr + a
-                        first = false
-                    }
-                    nameStr = nameStr + ")"
-                }
 
-                var line = "  " + nameStr
-                match (sub.getDescription()) {
-                    case Some(desc) =>
-                        let padTo = maxWidth + 6  // 2(indent) + 4(gap)
-                        while (line.size < padTo) {
-                            line = line + " "
+                        help = help + "\n${groupName}:\n"
+                        for (sub in groupSubs) {
+                            var nameStr = sub.getName()
+                            if (sub.getAliases().size > 0) {
+                                nameStr = nameStr + " ("
+                                var first = true
+                                for (a in sub.getAliases()) {
+                                    if (!first) { nameStr = nameStr + ", " }
+                                    nameStr = nameStr + a
+                                    first = false
+                                }
+                                nameStr = nameStr + ")"
+                            }
+                            var line = "  " + nameStr
+                            match (sub.getDescription()) {
+                                case Some(desc) =>
+                                    let padTo = maxW + 6
+                                    while (line.size < padTo) { line = line + " " }
+                                    line = line + desc
+                                case None => ()
+                            }
+                            help = help + wrapLine(line, maxWidth, maxW + 6) + "\n"
                         }
-                        line = line + desc
                     case None => ()
                 }
-                help = help + line + "\n"
             }
         }
 
         // 选项列表（支持分组）
         let flags = cmd.getFlags()
         if (flags.size > 0) {
-            // 按 group 分组（跳过隐藏 Flag）
             let groups = HashMap<String, ArrayList<Flag>>()
             let groupOrder = ArrayList<String>()
             for (f in flags) {
@@ -498,41 +524,58 @@ public class App {
                 help = help + "\n${groupName}:\n"
                 match (groups.get(groupName)) {
                     case Some(groupFlags) =>
-                        // 计算动态对齐宽度
                         var maxFlagWidth: Int64 = 0
                         for (f in groupFlags) {
                             var w: Int64 = 0
                             match (f.getShortName()) {
-                                case Some(_) => w = 4  // "-x, "
-                                case None => w = 4     // "    "
+                                case Some(_) => w = 4
+                                case None => w = 4
                             }
-                            w = w + 2 + f.getLongName().size  // "--name"
+                            w = w + 2 + f.getLongName().size
                             if (!f.isBoolFlag() && !f.isTerminate()) {
-                                w = w + 8  // " <VALUE>"
+                                // Phase 9: 显示 choices 或 <VALUE>
+                                if (f.hasChoices()) {
+                                    var cStr = " <"
+                                    var fst = true
+                                    for (c in f.getChoices()) {
+                                        if (!fst) { cStr = cStr + "|" }
+                                        cStr = cStr + c
+                                        fst = false
+                                    }
+                                    cStr = cStr + ">"
+                                    w = w + cStr.size
+                                } else {
+                                    w = w + 8
+                                }
                             }
-                            if (w > maxFlagWidth) {
-                                maxFlagWidth = w
-                            }
+                            if (w > maxFlagWidth) { maxFlagWidth = w }
                         }
 
                         for (f in groupFlags) {
                             var line = "  "
                             match (f.getShortName()) {
-                                case Some(s) =>
-                                    line = line + "-${s}, "
-                                case None =>
-                                    line = line + "    "
+                                case Some(s) => line = line + "-${s}, "
+                                case None => line = line + "    "
                             }
                             line = line + "--${f.getLongName()}"
                             if (!f.isBoolFlag() && !f.isTerminate()) {
-                                line = line + " <VALUE>"
+                                if (f.hasChoices()) {
+                                    line = line + " <"
+                                    var fst = true
+                                    for (c in f.getChoices()) {
+                                        if (!fst) { line = line + "|" }
+                                        line = line + c
+                                        fst = false
+                                    }
+                                    line = line + ">"
+                                } else {
+                                    line = line + " <VALUE>"
+                                }
                             }
                             match (f.getDescription()) {
                                 case Some(desc) =>
-                                    let padTo = maxFlagWidth + 6  // 2(indent) + 4(gap)
-                                    while (line.size < padTo) {
-                                        line = line + " "
-                                    }
+                                    let padTo = maxFlagWidth + 6
+                                    while (line.size < padTo) { line = line + " " }
                                     line = line + desc
                                 case None => ()
                             }
@@ -541,7 +584,7 @@ public class App {
                                     line = line + " [default: ${dv}]"
                                 case _ => ()
                             }
-                            help = help + line + "\n"
+                            help = help + wrapLine(line, maxWidth, maxFlagWidth + 6) + "\n"
                         }
                     case None => ()
                 }
@@ -556,31 +599,40 @@ public class App {
             var maxArgWidth: Int64 = 0
             for (arg in args) {
                 var w = arg.getName().size
-                if (arg.isVariadic()) {
-                    w = w + 3  // "..."
-                }
-                if (w > maxArgWidth) {
-                    maxArgWidth = w
-                }
+                if (arg.isVariadic()) { w = w + 3 }
+                if (w > maxArgWidth) { maxArgWidth = w }
             }
 
             for (arg in args) {
                 var nameStr = arg.getName()
-                if (arg.isVariadic()) {
-                    nameStr = nameStr + "..."
-                }
+                if (arg.isVariadic()) { nameStr = nameStr + "..." }
                 var line = "  " + nameStr
                 match (arg.getDescription()) {
                     case Some(desc) =>
                         let padTo = maxArgWidth + 6
-                        while (line.size < padTo) {
-                            line = line + " "
-                        }
+                        while (line.size < padTo) { line = line + " " }
                         line = line + desc
                     case None => ()
                 }
-                help = help + line + "\n"
+                help = help + wrapLine(line, maxWidth, maxArgWidth + 6) + "\n"
             }
+        }
+
+        // Phase 9: Examples 段落
+        let examples = cmd.getExamples()
+        if (examples.size > 0) {
+            help = help + "\nExamples:\n"
+            for (ex in examples) {
+                help = help + "  " + ex[0] + "\n"
+                help = help + "      " + ex[1] + "\n"
+            }
+        }
+
+        // Phase 9: afterHelp
+        match (cmd.getAfterHelp()) {
+            case Some(text) =>
+                help = help + "\n" + wrapText(text, maxWidth) + "\n"
+            case None => ()
         }
 
         help
@@ -711,5 +763,81 @@ public class App {
                 case None => ()
             }
         }
+    }
+
+    // Phase 9: 文本折行（按终端宽度，不在单词中间断开）
+    func wrapText(text: String, maxWidth: Int64): String {
+        let runes = text.toRuneArray()
+        if (runes.size <= maxWidth) { return text }
+        var result = ""
+        var lineStart: Int64 = 0
+        while (lineStart < runes.size) {
+            if (lineStart + maxWidth >= runes.size) {
+                var remaining = ""
+                var ri = lineStart
+                while (ri < runes.size) {
+                    remaining = remaining + runes[ri].toString()
+                    ri++
+                }
+                result = result + remaining
+                break
+            }
+            // 从 maxWidth 位置向左查找空格断点
+            var breakAt: Int64 = lineStart + maxWidth
+            while (breakAt > lineStart && runes[breakAt] != r' ') {
+                breakAt--
+            }
+            if (breakAt == lineStart) {
+                breakAt = lineStart + maxWidth  // 无空格则强制断开
+            }
+            var segment = ""
+            var si = lineStart
+            while (si < breakAt) {
+                segment = segment + runes[si].toString()
+                si++
+            }
+            result = result + segment + "\n"
+            lineStart = breakAt
+            // 跳过断点处的空格
+            if (lineStart < runes.size && runes[lineStart] == r' ') {
+                lineStart++
+            }
+        }
+        result
+    }
+
+    // Phase 9: 带缩进的行折行（用于帮助文档中长描述的折行）
+    func wrapLine(line: String, maxWidth: Int64, indentWidth: Int64): String {
+        if (line.size <= maxWidth) { return line }
+        let runes = line.toRuneArray()
+        // 找到描述文本起止点（indentWidth 处开始是描述）
+        if (indentWidth >= maxWidth) { return line }
+        var breakAt: Int64 = maxWidth
+        while (breakAt > indentWidth && breakAt < runes.size && runes[breakAt] != r' ') {
+            breakAt--
+        }
+        if (breakAt <= indentWidth) { return line }  // 无法折行
+        var firstLine = ""
+        var fi: Int64 = 0
+        while (fi < breakAt) {
+            firstLine = firstLine + runes[fi].toString()
+            fi++
+        }
+        // 剩余部分缩进到 indentWidth
+        var rest: Int64 = breakAt
+        if (rest < runes.size && runes[rest] == r' ') { rest++ }
+        var indent = "\n"
+        var ii: Int64 = 0
+        while (ii < indentWidth) {
+            indent = indent + " "
+            ii++
+        }
+        var remaining = ""
+        while (rest < runes.size) {
+            remaining = remaining + runes[rest].toString()
+            rest++
+        }
+        if (remaining.size == 0) { return firstLine }
+        firstLine + indent + remaining
     }
 }
