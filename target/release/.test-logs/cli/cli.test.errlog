@@ -31,6 +31,289 @@
   [36m#[0m [0mnote[0m: this warning can be suppressed by setting the compiler option `-Woff unused`
 
 [33mwarning[0m: unused variable:'ctx'
+  [36m==>[0m /home/otto/文档/Project/cli/src/test/lifecycle_test.cj:21:31:
+   [36m| [0m
+[36m21[0m [36m| [0m                    .preRun({ ctx =>[0m
+   [36m| [0m                              [33m^ unused variable[0m
+   [36m| [0m
+   [36m#[0m [0mnote[0m: this warning can be suppressed by setting the compiler option `-Woff unused`
+[34mnote[0m: the warning occurs after the macro is expanded
+   [36m==>[0m /home/otto/文档/Project/cli/src/test/lifecycle_test.cj:13:1:
+    [36m| [0m
+[36m13[0m  [36m| [0m  @Test[0m
+    [36m| [0m [34m_[0m[34m^[0m
+[36m14[0m  [36m| [0m[34m|[0m class LifecycleTest {[0m
+    [36m| [0m[34m|[0m ...[0m
+[36m156[0m [36m| [0m[34m|[0m }[0m
+    [36m| [0m[34m|[0m[34m_[0m[34m^[0m
+    [36m| [0m
+[34mnote[0m: the code after the macro is expanded as follows
+    [36m| [0m
+    [36m| [0m  /* 13.1 */@Attribute[TEST_GENERATED] class LifecycleTest <: TestClass {[0m
+    [36m| [0m [34m_[0m[34m^[0m
+    [36m| [0m[34m|[0m /* 13.2 */    @Attribute[TestCase_74][0m
+    [36m| [0m[34m|[0m /* 13.3 */    func testPreRunHook() {[0m
+    [36m| [0m[34m|[0m /* 13.4 */        let log = ArrayList < String >()[0m
+    [36m| [0m[34m|[0m /* 13.5 */        let app = App("tool").command(Command("run").preRun({ ctx => log.add("preRun") }).action({ ctx => log.add("action")[0m
+    [36m| [0m[34m|[0m /* 13.6 */        0 }))[0m
+    [36m| [0m[34m|[0m /* 13.7 */        let result = app.mockRun(["run"])[0m
+    [36m| [0m[34m|[0m /* 13.8 */        assertEqual("result.exitCode == 0", "true", result.exitCode == 0, true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 13.9 */        assertEqual("log.size == 2", "true", log.size == 2, true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 13.10 */        assertEqual("log[0] == \"preRun\"", "true", log[0] == "preRun", true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 13.11 */        assertEqual("log[1] == \"action\"", "true", log[1] == "action", true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 13.12 */    }[0m
+    [36m| [0m[34m|[0m /* 13.13 */    [0m
+    [36m| [0m[34m|[0m /* 13.14 */    @Attribute[TestCase_75][0m
+    [36m| [0m[34m|[0m /* 13.15 */    func testPostRunHook() {[0m
+    [36m| [0m[34m|[0m /* 13.16 */        let log = ArrayList < String >()[0m
+    [36m| [0m[34m|[0m /* 13.17 */        let app = App("tool").command(Command("run").action({ ctx => log.add("action")[0m
+    [36m| [0m[34m|[0m /* 13.18 */        0 }).postRun({ ctx => log.add("postRun") }))[0m
+    [36m| [0m[34m|[0m /* 13.19 */        let result = app.mockRun(["run"])[0m
+    [36m| [0m[34m|[0m /* 13.20 */        assertEqual("result.exitCode == 0", "true", result.exitCode == 0, true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 13.21 */        assertEqual("log.size == 2", "true", log.size == 2, true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 13.22 */        assertEqual("log[0] == \"action\"", "true", log[0] == "action", true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 13.23 */        assertEqual("log[1] == \"postRun\"", "true", log[1] == "postRun", true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 13.24 */    }[0m
+    [36m| [0m[34m|[0m /* 13.25 */    [0m
+    [36m| [0m[34m|[0m /* 13.26 */    @Attribute[TestCase_76][0m
+    [36m| [0m[34m|[0m /* 13.27 */    func testPersistentPreRunHook() {[0m
+    [36m| [0m[34m|[0m /* 13.28 */        let log = ArrayList < String >()[0m
+    [36m| [0m[34m|[0m /* 13.29 */        let app = App("tool").persistentPreRun({ ctx => log.add("persistentPreRun") }).command(Command("sub").preRun({ ctx => log.add("preRun") }).action({ ctx => log.add("action")[0m
+    [36m| [0m[34m|[0m /* 13.30 */        0 }))[0m
+    [36m| [0m[34m|[0m /* 13.31 */        let result = app.mockRun(["sub"])[0m
+    [36m| [0m[34m|[0m /* 13.32 */        assertEqual("result.exitCode == 0", "true", result.exitCode == 0, true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 13.33 */        assertEqual("log.size == 3", "true", log.size == 3, true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 13.34 */        assertEqual("log[0] == \"persistentPreRun\"", "true", log[0] == "persistentPreRun", true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 13.35 */        assertEqual("log[1] == \"preRun\"", "true", log[1] == "preRun", true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 13.36 */        assertEqual("log[2] == \"action\"", "true", log[2] == "action", true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 13.37 */    }[0m
+    [36m| [0m[34m|[0m /* 13.38 */    [0m
+    [36m| [0m[34m|[0m /* 13.39 */    @Attribute[TestCase_77][0m
+    [36m| [0m[34m|[0m /* 13.40 */    func testPersistentPostRunHook() {[0m
+    [36m| [0m[34m|[0m /* 13.41 */        let log = ArrayList < String >()[0m
+    [36m| [0m[34m|[0m /* 13.42 */        let app = App("tool").persistentPostRun({ ctx => log.add("persistentPostRun") }).command(Command("sub").action({ ctx => log.add("action")[0m
+    [36m| [0m[34m|[0m /* 13.43 */        0 }).postRun({ ctx => log.add("postRun") }))[0m
+    [36m| [0m[34m|[0m /* 13.44 */        let result = app.mockRun(["sub"])[0m
+    [36m| [0m[34m|[0m /* 13.45 */        assertEqual("result.exitCode == 0", "true", result.exitCode == 0, true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 13.46 */        assertEqual("log.size == 3", "true", log.size == 3, true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 13.47 */        assertEqual("log[0] == \"action\"", "true", log[0] == "action", true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 13.48 */        assertEqual("log[1] == \"postRun\"", "true", log[1] == "postRun", true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 13.49 */        assertEqual("log[2] == \"persistentPostRun\"", "true", log[2] == "persistentPostRun", true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 13.50 */    }[0m
+    [36m| [0m[34m|[0m /* 13.51 */    [0m
+    [36m| [0m[34m|[0m /* 13.52 */    @Attribute[TestCase_78][0m
+    [36m| [0m[34m|[0m /* 13.53 */    func testFullLifecycleOrder() {[0m
+    [36m| [0m[34m|[0m /* 13.54 */        let log = ArrayList < String >()[0m
+    [36m| [0m[34m|[0m /* 13.55 */        let app = App("tool").persistentPreRun({ ctx => log.add("1-persistentPreRun") }).persistentPostRun({ ctx => log.add("5-persistentPostRun") }).command(Command("cmd").preRun({ ctx => log.add("2-preRun") }).action({ ctx => log.add("3-action")[0m
+    [36m| [0m[34m|[0m /* 13.56 */        0 }).postRun({ ctx => log.add("4-postRun") }))[0m
+    [36m| [0m[34m|[0m /* 13.57 */        let result = app.mockRun(["cmd"])[0m
+    [36m| [0m[34m|[0m /* 13.58 */        assertEqual("result.exitCode == 0", "true", result.exitCode == 0, true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 13.59 */        assertEqual("log.size == 5", "true", log.size == 5, true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 13.60 */        assertEqual("log[0] == \"1-persistentPreRun\"", "true", log[0] == "1-persistentPreRun", true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 13.61 */        assertEqual("log[1] == \"2-preRun\"", "true", log[1] == "2-preRun", true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 13.62 */        assertEqual("log[2] == \"3-action\"", "true", log[2] == "3-action", true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 13.63 */        assertEqual("log[3] == \"4-postRun\"", "true", log[3] == "4-postRun", true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 13.64 */        assertEqual("log[4] == \"5-persistentPostRun\"", "true", log[4] == "5-persistentPostRun", true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 13.65 */    }[0m
+    [36m| [0m[34m|[0m /* 13.66 */    [0m
+    [36m| [0m[34m|[0m /* 13.67 */    @Attribute[TestCase_79][0m
+    [36m| [0m[34m|[0m /* 13.68 */    func testNoHooksStillWorks() {[0m
+    [36m| [0m[34m|[0m /* 13.69 */        let app = App("tool").command(Command("run").action({ ctx => 42 }))[0m
+    [36m| [0m[34m|[0m /* 13.70 */        let result = app.mockRun(["run"])[0m
+    [36m| [0m[34m|[0m /* 13.71 */        assertEqual("result.exitCode == 42", "true", result.exitCode == 42, true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 13.72 */    }[0m
+    [36m| [0m[34m|[0m /* 13.73 */    [0m
+    [36m| [0m[34m|[0m /* 13.74 */    init() {[0m
+    [36m| [0m[34m|[0m /* 13.75 */    }[0m
+    [36m| [0m[34m|[0m /* 13.76 */    private func classConfiguration(): Configuration {[0m
+    [36m| [0m[34m|[0m /* 13.77 */        let configuration = Configuration()[0m
+    [36m| [0m[34m|[0m /* 13.78 */        [0m
+    [36m| [0m[34m|[0m /* 13.79 */        return configuration[0m
+    [36m| [0m[34m|[0m /* 13.80 */    }[0m
+    [36m| [0m[34m|[0m /* 13.81 */    public override func asTestSuite(): TestSuite {[0m
+    [36m| [0m[34m|[0m /* 13.82 */        [0m
+    [36m| [0m[34m|[0m /* 13.83 */        let suiteConfiguration = classConfiguration()[0m
+    [36m| [0m[34m|[0m /* 13.84 */        let suiteBuilder = TestSuite.builder("LifecycleTest").configure(suiteConfiguration)[0m
+    [36m| [0m[34m|[0m /* 13.85 */        [0m
+    [36m| [0m[34m|[0m /* 13.86 */        { => let caseConfig = Configuration()[0m
+    [36m| [0m[34m|[0m /* 13.87 */            [0m
+    [36m| [0m[34m|[0m /* 13.88 */            let testPreRunHookTestFunc = { => testPreRunHook();() }[0m
+    [36m| [0m[34m|[0m /* 13.89 */            suiteBuilder.add([0m
+    [36m| [0m[34m|[0m /* 13.90 */            UnitTestCase.create([0m
+    [36m| [0m[34m|[0m /* 13.91 */            "testPreRunHook",[0m
+    [36m| [0m[34m|[0m /* 13.92 */            configuration: caseConfig,[0m
+    [36m| [0m[34m|[0m /* 13.93 */            body: testPreRunHookTestFunc[0m
+    [36m| [0m[34m|[0m /* 13.94 */            )[0m
+    [36m| [0m[34m|[0m /* 13.95 */            )[0m
+    [36m| [0m[34m|[0m /* 13.96 */            [0m
+    [36m| [0m[34m|[0m /* 13.97 */        }()[0m
+    [36m| [0m[34m|[0m /* 13.98 */        [0m
+    [36m| [0m[34m|[0m /* 13.99 */        [0m
+    [36m| [0m[34m|[0m /* 13.100 */        { => let caseConfig = Configuration()[0m
+    [36m| [0m[34m|[0m /* 13.101 */            [0m
+    [36m| [0m[34m|[0m /* 13.102 */            let testPostRunHookTestFunc = { => testPostRunHook();() }[0m
+    [36m| [0m[34m|[0m /* 13.103 */            suiteBuilder.add([0m
+    [36m| [0m[34m|[0m /* 13.104 */            UnitTestCase.create([0m
+    [36m| [0m[34m|[0m /* 13.105 */            "testPostRunHook",[0m
+    [36m| [0m[34m|[0m /* 13.106 */            configuration: caseConfig,[0m
+    [36m| [0m[34m|[0m /* 13.107 */            body: testPostRunHookTestFunc[0m
+    [36m| [0m[34m|[0m /* 13.108 */            )[0m
+    [36m| [0m[34m|[0m /* 13.109 */            )[0m
+    [36m| [0m[34m|[0m /* 13.110 */            [0m
+    [36m| [0m[34m|[0m /* 13.111 */        }()[0m
+    [36m| [0m[34m|[0m /* 13.112 */        [0m
+    [36m| [0m[34m|[0m /* 13.113 */        [0m
+    [36m| [0m[34m|[0m /* 13.114 */        { => let caseConfig = Configuration()[0m
+    [36m| [0m[34m|[0m /* 13.115 */            [0m
+    [36m| [0m[34m|[0m /* 13.116 */            let testPersistentPreRunHookTestFunc = { => testPersistentPreRunHook();() }[0m
+    [36m| [0m[34m|[0m /* 13.117 */            suiteBuilder.add([0m
+    [36m| [0m[34m|[0m /* 13.118 */            UnitTestCase.create([0m
+    [36m| [0m[34m|[0m /* 13.119 */            "testPersistentPreRunHook",[0m
+    [36m| [0m[34m|[0m /* 13.120 */            configuration: caseConfig,[0m
+    [36m| [0m[34m|[0m /* 13.121 */            body: testPersistentPreRunHookTestFunc[0m
+    [36m| [0m[34m|[0m /* 13.122 */            )[0m
+    [36m| [0m[34m|[0m /* 13.123 */            )[0m
+    [36m| [0m[34m|[0m /* 13.124 */            [0m
+    [36m| [0m[34m|[0m /* 13.125 */        }()[0m
+    [36m| [0m[34m|[0m /* 13.126 */        [0m
+    [36m| [0m[34m|[0m /* 13.127 */        [0m
+    [36m| [0m[34m|[0m /* 13.128 */        { => let caseConfig = Configuration()[0m
+    [36m| [0m[34m|[0m /* 13.129 */            [0m
+    [36m| [0m[34m|[0m /* 13.130 */            let testPersistentPostRunHookTestFunc = { => testPersistentPostRunHook();() }[0m
+    [36m| [0m[34m|[0m /* 13.131 */            suiteBuilder.add([0m
+    [36m| [0m[34m|[0m /* 13.132 */            UnitTestCase.create([0m
+    [36m| [0m[34m|[0m /* 13.133 */            "testPersistentPostRunHook",[0m
+    [36m| [0m[34m|[0m /* 13.134 */            configuration: caseConfig,[0m
+    [36m| [0m[34m|[0m /* 13.135 */            body: testPersistentPostRunHookTestFunc[0m
+    [36m| [0m[34m|[0m /* 13.136 */            )[0m
+    [36m| [0m[34m|[0m /* 13.137 */            )[0m
+    [36m| [0m[34m|[0m /* 13.138 */            [0m
+    [36m| [0m[34m|[0m /* 13.139 */        }()[0m
+    [36m| [0m[34m|[0m /* 13.140 */        [0m
+    [36m| [0m[34m|[0m /* 13.141 */        [0m
+    [36m| [0m[34m|[0m /* 13.142 */        { => let caseConfig = Configuration()[0m
+    [36m| [0m[34m|[0m /* 13.143 */            [0m
+    [36m| [0m[34m|[0m /* 13.144 */            let testFullLifecycleOrderTestFunc = { => testFullLifecycleOrder();() }[0m
+    [36m| [0m[34m|[0m /* 13.145 */            suiteBuilder.add([0m
+    [36m| [0m[34m|[0m /* 13.146 */            UnitTestCase.create([0m
+    [36m| [0m[34m|[0m /* 13.147 */            "testFullLifecycleOrder",[0m
+    [36m| [0m[34m|[0m /* 13.148 */            configuration: caseConfig,[0m
+    [36m| [0m[34m|[0m /* 13.149 */            body: testFullLifecycleOrderTestFunc[0m
+    [36m| [0m[34m|[0m /* 13.150 */            )[0m
+    [36m| [0m[34m|[0m /* 13.151 */            )[0m
+    [36m| [0m[34m|[0m /* 13.152 */            [0m
+    [36m| [0m[34m|[0m /* 13.153 */        }()[0m
+    [36m| [0m[34m|[0m /* 13.154 */        [0m
+    [36m| [0m[34m|[0m /* 13.155 */        [0m
+    [36m| [0m[34m|[0m /* 13.156 */        { => let caseConfig = Configuration()[0m
+    [36m| [0m[34m|[0m /* 13.157 */            [0m
+    [36m| [0m[34m|[0m /* 13.158 */            let testNoHooksStillWorksTestFunc = { => testNoHooksStillWorks();() }[0m
+    [36m| [0m[34m|[0m /* 13.159 */            suiteBuilder.add([0m
+    [36m| [0m[34m|[0m /* 13.160 */            UnitTestCase.create([0m
+    [36m| [0m[34m|[0m /* 13.161 */            "testNoHooksStillWorks",[0m
+    [36m| [0m[34m|[0m /* 13.162 */            configuration: caseConfig,[0m
+    [36m| [0m[34m|[0m /* 13.163 */            body: testNoHooksStillWorksTestFunc[0m
+    [36m| [0m[34m|[0m /* 13.164 */            )[0m
+    [36m| [0m[34m|[0m /* 13.165 */            )[0m
+    [36m| [0m[34m|[0m /* 13.166 */            [0m
+    [36m| [0m[34m|[0m /* 13.167 */        }()[0m
+    [36m| [0m[34m|[0m /* 13.168 */        [0m
+    [36m| [0m[34m|[0m /* 13.169 */        return suiteBuilder.build()[0m
+    [36m| [0m[34m|[0m /* 13.170 */    }[0m
+    [36m| [0m[34m|[0m /* 13.171 */    private func inheritedFromClassAnnotatedByTestTemplate < T >(): TestSuite where T <: TestClass {[0m
+    [36m| [0m[34m|[0m /* 13.172 */        throw Exception("Unreachable code")[0m
+    [36m| [0m[34m|[0m /* 13.173 */    }[0m
+    [36m| [0m[34m|[0m /* 13.174 */}[0m
+    [36m| [0m[34m|[0m /* 13.175 */[0m
+    [36m| [0m[34m|[0m /* 13.176 */[0m
+    [36m| [0m[34m|[0m /* 13.177 */interface TestPackageExtension_LifecycleTest {[0m
+    [36m| [0m[34m|[0m /* 13.178 */    func registerLifecycleTest(): Unit[0m
+    [36m| [0m[34m|[0m /* 13.179 */}[0m
+    [36m| [0m[34m|[0m /* 13.180 */extend TestPackage <: TestPackageExtension_LifecycleTest {[0m
+    [36m| [0m[34m|[0m /* 13.181 */    @Attribute[TEST_REGISTER][0m
+    [36m| [0m[34m|[0m /* 13.182 */    public func registerLifecycleTest() {[0m
+    [36m| [0m[34m|[0m /* 13.183 */        registerSuite({ => LifecycleTest().asTestSuite() })[0m
+    [36m| [0m[34m|[0m /* 13.184 */    }[0m
+    [36m| [0m[34m|[0m /* 13.185 */}[0m
+    [36m| [0m[34m|[0m /* 13.186 */[0m
+    [36m| [0m[34m|[0m[34m_[0m[34m___________^[0m
+    [36m| [0m
+[34mnote[0m: which is expanded as follows
+   [36m| [0m
+   [36m| [0m/* 13.5 */        let app = App("tool").command(Command("run").preRun({ ctx => log.add("preRun") }).action({ ctx => log.add("action")[0m
+   [36m| [0m                                                                        [34m^^^ [0m
+   [36m| [0m
+
+[33mwarning[0m: unused variable:'ctx'
+  [36m==>[0m /home/otto/文档/Project/cli/src/test/lifecycle_test.cj:24:31:
+   [36m| [0m
+[36m24[0m [36m| [0m                    .action({ ctx =>[0m
+   [36m| [0m                              [33m^ unused variable[0m
+   [36m| [0m
+   [36m#[0m [0mnote[0m: this warning can be suppressed by setting the compiler option `-Woff unused`
+[34mnote[0m: the warning occurs after the macro is expanded
+   [36m==>[0m /home/otto/文档/Project/cli/src/test/lifecycle_test.cj:13:1:
+    [36m| [0m
+[36m13[0m  [36m| [0m  @Test[0m
+    [36m| [0m [34m_[0m[34m^[0m
+[36m14[0m  [36m| [0m[34m|[0m class LifecycleTest {[0m
+    [36m| [0m[34m|[0m ...[0m
+[36m156[0m [36m| [0m[34m|[0m }[0m
+    [36m| [0m[34m|[0m[34m_[0m[34m^[0m
+    [36m| [0m
+[34mnote[0m: which is expanded as follows
+   [36m| [0m
+   [36m| [0m/* 13.5 */        let app = App("tool").command(Command("run").preRun({ ctx => log.add("preRun") }).action({ ctx => log.add("action")[0m
+   [36m| [0m                                                                                                             [34m^^^ [0m
+   [36m| [0m
+
+[33mwarning[0m: unused variable:'ctx'
+  [36m==>[0m /home/otto/文档/Project/cli/src/test/lifecycle_test.cj:43:31:
+   [36m| [0m
+[36m43[0m [36m| [0m                    .action({ ctx =>[0m
+   [36m| [0m                              [33m^ unused variable[0m
+   [36m| [0m
+   [36m#[0m [0mnote[0m: this warning can be suppressed by setting the compiler option `-Woff unused`
+[34mnote[0m: the warning occurs after the macro is expanded
+   [36m==>[0m /home/otto/文档/Project/cli/src/test/lifecycle_test.cj:13:1:
+    [36m| [0m
+[36m13[0m  [36m| [0m  @Test[0m
+    [36m| [0m [34m_[0m[34m^[0m
+[36m14[0m  [36m| [0m[34m|[0m class LifecycleTest {[0m
+    [36m| [0m[34m|[0m ...[0m
+[36m156[0m [36m| [0m[34m|[0m }[0m
+    [36m| [0m[34m|[0m[34m_[0m[34m^[0m
+    [36m| [0m
+[34mnote[0m: which is expanded as follows
+   [36m| [0m
+   [36m| [0m/* 13.17 */        let app = App("tool").command(Command("run").action({ ctx => log.add("action")[0m
+   [36m| [0m                                                                         [34m^^^ [0m
+   [36m| [0m
+
+[33mwarning[0m: unused variable:'ctx'
+  [36m==>[0m /home/otto/文档/Project/cli/src/test/lifecycle_test.cj:47:32:
+   [36m| [0m
+[36m47[0m [36m| [0m                    .postRun({ ctx =>[0m
+   [36m| [0m                               [33m^ unused variable[0m
+   [36m| [0m
+   [36m#[0m [0mnote[0m: this warning can be suppressed by setting the compiler option `-Woff unused`
+[34mnote[0m: the warning occurs after the macro is expanded
+   [36m==>[0m /home/otto/文档/Project/cli/src/test/lifecycle_test.cj:13:1:
+    [36m| [0m
+[36m13[0m  [36m| [0m  @Test[0m
+    [36m| [0m [34m_[0m[34m^[0m
+[36m14[0m  [36m| [0m[34m|[0m class LifecycleTest {[0m
+    [36m| [0m[34m|[0m ...[0m
+[36m156[0m [36m| [0m[34m|[0m }[0m
+    [36m| [0m[34m|[0m[34m_[0m[34m^[0m
+    [36m| [0m
+[34mnote[0m: which is expanded as follows
+   [36m| [0m
+   [36m| [0m/* 13.18 */        0 }).postRun({ ctx => log.add("postRun") }))[0m
+   [36m| [0m                                  [34m^^^ [0m
+   [36m| [0m
+
+[33mwarning[0m: unused variable:'ctx'
   [36m==>[0m /home/otto/文档/Project/cli/src/test/parser_test.cj:57:31:
    [36m| [0m
 [36m57[0m [36m| [0m                    .action({ ctx => 0 })[0m
@@ -51,7 +334,7 @@
     [36m| [0m
     [36m| [0m  /* 12.1 */@Attribute[TEST_GENERATED] class ParserTest <: TestClass {[0m
     [36m| [0m [34m_[0m[34m^[0m
-    [36m| [0m[34m|[0m /* 12.2 */    @Attribute[TestCase_74][0m
+    [36m| [0m[34m|[0m /* 12.2 */    @Attribute[TestCase_98][0m
     [36m| [0m[34m|[0m /* 12.3 */    func testParseLongFlag() {[0m
     [36m| [0m[34m|[0m /* 12.4 */        let cmd = Command("app").flag(Flag("verbose").asBool()).flag(Flag("config").short(r'c'))[0m
     [36m| [0m[34m|[0m /* 12.5 */        let parser = Parser()[0m
@@ -60,7 +343,7 @@
     [36m| [0m[34m|[0m /* 12.8 */        assertEqual("ctx.getFlagOrDefault(\"config\", \"\") == \"app.toml\"", "true", ctx.getFlagOrDefault("config", "") == "app.toml", true, isDelta: false)[0m
     [36m| [0m[34m|[0m /* 12.9 */    }[0m
     [36m| [0m[34m|[0m /* 12.10 */    [0m
-    [36m| [0m[34m|[0m /* 12.11 */    @Attribute[TestCase_75][0m
+    [36m| [0m[34m|[0m /* 12.11 */    @Attribute[TestCase_99][0m
     [36m| [0m[34m|[0m /* 12.12 */    func testParseLongFlagWithEquals() {[0m
     [36m| [0m[34m|[0m /* 12.13 */        let cmd = Command("app").flag(Flag("config").short(r'c'))[0m
     [36m| [0m[34m|[0m /* 12.14 */        let parser = Parser()[0m
@@ -68,7 +351,7 @@
     [36m| [0m[34m|[0m /* 12.16 */        assertEqual("ctx.getFlagOrDefault(\"config\", \"\") == \"app.toml\"", "true", ctx.getFlagOrDefault("config", "") == "app.toml", true, isDelta: false)[0m
     [36m| [0m[34m|[0m /* 12.17 */    }[0m
     [36m| [0m[34m|[0m /* 12.18 */    [0m
-    [36m| [0m[34m|[0m /* 12.19 */    @Attribute[TestCase_76][0m
+    [36m| [0m[34m|[0m /* 12.19 */    @Attribute[TestCase_100][0m
     [36m| [0m[34m|[0m /* 12.20 */    func testParseShortFlag() {[0m
     [36m| [0m[34m|[0m /* 12.21 */        let cmd = Command("app").flag(Flag("verbose").short(r'v').asBool()).flag(Flag("config").short(r'c'))[0m
     [36m| [0m[34m|[0m /* 12.22 */        let parser = Parser()[0m
@@ -77,7 +360,7 @@
     [36m| [0m[34m|[0m /* 12.25 */        assertEqual("ctx.getFlagOrDefault(\"config\", \"\") == \"app.toml\"", "true", ctx.getFlagOrDefault("config", "") == "app.toml", true, isDelta: false)[0m
     [36m| [0m[34m|[0m /* 12.26 */    }[0m
     [36m| [0m[34m|[0m /* 12.27 */    [0m
-    [36m| [0m[34m|[0m /* 12.28 */    @Attribute[TestCase_77][0m
+    [36m| [0m[34m|[0m /* 12.28 */    @Attribute[TestCase_101][0m
     [36m| [0m[34m|[0m /* 12.29 */    func testSubcommandRouting() {[0m
     [36m| [0m[34m|[0m /* 12.30 */        let root = Command("tool").command(Command("lint").flag(Flag("fix").short(r'f').asBool()).action({ ctx => 0 }))[0m
     [36m| [0m[34m|[0m /* 12.31 */        let parser = Parser()[0m
@@ -86,7 +369,7 @@
     [36m| [0m[34m|[0m /* 12.34 */        assertEqual("ctx.getBoolFlag(\"fix\") == true", "true", ctx.getBoolFlag("fix") == true, true, isDelta: false)[0m
     [36m| [0m[34m|[0m /* 12.35 */    }[0m
     [36m| [0m[34m|[0m /* 12.36 */    [0m
-    [36m| [0m[34m|[0m /* 12.37 */    @Attribute[TestCase_78][0m
+    [36m| [0m[34m|[0m /* 12.37 */    @Attribute[TestCase_102][0m
     [36m| [0m[34m|[0m /* 12.38 */    func testDeepSubcommandRouting() {[0m
     [36m| [0m[34m|[0m /* 12.39 */        let root = Command("tool").command(Command("cloud").command(Command("server").command(Command("start").flag(Flag("port").short(r'p').valueType(Int64Type)).action({ ctx => 0 }))))[0m
     [36m| [0m[34m|[0m /* 12.40 */        let parser = Parser()[0m
@@ -96,7 +379,7 @@
     [36m| [0m[34m|[0m /* 12.44 */        assertEqual("ctx.getCommandPathStr() == \"tool cloud server start\"", "true", ctx.getCommandPathStr() == "tool cloud server start", true, isDelta: false)[0m
     [36m| [0m[34m|[0m /* 12.45 */    }[0m
     [36m| [0m[34m|[0m /* 12.46 */    [0m
-    [36m| [0m[34m|[0m /* 12.47 */    @Attribute[TestCase_79][0m
+    [36m| [0m[34m|[0m /* 12.47 */    @Attribute[TestCase_103][0m
     [36m| [0m[34m|[0m /* 12.48 */    func testPositionalArguments() {[0m
     [36m| [0m[34m|[0m /* 12.49 */        let cmd = Command("app").argument(Argument("input").required(true)).argument(Argument("output"))[0m
     [36m| [0m[34m|[0m /* 12.50 */        let parser = Parser()[0m
@@ -112,7 +395,7 @@
     [36m| [0m[34m|[0m /* 12.60 */        }[0m
     [36m| [0m[34m|[0m /* 12.61 */    }[0m
     [36m| [0m[34m|[0m /* 12.62 */    [0m
-    [36m| [0m[34m|[0m /* 12.63 */    @Attribute[TestCase_80][0m
+    [36m| [0m[34m|[0m /* 12.63 */    @Attribute[TestCase_104][0m
     [36m| [0m[34m|[0m /* 12.64 */    func testVariadicArguments() {[0m
     [36m| [0m[34m|[0m /* 12.65 */        let cmd = Command("app").argument(Argument("files").variadic(true).minCount(1))[0m
     [36m| [0m[34m|[0m /* 12.66 */        let parser = Parser()[0m
@@ -120,7 +403,7 @@
     [36m| [0m[34m|[0m /* 12.68 */        assertEqual("ctx.argumentCount() == 3", "true", ctx.argumentCount() == 3, true, isDelta: false)[0m
     [36m| [0m[34m|[0m /* 12.69 */    }[0m
     [36m| [0m[34m|[0m /* 12.70 */    [0m
-    [36m| [0m[34m|[0m /* 12.71 */    @Attribute[TestCase_81][0m
+    [36m| [0m[34m|[0m /* 12.71 */    @Attribute[TestCase_105][0m
     [36m| [0m[34m|[0m /* 12.72 */    func testDoubleDashSeparator() {[0m
     [36m| [0m[34m|[0m /* 12.73 */        let cmd = Command("app").flag(Flag("verbose").short(r'v').asBool())[0m
     [36m| [0m[34m|[0m /* 12.74 */        let parser = Parser()[0m
@@ -133,7 +416,7 @@
     [36m| [0m[34m|[0m /* 12.81 */        }[0m
     [36m| [0m[34m|[0m /* 12.82 */    }[0m
     [36m| [0m[34m|[0m /* 12.83 */    [0m
-    [36m| [0m[34m|[0m /* 12.84 */    @Attribute[TestCase_82][0m
+    [36m| [0m[34m|[0m /* 12.84 */    @Attribute[TestCase_106][0m
     [36m| [0m[34m|[0m /* 12.85 */    func testDefaultValues() {[0m
     [36m| [0m[34m|[0m /* 12.86 */        let cmd = Command("app").flag(Flag("config").defaultValue("default.toml"))[0m
     [36m| [0m[34m|[0m /* 12.87 */        let parser = Parser()[0m
@@ -141,7 +424,7 @@
     [36m| [0m[34m|[0m /* 12.89 */        assertEqual("ctx.getFlagOrDefault(\"config\", \"\") == \"default.toml\"", "true", ctx.getFlagOrDefault("config", "") == "default.toml", true, isDelta: false)[0m
     [36m| [0m[34m|[0m /* 12.90 */    }[0m
     [36m| [0m[34m|[0m /* 12.91 */    [0m
-    [36m| [0m[34m|[0m /* 12.92 */    @Attribute[TestCase_83][0m
+    [36m| [0m[34m|[0m /* 12.92 */    @Attribute[TestCase_107][0m
     [36m| [0m[34m|[0m /* 12.93 */    func testRequiredFlagMissing() {[0m
     [36m| [0m[34m|[0m /* 12.94 */        let cmd = Command("app").flag(Flag("output").short(r'o').required(true))[0m
     [36m| [0m[34m|[0m /* 12.95 */        let parser = Parser()[0m
@@ -155,7 +438,7 @@
     [36m| [0m[34m|[0m /* 12.103 */        assertEqual("caught", "true", caught, true, isDelta: false)[0m
     [36m| [0m[34m|[0m /* 12.104 */    }[0m
     [36m| [0m[34m|[0m /* 12.105 */    [0m
-    [36m| [0m[34m|[0m /* 12.106 */    @Attribute[TestCase_84][0m
+    [36m| [0m[34m|[0m /* 12.106 */    @Attribute[TestCase_108][0m
     [36m| [0m[34m|[0m /* 12.107 */    func testRequiredArgumentMissing() {[0m
     [36m| [0m[34m|[0m /* 12.108 */        let cmd = Command("app").argument(Argument("file").required(true))[0m
     [36m| [0m[34m|[0m /* 12.109 */        let parser = Parser()[0m
@@ -169,7 +452,7 @@
     [36m| [0m[34m|[0m /* 12.117 */        assertEqual("caught", "true", caught, true, isDelta: false)[0m
     [36m| [0m[34m|[0m /* 12.118 */    }[0m
     [36m| [0m[34m|[0m /* 12.119 */    [0m
-    [36m| [0m[34m|[0m /* 12.120 */    @Attribute[TestCase_85][0m
+    [36m| [0m[34m|[0m /* 12.120 */    @Attribute[TestCase_109][0m
     [36m| [0m[34m|[0m /* 12.121 */    func testUnknownLongFlag() {[0m
     [36m| [0m[34m|[0m /* 12.122 */        let cmd = Command("app")[0m
     [36m| [0m[34m|[0m /* 12.123 */        let parser = Parser()[0m
@@ -183,7 +466,7 @@
     [36m| [0m[34m|[0m /* 12.131 */        assertEqual("caught", "true", caught, true, isDelta: false)[0m
     [36m| [0m[34m|[0m /* 12.132 */    }[0m
     [36m| [0m[34m|[0m /* 12.133 */    [0m
-    [36m| [0m[34m|[0m /* 12.134 */    @Attribute[TestCase_86][0m
+    [36m| [0m[34m|[0m /* 12.134 */    @Attribute[TestCase_110][0m
     [36m| [0m[34m|[0m /* 12.135 */    func testUnknownShortFlag() {[0m
     [36m| [0m[34m|[0m /* 12.136 */        let cmd = Command("app")[0m
     [36m| [0m[34m|[0m /* 12.137 */        let parser = Parser()[0m
@@ -197,7 +480,7 @@
     [36m| [0m[34m|[0m /* 12.145 */        assertEqual("caught", "true", caught, true, isDelta: false)[0m
     [36m| [0m[34m|[0m /* 12.146 */    }[0m
     [36m| [0m[34m|[0m /* 12.147 */    [0m
-    [36m| [0m[34m|[0m /* 12.148 */    @Attribute[TestCase_87][0m
+    [36m| [0m[34m|[0m /* 12.148 */    @Attribute[TestCase_111][0m
     [36m| [0m[34m|[0m /* 12.149 */    func testFlagMissingValue() {[0m
     [36m| [0m[34m|[0m /* 12.150 */        let cmd = Command("app").flag(Flag("output").short(r'o'))[0m
     [36m| [0m[34m|[0m /* 12.151 */        let parser = Parser()[0m
@@ -211,7 +494,7 @@
     [36m| [0m[34m|[0m /* 12.159 */        assertEqual("caught", "true", caught, true, isDelta: false)[0m
     [36m| [0m[34m|[0m /* 12.160 */    }[0m
     [36m| [0m[34m|[0m /* 12.161 */    [0m
-    [36m| [0m[34m|[0m /* 12.162 */    @Attribute[TestCase_88][0m
+    [36m| [0m[34m|[0m /* 12.162 */    @Attribute[TestCase_112][0m
     [36m| [0m[34m|[0m /* 12.163 */    func testTypedFlagInt64() {[0m
     [36m| [0m[34m|[0m /* 12.164 */        let cmd = Command("app").flag(Flag("port").short(r'p').valueType(Int64Type))[0m
     [36m| [0m[34m|[0m /* 12.165 */        let parser = Parser()[0m
@@ -223,7 +506,7 @@
     [36m| [0m[34m|[0m /* 12.171 */        }[0m
     [36m| [0m[34m|[0m /* 12.172 */    }[0m
     [36m| [0m[34m|[0m /* 12.173 */    [0m
-    [36m| [0m[34m|[0m /* 12.174 */    @Attribute[TestCase_89][0m
+    [36m| [0m[34m|[0m /* 12.174 */    @Attribute[TestCase_113][0m
     [36m| [0m[34m|[0m /* 12.175 */    func testTypedFlagInt64Error() {[0m
     [36m| [0m[34m|[0m /* 12.176 */        let cmd = Command("app").flag(Flag("port").short(r'p').valueType(Int64Type))[0m
     [36m| [0m[34m|[0m /* 12.177 */        let parser = Parser()[0m
@@ -236,7 +519,7 @@
     [36m| [0m[34m|[0m /* 12.184 */        assertEqual("caught", "true", caught, true, isDelta: false)[0m
     [36m| [0m[34m|[0m /* 12.185 */    }[0m
     [36m| [0m[34m|[0m /* 12.186 */    [0m
-    [36m| [0m[34m|[0m /* 12.187 */    @Attribute[TestCase_90][0m
+    [36m| [0m[34m|[0m /* 12.187 */    @Attribute[TestCase_114][0m
     [36m| [0m[34m|[0m /* 12.188 */    func testTypedFlagBool() {[0m
     [36m| [0m[34m|[0m /* 12.189 */        let cmd = Command("app").flag(Flag("debug").valueType(BoolType))[0m
     [36m| [0m[34m|[0m /* 12.190 */        let parser = Parser()[0m
@@ -244,7 +527,7 @@
     [36m| [0m[34m|[0m /* 12.192 */        assertEqual("ctx.getFlagOrDefault(\"debug\", \"\") == \"true\"", "true", ctx.getFlagOrDefault("debug", "") == "true", true, isDelta: false)[0m
     [36m| [0m[34m|[0m /* 12.193 */    }[0m
     [36m| [0m[34m|[0m /* 12.194 */    [0m
-    [36m| [0m[34m|[0m /* 12.195 */    @Attribute[TestCase_91][0m
+    [36m| [0m[34m|[0m /* 12.195 */    @Attribute[TestCase_115][0m
     [36m| [0m[34m|[0m /* 12.196 */    func testSubcommandWithAlias() {[0m
     [36m| [0m[34m|[0m /* 12.197 */        let root = Command("tool").command(Command("install").alias("i").action({ ctx => 0 }))[0m
     [36m| [0m[34m|[0m /* 12.198 */        let parser = Parser()[0m
@@ -252,7 +535,7 @@
     [36m| [0m[34m|[0m /* 12.200 */        assertEqual("matched.getName() == \"install\"", "true", matched.getName() == "install", true, isDelta: false)[0m
     [36m| [0m[34m|[0m /* 12.201 */    }[0m
     [36m| [0m[34m|[0m /* 12.202 */    [0m
-    [36m| [0m[34m|[0m /* 12.203 */    @Attribute[TestCase_92][0m
+    [36m| [0m[34m|[0m /* 12.203 */    @Attribute[TestCase_116][0m
     [36m| [0m[34m|[0m /* 12.204 */    func testMixedFlagsAndArgs() {[0m
     [36m| [0m[34m|[0m /* 12.205 */        let cmd = Command("app").flag(Flag("verbose").short(r'v').asBool()).flag(Flag("output").short(r'o')).argument(Argument("input").required(true))[0m
     [36m| [0m[34m|[0m /* 12.206 */        let parser = Parser()[0m
@@ -265,7 +548,7 @@
     [36m| [0m[34m|[0m /* 12.213 */        }[0m
     [36m| [0m[34m|[0m /* 12.214 */    }[0m
     [36m| [0m[34m|[0m /* 12.215 */    [0m
-    [36m| [0m[34m|[0m /* 12.216 */    @Attribute[TestCase_93][0m
+    [36m| [0m[34m|[0m /* 12.216 */    @Attribute[TestCase_117][0m
     [36m| [0m[34m|[0m /* 12.217 */    func testVariadicMinCountViolation() {[0m
     [36m| [0m[34m|[0m /* 12.218 */        let cmd = Command("app").argument(Argument("files").variadic(true).minCount(2))[0m
     [36m| [0m[34m|[0m /* 12.219 */        let parser = Parser()[0m
@@ -279,7 +562,7 @@
     [36m| [0m[34m|[0m /* 12.227 */        assertEqual("caught", "true", caught, true, isDelta: false)[0m
     [36m| [0m[34m|[0m /* 12.228 */    }[0m
     [36m| [0m[34m|[0m /* 12.229 */    [0m
-    [36m| [0m[34m|[0m /* 12.230 */    @Attribute[TestCase_94][0m
+    [36m| [0m[34m|[0m /* 12.230 */    @Attribute[TestCase_118][0m
     [36m| [0m[34m|[0m /* 12.231 */    func testTerminateFlagThrows() {[0m
     [36m| [0m[34m|[0m /* 12.232 */        let cmd = Command("app").flag(Flag("help").short(r'h').action(FlagAction.Terminate({ => "Help text" })))[0m
     [36m| [0m[34m|[0m /* 12.233 */        let parser = Parser()[0m
@@ -293,7 +576,7 @@
     [36m| [0m[34m|[0m /* 12.241 */        assertEqual("caught", "true", caught, true, isDelta: false)[0m
     [36m| [0m[34m|[0m /* 12.242 */    }[0m
     [36m| [0m[34m|[0m /* 12.243 */    [0m
-    [36m| [0m[34m|[0m /* 12.244 */    @Attribute[TestCase_95][0m
+    [36m| [0m[34m|[0m /* 12.244 */    @Attribute[TestCase_119][0m
     [36m| [0m[34m|[0m /* 12.245 */    func testAppendAction() {[0m
     [36m| [0m[34m|[0m /* 12.246 */        let cmd = Command("app").flag(Flag("include").short(r'I').action(FlagAction.Append))[0m
     [36m| [0m[34m|[0m /* 12.247 */        let parser = Parser()[0m
@@ -306,7 +589,7 @@
     [36m| [0m[34m|[0m /* 12.254 */        }[0m
     [36m| [0m[34m|[0m /* 12.255 */    }[0m
     [36m| [0m[34m|[0m /* 12.256 */    [0m
-    [36m| [0m[34m|[0m /* 12.257 */    @Attribute[TestCase_96][0m
+    [36m| [0m[34m|[0m /* 12.257 */    @Attribute[TestCase_120][0m
     [36m| [0m[34m|[0m /* 12.258 */    func testSetTrueAction() {[0m
     [36m| [0m[34m|[0m /* 12.259 */        let cmd = Command("app").flag(Flag("verbose").action(FlagAction.SetTrue))[0m
     [36m| [0m[34m|[0m /* 12.260 */        let parser = Parser()[0m
@@ -314,7 +597,7 @@
     [36m| [0m[34m|[0m /* 12.262 */        assertEqual("ctx.getBoolFlag(\"verbose\") == true", "true", ctx.getBoolFlag("verbose") == true, true, isDelta: false)[0m
     [36m| [0m[34m|[0m /* 12.263 */    }[0m
     [36m| [0m[34m|[0m /* 12.264 */    [0m
-    [36m| [0m[34m|[0m /* 12.265 */    @Attribute[TestCase_97][0m
+    [36m| [0m[34m|[0m /* 12.265 */    @Attribute[TestCase_121][0m
     [36m| [0m[34m|[0m /* 12.266 */    func testSetFalseAction() {[0m
     [36m| [0m[34m|[0m /* 12.267 */        let cmd = Command("app").flag(Flag("no-color").action(FlagAction.SetFalse))[0m
     [36m| [0m[34m|[0m /* 12.268 */        let parser = Parser()[0m
@@ -322,7 +605,7 @@
     [36m| [0m[34m|[0m /* 12.270 */        assertEqual("ctx.getBoolFlag(\"no-color\") == false", "true", ctx.getBoolFlag("no-color") == false, true, isDelta: false)[0m
     [36m| [0m[34m|[0m /* 12.271 */    }[0m
     [36m| [0m[34m|[0m /* 12.272 */    [0m
-    [36m| [0m[34m|[0m /* 12.273 */    @Attribute[TestCase_98][0m
+    [36m| [0m[34m|[0m /* 12.273 */    @Attribute[TestCase_122][0m
     [36m| [0m[34m|[0m /* 12.274 */    func testBatchFlags() {[0m
     [36m| [0m[34m|[0m /* 12.275 */        let cmd = Command("app").flags([Flag("verbose").short(r'v').asBool(), Flag("config").short(r'c'), Flag("output").short(r'o')])[0m
     [36m| [0m[34m|[0m /* 12.276 */        let parser = Parser()[0m
@@ -720,6 +1003,75 @@
    [36m| [0m
 
 [33mwarning[0m: unused variable:'ctx'
+  [36m==>[0m /home/otto/文档/Project/cli/src/test/lifecycle_test.cj:63:33:
+   [36m| [0m
+[36m63[0m [36m| [0m            .persistentPreRun({ ctx =>[0m
+   [36m| [0m                                [33m^ unused variable[0m
+   [36m| [0m
+   [36m#[0m [0mnote[0m: this warning can be suppressed by setting the compiler option `-Woff unused`
+[34mnote[0m: the warning occurs after the macro is expanded
+   [36m==>[0m /home/otto/文档/Project/cli/src/test/lifecycle_test.cj:13:1:
+    [36m| [0m
+[36m13[0m  [36m| [0m  @Test[0m
+    [36m| [0m [34m_[0m[34m^[0m
+[36m14[0m  [36m| [0m[34m|[0m class LifecycleTest {[0m
+    [36m| [0m[34m|[0m ...[0m
+[36m156[0m [36m| [0m[34m|[0m }[0m
+    [36m| [0m[34m|[0m[34m_[0m[34m^[0m
+    [36m| [0m
+[34mnote[0m: which is expanded as follows
+   [36m| [0m
+   [36m| [0m/* 13.29 */        let app = App("tool").persistentPreRun({ ctx => log.add("persistentPreRun") }).command(Command("sub").preRun({ ctx => log.add("preRun") }).action({ ctx => log.add("action")[0m
+   [36m| [0m                                                            [34m^^^ [0m
+   [36m| [0m
+
+[33mwarning[0m: unused variable:'ctx'
+  [36m==>[0m /home/otto/文档/Project/cli/src/test/lifecycle_test.cj:68:31:
+   [36m| [0m
+[36m68[0m [36m| [0m                    .preRun({ ctx =>[0m
+   [36m| [0m                              [33m^ unused variable[0m
+   [36m| [0m
+   [36m#[0m [0mnote[0m: this warning can be suppressed by setting the compiler option `-Woff unused`
+[34mnote[0m: the warning occurs after the macro is expanded
+   [36m==>[0m /home/otto/文档/Project/cli/src/test/lifecycle_test.cj:13:1:
+    [36m| [0m
+[36m13[0m  [36m| [0m  @Test[0m
+    [36m| [0m [34m_[0m[34m^[0m
+[36m14[0m  [36m| [0m[34m|[0m class LifecycleTest {[0m
+    [36m| [0m[34m|[0m ...[0m
+[36m156[0m [36m| [0m[34m|[0m }[0m
+    [36m| [0m[34m|[0m[34m_[0m[34m^[0m
+    [36m| [0m
+[34mnote[0m: which is expanded as follows
+   [36m| [0m
+   [36m| [0m/* 13.29 */        let app = App("tool").persistentPreRun({ ctx => log.add("persistentPreRun") }).command(Command("sub").preRun({ ctx => log.add("preRun") }).action({ ctx => log.add("action")[0m
+   [36m| [0m                                                                                                                                  [34m^^^ [0m
+   [36m| [0m
+
+[33mwarning[0m: unused variable:'ctx'
+  [36m==>[0m /home/otto/文档/Project/cli/src/test/lifecycle_test.cj:71:31:
+   [36m| [0m
+[36m71[0m [36m| [0m                    .action({ ctx =>[0m
+   [36m| [0m                              [33m^ unused variable[0m
+   [36m| [0m
+   [36m#[0m [0mnote[0m: this warning can be suppressed by setting the compiler option `-Woff unused`
+[34mnote[0m: the warning occurs after the macro is expanded
+   [36m==>[0m /home/otto/文档/Project/cli/src/test/lifecycle_test.cj:13:1:
+    [36m| [0m
+[36m13[0m  [36m| [0m  @Test[0m
+    [36m| [0m [34m_[0m[34m^[0m
+[36m14[0m  [36m| [0m[34m|[0m class LifecycleTest {[0m
+    [36m| [0m[34m|[0m ...[0m
+[36m156[0m [36m| [0m[34m|[0m }[0m
+    [36m| [0m[34m|[0m[34m_[0m[34m^[0m
+    [36m| [0m
+[34mnote[0m: which is expanded as follows
+   [36m| [0m
+   [36m| [0m/* 13.29 */        let app = App("tool").persistentPreRun({ ctx => log.add("persistentPreRun") }).command(Command("sub").preRun({ ctx => log.add("preRun") }).action({ ctx => log.add("action")[0m
+   [36m| [0m                                                                                                                                                                       [34m^^^ [0m
+   [36m| [0m
+
+[33mwarning[0m: unused variable:'ctx'
   [36m==>[0m /home/otto/文档/Project/cli/src/test/parser_test.cj:77:47:
    [36m| [0m
 [36m77[0m [36m| [0m                                    .action({ ctx => 0 })[0m
@@ -740,6 +1092,29 @@
    [36m| [0m
    [36m| [0m/* 12.39 */        let root = Command("tool").command(Command("cloud").command(Command("server").command(Command("start").flag(Flag("port").short(r'p').valueType(Int64Type)).action({ ctx => 0 }))))[0m
    [36m| [0m                                                                                                                                                                                       [34m^^^ [0m
+   [36m| [0m
+
+[33mwarning[0m: unused variable:'ctx'
+  [36m==>[0m /home/otto/文档/Project/cli/src/test/lifecycle_test.cj:89:34:
+   [36m| [0m
+[36m89[0m [36m| [0m            .persistentPostRun({ ctx =>[0m
+   [36m| [0m                                 [33m^ unused variable[0m
+   [36m| [0m
+   [36m#[0m [0mnote[0m: this warning can be suppressed by setting the compiler option `-Woff unused`
+[34mnote[0m: the warning occurs after the macro is expanded
+   [36m==>[0m /home/otto/文档/Project/cli/src/test/lifecycle_test.cj:13:1:
+    [36m| [0m
+[36m13[0m  [36m| [0m  @Test[0m
+    [36m| [0m [34m_[0m[34m^[0m
+[36m14[0m  [36m| [0m[34m|[0m class LifecycleTest {[0m
+    [36m| [0m[34m|[0m ...[0m
+[36m156[0m [36m| [0m[34m|[0m }[0m
+    [36m| [0m[34m|[0m[34m_[0m[34m^[0m
+    [36m| [0m
+[34mnote[0m: which is expanded as follows
+   [36m| [0m
+   [36m| [0m/* 13.42 */        let app = App("tool").persistentPostRun({ ctx => log.add("persistentPostRun") }).command(Command("sub").action({ ctx => log.add("action")[0m
+   [36m| [0m                                                             [34m^^^ [0m
    [36m| [0m
 
 [33mwarning[0m: unused variable:'ctx'
@@ -1242,6 +1617,415 @@
    [36m| [0m
 
 [33mwarning[0m: unused variable:'ctx'
+  [36m==>[0m /home/otto/文档/Project/cli/src/test/lifecycle_test.cj:94:31:
+   [36m| [0m
+[36m94[0m [36m| [0m                    .action({ ctx =>[0m
+   [36m| [0m                              [33m^ unused variable[0m
+   [36m| [0m
+   [36m#[0m [0mnote[0m: this warning can be suppressed by setting the compiler option `-Woff unused`
+[34mnote[0m: the warning occurs after the macro is expanded
+   [36m==>[0m /home/otto/文档/Project/cli/src/test/lifecycle_test.cj:13:1:
+    [36m| [0m
+[36m13[0m  [36m| [0m  @Test[0m
+    [36m| [0m [34m_[0m[34m^[0m
+[36m14[0m  [36m| [0m[34m|[0m class LifecycleTest {[0m
+    [36m| [0m[34m|[0m ...[0m
+[36m156[0m [36m| [0m[34m|[0m }[0m
+    [36m| [0m[34m|[0m[34m_[0m[34m^[0m
+    [36m| [0m
+[34mnote[0m: which is expanded as follows
+   [36m| [0m
+   [36m| [0m/* 13.42 */        let app = App("tool").persistentPostRun({ ctx => log.add("persistentPostRun") }).command(Command("sub").action({ ctx => log.add("action")[0m
+   [36m| [0m                                                                                                                                    [34m^^^ [0m
+   [36m| [0m
+
+[33mwarning[0m: unused variable:'ctx'
+  [36m==>[0m /home/otto/文档/Project/cli/src/test/lifecycle_test.cj:98:32:
+   [36m| [0m
+[36m98[0m [36m| [0m                    .postRun({ ctx =>[0m
+   [36m| [0m                               [33m^ unused variable[0m
+   [36m| [0m
+   [36m#[0m [0mnote[0m: this warning can be suppressed by setting the compiler option `-Woff unused`
+[34mnote[0m: the warning occurs after the macro is expanded
+   [36m==>[0m /home/otto/文档/Project/cli/src/test/lifecycle_test.cj:13:1:
+    [36m| [0m
+[36m13[0m  [36m| [0m  @Test[0m
+    [36m| [0m [34m_[0m[34m^[0m
+[36m14[0m  [36m| [0m[34m|[0m class LifecycleTest {[0m
+    [36m| [0m[34m|[0m ...[0m
+[36m156[0m [36m| [0m[34m|[0m }[0m
+    [36m| [0m[34m|[0m[34m_[0m[34m^[0m
+    [36m| [0m
+[34mnote[0m: which is expanded as follows
+   [36m| [0m
+   [36m| [0m/* 13.43 */        0 }).postRun({ ctx => log.add("postRun") }))[0m
+   [36m| [0m                                  [34m^^^ [0m
+   [36m| [0m
+
+[33mwarning[0m: unused variable:'ctx'
+   [36m==>[0m /home/otto/文档/Project/cli/src/test/lifecycle_test.cj:115:33:
+    [36m| [0m
+[36m115[0m [36m| [0m            .persistentPreRun({ ctx =>[0m
+    [36m| [0m                                [33m^ unused variable[0m
+    [36m| [0m
+    [36m#[0m [0mnote[0m: this warning can be suppressed by setting the compiler option `-Woff unused`
+[34mnote[0m: the warning occurs after the macro is expanded
+   [36m==>[0m /home/otto/文档/Project/cli/src/test/lifecycle_test.cj:13:1:
+    [36m| [0m
+[36m13[0m  [36m| [0m  @Test[0m
+    [36m| [0m [34m_[0m[34m^[0m
+[36m14[0m  [36m| [0m[34m|[0m class LifecycleTest {[0m
+    [36m| [0m[34m|[0m ...[0m
+[36m156[0m [36m| [0m[34m|[0m }[0m
+    [36m| [0m[34m|[0m[34m_[0m[34m^[0m
+    [36m| [0m
+[34mnote[0m: which is expanded as follows
+   [36m| [0m
+   [36m| [0m/* 13.55 */        let app = App("tool").persistentPreRun({ ctx => log.add("1-persistentPreRun") }).persistentPostRun({ ctx => log.add("5-persistentPostRun") }).command(Command("cmd").preRun({ ctx => log.add("2-preRun") }).action({ ctx => log.add("3-action")[0m
+   [36m| [0m                                                            [34m^^^ [0m
+   [36m| [0m
+
+[33mwarning[0m: unused variable:'ctx'
+   [36m==>[0m /home/otto/文档/Project/cli/src/test/lifecycle_test.cj:118:34:
+    [36m| [0m
+[36m118[0m [36m| [0m            .persistentPostRun({ ctx =>[0m
+    [36m| [0m                                 [33m^ unused variable[0m
+    [36m| [0m
+    [36m#[0m [0mnote[0m: this warning can be suppressed by setting the compiler option `-Woff unused`
+[34mnote[0m: the warning occurs after the macro is expanded
+   [36m==>[0m /home/otto/文档/Project/cli/src/test/lifecycle_test.cj:13:1:
+    [36m| [0m
+[36m13[0m  [36m| [0m  @Test[0m
+    [36m| [0m [34m_[0m[34m^[0m
+[36m14[0m  [36m| [0m[34m|[0m class LifecycleTest {[0m
+    [36m| [0m[34m|[0m ...[0m
+[36m156[0m [36m| [0m[34m|[0m }[0m
+    [36m| [0m[34m|[0m[34m_[0m[34m^[0m
+    [36m| [0m
+[34mnote[0m: which is expanded as follows
+   [36m| [0m
+   [36m| [0m/* 13.55 */        let app = App("tool").persistentPreRun({ ctx => log.add("1-persistentPreRun") }).persistentPostRun({ ctx => log.add("5-persistentPostRun") }).command(Command("cmd").preRun({ ctx => log.add("2-preRun") }).action({ ctx => log.add("3-action")[0m
+   [36m| [0m                                                                                                                        [34m^^^ [0m
+   [36m| [0m
+
+[33mwarning[0m: unused variable:'ctx'
+   [36m==>[0m /home/otto/文档/Project/cli/src/test/lifecycle_test.cj:123:31:
+    [36m| [0m
+[36m123[0m [36m| [0m                    .preRun({ ctx =>[0m
+    [36m| [0m                              [33m^ unused variable[0m
+    [36m| [0m
+    [36m#[0m [0mnote[0m: this warning can be suppressed by setting the compiler option `-Woff unused`
+[34mnote[0m: the warning occurs after the macro is expanded
+   [36m==>[0m /home/otto/文档/Project/cli/src/test/lifecycle_test.cj:13:1:
+    [36m| [0m
+[36m13[0m  [36m| [0m  @Test[0m
+    [36m| [0m [34m_[0m[34m^[0m
+[36m14[0m  [36m| [0m[34m|[0m class LifecycleTest {[0m
+    [36m| [0m[34m|[0m ...[0m
+[36m156[0m [36m| [0m[34m|[0m }[0m
+    [36m| [0m[34m|[0m[34m_[0m[34m^[0m
+    [36m| [0m
+[34mnote[0m: which is expanded as follows
+   [36m| [0m
+   [36m| [0m/* 13.55 */        let app = App("tool").persistentPreRun({ ctx => log.add("1-persistentPreRun") }).persistentPostRun({ ctx => log.add("5-persistentPostRun") }).command(Command("cmd").preRun({ ctx => log.add("2-preRun") }).action({ ctx => log.add("3-action")[0m
+   [36m| [0m                                                                                                                                                                                                 [34m^^^ [0m
+   [36m| [0m
+
+[33mwarning[0m: unused variable:'ctx'
+   [36m==>[0m /home/otto/文档/Project/cli/src/test/lifecycle_test.cj:126:31:
+    [36m| [0m
+[36m126[0m [36m| [0m                    .action({ ctx =>[0m
+    [36m| [0m                              [33m^ unused variable[0m
+    [36m| [0m
+    [36m#[0m [0mnote[0m: this warning can be suppressed by setting the compiler option `-Woff unused`
+[34mnote[0m: the warning occurs after the macro is expanded
+   [36m==>[0m /home/otto/文档/Project/cli/src/test/lifecycle_test.cj:13:1:
+    [36m| [0m
+[36m13[0m  [36m| [0m  @Test[0m
+    [36m| [0m [34m_[0m[34m^[0m
+[36m14[0m  [36m| [0m[34m|[0m class LifecycleTest {[0m
+    [36m| [0m[34m|[0m ...[0m
+[36m156[0m [36m| [0m[34m|[0m }[0m
+    [36m| [0m[34m|[0m[34m_[0m[34m^[0m
+    [36m| [0m
+[34mnote[0m: which is expanded as follows
+   [36m| [0m
+   [36m| [0m/* 13.55 */        let app = App("tool").persistentPreRun({ ctx => log.add("1-persistentPreRun") }).persistentPostRun({ ctx => log.add("5-persistentPostRun") }).command(Command("cmd").preRun({ ctx => log.add("2-preRun") }).action({ ctx => log.add("3-action")[0m
+   [36m| [0m                                                                                                                                                                                                                                        [34m^^^ [0m
+   [36m| [0m
+
+[33mwarning[0m: unused variable:'ctx'
+   [36m==>[0m /home/otto/文档/Project/cli/src/test/lifecycle_test.cj:130:32:
+    [36m| [0m
+[36m130[0m [36m| [0m                    .postRun({ ctx =>[0m
+    [36m| [0m                               [33m^ unused variable[0m
+    [36m| [0m
+    [36m#[0m [0mnote[0m: this warning can be suppressed by setting the compiler option `-Woff unused`
+[34mnote[0m: the warning occurs after the macro is expanded
+   [36m==>[0m /home/otto/文档/Project/cli/src/test/lifecycle_test.cj:13:1:
+    [36m| [0m
+[36m13[0m  [36m| [0m  @Test[0m
+    [36m| [0m [34m_[0m[34m^[0m
+[36m14[0m  [36m| [0m[34m|[0m class LifecycleTest {[0m
+    [36m| [0m[34m|[0m ...[0m
+[36m156[0m [36m| [0m[34m|[0m }[0m
+    [36m| [0m[34m|[0m[34m_[0m[34m^[0m
+    [36m| [0m
+[34mnote[0m: which is expanded as follows
+   [36m| [0m
+   [36m| [0m/* 13.56 */        0 }).postRun({ ctx => log.add("4-postRun") }))[0m
+   [36m| [0m                                  [34m^^^ [0m
+   [36m| [0m
+
+[33mwarning[0m: unused variable:'ctx'
+   [36m==>[0m /home/otto/文档/Project/cli/src/test/lifecycle_test.cj:150:31:
+    [36m| [0m
+[36m150[0m [36m| [0m                    .action({ ctx => 42 })[0m
+    [36m| [0m                              [33m^ unused variable[0m
+    [36m| [0m
+    [36m#[0m [0mnote[0m: this warning can be suppressed by setting the compiler option `-Woff unused`
+[34mnote[0m: the warning occurs after the macro is expanded
+   [36m==>[0m /home/otto/文档/Project/cli/src/test/lifecycle_test.cj:13:1:
+    [36m| [0m
+[36m13[0m  [36m| [0m  @Test[0m
+    [36m| [0m [34m_[0m[34m^[0m
+[36m14[0m  [36m| [0m[34m|[0m class LifecycleTest {[0m
+    [36m| [0m[34m|[0m ...[0m
+[36m156[0m [36m| [0m[34m|[0m }[0m
+    [36m| [0m[34m|[0m[34m_[0m[34m^[0m
+    [36m| [0m
+[34mnote[0m: which is expanded as follows
+   [36m| [0m
+   [36m| [0m/* 13.69 */        let app = App("tool").command(Command("run").action({ ctx => 42 }))[0m
+   [36m| [0m                                                                         [34m^^^ [0m
+   [36m| [0m
+
+[33mwarning[0m: unused variable:'ctx'
+   [36m==>[0m /home/otto/文档/Project/cli/src/test/lifecycle_test.cj:167:20:
+    [36m| [0m
+[36m167[0m [36m| [0m            .use({ ctx, next =>[0m
+    [36m| [0m                   [33m^ unused variable[0m
+    [36m| [0m
+    [36m#[0m [0mnote[0m: this warning can be suppressed by setting the compiler option `-Woff unused`
+[34mnote[0m: the warning occurs after the macro is expanded
+   [36m==>[0m /home/otto/文档/Project/cli/src/test/lifecycle_test.cj:161:1:
+    [36m| [0m
+[36m161[0m [36m| [0m  @Test[0m
+    [36m| [0m [34m_[0m[34m^[0m
+[36m162[0m [36m| [0m[34m|[0m class MiddlewareTest {[0m
+    [36m| [0m[34m|[0m ...[0m
+[36m294[0m [36m| [0m[34m|[0m }[0m
+    [36m| [0m[34m|[0m[34m_[0m[34m^[0m
+    [36m| [0m
+[34mnote[0m: the code after the macro is expanded as follows
+    [36m| [0m
+    [36m| [0m  /* 161.1 */@Attribute[TEST_GENERATED] class MiddlewareTest <: TestClass {[0m
+    [36m| [0m [34m_[0m[34m^[0m
+    [36m| [0m[34m|[0m /* 161.2 */    @Attribute[TestCase_81][0m
+    [36m| [0m[34m|[0m /* 161.3 */    func testGlobalMiddleware() {[0m
+    [36m| [0m[34m|[0m /* 161.4 */        let log = ArrayList < String >()[0m
+    [36m| [0m[34m|[0m /* 161.5 */        let app = App("tool").use({ ctx, next => log.add("mw-before")[0m
+    [36m| [0m[34m|[0m /* 161.6 */            let code = next()[0m
+    [36m| [0m[34m|[0m /* 161.7 */            [0m
+    [36m| [0m[34m|[0m /* 161.8 */            log.add("mw-after")[0m
+    [36m| [0m[34m|[0m /* 161.9 */        code }).command(Command("run").action({ ctx => log.add("action")[0m
+    [36m| [0m[34m|[0m /* 161.10 */        0 }))[0m
+    [36m| [0m[34m|[0m /* 161.11 */        let result = app.mockRun(["run"])[0m
+    [36m| [0m[34m|[0m /* 161.12 */        assertEqual("result.exitCode == 0", "true", result.exitCode == 0, true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 161.13 */        assertEqual("log.size == 3", "true", log.size == 3, true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 161.14 */        assertEqual("log[0] == \"mw-before\"", "true", log[0] == "mw-before", true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 161.15 */        assertEqual("log[1] == \"action\"", "true", log[1] == "action", true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 161.16 */        assertEqual("log[2] == \"mw-after\"", "true", log[2] == "mw-after", true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 161.17 */    }[0m
+    [36m| [0m[34m|[0m /* 161.18 */    [0m
+    [36m| [0m[34m|[0m /* 161.19 */    @Attribute[TestCase_82][0m
+    [36m| [0m[34m|[0m /* 161.20 */    func testCommandLocalMiddleware() {[0m
+    [36m| [0m[34m|[0m /* 161.21 */        let log = ArrayList < String >()[0m
+    [36m| [0m[34m|[0m /* 161.22 */        let app = App("tool").command(Command("run").use({ ctx, next => log.add("local-mw")[0m
+    [36m| [0m[34m|[0m /* 161.23 */        next() }).action({ ctx => log.add("action")[0m
+    [36m| [0m[34m|[0m /* 161.24 */        0 }))[0m
+    [36m| [0m[34m|[0m /* 161.25 */        let result = app.mockRun(["run"])[0m
+    [36m| [0m[34m|[0m /* 161.26 */        assertEqual("result.exitCode == 0", "true", result.exitCode == 0, true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 161.27 */        assertEqual("log.size == 2", "true", log.size == 2, true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 161.28 */        assertEqual("log[0] == \"local-mw\"", "true", log[0] == "local-mw", true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 161.29 */        assertEqual("log[1] == \"action\"", "true", log[1] == "action", true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 161.30 */    }[0m
+    [36m| [0m[34m|[0m /* 161.31 */    [0m
+    [36m| [0m[34m|[0m /* 161.32 */    @Attribute[TestCase_83][0m
+    [36m| [0m[34m|[0m /* 161.33 */    func testMultipleMiddlewareChaining() {[0m
+    [36m| [0m[34m|[0m /* 161.34 */        let log = ArrayList < String >()[0m
+    [36m| [0m[34m|[0m /* 161.35 */        let app = App("tool").use({ ctx, next => log.add("global-1")[0m
+    [36m| [0m[34m|[0m /* 161.36 */        next() }).use({ ctx, next => log.add("global-2")[0m
+    [36m| [0m[34m|[0m /* 161.37 */        next() }).command(Command("run").use({ ctx, next => log.add("local-1")[0m
+    [36m| [0m[34m|[0m /* 161.38 */        next() }).action({ ctx => log.add("action")[0m
+    [36m| [0m[34m|[0m /* 161.39 */        0 }))[0m
+    [36m| [0m[34m|[0m /* 161.40 */        let result = app.mockRun(["run"])[0m
+    [36m| [0m[34m|[0m /* 161.41 */        assertEqual("result.exitCode == 0", "true", result.exitCode == 0, true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 161.42 */        assertEqual("log.size == 4", "true", log.size == 4, true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 161.43 */        assertEqual("log[0] == \"global-1\"", "true", log[0] == "global-1", true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 161.44 */        assertEqual("log[1] == \"global-2\"", "true", log[1] == "global-2", true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 161.45 */        assertEqual("log[2] == \"local-1\"", "true", log[2] == "local-1", true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 161.46 */        assertEqual("log[3] == \"action\"", "true", log[3] == "action", true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 161.47 */    }[0m
+    [36m| [0m[34m|[0m /* 161.48 */    [0m
+    [36m| [0m[34m|[0m /* 161.49 */    @Attribute[TestCase_84][0m
+    [36m| [0m[34m|[0m /* 161.50 */    func testMiddlewareCanShortCircuit() {[0m
+    [36m| [0m[34m|[0m /* 161.51 */        let log = ArrayList < String >()[0m
+    [36m| [0m[34m|[0m /* 161.52 */        let app = App("tool").use({ ctx, next => log.add("auth-check")[0m
+    [36m| [0m[34m|[0m /* 161.53 */        1 }).command(Command("run").action({ ctx => log.add("action-should-not-run")[0m
+    [36m| [0m[34m|[0m /* 161.54 */        0 }))[0m
+    [36m| [0m[34m|[0m /* 161.55 */        let result = app.mockRun(["run"])[0m
+    [36m| [0m[34m|[0m /* 161.56 */        assertEqual("result.exitCode == 1", "true", result.exitCode == 1, true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 161.57 */        assertEqual("log.size == 1", "true", log.size == 1, true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 161.58 */        assertEqual("log[0] == \"auth-check\"", "true", log[0] == "auth-check", true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 161.59 */    }[0m
+    [36m| [0m[34m|[0m /* 161.60 */    [0m
+    [36m| [0m[34m|[0m /* 161.61 */    @Attribute[TestCase_85][0m
+    [36m| [0m[34m|[0m /* 161.62 */    func testMiddlewareWithLifecycleHooks() {[0m
+    [36m| [0m[34m|[0m /* 161.63 */        let log = ArrayList < String >()[0m
+    [36m| [0m[34m|[0m /* 161.64 */        let app = App("tool").persistentPreRun({ ctx => log.add("1-persistentPreRun") }).use({ ctx, next => log.add("2-middleware")[0m
+    [36m| [0m[34m|[0m /* 161.65 */        next() }).persistentPostRun({ ctx => log.add("4-persistentPostRun") }).command(Command("run").action({ ctx => log.add("3-action")[0m
+    [36m| [0m[34m|[0m /* 161.66 */        0 }))[0m
+    [36m| [0m[34m|[0m /* 161.67 */        let result = app.mockRun(["run"])[0m
+    [36m| [0m[34m|[0m /* 161.68 */        assertEqual("result.exitCode == 0", "true", result.exitCode == 0, true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 161.69 */        assertEqual("log.size == 4", "true", log.size == 4, true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 161.70 */        assertEqual("log[0] == \"1-persistentPreRun\"", "true", log[0] == "1-persistentPreRun", true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 161.71 */        assertEqual("log[1] == \"2-middleware\"", "true", log[1] == "2-middleware", true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 161.72 */        assertEqual("log[2] == \"3-action\"", "true", log[2] == "3-action", true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 161.73 */        assertEqual("log[3] == \"4-persistentPostRun\"", "true", log[3] == "4-persistentPostRun", true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 161.74 */    }[0m
+    [36m| [0m[34m|[0m /* 161.75 */    [0m
+    [36m| [0m[34m|[0m /* 161.76 */    init() {[0m
+    [36m| [0m[34m|[0m /* 161.77 */    }[0m
+    [36m| [0m[34m|[0m /* 161.78 */    private func classConfiguration(): Configuration {[0m
+    [36m| [0m[34m|[0m /* 161.79 */        let configuration = Configuration()[0m
+    [36m| [0m[34m|[0m /* 161.80 */        [0m
+    [36m| [0m[34m|[0m /* 161.81 */        return configuration[0m
+    [36m| [0m[34m|[0m /* 161.82 */    }[0m
+    [36m| [0m[34m|[0m /* 161.83 */    public override func asTestSuite(): TestSuite {[0m
+    [36m| [0m[34m|[0m /* 161.84 */        [0m
+    [36m| [0m[34m|[0m /* 161.85 */        let suiteConfiguration = classConfiguration()[0m
+    [36m| [0m[34m|[0m /* 161.86 */        let suiteBuilder = TestSuite.builder("MiddlewareTest").configure(suiteConfiguration)[0m
+    [36m| [0m[34m|[0m /* 161.87 */        [0m
+    [36m| [0m[34m|[0m /* 161.88 */        { => let caseConfig = Configuration()[0m
+    [36m| [0m[34m|[0m /* 161.89 */            [0m
+    [36m| [0m[34m|[0m /* 161.90 */            let testGlobalMiddlewareTestFunc = { => testGlobalMiddleware();() }[0m
+    [36m| [0m[34m|[0m /* 161.91 */            suiteBuilder.add([0m
+    [36m| [0m[34m|[0m /* 161.92 */            UnitTestCase.create([0m
+    [36m| [0m[34m|[0m /* 161.93 */            "testGlobalMiddleware",[0m
+    [36m| [0m[34m|[0m /* 161.94 */            configuration: caseConfig,[0m
+    [36m| [0m[34m|[0m /* 161.95 */            body: testGlobalMiddlewareTestFunc[0m
+    [36m| [0m[34m|[0m /* 161.96 */            )[0m
+    [36m| [0m[34m|[0m /* 161.97 */            )[0m
+    [36m| [0m[34m|[0m /* 161.98 */            [0m
+    [36m| [0m[34m|[0m /* 161.99 */        }()[0m
+    [36m| [0m[34m|[0m /* 161.100 */        [0m
+    [36m| [0m[34m|[0m /* 161.101 */        [0m
+    [36m| [0m[34m|[0m /* 161.102 */        { => let caseConfig = Configuration()[0m
+    [36m| [0m[34m|[0m /* 161.103 */            [0m
+    [36m| [0m[34m|[0m /* 161.104 */            let testCommandLocalMiddlewareTestFunc = { => testCommandLocalMiddleware();() }[0m
+    [36m| [0m[34m|[0m /* 161.105 */            suiteBuilder.add([0m
+    [36m| [0m[34m|[0m /* 161.106 */            UnitTestCase.create([0m
+    [36m| [0m[34m|[0m /* 161.107 */            "testCommandLocalMiddleware",[0m
+    [36m| [0m[34m|[0m /* 161.108 */            configuration: caseConfig,[0m
+    [36m| [0m[34m|[0m /* 161.109 */            body: testCommandLocalMiddlewareTestFunc[0m
+    [36m| [0m[34m|[0m /* 161.110 */            )[0m
+    [36m| [0m[34m|[0m /* 161.111 */            )[0m
+    [36m| [0m[34m|[0m /* 161.112 */            [0m
+    [36m| [0m[34m|[0m /* 161.113 */        }()[0m
+    [36m| [0m[34m|[0m /* 161.114 */        [0m
+    [36m| [0m[34m|[0m /* 161.115 */        [0m
+    [36m| [0m[34m|[0m /* 161.116 */        { => let caseConfig = Configuration()[0m
+    [36m| [0m[34m|[0m /* 161.117 */            [0m
+    [36m| [0m[34m|[0m /* 161.118 */            let testMultipleMiddlewareChainingTestFunc = { => testMultipleMiddlewareChaining();() }[0m
+    [36m| [0m[34m|[0m /* 161.119 */            suiteBuilder.add([0m
+    [36m| [0m[34m|[0m /* 161.120 */            UnitTestCase.create([0m
+    [36m| [0m[34m|[0m /* 161.121 */            "testMultipleMiddlewareChaining",[0m
+    [36m| [0m[34m|[0m /* 161.122 */            configuration: caseConfig,[0m
+    [36m| [0m[34m|[0m /* 161.123 */            body: testMultipleMiddlewareChainingTestFunc[0m
+    [36m| [0m[34m|[0m /* 161.124 */            )[0m
+    [36m| [0m[34m|[0m /* 161.125 */            )[0m
+    [36m| [0m[34m|[0m /* 161.126 */            [0m
+    [36m| [0m[34m|[0m /* 161.127 */        }()[0m
+    [36m| [0m[34m|[0m /* 161.128 */        [0m
+    [36m| [0m[34m|[0m /* 161.129 */        [0m
+    [36m| [0m[34m|[0m /* 161.130 */        { => let caseConfig = Configuration()[0m
+    [36m| [0m[34m|[0m /* 161.131 */            [0m
+    [36m| [0m[34m|[0m /* 161.132 */            let testMiddlewareCanShortCircuitTestFunc = { => testMiddlewareCanShortCircuit();() }[0m
+    [36m| [0m[34m|[0m /* 161.133 */            suiteBuilder.add([0m
+    [36m| [0m[34m|[0m /* 161.134 */            UnitTestCase.create([0m
+    [36m| [0m[34m|[0m /* 161.135 */            "testMiddlewareCanShortCircuit",[0m
+    [36m| [0m[34m|[0m /* 161.136 */            configuration: caseConfig,[0m
+    [36m| [0m[34m|[0m /* 161.137 */            body: testMiddlewareCanShortCircuitTestFunc[0m
+    [36m| [0m[34m|[0m /* 161.138 */            )[0m
+    [36m| [0m[34m|[0m /* 161.139 */            )[0m
+    [36m| [0m[34m|[0m /* 161.140 */            [0m
+    [36m| [0m[34m|[0m /* 161.141 */        }()[0m
+    [36m| [0m[34m|[0m /* 161.142 */        [0m
+    [36m| [0m[34m|[0m /* 161.143 */        [0m
+    [36m| [0m[34m|[0m /* 161.144 */        { => let caseConfig = Configuration()[0m
+    [36m| [0m[34m|[0m /* 161.145 */            [0m
+    [36m| [0m[34m|[0m /* 161.146 */            let testMiddlewareWithLifecycleHooksTestFunc = { => testMiddlewareWithLifecycleHooks();() }[0m
+    [36m| [0m[34m|[0m /* 161.147 */            suiteBuilder.add([0m
+    [36m| [0m[34m|[0m /* 161.148 */            UnitTestCase.create([0m
+    [36m| [0m[34m|[0m /* 161.149 */            "testMiddlewareWithLifecycleHooks",[0m
+    [36m| [0m[34m|[0m /* 161.150 */            configuration: caseConfig,[0m
+    [36m| [0m[34m|[0m /* 161.151 */            body: testMiddlewareWithLifecycleHooksTestFunc[0m
+    [36m| [0m[34m|[0m /* 161.152 */            )[0m
+    [36m| [0m[34m|[0m /* 161.153 */            )[0m
+    [36m| [0m[34m|[0m /* 161.154 */            [0m
+    [36m| [0m[34m|[0m /* 161.155 */        }()[0m
+    [36m| [0m[34m|[0m /* 161.156 */        [0m
+    [36m| [0m[34m|[0m /* 161.157 */        return suiteBuilder.build()[0m
+    [36m| [0m[34m|[0m /* 161.158 */    }[0m
+    [36m| [0m[34m|[0m /* 161.159 */    private func inheritedFromClassAnnotatedByTestTemplate < T >(): TestSuite where T <: TestClass {[0m
+    [36m| [0m[34m|[0m /* 161.160 */        throw Exception("Unreachable code")[0m
+    [36m| [0m[34m|[0m /* 161.161 */    }[0m
+    [36m| [0m[34m|[0m /* 161.162 */}[0m
+    [36m| [0m[34m|[0m /* 161.163 */[0m
+    [36m| [0m[34m|[0m /* 161.164 */[0m
+    [36m| [0m[34m|[0m /* 161.165 */interface TestPackageExtension_MiddlewareTest {[0m
+    [36m| [0m[34m|[0m /* 161.166 */    func registerMiddlewareTest(): Unit[0m
+    [36m| [0m[34m|[0m /* 161.167 */}[0m
+    [36m| [0m[34m|[0m /* 161.168 */extend TestPackage <: TestPackageExtension_MiddlewareTest {[0m
+    [36m| [0m[34m|[0m /* 161.169 */    @Attribute[TEST_REGISTER][0m
+    [36m| [0m[34m|[0m /* 161.170 */    public func registerMiddlewareTest() {[0m
+    [36m| [0m[34m|[0m /* 161.171 */        registerSuite({ => MiddlewareTest().asTestSuite() })[0m
+    [36m| [0m[34m|[0m /* 161.172 */    }[0m
+    [36m| [0m[34m|[0m /* 161.173 */}[0m
+    [36m| [0m[34m|[0m /* 161.174 */[0m
+    [36m| [0m[34m|[0m[34m_[0m[34m____________^[0m
+    [36m| [0m
+[34mnote[0m: which is expanded as follows
+    [36m| [0m
+    [36m| [0m/* 161.5 */        let app = App("tool").use({ ctx, next => log.add("mw-before")[0m
+    [36m| [0m                                               [34m^^^ [0m
+    [36m| [0m
+
+[33mwarning[0m: unused variable:'ctx'
+   [36m==>[0m /home/otto/文档/Project/cli/src/test/lifecycle_test.cj:175:31:
+    [36m| [0m
+[36m175[0m [36m| [0m                    .action({ ctx =>[0m
+    [36m| [0m                              [33m^ unused variable[0m
+    [36m| [0m
+    [36m#[0m [0mnote[0m: this warning can be suppressed by setting the compiler option `-Woff unused`
+[34mnote[0m: the warning occurs after the macro is expanded
+   [36m==>[0m /home/otto/文档/Project/cli/src/test/lifecycle_test.cj:161:1:
+    [36m| [0m
+[36m161[0m [36m| [0m  @Test[0m
+    [36m| [0m [34m_[0m[34m^[0m
+[36m162[0m [36m| [0m[34m|[0m class MiddlewareTest {[0m
+    [36m| [0m[34m|[0m ...[0m
+[36m294[0m [36m| [0m[34m|[0m }[0m
+    [36m| [0m[34m|[0m[34m_[0m[34m^[0m
+    [36m| [0m
+[34mnote[0m: which is expanded as follows
+    [36m| [0m
+    [36m| [0m/* 161.9 */        code }).command(Command("run").action({ ctx => log.add("action")[0m
+    [36m| [0m                                                           [34m^^^ [0m
+    [36m| [0m
+
+[33mwarning[0m: unused variable:'ctx'
    [36m==>[0m /home/otto/文档/Project/cli/src/test/integration_test.cj:179:31:
     [36m| [0m
 [36m179[0m [36m| [0m                    .action({ ctx => 0 })[0m
@@ -1262,6 +2046,190 @@
     [36m| [0m
     [36m| [0m/* 12.112 */        let app = App("tool").command(Command("install").alias("i").action({ ctx => 0 }))[0m
     [36m| [0m                                                                                         [34m^^^ [0m
+    [36m| [0m
+
+[33mwarning[0m: unused variable:'ctx'
+   [36m==>[0m /home/otto/文档/Project/cli/src/test/lifecycle_test.cj:195:28:
+    [36m| [0m
+[36m195[0m [36m| [0m                    .use({ ctx, next =>[0m
+    [36m| [0m                           [33m^ unused variable[0m
+    [36m| [0m
+    [36m#[0m [0mnote[0m: this warning can be suppressed by setting the compiler option `-Woff unused`
+[34mnote[0m: the warning occurs after the macro is expanded
+   [36m==>[0m /home/otto/文档/Project/cli/src/test/lifecycle_test.cj:161:1:
+    [36m| [0m
+[36m161[0m [36m| [0m  @Test[0m
+    [36m| [0m [34m_[0m[34m^[0m
+[36m162[0m [36m| [0m[34m|[0m class MiddlewareTest {[0m
+    [36m| [0m[34m|[0m ...[0m
+[36m294[0m [36m| [0m[34m|[0m }[0m
+    [36m| [0m[34m|[0m[34m_[0m[34m^[0m
+    [36m| [0m
+[34mnote[0m: which is expanded as follows
+    [36m| [0m
+    [36m| [0m/* 161.22 */        let app = App("tool").command(Command("run").use({ ctx, next => log.add("local-mw")[0m
+    [36m| [0m                                                                       [34m^^^ [0m
+    [36m| [0m
+
+[33mwarning[0m: unused variable:'ctx'
+   [36m==>[0m /home/otto/文档/Project/cli/src/test/lifecycle_test.cj:199:31:
+    [36m| [0m
+[36m199[0m [36m| [0m                    .action({ ctx =>[0m
+    [36m| [0m                              [33m^ unused variable[0m
+    [36m| [0m
+    [36m#[0m [0mnote[0m: this warning can be suppressed by setting the compiler option `-Woff unused`
+[34mnote[0m: the warning occurs after the macro is expanded
+   [36m==>[0m /home/otto/文档/Project/cli/src/test/lifecycle_test.cj:161:1:
+    [36m| [0m
+[36m161[0m [36m| [0m  @Test[0m
+    [36m| [0m [34m_[0m[34m^[0m
+[36m162[0m [36m| [0m[34m|[0m class MiddlewareTest {[0m
+    [36m| [0m[34m|[0m ...[0m
+[36m294[0m [36m| [0m[34m|[0m }[0m
+    [36m| [0m[34m|[0m[34m_[0m[34m^[0m
+    [36m| [0m
+[34mnote[0m: which is expanded as follows
+    [36m| [0m
+    [36m| [0m/* 161.23 */        next() }).action({ ctx => log.add("action")[0m
+    [36m| [0m                                       [34m^^^ [0m
+    [36m| [0m
+
+[33mwarning[0m: unused variable:'ctx'
+   [36m==>[0m /home/otto/文档/Project/cli/src/test/lifecycle_test.cj:216:20:
+    [36m| [0m
+[36m216[0m [36m| [0m            .use({ ctx, next =>[0m
+    [36m| [0m                   [33m^ unused variable[0m
+    [36m| [0m
+    [36m#[0m [0mnote[0m: this warning can be suppressed by setting the compiler option `-Woff unused`
+[34mnote[0m: the warning occurs after the macro is expanded
+   [36m==>[0m /home/otto/文档/Project/cli/src/test/lifecycle_test.cj:161:1:
+    [36m| [0m
+[36m161[0m [36m| [0m  @Test[0m
+    [36m| [0m [34m_[0m[34m^[0m
+[36m162[0m [36m| [0m[34m|[0m class MiddlewareTest {[0m
+    [36m| [0m[34m|[0m ...[0m
+[36m294[0m [36m| [0m[34m|[0m }[0m
+    [36m| [0m[34m|[0m[34m_[0m[34m^[0m
+    [36m| [0m
+[34mnote[0m: which is expanded as follows
+    [36m| [0m
+    [36m| [0m/* 161.35 */        let app = App("tool").use({ ctx, next => log.add("global-1")[0m
+    [36m| [0m                                                [34m^^^ [0m
+    [36m| [0m
+
+[33mwarning[0m: unused variable:'ctx'
+   [36m==>[0m /home/otto/文档/Project/cli/src/test/lifecycle_test.cj:220:20:
+    [36m| [0m
+[36m220[0m [36m| [0m            .use({ ctx, next =>[0m
+    [36m| [0m                   [33m^ unused variable[0m
+    [36m| [0m
+    [36m#[0m [0mnote[0m: this warning can be suppressed by setting the compiler option `-Woff unused`
+[34mnote[0m: the warning occurs after the macro is expanded
+   [36m==>[0m /home/otto/文档/Project/cli/src/test/lifecycle_test.cj:161:1:
+    [36m| [0m
+[36m161[0m [36m| [0m  @Test[0m
+    [36m| [0m [34m_[0m[34m^[0m
+[36m162[0m [36m| [0m[34m|[0m class MiddlewareTest {[0m
+    [36m| [0m[34m|[0m ...[0m
+[36m294[0m [36m| [0m[34m|[0m }[0m
+    [36m| [0m[34m|[0m[34m_[0m[34m^[0m
+    [36m| [0m
+[34mnote[0m: which is expanded as follows
+    [36m| [0m
+    [36m| [0m/* 161.36 */        next() }).use({ ctx, next => log.add("global-2")[0m
+    [36m| [0m                                    [34m^^^ [0m
+    [36m| [0m
+
+[33mwarning[0m: unused variable:'ctx'
+   [36m==>[0m /home/otto/文档/Project/cli/src/test/lifecycle_test.cj:226:28:
+    [36m| [0m
+[36m226[0m [36m| [0m                    .use({ ctx, next =>[0m
+    [36m| [0m                           [33m^ unused variable[0m
+    [36m| [0m
+    [36m#[0m [0mnote[0m: this warning can be suppressed by setting the compiler option `-Woff unused`
+[34mnote[0m: the warning occurs after the macro is expanded
+   [36m==>[0m /home/otto/文档/Project/cli/src/test/lifecycle_test.cj:161:1:
+    [36m| [0m
+[36m161[0m [36m| [0m  @Test[0m
+    [36m| [0m [34m_[0m[34m^[0m
+[36m162[0m [36m| [0m[34m|[0m class MiddlewareTest {[0m
+    [36m| [0m[34m|[0m ...[0m
+[36m294[0m [36m| [0m[34m|[0m }[0m
+    [36m| [0m[34m|[0m[34m_[0m[34m^[0m
+    [36m| [0m
+[34mnote[0m: which is expanded as follows
+    [36m| [0m
+    [36m| [0m/* 161.37 */        next() }).command(Command("run").use({ ctx, next => log.add("local-1")[0m
+    [36m| [0m                                                           [34m^^^ [0m
+    [36m| [0m
+
+[33mwarning[0m: unused variable:'ctx'
+   [36m==>[0m /home/otto/文档/Project/cli/src/test/lifecycle_test.cj:230:31:
+    [36m| [0m
+[36m230[0m [36m| [0m                    .action({ ctx =>[0m
+    [36m| [0m                              [33m^ unused variable[0m
+    [36m| [0m
+    [36m#[0m [0mnote[0m: this warning can be suppressed by setting the compiler option `-Woff unused`
+[34mnote[0m: the warning occurs after the macro is expanded
+   [36m==>[0m /home/otto/文档/Project/cli/src/test/lifecycle_test.cj:161:1:
+    [36m| [0m
+[36m161[0m [36m| [0m  @Test[0m
+    [36m| [0m [34m_[0m[34m^[0m
+[36m162[0m [36m| [0m[34m|[0m class MiddlewareTest {[0m
+    [36m| [0m[34m|[0m ...[0m
+[36m294[0m [36m| [0m[34m|[0m }[0m
+    [36m| [0m[34m|[0m[34m_[0m[34m^[0m
+    [36m| [0m
+[34mnote[0m: which is expanded as follows
+    [36m| [0m
+    [36m| [0m/* 161.38 */        next() }).action({ ctx => log.add("action")[0m
+    [36m| [0m                                       [34m^^^ [0m
+    [36m| [0m
+
+[33mwarning[0m: unused variable:'ctx'
+   [36m==>[0m /home/otto/文档/Project/cli/src/test/lifecycle_test.cj:249:20:
+    [36m| [0m
+[36m249[0m [36m| [0m            .use({ ctx, next =>[0m
+    [36m| [0m                   [33m^ unused variable[0m
+    [36m| [0m
+    [36m#[0m [0mnote[0m: this warning can be suppressed by setting the compiler option `-Woff unused`
+[34mnote[0m: the warning occurs after the macro is expanded
+   [36m==>[0m /home/otto/文档/Project/cli/src/test/lifecycle_test.cj:161:1:
+    [36m| [0m
+[36m161[0m [36m| [0m  @Test[0m
+    [36m| [0m [34m_[0m[34m^[0m
+[36m162[0m [36m| [0m[34m|[0m class MiddlewareTest {[0m
+    [36m| [0m[34m|[0m ...[0m
+[36m294[0m [36m| [0m[34m|[0m }[0m
+    [36m| [0m[34m|[0m[34m_[0m[34m^[0m
+    [36m| [0m
+[34mnote[0m: which is expanded as follows
+    [36m| [0m
+    [36m| [0m/* 161.52 */        let app = App("tool").use({ ctx, next => log.add("auth-check")[0m
+    [36m| [0m                                                [34m^^^ [0m
+    [36m| [0m
+
+[33mwarning[0m: unused variable:'next'
+   [36m==>[0m /home/otto/文档/Project/cli/src/test/lifecycle_test.cj:249:25:
+    [36m| [0m
+[36m249[0m [36m| [0m            .use({ ctx, next =>[0m
+    [36m| [0m                        [33m^ unused variable[0m
+    [36m| [0m
+    [36m#[0m [0mnote[0m: this warning can be suppressed by setting the compiler option `-Woff unused`
+[34mnote[0m: the warning occurs after the macro is expanded
+   [36m==>[0m /home/otto/文档/Project/cli/src/test/lifecycle_test.cj:161:1:
+    [36m| [0m
+[36m161[0m [36m| [0m  @Test[0m
+    [36m| [0m [34m_[0m[34m^[0m
+[36m162[0m [36m| [0m[34m|[0m class MiddlewareTest {[0m
+    [36m| [0m[34m|[0m ...[0m
+[36m294[0m [36m| [0m[34m|[0m }[0m
+    [36m| [0m[34m|[0m[34m_[0m[34m^[0m
+    [36m| [0m
+[34mnote[0m: which is expanded as follows
+    [36m| [0m
+    [36m| [0m/* 161.52 */        let app = App("tool").use({ ctx, next => log.add("auth-check")[0m
+    [36m| [0m                                                     [34m^^^^ [0m
     [36m| [0m
 
 [33mwarning[0m: unused variable:'ctx'
@@ -1334,6 +2302,29 @@
     [36m| [0m
 
 [33mwarning[0m: unused variable:'ctx'
+   [36m==>[0m /home/otto/文档/Project/cli/src/test/lifecycle_test.cj:256:31:
+    [36m| [0m
+[36m256[0m [36m| [0m                    .action({ ctx =>[0m
+    [36m| [0m                              [33m^ unused variable[0m
+    [36m| [0m
+    [36m#[0m [0mnote[0m: this warning can be suppressed by setting the compiler option `-Woff unused`
+[34mnote[0m: the warning occurs after the macro is expanded
+   [36m==>[0m /home/otto/文档/Project/cli/src/test/lifecycle_test.cj:161:1:
+    [36m| [0m
+[36m161[0m [36m| [0m  @Test[0m
+    [36m| [0m [34m_[0m[34m^[0m
+[36m162[0m [36m| [0m[34m|[0m class MiddlewareTest {[0m
+    [36m| [0m[34m|[0m ...[0m
+[36m294[0m [36m| [0m[34m|[0m }[0m
+    [36m| [0m[34m|[0m[34m_[0m[34m^[0m
+    [36m| [0m
+[34mnote[0m: which is expanded as follows
+    [36m| [0m
+    [36m| [0m/* 161.53 */        1 }).command(Command("run").action({ ctx => log.add("action-should-not-run")[0m
+    [36m| [0m                                                         [34m^^^ [0m
+    [36m| [0m
+
+[33mwarning[0m: unused variable:'ctx'
    [36m==>[0m /home/otto/文档/Project/cli/src/test/parser_test.cj:270:61:
     [36m| [0m
 [36m270[0m [36m| [0m            .command(Command("install").alias("i").action({ ctx => 0 }))[0m
@@ -1356,4 +2347,96 @@
     [36m| [0m                                                                                              [34m^^^ [0m
     [36m| [0m
 
-12 warnings generated, 12 warnings printed.
+[33mwarning[0m: unused variable:'ctx'
+   [36m==>[0m /home/otto/文档/Project/cli/src/test/lifecycle_test.cj:272:33:
+    [36m| [0m
+[36m272[0m [36m| [0m            .persistentPreRun({ ctx => log.add("1-persistentPreRun") })[0m
+    [36m| [0m                                [33m^ unused variable[0m
+    [36m| [0m
+    [36m#[0m [0mnote[0m: this warning can be suppressed by setting the compiler option `-Woff unused`
+[34mnote[0m: the warning occurs after the macro is expanded
+   [36m==>[0m /home/otto/文档/Project/cli/src/test/lifecycle_test.cj:161:1:
+    [36m| [0m
+[36m161[0m [36m| [0m  @Test[0m
+    [36m| [0m [34m_[0m[34m^[0m
+[36m162[0m [36m| [0m[34m|[0m class MiddlewareTest {[0m
+    [36m| [0m[34m|[0m ...[0m
+[36m294[0m [36m| [0m[34m|[0m }[0m
+    [36m| [0m[34m|[0m[34m_[0m[34m^[0m
+    [36m| [0m
+[34mnote[0m: which is expanded as follows
+    [36m| [0m
+    [36m| [0m/* 161.64 */        let app = App("tool").persistentPreRun({ ctx => log.add("1-persistentPreRun") }).use({ ctx, next => log.add("2-middleware")[0m
+    [36m| [0m                                                             [34m^^^ [0m
+    [36m| [0m
+
+[33mwarning[0m: unused variable:'ctx'
+   [36m==>[0m /home/otto/文档/Project/cli/src/test/lifecycle_test.cj:273:20:
+    [36m| [0m
+[36m273[0m [36m| [0m            .use({ ctx, next =>[0m
+    [36m| [0m                   [33m^ unused variable[0m
+    [36m| [0m
+    [36m#[0m [0mnote[0m: this warning can be suppressed by setting the compiler option `-Woff unused`
+[34mnote[0m: the warning occurs after the macro is expanded
+   [36m==>[0m /home/otto/文档/Project/cli/src/test/lifecycle_test.cj:161:1:
+    [36m| [0m
+[36m161[0m [36m| [0m  @Test[0m
+    [36m| [0m [34m_[0m[34m^[0m
+[36m162[0m [36m| [0m[34m|[0m class MiddlewareTest {[0m
+    [36m| [0m[34m|[0m ...[0m
+[36m294[0m [36m| [0m[34m|[0m }[0m
+    [36m| [0m[34m|[0m[34m_[0m[34m^[0m
+    [36m| [0m
+[34mnote[0m: which is expanded as follows
+    [36m| [0m
+    [36m| [0m/* 161.64 */        let app = App("tool").persistentPreRun({ ctx => log.add("1-persistentPreRun") }).use({ ctx, next => log.add("2-middleware")[0m
+    [36m| [0m                                                                                                           [34m^^^ [0m
+    [36m| [0m
+
+[33mwarning[0m: unused variable:'ctx'
+   [36m==>[0m /home/otto/文档/Project/cli/src/test/lifecycle_test.cj:277:34:
+    [36m| [0m
+[36m277[0m [36m| [0m            .persistentPostRun({ ctx => log.add("4-persistentPostRun") })[0m
+    [36m| [0m                                 [33m^ unused variable[0m
+    [36m| [0m
+    [36m#[0m [0mnote[0m: this warning can be suppressed by setting the compiler option `-Woff unused`
+[34mnote[0m: the warning occurs after the macro is expanded
+   [36m==>[0m /home/otto/文档/Project/cli/src/test/lifecycle_test.cj:161:1:
+    [36m| [0m
+[36m161[0m [36m| [0m  @Test[0m
+    [36m| [0m [34m_[0m[34m^[0m
+[36m162[0m [36m| [0m[34m|[0m class MiddlewareTest {[0m
+    [36m| [0m[34m|[0m ...[0m
+[36m294[0m [36m| [0m[34m|[0m }[0m
+    [36m| [0m[34m|[0m[34m_[0m[34m^[0m
+    [36m| [0m
+[34mnote[0m: which is expanded as follows
+    [36m| [0m
+    [36m| [0m/* 161.65 */        next() }).persistentPostRun({ ctx => log.add("4-persistentPostRun") }).command(Command("run").action({ ctx => log.add("3-action")[0m
+    [36m| [0m                                                  [34m^^^ [0m
+    [36m| [0m
+
+[33mwarning[0m: unused variable:'ctx'
+   [36m==>[0m /home/otto/文档/Project/cli/src/test/lifecycle_test.cj:280:31:
+    [36m| [0m
+[36m280[0m [36m| [0m                    .action({ ctx =>[0m
+    [36m| [0m                              [33m^ unused variable[0m
+    [36m| [0m
+    [36m#[0m [0mnote[0m: this warning can be suppressed by setting the compiler option `-Woff unused`
+[34mnote[0m: the warning occurs after the macro is expanded
+   [36m==>[0m /home/otto/文档/Project/cli/src/test/lifecycle_test.cj:161:1:
+    [36m| [0m
+[36m161[0m [36m| [0m  @Test[0m
+    [36m| [0m [34m_[0m[34m^[0m
+[36m162[0m [36m| [0m[34m|[0m class MiddlewareTest {[0m
+    [36m| [0m[34m|[0m ...[0m
+[36m294[0m [36m| [0m[34m|[0m }[0m
+    [36m| [0m[34m|[0m[34m_[0m[34m^[0m
+    [36m| [0m
+[34mnote[0m: which is expanded as follows
+    [36m| [0m
+    [36m| [0m/* 161.65 */        next() }).persistentPostRun({ ctx => log.add("4-persistentPostRun") }).command(Command("run").action({ ctx => log.add("3-action")[0m
+    [36m| [0m                                                                                                                           [34m^^^ [0m
+    [36m| [0m
+
+43 warnings generated, 43 warnings printed.

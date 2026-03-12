@@ -138,7 +138,7 @@
       "package": "cli.test",
       "isMacro": false,
       "accessLevel": "internal",
-      "timeStamp": 1773311941,
+      "timeStamp": 1773314731,
       "dependencies": [
         {
           "orPackage": "",
@@ -162,6 +162,9 @@
             },
             {
               "file": "/home/otto/文档/Project/cli/src/test/integration_test.cj"
+            },
+            {
+              "file": "/home/otto/文档/Project/cli/src/test/lifecycle_test.cj"
             },
             {
               "file": "/home/otto/文档/Project/cli/src/test/parser_test.cj"
@@ -203,6 +206,9 @@
               "file": "/home/otto/文档/Project/cli/src/test/integration_test.cj"
             },
             {
+              "file": "/home/otto/文档/Project/cli/src/test/lifecycle_test.cj"
+            },
+            {
               "file": "/home/otto/文档/Project/cli/src/test/parser_test.cj"
             },
             {
@@ -213,6 +219,16 @@
             },
             {
               "file": "/home/otto/文档/Project/cli/src/test/types_test.cj"
+            }
+          ]
+        },
+        {
+          "orPackage": "",
+          "package": "std.env",
+          "isStd": true,
+          "imports": [
+            {
+              "file": "/home/otto/文档/Project/cli/src/test/lifecycle_test.cj"
             }
           ]
         },
@@ -238,6 +254,9 @@
             },
             {
               "file": "/home/otto/文档/Project/cli/src/test/integration_test.cj"
+            },
+            {
+              "file": "/home/otto/文档/Project/cli/src/test/lifecycle_test.cj"
             },
             {
               "file": "/home/otto/文档/Project/cli/src/test/parser_test.cj"
@@ -275,6 +294,9 @@
             },
             {
               "file": "/home/otto/文档/Project/cli/src/test/integration_test.cj"
+            },
+            {
+              "file": "/home/otto/文档/Project/cli/src/test/lifecycle_test.cj"
             },
             {
               "file": "/home/otto/文档/Project/cli/src/test/parser_test.cj"

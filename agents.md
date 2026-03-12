@@ -111,17 +111,19 @@ func testDidYouMean() {
     - [x] **Help/Version 自动生成**：`--help`/`-h`/`--version`/`-V` 自动注入与输出。
     - **测试**: 87 用例全部通过，覆盖命令树、解析器、类型转换、上下文、集成场景。
 
-2. **Phase 2: 诊断系统与 Clippy 级别用户体验 (UX & Diagnostics)** — `v0.2.0`
-    - [ ] **智能拼写纠错 (Did-You-Mean)**：Levenshtein 算法，提供阈值 0.7 的相似度命令/选项推荐。对标 Clippy 的 `--explain` 纠错体验。
-    - [ ] **终端美化与无障碍引擎**：ANSI 样式（加粗、颜色、下划线）输出。自动检测 `NO_COLOR` 环境变量及非 TTY 环境，自动退化为纯文本。
-    - [ ] **结构化诊断输出**：内置 Note, Help, Warning, Error 四级语义化输出格式，对标 Rust 编译器 / Clippy 的诊断样式。
-    - [ ] **视觉化错误定位**：报错时指出具体参数位置上下文，支持高亮标注错误 token。
+2. **Phase 2: 诊断系统与 Clippy 级别用户体验 (UX & Diagnostics)** — `v0.2.0` ✅ 已完成
+    - [x] **智能拼写纠错 (Did-You-Mean)**：Levenshtein 算法，提供阈值 0.7 的相似度命令/选项推荐。对标 Clippy 的 `--explain` 纠错体验。
+    - [x] **终端美化与无障碍引擎**：ANSI 样式（加粗、颜色、下划线）输出。自动检测 `NO_COLOR` 环境变量及非 TTY 环境，自动退化为纯文本。
+    - [x] **结构化诊断输出**：内置 Note, Help, Warning, Error 四级语义化输出格式，对标 Rust 编译器 / Clippy 的诊断样式。
+    - [x] **视觉化错误定位**：报错时指出具体参数位置上下文，支持高亮标注错误 token。
+    - **测试**: 126 用例全部通过（新增 39 用例），覆盖编辑距离、样式引擎、诊断渲染、Did-You-Mean 端到端集成。
 
-3. **Phase 3: 配置合并流与生命周期抽象 (Context & Pipeline)** — `v0.3.0`
-    - [ ] **生命周期流转机制**：实现 `PersistentPreRun`/`PreRun`/`Run`/`PostRun`/`PersistentPostRun` 钩子函数。
-    - [ ] **中间件 (Middleware)**：支持全局/局部中间件注册，用于日志、耗时统计、鉴权等横切关注点。
-    - [ ] **环境变量配置合并**：Flag 自动关联环境变量（如 `--db-host` → `PREFIX_DB_HOST`），优先级：CLI > ENV > 默认值。
-    - [ ] **Context 依赖注入**：Context 对象支持在生命周期中安全存储和传递请求维度状态。
+3. **Phase 3: 配置合并流与生命周期抽象 (Context & Pipeline)** — `v0.3.0` ✅ 已完成
+    - [x] **生命周期流转机制**：实现 `PersistentPreRun`/`PreRun`/`Run`/`PostRun`/`PersistentPostRun` 钩子函数。
+    - [x] **中间件 (Middleware)**：支持全局/局部中间件注册，用于日志、耗时统计、鉴权等横切关注点。
+    - [x] **环境变量配置合并**：Flag 自动关联环境变量（如 `--db-host` → `PREFIX_DB_HOST`），优先级：CLI > ENV > 默认值。
+    - [x] **Context 依赖注入**：Context 对象支持在生命周期中安全存储和传递请求维度状态。
+    - **测试**: 146 用例全部通过（新增 20 用例），覆盖生命周期钩子顺序、中间件链式调用与短路、环境变量三级优先级、Context DI 存取传递。
 
 4. **Phase 4: 测试套件增强与快照测试 (Testing Infra)** — `v0.4.0`
     - [ ] **Golden Files (快照测试)**：对比生成的 Help 树、错误输出等文本快照，检测 UI 回退。

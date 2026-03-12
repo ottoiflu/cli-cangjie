@@ -57,6 +57,7 @@
       ],
       "std-requires": [
         "std.collection",
+        "std.env",
         "std.unittest",
         "std.unittest.testmacro"
       ],

@@ -1,6 +1,7 @@
 package cli
 
 import std.collection.*
+import std.env.*
 
 // 测试结果：捕获退出码和标准输出/错误输出
 public class TestResult {
@@ -19,6 +20,7 @@ public class TestResult {
 public class App {
     let _rootCommand: Command
     let _parser: Parser = Parser()
+    var _envPrefix: Option<String> = None
 
     public init(name: String) {
         _rootCommand = Command(name)
@@ -76,11 +78,34 @@ public class App {
         this
     }
 
+    // 设置环境变量前缀：自动将 Flag 关联到 PREFIX_FLAG_NAME 环境变量
+    public func envPrefix(prefix: String): This {
+        _envPrefix = Some(prefix)
+        this
+    }
+
+    // 全局中间件注册
+    public func use(mw: Middleware): This {
+        _rootCommand.use(mw)
+        this
+    }
+
+    // 全局生命周期钩子
+    public func persistentPreRun(hook: HookHandler): This {
+        _rootCommand.persistentPreRun(hook)
+        this
+    }
+
+    public func persistentPostRun(hook: HookHandler): This {
+        _rootCommand.persistentPostRun(hook)
+        this
+    }
+
     public func getRootCommand(): Command {
         _rootCommand
     }
 
-    // 内存级沙箱执行接口：在解析前自动注入 --help / --version 的 Terminate Flag
+    // 内存级沙箱执行接口
     public func mockRun(args: Array<String>): TestResult {
         // 自动注入 --help / --version 为 Terminate Flag
         injectBuiltinFlags(_rootCommand)
@@ -89,16 +114,47 @@ public class App {
         try {
             let (matchedCmd, ctx) = _parser.parse(_rootCommand, args)
 
-            // 执行命令动作
-            match (matchedCmd.getAction()) {
-                case Some(handler) =>
-                    let exitCode = handler(ctx)
-                    TestResult(exitCode, "", "")
-                case None =>
-                    // 无动作处理器：显示帮助
-                    let helpText = generateHelp(matchedCmd)
-                    TestResult(0, "", helpText)
+            // 解析后应用环境变量合并
+            applyEnvVars(_rootCommand, ctx)
+            if (matchedCmd.getName() != _rootCommand.getName()) {
+                applyEnvVars(matchedCmd, ctx)
             }
+
+            // 无动作处理器：显示帮助（跳过生命周期和中间件）
+            if (matchedCmd.getAction().isNone()) {
+                let helpText = generateHelp(matchedCmd)
+                return TestResult(0, "", helpText)
+            }
+
+            // 执行生命周期: PersistentPreRun → PreRun → Middleware → Action → PostRun → PersistentPostRun
+            // 1. PersistentPreRun (根命令的)
+            match (_rootCommand.getPersistentPreRun()) {
+                case Some(hook) => hook(ctx)
+                case None => ()
+            }
+
+            // 2. PreRun (当前命令的)
+            match (matchedCmd.getPreRun()) {
+                case Some(hook) => hook(ctx)
+                case None => ()
+            }
+
+            // 3. 构建中间件链 + Action 执行
+            let exitCode = executeWithMiddleware(_rootCommand, matchedCmd, ctx)
+
+            // 4. PostRun (当前命令的)
+            match (matchedCmd.getPostRun()) {
+                case Some(hook) => hook(ctx)
+                case None => ()
+            }
+
+            // 5. PersistentPostRun (根命令的)
+            match (_rootCommand.getPersistentPostRun()) {
+                case Some(hook) => hook(ctx)
+                case None => ()
+            }
+
+            TestResult(exitCode, "", "")
         } catch (e: TerminateException) {
             // Terminate 动作：执行回调获取输出内容
             let output = e.execute()
@@ -115,6 +171,79 @@ public class App {
             let stderrBuf = "error: ${e.message}\n"
             TestResult(1, "", stderrBuf)
         }
+    }
+
+    // 构建中间件链并执行 Action
+    func executeWithMiddleware(rootCmd: Command, matchedCmd: Command, ctx: Context): Int64 {
+        // 收集中间件：根命令全局中间件 + 当前命令局部中间件
+        let allMiddlewares = ArrayList<Middleware>()
+        for (mw in rootCmd.getMiddlewares()) {
+            allMiddlewares.add(mw)
+        }
+        if (matchedCmd.getName() != rootCmd.getName()) {
+            for (mw in matchedCmd.getMiddlewares()) {
+                allMiddlewares.add(mw)
+            }
+        }
+
+        // 构建 action 调用
+        let actionFn: () -> Int64 = { =>
+            match (matchedCmd.getAction()) {
+                case Some(handler) => handler(ctx)
+                case None =>
+                    // 无动作时显示帮助，不算错误
+                    0
+            }
+        }
+
+        // 从内向外构建中间件调用链
+        if (allMiddlewares.size == 0) {
+            return actionFn()
+        }
+
+        var chain: () -> Int64 = actionFn
+        var i = allMiddlewares.size - 1
+        while (i >= 0) {
+            let mw = allMiddlewares[i]
+            let nextFn = chain
+            chain = { => mw(ctx, nextFn) }
+            i--
+        }
+        chain()
+    }
+
+    // 应用环境变量合并: 对于未通过命令行设置的 Flag，尝试从环境变量读取
+    func applyEnvVars(cmd: Command, ctx: Context): Unit {
+        for (f in cmd.getFlags()) {
+            if (!ctx.hasFlag(f.getLongName())) {
+                // 优先检查 Flag 显式关联的环境变量
+                match (f.getEnvVar()) {
+                    case Some(envName) =>
+                        match (getVariable(envName)) {
+                            case Some(envVal) =>
+                                ctx.setFlag(f.getLongName(), envVal)
+                            case None => ()
+                        }
+                    case None =>
+                        // 自动环境映射: 使用 envPrefix + FLAG_NAME
+                        match (_envPrefix) {
+                            case Some(prefix) =>
+                                let autoEnvName = prefix + "_" + flagNameToEnvKey(f.getLongName())
+                                match (getVariable(autoEnvName)) {
+                                    case Some(envVal) =>
+                                        ctx.setFlag(f.getLongName(), envVal)
+                                    case None => ()
+                                }
+                            case None => ()
+                        }
+                }
+            }
+        }
+    }
+
+    // 将 flag 名转换为环境变量名格式: "db-host" → "DB_HOST"
+    func flagNameToEnvKey(name: String): String {
+        name.replace("-", "_").toAsciiUpper()
     }
 
     // 递归注入内置 --help / --version flags

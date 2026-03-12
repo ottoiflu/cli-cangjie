@@ -11,6 +11,8 @@ public class Context {
     let _arguments: ArrayList<String> = ArrayList<String>()
     // 匹配到的命令路径
     let _commandPath: ArrayList<String> = ArrayList<String>()
+    // 自定义值存储（依赖注入）: key -> value
+    let _values: HashMap<String, String> = HashMap<String, String>()
 
     // 设置 flag 值（覆盖模式：Set / SetTrue / SetFalse）
     public func setFlag(name: String, value: String): Unit {
@@ -159,6 +161,23 @@ public class Context {
     // 获取 flags 快照（用于测试、调试）
     public func getAllFlags(): HashMap<String, ArrayList<String>> {
         _flags
+    }
+
+    // --- 自定义值存储 (依赖注入) ---
+
+    // 存储自定义值（字符串形式）
+    public func setValue(key: String, value: String): Unit {
+        _values[key] = value
+    }
+
+    // 获取自定义值
+    public func getValue(key: String): Option<String> {
+        _values.get(key)
+    }
+
+    // 检查自定义值是否存在
+    public func hasValue(key: String): Bool {
+        _values.contains(key)
     }
 }
 

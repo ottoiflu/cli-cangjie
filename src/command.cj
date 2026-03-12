@@ -5,7 +5,13 @@ import std.collection.*
 // 命令动作处理函数类型
 public type ActionHandler = (Context) -> Int64
 
-// 增强型命令定义：支持子命令树、Flag、Argument、别名与动作处理
+// 钩子函数类型：返回 Unit，抛异常时可中断流程
+public type HookHandler = (Context) -> Unit
+
+// 中间件类型：接收 Context 和 next 回调，返回退出码
+public type Middleware = (Context, () -> Int64) -> Int64
+
+// 增强型命令定义：支持子命令树、Flag、Argument、别名、动作处理、生命周期钩子
 public class Command {
     let _name: String
     var _description: Option<String> = None
@@ -21,6 +27,15 @@ public class Command {
     let _arguments: ArrayList<Argument> = ArrayList<Argument>()
 
     var _action: Option<ActionHandler> = None
+
+    // 生命周期钩子
+    var _persistentPreRun: Option<HookHandler> = None
+    var _preRun: Option<HookHandler> = None
+    var _postRun: Option<HookHandler> = None
+    var _persistentPostRun: Option<HookHandler> = None
+
+    // 中间件链
+    let _middlewares: ArrayList<Middleware> = ArrayList<Middleware>()
 
     // 帮助输出的动态对齐宽度
     var _maxNameWidth: Int64 = 0
@@ -122,6 +137,34 @@ public class Command {
         this
     }
 
+    // 生命周期钩子 Builder 方法
+
+    public func persistentPreRun(hook: HookHandler): This {
+        _persistentPreRun = Some(hook)
+        this
+    }
+
+    public func preRun(hook: HookHandler): This {
+        _preRun = Some(hook)
+        this
+    }
+
+    public func postRun(hook: HookHandler): This {
+        _postRun = Some(hook)
+        this
+    }
+
+    public func persistentPostRun(hook: HookHandler): This {
+        _persistentPostRun = Some(hook)
+        this
+    }
+
+    // 中间件注册
+    public func use(mw: Middleware): This {
+        _middlewares.add(mw)
+        this
+    }
+
     // Getter 方法
 
     public func getName(): String { _name }
@@ -167,6 +210,12 @@ public class Command {
     public func getArguments(): ArrayList<Argument> { _arguments }
 
     public func getAction(): Option<ActionHandler> { _action }
+
+    public func getPersistentPreRun(): Option<HookHandler> { _persistentPreRun }
+    public func getPreRun(): Option<HookHandler> { _preRun }
+    public func getPostRun(): Option<HookHandler> { _postRun }
+    public func getPersistentPostRun(): Option<HookHandler> { _persistentPostRun }
+    public func getMiddlewares(): ArrayList<Middleware> { _middlewares }
 
     public func getMaxNameWidth(): Int64 { _maxNameWidth }
 

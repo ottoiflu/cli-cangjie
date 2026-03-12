@@ -2,6 +2,37 @@
 
 本文件记录版本变更历史，遵循 [语义化版本 2.0.0](https://semver.org/lang/zh-CN/) 规范。
 
+## [0.3.0] - 2026-03-12
+
+### 新增
+- **生命周期钩子系统**：命令执行前后的精细控制
+  - `persistentPreRun` / `persistentPostRun`：App 级钩子，跨所有子命令传播
+  - `preRun` / `postRun`：命令级钩子，仅在匹配命令上触发
+  - 执行顺序保证：PersistentPreRun → PreRun → Action → PostRun → PersistentPostRun
+- **中间件链 (Middleware)**：可组合的请求处理管道
+  - App 全局中间件：`app.use({ ctx, next => ... })`
+  - 命令级中间件：`command.use({ ctx, next => ... })`
+  - 支持短路机制：中间件不调用 `next()` 即可阻断后续执行
+  - 多层中间件按注册顺序依次执行
+- **环境变量配置合并**：三级优先级 CLI > ENV > Default
+  - 显式映射：`Flag("host").envVar("DB_HOST")` 绑定特定环境变量
+  - 自动前缀：`app.envPrefix("MYAPP")` → flag `db-host` 自动绑定 `MYAPP_DB_HOST`
+  - 显式映射优先于自动前缀
+- **Context 依赖注入**：中间件与 action 间的数据传递
+  - `ctx.setValue(key, value)` / `ctx.getValue(key)` / `ctx.hasValue(key)`
+  - 中间件写入的值可在后续中间件和 action 中读取
+
+### 变更
+- `Context._values` 存储类型从 `Any` 简化为 `String`，提供更安全的类型操作
+- `App.mockRun()` 执行流程重构：解析 → 环境变量合并 → 生命周期钩子 → 中间件链 → Action
+
+### 测试
+- 新增 `LifecycleTest` (6 用例)：钩子执行顺序、Persistent 传播、无钩子兼容
+- 新增 `MiddlewareTest` (5 用例)：全局/本地中间件、链式调用、短路、钩子协作
+- 新增 `EnvVarTest` (5 用例)：显式映射、自动前缀、优先级链、缺省回退
+- 新增 `ContextValueTest` (4 用例)：存取、覆盖、存在性、中间件传递
+- 测试总数：126 → 146 (新增 20 用例，通过率 100%)
+
 ## [0.2.0] - 2026-03-12
 
 ### 新增
