@@ -22,6 +22,9 @@ public class Flag {
     var _validator: Option<(String) -> Bool> = None
     var _validatorMessage: String = ""
 
+    // Phase 8: 弃用
+    var _deprecated: Option<DeprecationInfo> = None
+
     public init(longName: String) {
         _longName = longName
     }
@@ -118,6 +121,21 @@ public class Flag {
         this
     }
 
+    // Phase 8: 弃用标记
+    public func deprecated(reason: String, replacement!: String = ""): This {
+        if (replacement.size > 0) {
+            _deprecated = Some(DeprecationInfo(reason, replacement))
+        } else {
+            _deprecated = Some(DeprecationInfo(reason))
+        }
+        this
+    }
+
+    public func deprecatedSince(reason: String, replacement: String, since: String): This {
+        _deprecated = Some(DeprecationInfo(reason, replacement, since))
+        this
+    }
+
     // Getter 方法
     public func getLongName(): String { _longName }
     public func getShortName(): Option<Rune> { _shortName }
@@ -144,6 +162,10 @@ public class Flag {
     public func isHidden(): Bool { _hidden }
     public func getValidator(): Option<(String) -> Bool> { _validator }
     public func getValidatorMessage(): String { _validatorMessage }
+
+    // Phase 8: 弃用 Getter
+    public func getDeprecation(): Option<DeprecationInfo> { _deprecated }
+    public func isDeprecated(): Bool { _deprecated.isSome() }
 
     // 是否为布尔开关型 flag
     public func isBoolFlag(): Bool {

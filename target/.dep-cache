@@ -5,7 +5,7 @@
       "package": "cli",
       "isMacro": false,
       "accessLevel": "public",
-      "timeStamp": 1773317877,
+      "timeStamp": 1773318948,
       "dependencies": [],
       "std-dependencies": [
         {
@@ -14,10 +14,16 @@
           "isStd": true,
           "imports": [
             {
+              "file": "/home/otto/文档/Project/cli/src/advanced.cj"
+            },
+            {
               "file": "/home/otto/文档/Project/cli/src/app.cj"
             },
             {
               "file": "/home/otto/文档/Project/cli/src/command.cj"
+            },
+            {
+              "file": "/home/otto/文档/Project/cli/src/completion.cj"
             },
             {
               "file": "/home/otto/文档/Project/cli/src/config.cj"
@@ -90,9 +96,6 @@
           "isStd": true,
           "imports": [
             {
-              "file": "/home/otto/文档/Project/cli/src/config.cj"
-            },
-            {
               "file": "/home/otto/文档/Project/cli/src/snapshot.cj"
             }
           ]
@@ -107,7 +110,7 @@
       "package": "cli",
       "isMacro": false,
       "accessLevel": "public",
-      "timeStamp": 1773317877,
+      "timeStamp": 1773318948,
       "dependencies": [],
       "std-dependencies": [
         {
@@ -116,10 +119,16 @@
           "isStd": true,
           "imports": [
             {
+              "file": "/home/otto/文档/Project/cli/src/advanced.cj"
+            },
+            {
               "file": "/home/otto/文档/Project/cli/src/app.cj"
             },
             {
               "file": "/home/otto/文档/Project/cli/src/command.cj"
+            },
+            {
+              "file": "/home/otto/文档/Project/cli/src/completion.cj"
             },
             {
               "file": "/home/otto/文档/Project/cli/src/config.cj"
@@ -204,13 +213,16 @@
       "package": "cli.test",
       "isMacro": false,
       "accessLevel": "internal",
-      "timeStamp": 1773318295,
+      "timeStamp": 1773319365,
       "dependencies": [
         {
           "orPackage": "",
           "package": "cli",
           "isStd": false,
           "imports": [
+            {
+              "file": "/home/otto/文档/Project/cli/src/test/advanced_test.cj"
+            },
             {
               "file": "/home/otto/文档/Project/cli/src/test/argument_test.cj"
             },
@@ -265,6 +277,9 @@
           "package": "std.collection",
           "isStd": true,
           "imports": [
+            {
+              "file": "/home/otto/文档/Project/cli/src/test/advanced_test.cj"
+            },
             {
               "file": "/home/otto/文档/Project/cli/src/test/argument_test.cj"
             },
@@ -344,6 +359,9 @@
           "isStd": true,
           "imports": [
             {
+              "file": "/home/otto/文档/Project/cli/src/test/advanced_test.cj"
+            },
+            {
               "file": "/home/otto/文档/Project/cli/src/test/argument_test.cj"
             },
             {
@@ -395,6 +413,9 @@
           "package": "std.unittest.testmacro",
           "isStd": true,
           "imports": [
+            {
+              "file": "/home/otto/文档/Project/cli/src/test/advanced_test.cj"
+            },
             {
               "file": "/home/otto/文档/Project/cli/src/test/argument_test.cj"
             },

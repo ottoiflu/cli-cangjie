@@ -2,6 +2,19 @@
 
 本文件记录版本变更历史，遵循 [语义化版本 2.0.0](https://semver.org/lang/zh-CN/) 规范。
 
+## [0.8.0] - 2026-03-12
+
+### 新增
+- **Shell 补全脚本生成** (`CompletionGenerator`)：支持 Bash/Zsh/Fish 三种 Shell 的自动补全脚本生成。对标 clap_complete 的补全生成能力
+- **输出格式模式** (`OutputFormatter`)：支持 `text` / `json` 输出格式切换，内置 JSON 转义和键值对渲染
+- **丰富版本信息** (`VersionInfo`)：版本输出支持构建元数据（commit hash、commit date、build date、compiler）。对标 `rustc_tools_util` 的 `VersionInfo` 设计
+- **标志/命令弃用系统** (`DeprecationInfo`)：支持 `.deprecated(reason, replacement)` 标记，使用时自动输出 Warning 级别迁移提示。对标 Clippy config 的 `#[conf_deprecated]` 机制
+- **全局标志传播** (`globalFlag`)：App 级 Flag 自动传播至所有子命令（递归），避免重复声明
+
+### 测试
+- 新增 `BashCompletionTest` (5)、`ZshCompletionTest` (4)、`FishCompletionTest` (6)、`ShellTypeParsingTest` (1)、`OutputFormatTest` (6)、`VersionInfoTest` (9)、`DeprecationInfoTest` (4)、`DeprecatedFlagTest` (3)、`DeprecatedCommandTest` (2)、`GlobalFlagPropagationTest` (6)、`Phase8IntegrationTest` (5)
+- 测试总数：269 → 320 (新增 51 用例，通过率 100%)
+
 ## [0.7.0] - 2026-03-12
 
 ### 新增

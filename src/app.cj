@@ -23,6 +23,13 @@ public class App {
     var _envPrefix: Option<String> = None
     var _configLoader: Option<ConfigLoader> = None
 
+    // Phase 8: 丰富版本信息
+    var _versionInfo: Option<VersionInfo> = None
+    // Phase 8: 全局标志传播列表
+    let _globalFlags: ArrayList<Flag> = ArrayList<Flag>()
+    // Phase 8: 弃用警告收集
+    let _deprecationCollector: DeprecationCollector = DeprecationCollector()
+
     public init(name: String) {
         _rootCommand = Command(name)
     }
@@ -121,6 +128,27 @@ public class App {
         this
     }
 
+    // Phase 8: 设置丰富版本信息
+    public func versionInfo(info: VersionInfo): This {
+        _versionInfo = Some(info)
+        this
+    }
+
+    // Phase 8: 注册全局 Flag（自动传播到所有子命令）
+    public func globalFlag(f: Flag): This {
+        _globalFlags.add(f)
+        _rootCommand.flag(f)
+        this
+    }
+
+    // Phase 8: 批量注册全局 Flag
+    public func globalFlags(fs: Array<Flag>): This {
+        for (f in fs) {
+            globalFlag(f)
+        }
+        this
+    }
+
     // 全局生命周期钩子
     public func persistentPreRun(hook: HookHandler): This {
         _rootCommand.persistentPreRun(hook)
@@ -146,10 +174,16 @@ public class App {
         // 自动注入 --help / --version 为 Terminate Flag
         injectBuiltinFlags(_rootCommand)
 
+        // Phase 8: 传播全局 Flag 到所有子命令
+        propagateGlobalFlags(_rootCommand)
+
         // 正式解析
         try {
             // 使用四级优先级管道: CLI > ENV > Config File > Defaults
             let (matchedCmd, ctx, positionalArgs) = _parser.parseOnly(_rootCommand, args)
+
+            // Phase 8: 检查弃用命令
+            checkCommandDeprecation(matchedCmd)
 
             // 第二级：应用环境变量合并
             applyEnvVars(_rootCommand, ctx)
@@ -163,10 +197,17 @@ public class App {
             // 第四级：应用默认值 + 验证 + 位置参数处理
             _parser.finalize(_rootCommand, matchedCmd, ctx, positionalArgs)
 
+            // Phase 8: 检查弃用 Flag
+            checkFlagDeprecation(_rootCommand, ctx)
+            if (matchedCmd.getName() != _rootCommand.getName()) {
+                checkFlagDeprecation(matchedCmd, ctx)
+            }
+
             // 无动作处理器：显示帮助（跳过生命周期和中间件）
             if (matchedCmd.getAction().isNone()) {
                 let helpText = generateHelp(matchedCmd)
-                return TestResult(0, "", helpText)
+                let warnings = _deprecationCollector.formatAll()
+                return TestResult(0, "", warnings + helpText)
             }
 
             // 执行生命周期: PersistentPreRun → PreRun → Middleware → Action → PostRun → PersistentPostRun
@@ -197,7 +238,8 @@ public class App {
                 case None => ()
             }
 
-            TestResult(exitCode, "", "")
+            let warnings = _deprecationCollector.formatAll()
+            TestResult(exitCode, "", warnings)
         } catch (e: TerminateException) {
             // Terminate 动作：执行回调获取输出内容
             let output = e.execute()
@@ -546,13 +588,23 @@ public class App {
 
     // 生成版本信息
     func generateVersion(cmd: Command): String {
-        var ver = cmd.getName()
-        match (cmd.getVersion()) {
-            case Some(v) =>
-                ver = ver + " ${v}"
-            case None => ()
+        // Phase 8: 优先使用 VersionInfo
+        match (_versionInfo) {
+            case Some(info) => info.toString() + "\n"
+            case None =>
+                var ver = cmd.getName()
+                match (cmd.getVersion()) {
+                    case Some(v) =>
+                        ver = ver + " ${v}"
+                    case None => ()
+                }
+                ver + "\n"
         }
-        ver + "\n"
+    }
+
+    // Phase 8: 生成补全脚本
+    public func generateCompletion(shell: ShellType): String {
+        CompletionGenerator.generate(_rootCommand, shell)
     }
 
     // 格式化框架层错误输出（使用诊断系统）
@@ -625,5 +677,39 @@ public class App {
             i++
         }
         None
+    }
+
+    // Phase 8: 传播全局 Flag 到所有子命令（递归）
+    func propagateGlobalFlags(cmd: Command): Unit {
+        for (sub in cmd.getSubcommands()) {
+            for (gf in _globalFlags) {
+                // 检查子命令是否已有同名 Flag，避免重复注册
+                if (sub.findFlag(gf.getLongName()).isNone()) {
+                    sub.flag(gf)
+                }
+            }
+            propagateGlobalFlags(sub)
+        }
+    }
+
+    // Phase 8: 检查弃用命令
+    func checkCommandDeprecation(cmd: Command): Unit {
+        match (cmd.getDeprecation()) {
+            case Some(info) =>
+                _deprecationCollector.add(info.formatWarning("command", cmd.getName()))
+            case None => ()
+        }
+    }
+
+    // Phase 8: 检查弃用 Flag（仅对用户显式设置的 Flag 发出警告）
+    func checkFlagDeprecation(cmd: Command, ctx: Context): Unit {
+        for (f in cmd.getFlags()) {
+            if (!ctx.isExplicit(f.getLongName())) { continue }
+            match (f.getDeprecation()) {
+                case Some(info) =>
+                    _deprecationCollector.add(info.formatWarning("flag", "--" + f.getLongName()))
+                case None => ()
+            }
+        }
     }
 }

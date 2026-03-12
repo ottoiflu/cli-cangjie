@@ -44,6 +44,8 @@ public class Command {
     let _exclusiveGroups: HashMap<String, ArrayList<String>> = HashMap<String, ArrayList<String>>()
     let _exclusiveGroupNames: ArrayList<String> = ArrayList<String>()
 
+    // Phase 8: 弃用
+    var _deprecated: Option<DeprecationInfo> = None
     // 帮助输出的动态对齐宽度
     var _maxNameWidth: Int64 = 0
 
@@ -178,6 +180,21 @@ public class Command {
         this
     }
 
+    // Phase 8: 弃用标记
+    public func deprecated(reason: String, replacement!: String = ""): This {
+        if (replacement.size > 0) {
+            _deprecated = Some(DeprecationInfo(reason, replacement))
+        } else {
+            _deprecated = Some(DeprecationInfo(reason))
+        }
+        this
+    }
+
+    public func deprecatedSince(reason: String, replacement: String, since: String): This {
+        _deprecated = Some(DeprecationInfo(reason, replacement, since))
+        this
+    }
+
     // 声明标志组：至少选一 (at-least-one)
     public func requireGroup(name: String, members: Array<String>): This {
         let memberList = ArrayList<String>()
@@ -258,6 +275,10 @@ public class Command {
     public func getRequireGroupNames(): ArrayList<String> { _requireGroupNames }
     public func getExclusiveGroups(): HashMap<String, ArrayList<String>> { _exclusiveGroups }
     public func getExclusiveGroupNames(): ArrayList<String> { _exclusiveGroupNames }
+
+    // Phase 8 Getter
+    public func getDeprecation(): Option<DeprecationInfo> { _deprecated }
+    public func isDeprecated(): Bool { _deprecated.isSome() }
 
     public func getMaxNameWidth(): Int64 { _maxNameWidth }
 

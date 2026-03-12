@@ -150,9 +150,10 @@ func testDidYouMean() {
     - [x] **配置错误报告**：解析配置文件失败时提供行号定位与 Did-You-Mean 建议（对标 Clippy 的 `ConfError` + `edit_distance` 字段纠错）。
     - **测试**: 269 用例全部通过（新增 30 用例），覆盖配置解析、错误检测、目录发现、Key 归一化、四级优先级管道、配置错误 mockRun 集成。
 
-8. **Phase 8: Shell 补全与高级特性 (Completion & Advanced)** — `v0.8.0`
-    - [ ] **Shell 补全脚本生成**：支持生成 Bash/Zsh/Fish 三种 Shell 的自动补全脚本。对标 clap_complete 的补全生成能力。
-    - [ ] **输出格式模式 (Output Formats)**：支持 `--format text|json` 切换输出格式。对标 Clippy lintcheck 的 `--format` 选项。
-    - [ ] **丰富版本信息**：版本输出包含构建元数据（构建时间、Git commit hash）。对标 `rustc_tools_util` 的 `VersionInfo` 设计。
-    - [ ] **标志/命令弃用系统 (Deprecation)**：支持 `.deprecated(reason, replacement)` 标记，使用时自动输出 Warning 级别迁移提示。对标 Clippy config 的 `#[conf_deprecated]` 机制。
-    - [ ] **全局标志传播**：支持将 App 级 Flag（如 `--verbose`、`--color`）自动传播至所有子命令。
+8. **Phase 8: Shell 补全与高级特性 (Completion & Advanced)** — `v0.8.0` ✅ 已完成
+    - [x] **Shell 补全脚本生成**：支持生成 Bash/Zsh/Fish 三种 Shell 的自动补全脚本。对标 clap_complete 的补全生成能力。
+    - [x] **输出格式模式 (Output Formats)**：支持 `--format text|json` 切换输出格式。对标 Clippy lintcheck 的 `--format` 选项。
+    - [x] **丰富版本信息**：版本输出包含构建元数据（构建时间、Git commit hash）。对标 `rustc_tools_util` 的 `VersionInfo` 设计。
+    - [x] **标志/命令弃用系统 (Deprecation)**：支持 `.deprecated(reason, replacement)` 标记，使用时自动输出 Warning 级别迁移提示。对标 Clippy config 的 `#[conf_deprecated]` 机制。
+    - [x] **全局标志传播**：支持将 App 级 Flag（如 `--verbose`、`--color`）自动传播至所有子命令。
+    - **测试**: 320 用例全部通过（新增 51 用例），覆盖 Bash/Zsh/Fish 补全生成、JSON/Text 输出格式、VersionInfo 多格式输出、弃用 Flag/Command 警告、全局 Flag 传播（含深层嵌套）、端到端集成。
