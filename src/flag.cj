@@ -15,6 +15,13 @@ public class Flag {
     var _envVar: Option<String> = None
     var _aliases: ArrayList<String> = ArrayList<String>()
 
+    // Phase 6: 约束与验证
+    var _conflictsWith: ArrayList<String> = ArrayList<String>()
+    var _requires: ArrayList<String> = ArrayList<String>()
+    var _hidden: Bool = false
+    var _validator: Option<(String) -> Bool> = None
+    var _validatorMessage: String = ""
+
     public init(longName: String) {
         _longName = longName
     }
@@ -84,6 +91,33 @@ public class Flag {
         this
     }
 
+    // Phase 6: 约束 Builder 方法
+
+    // 声明与指定 Flag 互斥
+    public func conflictsWith(flagName: String): This {
+        _conflictsWith.add(flagName)
+        this
+    }
+
+    // 声明依赖指定 Flag
+    public func requires(flagName: String): This {
+        _requires.add(flagName)
+        this
+    }
+
+    // 标记从 Help 输出中隐藏
+    public func hidden(h!: Bool = true): This {
+        _hidden = h
+        this
+    }
+
+    // 注册自定义值验证器
+    public func validator(fn: (String) -> Bool, message!: String = ""): This {
+        _validator = Some(fn)
+        _validatorMessage = message
+        this
+    }
+
     // Getter 方法
     public func getLongName(): String { _longName }
     public func getShortName(): Option<Rune> { _shortName }
@@ -103,6 +137,13 @@ public class Flag {
     public func getAction(): FlagAction { _action }
     public func getEnvVar(): Option<String> { _envVar }
     public func getAliases(): ArrayList<String> { _aliases }
+
+    // Phase 6: 约束 Getter 方法
+    public func getConflicts(): ArrayList<String> { _conflictsWith }
+    public func getRequires(): ArrayList<String> { _requires }
+    public func isHidden(): Bool { _hidden }
+    public func getValidator(): Option<(String) -> Bool> { _validator }
+    public func getValidatorMessage(): String { _validatorMessage }
 
     // 是否为布尔开关型 flag
     public func isBoolFlag(): Bool {

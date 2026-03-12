@@ -37,6 +37,13 @@ public class Command {
     // 中间件链
     let _middlewares: ArrayList<Middleware> = ArrayList<Middleware>()
 
+    // Phase 6: 隐藏与标志组约束
+    var _hidden: Bool = false
+    let _requireGroups: HashMap<String, ArrayList<String>> = HashMap<String, ArrayList<String>>()
+    let _requireGroupNames: ArrayList<String> = ArrayList<String>()
+    let _exclusiveGroups: HashMap<String, ArrayList<String>> = HashMap<String, ArrayList<String>>()
+    let _exclusiveGroupNames: ArrayList<String> = ArrayList<String>()
+
     // 帮助输出的动态对齐宽度
     var _maxNameWidth: Int64 = 0
 
@@ -165,6 +172,34 @@ public class Command {
         this
     }
 
+    // Phase 6: 隐藏命令
+    public func hidden(h!: Bool = true): This {
+        _hidden = h
+        this
+    }
+
+    // 声明标志组：至少选一 (at-least-one)
+    public func requireGroup(name: String, members: Array<String>): This {
+        let memberList = ArrayList<String>()
+        for (m in members) {
+            memberList.add(m)
+        }
+        _requireGroups[name] = memberList
+        _requireGroupNames.add(name)
+        this
+    }
+
+    // 声明标志组：最多选一 (at-most-one)
+    public func mutuallyExclusiveGroup(name: String, members: Array<String>): This {
+        let memberList = ArrayList<String>()
+        for (m in members) {
+            memberList.add(m)
+        }
+        _exclusiveGroups[name] = memberList
+        _exclusiveGroupNames.add(name)
+        this
+    }
+
     // Getter 方法
 
     public func getName(): String { _name }
@@ -216,6 +251,13 @@ public class Command {
     public func getPostRun(): Option<HookHandler> { _postRun }
     public func getPersistentPostRun(): Option<HookHandler> { _persistentPostRun }
     public func getMiddlewares(): ArrayList<Middleware> { _middlewares }
+
+    // Phase 6 Getter
+    public func isHidden(): Bool { _hidden }
+    public func getRequireGroups(): HashMap<String, ArrayList<String>> { _requireGroups }
+    public func getRequireGroupNames(): ArrayList<String> { _requireGroupNames }
+    public func getExclusiveGroups(): HashMap<String, ArrayList<String>> { _exclusiveGroups }
+    public func getExclusiveGroupNames(): ArrayList<String> { _exclusiveGroupNames }
 
     public func getMaxNameWidth(): Int64 { _maxNameWidth }
 

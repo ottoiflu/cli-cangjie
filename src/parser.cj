@@ -107,7 +107,14 @@ public class Parser {
         // 步骤 4: 验证必填 flag
         validateRequiredFlags(currentCmd, ctx)
 
-        // 步骤 5: 处理位置参数
+        // 步骤 5: 验证 Flag 约束（互斥、依赖、自定义验证器、标志组）
+        validateFlagConstraints(currentCmd, ctx)
+        if (currentCmd.getName() != rootCmd.getName()) {
+            validateFlagConstraints(rootCmd, ctx)
+        }
+        validateFlagGroups(currentCmd, ctx)
+
+        // 步骤 6: 处理位置参数
         processPositionalArgs(currentCmd, positionalArgs, ctx)
 
         (currentCmd, ctx)
@@ -120,14 +127,18 @@ public class Parser {
                 throw TerminateException(callback)
             case SetTrue =>
                 ctx.setFlag(flag.getLongName(), "true")
+                ctx.markExplicit(flag.getLongName())
             case SetFalse =>
                 ctx.setFlag(flag.getLongName(), "false")
+                ctx.markExplicit(flag.getLongName())
             case Append =>
                 let validated = validateAndConvert(rawValue, flag.getValueType())
                 ctx.appendFlag(flag.getLongName(), validated)
+                ctx.markExplicit(flag.getLongName())
             case Set =>
                 let validated = validateAndConvert(rawValue, flag.getValueType())
                 ctx.setFlag(flag.getLongName(), validated)
+                ctx.markExplicit(flag.getLongName())
         }
     }
 
@@ -139,8 +150,10 @@ public class Parser {
                 throw TerminateException(callback)
             case SetTrue =>
                 ctx.setFlag(flag.getLongName(), "true")
+                ctx.markExplicit(flag.getLongName())
             case SetFalse =>
                 ctx.setFlag(flag.getLongName(), "false")
+                ctx.markExplicit(flag.getLongName())
             case _ =>
                 let nextIdx = argIndex + 1
                 if (nextIdx >= rawArgs.size) {
@@ -152,6 +165,7 @@ public class Parser {
                     case Append => ctx.appendFlag(flag.getLongName(), validated)
                     case _ => ctx.setFlag(flag.getLongName(), validated)
                 }
+                ctx.markExplicit(flag.getLongName())
         }
     }
 
@@ -163,8 +177,10 @@ public class Parser {
                 throw TerminateException(callback)
             case SetTrue =>
                 ctx.setFlag(flag.getLongName(), "true")
+                ctx.markExplicit(flag.getLongName())
             case SetFalse =>
                 ctx.setFlag(flag.getLongName(), "false")
+                ctx.markExplicit(flag.getLongName())
             case _ =>
                 let nextIdx = argIndex + 1
                 if (nextIdx >= rawArgs.size) {
@@ -176,6 +192,7 @@ public class Parser {
                     case Append => ctx.appendFlag(flag.getLongName(), validated)
                     case _ => ctx.setFlag(flag.getLongName(), validated)
                 }
+                ctx.markExplicit(flag.getLongName())
         }
     }
 
@@ -191,8 +208,10 @@ public class Parser {
                     throw TerminateException(callback)
                 case SetTrue =>
                     ctx.setFlag(resolvedFlag.getLongName(), "true")
+                    ctx.markExplicit(resolvedFlag.getLongName())
                 case SetFalse =>
                     ctx.setFlag(resolvedFlag.getLongName(), "false")
+                    ctx.markExplicit(resolvedFlag.getLongName())
                 case _ =>
                     if (charIdx < runes.size - 1) {
                         // 剩余字符作为值
@@ -207,6 +226,7 @@ public class Parser {
                             case Append => ctx.appendFlag(resolvedFlag.getLongName(), validated)
                             case _ => ctx.setFlag(resolvedFlag.getLongName(), validated)
                         }
+                        ctx.markExplicit(resolvedFlag.getLongName())
                         return  // 剩余被消费完毕
                     } else {
                         // 尝试从后续 args 中取值— 但 argIndex 已在外层管理，这里只能抛异常
@@ -325,6 +345,103 @@ public class Parser {
             while (posIdx < positional.size) {
                 ctx.addArgument(positional[posIdx])
                 posIdx++
+            }
+        }
+    }
+
+    // Phase 6: 验证 Flag 约束（互斥、依赖、自定义验证器）
+    func validateFlagConstraints(cmd: Command, ctx: Context): Unit {
+        for (f in cmd.getFlags()) {
+            let flagName = f.getLongName()
+            if (!ctx.isExplicit(flagName)) {
+                continue
+            }
+            // 互斥检查：两个互斥 Flag 不能同时被显式设置
+            for (conflict in f.getConflicts()) {
+                if (ctx.isExplicit(conflict)) {
+                    throw ValidationException(
+                        "Flag '--${flagName}' cannot be used together with '--${conflict}'."
+                    )
+                }
+            }
+            // 依赖检查：显式设置的 Flag 其依赖必须存在（显式或默认均可）
+            for (req in f.getRequires()) {
+                if (!ctx.hasFlag(req)) {
+                    throw ValidationException(
+                        "Flag '--${flagName}' requires '--${req}' to be set."
+                    )
+                }
+            }
+            // 自定义验证器
+            match (f.getValidator()) {
+                case Some(validatorFn) =>
+                    match (ctx.getFlag(flagName)) {
+                        case Some(value) =>
+                            if (!validatorFn(value)) {
+                                let msg = f.getValidatorMessage()
+                                if (msg.size > 0) {
+                                    throw ValidationException(
+                                        "Invalid value for '--${flagName}': ${msg}"
+                                    )
+                                } else {
+                                    throw ValidationException(
+                                        "Invalid value for '--${flagName}'."
+                                    )
+                                }
+                            }
+                        case None => ()
+                    }
+                case None => ()
+            }
+        }
+    }
+
+    // Phase 6: 验证标志组约束
+    func validateFlagGroups(cmd: Command, ctx: Context): Unit {
+        // requireGroup: 组内至少有一个 Flag 被显式设置
+        for (groupName in cmd.getRequireGroupNames()) {
+            match (cmd.getRequireGroups().get(groupName)) {
+                case Some(members) =>
+                    var anyExplicit = false
+                    for (m in members) {
+                        if (ctx.isExplicit(m)) {
+                            anyExplicit = true
+                            break
+                        }
+                    }
+                    if (!anyExplicit) {
+                        var memberStr = ""
+                        var first = true
+                        for (m in members) {
+                            if (!first) {
+                                memberStr = memberStr + ", "
+                            }
+                            memberStr = memberStr + "--" + m
+                            first = false
+                        }
+                        throw ValidationException(
+                            "At least one flag from group '${groupName}' is required: ${memberStr}."
+                        )
+                    }
+                case None => ()
+            }
+        }
+        // mutuallyExclusiveGroup: 组内最多只能有一个 Flag 被显式设置
+        for (groupName in cmd.getExclusiveGroupNames()) {
+            match (cmd.getExclusiveGroups().get(groupName)) {
+                case Some(members) =>
+                    let setMembers = ArrayList<String>()
+                    for (m in members) {
+                        if (ctx.isExplicit(m)) {
+                            setMembers.add(m)
+                        }
+                    }
+                    if (setMembers.size > 1) {
+                        throw ValidationException(
+                            "Flags '--${setMembers[0]}' and '--${setMembers[1]}' are mutually exclusive (group '${groupName}')."
+                        )
+                    }
+                case None => ()
             }
         }
     }

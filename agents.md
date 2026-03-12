@@ -134,3 +134,24 @@ func testDidYouMean() {
     - [x] **交互式终端组件**：Spinner（4 种动画样式）、ProgressBar（可配置宽度/字符/百分比）、Confirm / Select / MultiSelect 组件。
     - [x] **交互测试 Input Mock 方案**：所有组件与 InputMock 集成，支持在 mockRun 中端到端交互测试。
     - **测试**: 214 用例全部通过（新增 45 用例），覆盖 Spinner 帧循环/状态、ProgressBar 进度控制/渲染、Confirm y/n/默认值、Select 数字/文本选择、MultiSelect 多选、组件 mockRun 集成。
+
+6. **Phase 6: Flag 约束与高级验证 (Constraints & Validation)** — `v0.6.0` ✅ 已完成
+    - [x] **互斥标志 (Mutual Exclusion)**：支持 `conflictsWith()` 声明，运行时检测冲突并报错。对标 clap 的 `conflicts_with` 机制（如 Clippy lintcheck 中 `--fix` 与 `--max-jobs` 互斥）。
+    - [x] **标志依赖 (Flag Dependencies)**：支持 `requires()` 声明，指定 Flag 前置依赖关系（如 `--output-format` 依赖 `--output`）。
+    - [x] **自定义验证器 (Custom Validators)**：Flag 支持注册 `validator((String) -> Bool)` 回调，框架层拦截不合法值并生成诊断报错。对标 Clippy clippy_dev 的 `lint_name()` 校验器。
+    - [x] **隐藏标志与命令 (Hidden)**：支持 `.hidden()` 标记，从 Help 输出中隐藏但仍可正常使用。对标 clap 的 `hide = true`。
+    - [x] **标志组验证 (Group Validation)**：支持声明式标志组约束：`requireGroup(name, members)` (至少选一)、`mutuallyExclusiveGroup(name, members)` (最多选一)。
+    - **测试**: 239 用例全部通过（新增 25 用例），覆盖互斥检测、依赖检查、自定义验证器、隐藏标志/命令、标志组约束、Clippy lintcheck 模式集成。
+
+7. **Phase 7: 配置文件管道 (Configuration Files)** — `v0.7.0`
+    - [ ] **配置文件加载**：支持简洁的 `key = value` 格式配置文件（兼容 TOML 子集），提供 `ConfigLoader` 模块。
+    - [ ] **配置文件发现**：支持目录向上遍历查找配置文件（如从 CWD 向上查找 `app.toml`），支持 `CONFIG_PATH` 环境变量覆盖。对标 Clippy 的 `clippy.toml` 查找逻辑。
+    - [ ] **四级优先级管道**：完善配置合并流为：CLI 显式参数 > 环境变量 > 配置文件 > 代码默认值。
+    - [ ] **配置错误报告**：解析配置文件失败时提供行号定位与 Did-You-Mean 建议（对标 Clippy 的 `ConfError` + `edit_distance` 字段纠错）。
+
+8. **Phase 8: Shell 补全与高级特性 (Completion & Advanced)** — `v0.8.0`
+    - [ ] **Shell 补全脚本生成**：支持生成 Bash/Zsh/Fish 三种 Shell 的自动补全脚本。对标 clap_complete 的补全生成能力。
+    - [ ] **输出格式模式 (Output Formats)**：支持 `--format text|json` 切换输出格式。对标 Clippy lintcheck 的 `--format` 选项。
+    - [ ] **丰富版本信息**：版本输出包含构建元数据（构建时间、Git commit hash）。对标 `rustc_tools_util` 的 `VersionInfo` 设计。
+    - [ ] **标志/命令弃用系统 (Deprecation)**：支持 `.deprecated(reason, replacement)` 标记，使用时自动输出 Warning 级别迁移提示。对标 Clippy config 的 `#[conf_deprecated]` 机制。
+    - [ ] **全局标志传播**：支持将 App 级 Flag（如 `--verbose`、`--color`）自动传播至所有子命令。

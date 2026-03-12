@@ -7,6 +7,14 @@
   [36m#[0m [0mnote[0m: this warning can be suppressed by setting the compiler option `-Woff unused`
 
 [33mwarning[0m: unused import 'std.collection.*'
+ [36m==>[0m /home/otto/文档/Project/cli/src/test/constraint_test.cj:5:1:
+  [36m| [0m
+[36m5[0m [36m| [0mimport std.collection.*[0m
+  [36m| [0m[33m^^^^^^^^^^^^^^^^^^^^^^^ unused import[0m
+  [36m| [0m
+  [36m#[0m [0mnote[0m: this warning can be suppressed by setting the compiler option `-Woff unused`
+
+[33mwarning[0m: unused import 'std.collection.*'
  [36m==>[0m /home/otto/文档/Project/cli/src/test/flag_test.cj:5:1:
   [36m| [0m
 [36m5[0m [36m| [0mimport std.collection.*[0m
@@ -51,7 +59,7 @@
     [36m| [0m
     [36m| [0m  /* 13.1 */@Attribute[TEST_GENERATED] class LifecycleTest <: TestClass {[0m
     [36m| [0m [34m_[0m[34m^[0m
-    [36m| [0m[34m|[0m /* 13.2 */    @Attribute[TestCase_74][0m
+    [36m| [0m[34m|[0m /* 13.2 */    @Attribute[TestCase_105][0m
     [36m| [0m[34m|[0m /* 13.3 */    func testPreRunHook() {[0m
     [36m| [0m[34m|[0m /* 13.4 */        let log = ArrayList < String >()[0m
     [36m| [0m[34m|[0m /* 13.5 */        let app = App("tool").command(Command("run").preRun({ ctx => log.add("preRun") }).action({ ctx => log.add("action")[0m
@@ -63,7 +71,7 @@
     [36m| [0m[34m|[0m /* 13.11 */        assertEqual("log[1] == \"action\"", "true", log[1] == "action", true, isDelta: false)[0m
     [36m| [0m[34m|[0m /* 13.12 */    }[0m
     [36m| [0m[34m|[0m /* 13.13 */    [0m
-    [36m| [0m[34m|[0m /* 13.14 */    @Attribute[TestCase_75][0m
+    [36m| [0m[34m|[0m /* 13.14 */    @Attribute[TestCase_106][0m
     [36m| [0m[34m|[0m /* 13.15 */    func testPostRunHook() {[0m
     [36m| [0m[34m|[0m /* 13.16 */        let log = ArrayList < String >()[0m
     [36m| [0m[34m|[0m /* 13.17 */        let app = App("tool").command(Command("run").action({ ctx => log.add("action")[0m
@@ -75,7 +83,7 @@
     [36m| [0m[34m|[0m /* 13.23 */        assertEqual("log[1] == \"postRun\"", "true", log[1] == "postRun", true, isDelta: false)[0m
     [36m| [0m[34m|[0m /* 13.24 */    }[0m
     [36m| [0m[34m|[0m /* 13.25 */    [0m
-    [36m| [0m[34m|[0m /* 13.26 */    @Attribute[TestCase_76][0m
+    [36m| [0m[34m|[0m /* 13.26 */    @Attribute[TestCase_107][0m
     [36m| [0m[34m|[0m /* 13.27 */    func testPersistentPreRunHook() {[0m
     [36m| [0m[34m|[0m /* 13.28 */        let log = ArrayList < String >()[0m
     [36m| [0m[34m|[0m /* 13.29 */        let app = App("tool").persistentPreRun({ ctx => log.add("persistentPreRun") }).command(Command("sub").preRun({ ctx => log.add("preRun") }).action({ ctx => log.add("action")[0m
@@ -88,7 +96,7 @@
     [36m| [0m[34m|[0m /* 13.36 */        assertEqual("log[2] == \"action\"", "true", log[2] == "action", true, isDelta: false)[0m
     [36m| [0m[34m|[0m /* 13.37 */    }[0m
     [36m| [0m[34m|[0m /* 13.38 */    [0m
-    [36m| [0m[34m|[0m /* 13.39 */    @Attribute[TestCase_77][0m
+    [36m| [0m[34m|[0m /* 13.39 */    @Attribute[TestCase_108][0m
     [36m| [0m[34m|[0m /* 13.40 */    func testPersistentPostRunHook() {[0m
     [36m| [0m[34m|[0m /* 13.41 */        let log = ArrayList < String >()[0m
     [36m| [0m[34m|[0m /* 13.42 */        let app = App("tool").persistentPostRun({ ctx => log.add("persistentPostRun") }).command(Command("sub").action({ ctx => log.add("action")[0m
@@ -101,7 +109,7 @@
     [36m| [0m[34m|[0m /* 13.49 */        assertEqual("log[2] == \"persistentPostRun\"", "true", log[2] == "persistentPostRun", true, isDelta: false)[0m
     [36m| [0m[34m|[0m /* 13.50 */    }[0m
     [36m| [0m[34m|[0m /* 13.51 */    [0m
-    [36m| [0m[34m|[0m /* 13.52 */    @Attribute[TestCase_78][0m
+    [36m| [0m[34m|[0m /* 13.52 */    @Attribute[TestCase_109][0m
     [36m| [0m[34m|[0m /* 13.53 */    func testFullLifecycleOrder() {[0m
     [36m| [0m[34m|[0m /* 13.54 */        let log = ArrayList < String >()[0m
     [36m| [0m[34m|[0m /* 13.55 */        let app = App("tool").persistentPreRun({ ctx => log.add("1-persistentPreRun") }).persistentPostRun({ ctx => log.add("5-persistentPostRun") }).command(Command("cmd").preRun({ ctx => log.add("2-preRun") }).action({ ctx => log.add("3-action")[0m
@@ -116,7 +124,7 @@
     [36m| [0m[34m|[0m /* 13.64 */        assertEqual("log[4] == \"5-persistentPostRun\"", "true", log[4] == "5-persistentPostRun", true, isDelta: false)[0m
     [36m| [0m[34m|[0m /* 13.65 */    }[0m
     [36m| [0m[34m|[0m /* 13.66 */    [0m
-    [36m| [0m[34m|[0m /* 13.67 */    @Attribute[TestCase_79][0m
+    [36m| [0m[34m|[0m /* 13.67 */    @Attribute[TestCase_110][0m
     [36m| [0m[34m|[0m /* 13.68 */    func testNoHooksStillWorks() {[0m
     [36m| [0m[34m|[0m /* 13.69 */        let app = App("tool").command(Command("run").action({ ctx => 42 }))[0m
     [36m| [0m[34m|[0m /* 13.70 */        let result = app.mockRun(["run"])[0m
@@ -245,6 +253,150 @@
    [36m| [0m
 
 [33mwarning[0m: unused variable:'ctx'
+  [36m==>[0m /home/otto/文档/Project/cli/src/test/constraint_test.cj:21:31:
+   [36m| [0m
+[36m21[0m [36m| [0m                    .action({ ctx => 0 })[0m
+   [36m| [0m                              [33m^ unused variable[0m
+   [36m| [0m
+   [36m#[0m [0mnote[0m: this warning can be suppressed by setting the compiler option `-Woff unused`
+[34mnote[0m: the warning occurs after the macro is expanded
+  [36m==>[0m /home/otto/文档/Project/cli/src/test/constraint_test.cj:12:1:
+   [36m| [0m
+[36m12[0m [36m| [0m  @Test[0m
+   [36m| [0m [34m_[0m[34m^[0m
+[36m13[0m [36m| [0m[34m|[0m class ConflictsTest {[0m
+   [36m| [0m[34m|[0m ...[0m
+[36m68[0m [36m| [0m[34m|[0m }[0m
+   [36m| [0m[34m|[0m[34m_[0m[34m^[0m
+   [36m| [0m
+[34mnote[0m: the code after the macro is expanded as follows
+    [36m| [0m
+    [36m| [0m  /* 12.1 */@Attribute[TEST_GENERATED] class ConflictsTest <: TestClass {[0m
+    [36m| [0m [34m_[0m[34m^[0m
+    [36m| [0m[34m|[0m /* 12.2 */    @Attribute[TestCase_16][0m
+    [36m| [0m[34m|[0m /* 12.3 */    func testConflictingFlagsError() {[0m
+    [36m| [0m[34m|[0m /* 12.4 */        let app = App("tool").command(Command("run").flag(Flag("json").asBool().conflictsWith("text")).flag(Flag("text").asBool().conflictsWith("json")).action({ ctx => 0 }))[0m
+    [36m| [0m[34m|[0m /* 12.5 */        let result = app.mockRun(["run", "--json", "--text"])[0m
+    [36m| [0m[34m|[0m /* 12.6 */        assertEqual("result.exitCode == 2", "true", result.exitCode == 2, true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 12.7 */        assertEqual("result.stderr.contains(\"cannot be used together\")", "true", result.stderr.contains("cannot be used together"), true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 12.8 */    }[0m
+    [36m| [0m[34m|[0m /* 12.9 */    [0m
+    [36m| [0m[34m|[0m /* 12.10 */    @Attribute[TestCase_17][0m
+    [36m| [0m[34m|[0m /* 12.11 */    func testNoConflictWhenOnlyOneSet() {[0m
+    [36m| [0m[34m|[0m /* 12.12 */        let app = App("tool").command(Command("run").flag(Flag("json").asBool().conflictsWith("text")).flag(Flag("text").asBool().conflictsWith("json")).action({ ctx => 0 }))[0m
+    [36m| [0m[34m|[0m /* 12.13 */        let result = app.mockRun(["run", "--json"])[0m
+    [36m| [0m[34m|[0m /* 12.14 */        assertEqual("result.exitCode == 0", "true", result.exitCode == 0, true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 12.15 */    }[0m
+    [36m| [0m[34m|[0m /* 12.16 */    [0m
+    [36m| [0m[34m|[0m /* 12.17 */    @Attribute[TestCase_18][0m
+    [36m| [0m[34m|[0m /* 12.18 */    func testConflictNotTriggeredByDefault() {[0m
+    [36m| [0m[34m|[0m /* 12.19 */        let app = App("tool").command(Command("run").flag(Flag("json").asBool().conflictsWith("text")).flag(Flag("text").asBool()).action({ ctx => 0 }))[0m
+    [36m| [0m[34m|[0m /* 12.20 */        let result = app.mockRun(["run", "--json"])[0m
+    [36m| [0m[34m|[0m /* 12.21 */        assertEqual("result.exitCode == 0", "true", result.exitCode == 0, true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 12.22 */    }[0m
+    [36m| [0m[34m|[0m /* 12.23 */    [0m
+    [36m| [0m[34m|[0m /* 12.24 */    @Attribute[TestCase_19][0m
+    [36m| [0m[34m|[0m /* 12.25 */    func testConflictWithShortFlag() {[0m
+    [36m| [0m[34m|[0m /* 12.26 */        let app = App("tool").command(Command("run").flag(Flag("verbose").short(r'v').asBool().conflictsWith("quiet")).flag(Flag("quiet").short(r'q').asBool().conflictsWith("verbose")).action({ ctx => 0 }))[0m
+    [36m| [0m[34m|[0m /* 12.27 */        let result = app.mockRun(["run", "-v", "-q"])[0m
+    [36m| [0m[34m|[0m /* 12.28 */        assertEqual("result.exitCode == 2", "true", result.exitCode == 2, true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 12.29 */        assertEqual("result.stderr.contains(\"cannot be used together\")", "true", result.stderr.contains("cannot be used together"), true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 12.30 */    }[0m
+    [36m| [0m[34m|[0m /* 12.31 */    [0m
+    [36m| [0m[34m|[0m /* 12.32 */    init() {[0m
+    [36m| [0m[34m|[0m /* 12.33 */    }[0m
+    [36m| [0m[34m|[0m /* 12.34 */    private func classConfiguration(): Configuration {[0m
+    [36m| [0m[34m|[0m /* 12.35 */        let configuration = Configuration()[0m
+    [36m| [0m[34m|[0m /* 12.36 */        [0m
+    [36m| [0m[34m|[0m /* 12.37 */        return configuration[0m
+    [36m| [0m[34m|[0m /* 12.38 */    }[0m
+    [36m| [0m[34m|[0m /* 12.39 */    public override func asTestSuite(): TestSuite {[0m
+    [36m| [0m[34m|[0m /* 12.40 */        [0m
+    [36m| [0m[34m|[0m /* 12.41 */        let suiteConfiguration = classConfiguration()[0m
+    [36m| [0m[34m|[0m /* 12.42 */        let suiteBuilder = TestSuite.builder("ConflictsTest").configure(suiteConfiguration)[0m
+    [36m| [0m[34m|[0m /* 12.43 */        [0m
+    [36m| [0m[34m|[0m /* 12.44 */        { => let caseConfig = Configuration()[0m
+    [36m| [0m[34m|[0m /* 12.45 */            [0m
+    [36m| [0m[34m|[0m /* 12.46 */            let testConflictingFlagsErrorTestFunc = { => testConflictingFlagsError();() }[0m
+    [36m| [0m[34m|[0m /* 12.47 */            suiteBuilder.add([0m
+    [36m| [0m[34m|[0m /* 12.48 */            UnitTestCase.create([0m
+    [36m| [0m[34m|[0m /* 12.49 */            "testConflictingFlagsError",[0m
+    [36m| [0m[34m|[0m /* 12.50 */            configuration: caseConfig,[0m
+    [36m| [0m[34m|[0m /* 12.51 */            body: testConflictingFlagsErrorTestFunc[0m
+    [36m| [0m[34m|[0m /* 12.52 */            )[0m
+    [36m| [0m[34m|[0m /* 12.53 */            )[0m
+    [36m| [0m[34m|[0m /* 12.54 */            [0m
+    [36m| [0m[34m|[0m /* 12.55 */        }()[0m
+    [36m| [0m[34m|[0m /* 12.56 */        [0m
+    [36m| [0m[34m|[0m /* 12.57 */        [0m
+    [36m| [0m[34m|[0m /* 12.58 */        { => let caseConfig = Configuration()[0m
+    [36m| [0m[34m|[0m /* 12.59 */            [0m
+    [36m| [0m[34m|[0m /* 12.60 */            let testNoConflictWhenOnlyOneSetTestFunc = { => testNoConflictWhenOnlyOneSet();() }[0m
+    [36m| [0m[34m|[0m /* 12.61 */            suiteBuilder.add([0m
+    [36m| [0m[34m|[0m /* 12.62 */            UnitTestCase.create([0m
+    [36m| [0m[34m|[0m /* 12.63 */            "testNoConflictWhenOnlyOneSet",[0m
+    [36m| [0m[34m|[0m /* 12.64 */            configuration: caseConfig,[0m
+    [36m| [0m[34m|[0m /* 12.65 */            body: testNoConflictWhenOnlyOneSetTestFunc[0m
+    [36m| [0m[34m|[0m /* 12.66 */            )[0m
+    [36m| [0m[34m|[0m /* 12.67 */            )[0m
+    [36m| [0m[34m|[0m /* 12.68 */            [0m
+    [36m| [0m[34m|[0m /* 12.69 */        }()[0m
+    [36m| [0m[34m|[0m /* 12.70 */        [0m
+    [36m| [0m[34m|[0m /* 12.71 */        [0m
+    [36m| [0m[34m|[0m /* 12.72 */        { => let caseConfig = Configuration()[0m
+    [36m| [0m[34m|[0m /* 12.73 */            [0m
+    [36m| [0m[34m|[0m /* 12.74 */            let testConflictNotTriggeredByDefaultTestFunc = { => testConflictNotTriggeredByDefault();() }[0m
+    [36m| [0m[34m|[0m /* 12.75 */            suiteBuilder.add([0m
+    [36m| [0m[34m|[0m /* 12.76 */            UnitTestCase.create([0m
+    [36m| [0m[34m|[0m /* 12.77 */            "testConflictNotTriggeredByDefault",[0m
+    [36m| [0m[34m|[0m /* 12.78 */            configuration: caseConfig,[0m
+    [36m| [0m[34m|[0m /* 12.79 */            body: testConflictNotTriggeredByDefaultTestFunc[0m
+    [36m| [0m[34m|[0m /* 12.80 */            )[0m
+    [36m| [0m[34m|[0m /* 12.81 */            )[0m
+    [36m| [0m[34m|[0m /* 12.82 */            [0m
+    [36m| [0m[34m|[0m /* 12.83 */        }()[0m
+    [36m| [0m[34m|[0m /* 12.84 */        [0m
+    [36m| [0m[34m|[0m /* 12.85 */        [0m
+    [36m| [0m[34m|[0m /* 12.86 */        { => let caseConfig = Configuration()[0m
+    [36m| [0m[34m|[0m /* 12.87 */            [0m
+    [36m| [0m[34m|[0m /* 12.88 */            let testConflictWithShortFlagTestFunc = { => testConflictWithShortFlag();() }[0m
+    [36m| [0m[34m|[0m /* 12.89 */            suiteBuilder.add([0m
+    [36m| [0m[34m|[0m /* 12.90 */            UnitTestCase.create([0m
+    [36m| [0m[34m|[0m /* 12.91 */            "testConflictWithShortFlag",[0m
+    [36m| [0m[34m|[0m /* 12.92 */            configuration: caseConfig,[0m
+    [36m| [0m[34m|[0m /* 12.93 */            body: testConflictWithShortFlagTestFunc[0m
+    [36m| [0m[34m|[0m /* 12.94 */            )[0m
+    [36m| [0m[34m|[0m /* 12.95 */            )[0m
+    [36m| [0m[34m|[0m /* 12.96 */            [0m
+    [36m| [0m[34m|[0m /* 12.97 */        }()[0m
+    [36m| [0m[34m|[0m /* 12.98 */        [0m
+    [36m| [0m[34m|[0m /* 12.99 */        return suiteBuilder.build()[0m
+    [36m| [0m[34m|[0m /* 12.100 */    }[0m
+    [36m| [0m[34m|[0m /* 12.101 */    private func inheritedFromClassAnnotatedByTestTemplate < T >(): TestSuite where T <: TestClass {[0m
+    [36m| [0m[34m|[0m /* 12.102 */        throw Exception("Unreachable code")[0m
+    [36m| [0m[34m|[0m /* 12.103 */    }[0m
+    [36m| [0m[34m|[0m /* 12.104 */}[0m
+    [36m| [0m[34m|[0m /* 12.105 */[0m
+    [36m| [0m[34m|[0m /* 12.106 */[0m
+    [36m| [0m[34m|[0m /* 12.107 */interface TestPackageExtension_ConflictsTest {[0m
+    [36m| [0m[34m|[0m /* 12.108 */    func registerConflictsTest(): Unit[0m
+    [36m| [0m[34m|[0m /* 12.109 */}[0m
+    [36m| [0m[34m|[0m /* 12.110 */extend TestPackage <: TestPackageExtension_ConflictsTest {[0m
+    [36m| [0m[34m|[0m /* 12.111 */    @Attribute[TEST_REGISTER][0m
+    [36m| [0m[34m|[0m /* 12.112 */    public func registerConflictsTest() {[0m
+    [36m| [0m[34m|[0m /* 12.113 */        registerSuite({ => ConflictsTest().asTestSuite() })[0m
+    [36m| [0m[34m|[0m /* 12.114 */    }[0m
+    [36m| [0m[34m|[0m /* 12.115 */}[0m
+    [36m| [0m[34m|[0m /* 12.116 */[0m
+    [36m| [0m[34m|[0m[34m_[0m[34m___________^[0m
+    [36m| [0m
+[34mnote[0m: which is expanded as follows
+   [36m| [0m
+   [36m| [0m/* 12.4 */        let app = App("tool").command(Command("run").flag(Flag("json").asBool().conflictsWith("text")).flag(Flag("text").asBool().conflictsWith("json")).action({ ctx => 0 }))[0m
+   [36m| [0m                                                                                                                                                                            [34m^^^ [0m
+   [36m| [0m
+
+[33mwarning[0m: unused variable:'ctx'
   [36m==>[0m /home/otto/文档/Project/cli/src/test/lifecycle_test.cj:24:31:
    [36m| [0m
 [36m24[0m [36m| [0m                    .action({ ctx =>[0m
@@ -265,6 +417,29 @@
    [36m| [0m
    [36m| [0m/* 13.5 */        let app = App("tool").command(Command("run").preRun({ ctx => log.add("preRun") }).action({ ctx => log.add("action")[0m
    [36m| [0m                                                                                                             [34m^^^ [0m
+   [36m| [0m
+
+[33mwarning[0m: unused variable:'ctx'
+  [36m==>[0m /home/otto/文档/Project/cli/src/test/constraint_test.cj:35:31:
+   [36m| [0m
+[36m35[0m [36m| [0m                    .action({ ctx => 0 })[0m
+   [36m| [0m                              [33m^ unused variable[0m
+   [36m| [0m
+   [36m#[0m [0mnote[0m: this warning can be suppressed by setting the compiler option `-Woff unused`
+[34mnote[0m: the warning occurs after the macro is expanded
+  [36m==>[0m /home/otto/文档/Project/cli/src/test/constraint_test.cj:12:1:
+   [36m| [0m
+[36m12[0m [36m| [0m  @Test[0m
+   [36m| [0m [34m_[0m[34m^[0m
+[36m13[0m [36m| [0m[34m|[0m class ConflictsTest {[0m
+   [36m| [0m[34m|[0m ...[0m
+[36m68[0m [36m| [0m[34m|[0m }[0m
+   [36m| [0m[34m|[0m[34m_[0m[34m^[0m
+   [36m| [0m
+[34mnote[0m: which is expanded as follows
+   [36m| [0m
+   [36m| [0m/* 12.12 */        let app = App("tool").command(Command("run").flag(Flag("json").asBool().conflictsWith("text")).flag(Flag("text").asBool().conflictsWith("json")).action({ ctx => 0 }))[0m
+   [36m| [0m                                                                                                                                                                             [34m^^^ [0m
    [36m| [0m
 
 [33mwarning[0m: unused variable:'ctx'
@@ -314,6 +489,29 @@
    [36m| [0m
 
 [33mwarning[0m: unused variable:'ctx'
+  [36m==>[0m /home/otto/文档/Project/cli/src/test/constraint_test.cj:49:31:
+   [36m| [0m
+[36m49[0m [36m| [0m                    .action({ ctx => 0 })[0m
+   [36m| [0m                              [33m^ unused variable[0m
+   [36m| [0m
+   [36m#[0m [0mnote[0m: this warning can be suppressed by setting the compiler option `-Woff unused`
+[34mnote[0m: the warning occurs after the macro is expanded
+  [36m==>[0m /home/otto/文档/Project/cli/src/test/constraint_test.cj:12:1:
+   [36m| [0m
+[36m12[0m [36m| [0m  @Test[0m
+   [36m| [0m [34m_[0m[34m^[0m
+[36m13[0m [36m| [0m[34m|[0m class ConflictsTest {[0m
+   [36m| [0m[34m|[0m ...[0m
+[36m68[0m [36m| [0m[34m|[0m }[0m
+   [36m| [0m[34m|[0m[34m_[0m[34m^[0m
+   [36m| [0m
+[34mnote[0m: which is expanded as follows
+   [36m| [0m
+   [36m| [0m/* 12.19 */        let app = App("tool").command(Command("run").flag(Flag("json").asBool().conflictsWith("text")).flag(Flag("text").asBool()).action({ ctx => 0 }))[0m
+   [36m| [0m                                                                                                                                                       [34m^^^ [0m
+   [36m| [0m
+
+[33mwarning[0m: unused variable:'ctx'
   [36m==>[0m /home/otto/文档/Project/cli/src/test/parser_test.cj:57:31:
    [36m| [0m
 [36m57[0m [36m| [0m                    .action({ ctx => 0 })[0m
@@ -334,7 +532,7 @@
     [36m| [0m
     [36m| [0m  /* 12.1 */@Attribute[TEST_GENERATED] class ParserTest <: TestClass {[0m
     [36m| [0m [34m_[0m[34m^[0m
-    [36m| [0m[34m|[0m /* 12.2 */    @Attribute[TestCase_98][0m
+    [36m| [0m[34m|[0m /* 12.2 */    @Attribute[TestCase_129][0m
     [36m| [0m[34m|[0m /* 12.3 */    func testParseLongFlag() {[0m
     [36m| [0m[34m|[0m /* 12.4 */        let cmd = Command("app").flag(Flag("verbose").asBool()).flag(Flag("config").short(r'c'))[0m
     [36m| [0m[34m|[0m /* 12.5 */        let parser = Parser()[0m
@@ -343,7 +541,7 @@
     [36m| [0m[34m|[0m /* 12.8 */        assertEqual("ctx.getFlagOrDefault(\"config\", \"\") == \"app.toml\"", "true", ctx.getFlagOrDefault("config", "") == "app.toml", true, isDelta: false)[0m
     [36m| [0m[34m|[0m /* 12.9 */    }[0m
     [36m| [0m[34m|[0m /* 12.10 */    [0m
-    [36m| [0m[34m|[0m /* 12.11 */    @Attribute[TestCase_99][0m
+    [36m| [0m[34m|[0m /* 12.11 */    @Attribute[TestCase_130][0m
     [36m| [0m[34m|[0m /* 12.12 */    func testParseLongFlagWithEquals() {[0m
     [36m| [0m[34m|[0m /* 12.13 */        let cmd = Command("app").flag(Flag("config").short(r'c'))[0m
     [36m| [0m[34m|[0m /* 12.14 */        let parser = Parser()[0m
@@ -351,7 +549,7 @@
     [36m| [0m[34m|[0m /* 12.16 */        assertEqual("ctx.getFlagOrDefault(\"config\", \"\") == \"app.toml\"", "true", ctx.getFlagOrDefault("config", "") == "app.toml", true, isDelta: false)[0m
     [36m| [0m[34m|[0m /* 12.17 */    }[0m
     [36m| [0m[34m|[0m /* 12.18 */    [0m
-    [36m| [0m[34m|[0m /* 12.19 */    @Attribute[TestCase_100][0m
+    [36m| [0m[34m|[0m /* 12.19 */    @Attribute[TestCase_131][0m
     [36m| [0m[34m|[0m /* 12.20 */    func testParseShortFlag() {[0m
     [36m| [0m[34m|[0m /* 12.21 */        let cmd = Command("app").flag(Flag("verbose").short(r'v').asBool()).flag(Flag("config").short(r'c'))[0m
     [36m| [0m[34m|[0m /* 12.22 */        let parser = Parser()[0m
@@ -360,7 +558,7 @@
     [36m| [0m[34m|[0m /* 12.25 */        assertEqual("ctx.getFlagOrDefault(\"config\", \"\") == \"app.toml\"", "true", ctx.getFlagOrDefault("config", "") == "app.toml", true, isDelta: false)[0m
     [36m| [0m[34m|[0m /* 12.26 */    }[0m
     [36m| [0m[34m|[0m /* 12.27 */    [0m
-    [36m| [0m[34m|[0m /* 12.28 */    @Attribute[TestCase_101][0m
+    [36m| [0m[34m|[0m /* 12.28 */    @Attribute[TestCase_132][0m
     [36m| [0m[34m|[0m /* 12.29 */    func testSubcommandRouting() {[0m
     [36m| [0m[34m|[0m /* 12.30 */        let root = Command("tool").command(Command("lint").flag(Flag("fix").short(r'f').asBool()).action({ ctx => 0 }))[0m
     [36m| [0m[34m|[0m /* 12.31 */        let parser = Parser()[0m
@@ -369,7 +567,7 @@
     [36m| [0m[34m|[0m /* 12.34 */        assertEqual("ctx.getBoolFlag(\"fix\") == true", "true", ctx.getBoolFlag("fix") == true, true, isDelta: false)[0m
     [36m| [0m[34m|[0m /* 12.35 */    }[0m
     [36m| [0m[34m|[0m /* 12.36 */    [0m
-    [36m| [0m[34m|[0m /* 12.37 */    @Attribute[TestCase_102][0m
+    [36m| [0m[34m|[0m /* 12.37 */    @Attribute[TestCase_133][0m
     [36m| [0m[34m|[0m /* 12.38 */    func testDeepSubcommandRouting() {[0m
     [36m| [0m[34m|[0m /* 12.39 */        let root = Command("tool").command(Command("cloud").command(Command("server").command(Command("start").flag(Flag("port").short(r'p').valueType(Int64Type)).action({ ctx => 0 }))))[0m
     [36m| [0m[34m|[0m /* 12.40 */        let parser = Parser()[0m
@@ -379,7 +577,7 @@
     [36m| [0m[34m|[0m /* 12.44 */        assertEqual("ctx.getCommandPathStr() == \"tool cloud server start\"", "true", ctx.getCommandPathStr() == "tool cloud server start", true, isDelta: false)[0m
     [36m| [0m[34m|[0m /* 12.45 */    }[0m
     [36m| [0m[34m|[0m /* 12.46 */    [0m
-    [36m| [0m[34m|[0m /* 12.47 */    @Attribute[TestCase_103][0m
+    [36m| [0m[34m|[0m /* 12.47 */    @Attribute[TestCase_134][0m
     [36m| [0m[34m|[0m /* 12.48 */    func testPositionalArguments() {[0m
     [36m| [0m[34m|[0m /* 12.49 */        let cmd = Command("app").argument(Argument("input").required(true)).argument(Argument("output"))[0m
     [36m| [0m[34m|[0m /* 12.50 */        let parser = Parser()[0m
@@ -395,7 +593,7 @@
     [36m| [0m[34m|[0m /* 12.60 */        }[0m
     [36m| [0m[34m|[0m /* 12.61 */    }[0m
     [36m| [0m[34m|[0m /* 12.62 */    [0m
-    [36m| [0m[34m|[0m /* 12.63 */    @Attribute[TestCase_104][0m
+    [36m| [0m[34m|[0m /* 12.63 */    @Attribute[TestCase_135][0m
     [36m| [0m[34m|[0m /* 12.64 */    func testVariadicArguments() {[0m
     [36m| [0m[34m|[0m /* 12.65 */        let cmd = Command("app").argument(Argument("files").variadic(true).minCount(1))[0m
     [36m| [0m[34m|[0m /* 12.66 */        let parser = Parser()[0m
@@ -403,7 +601,7 @@
     [36m| [0m[34m|[0m /* 12.68 */        assertEqual("ctx.argumentCount() == 3", "true", ctx.argumentCount() == 3, true, isDelta: false)[0m
     [36m| [0m[34m|[0m /* 12.69 */    }[0m
     [36m| [0m[34m|[0m /* 12.70 */    [0m
-    [36m| [0m[34m|[0m /* 12.71 */    @Attribute[TestCase_105][0m
+    [36m| [0m[34m|[0m /* 12.71 */    @Attribute[TestCase_136][0m
     [36m| [0m[34m|[0m /* 12.72 */    func testDoubleDashSeparator() {[0m
     [36m| [0m[34m|[0m /* 12.73 */        let cmd = Command("app").flag(Flag("verbose").short(r'v').asBool())[0m
     [36m| [0m[34m|[0m /* 12.74 */        let parser = Parser()[0m
@@ -416,7 +614,7 @@
     [36m| [0m[34m|[0m /* 12.81 */        }[0m
     [36m| [0m[34m|[0m /* 12.82 */    }[0m
     [36m| [0m[34m|[0m /* 12.83 */    [0m
-    [36m| [0m[34m|[0m /* 12.84 */    @Attribute[TestCase_106][0m
+    [36m| [0m[34m|[0m /* 12.84 */    @Attribute[TestCase_137][0m
     [36m| [0m[34m|[0m /* 12.85 */    func testDefaultValues() {[0m
     [36m| [0m[34m|[0m /* 12.86 */        let cmd = Command("app").flag(Flag("config").defaultValue("default.toml"))[0m
     [36m| [0m[34m|[0m /* 12.87 */        let parser = Parser()[0m
@@ -424,7 +622,7 @@
     [36m| [0m[34m|[0m /* 12.89 */        assertEqual("ctx.getFlagOrDefault(\"config\", \"\") == \"default.toml\"", "true", ctx.getFlagOrDefault("config", "") == "default.toml", true, isDelta: false)[0m
     [36m| [0m[34m|[0m /* 12.90 */    }[0m
     [36m| [0m[34m|[0m /* 12.91 */    [0m
-    [36m| [0m[34m|[0m /* 12.92 */    @Attribute[TestCase_107][0m
+    [36m| [0m[34m|[0m /* 12.92 */    @Attribute[TestCase_138][0m
     [36m| [0m[34m|[0m /* 12.93 */    func testRequiredFlagMissing() {[0m
     [36m| [0m[34m|[0m /* 12.94 */        let cmd = Command("app").flag(Flag("output").short(r'o').required(true))[0m
     [36m| [0m[34m|[0m /* 12.95 */        let parser = Parser()[0m
@@ -438,7 +636,7 @@
     [36m| [0m[34m|[0m /* 12.103 */        assertEqual("caught", "true", caught, true, isDelta: false)[0m
     [36m| [0m[34m|[0m /* 12.104 */    }[0m
     [36m| [0m[34m|[0m /* 12.105 */    [0m
-    [36m| [0m[34m|[0m /* 12.106 */    @Attribute[TestCase_108][0m
+    [36m| [0m[34m|[0m /* 12.106 */    @Attribute[TestCase_139][0m
     [36m| [0m[34m|[0m /* 12.107 */    func testRequiredArgumentMissing() {[0m
     [36m| [0m[34m|[0m /* 12.108 */        let cmd = Command("app").argument(Argument("file").required(true))[0m
     [36m| [0m[34m|[0m /* 12.109 */        let parser = Parser()[0m
@@ -452,7 +650,7 @@
     [36m| [0m[34m|[0m /* 12.117 */        assertEqual("caught", "true", caught, true, isDelta: false)[0m
     [36m| [0m[34m|[0m /* 12.118 */    }[0m
     [36m| [0m[34m|[0m /* 12.119 */    [0m
-    [36m| [0m[34m|[0m /* 12.120 */    @Attribute[TestCase_109][0m
+    [36m| [0m[34m|[0m /* 12.120 */    @Attribute[TestCase_140][0m
     [36m| [0m[34m|[0m /* 12.121 */    func testUnknownLongFlag() {[0m
     [36m| [0m[34m|[0m /* 12.122 */        let cmd = Command("app")[0m
     [36m| [0m[34m|[0m /* 12.123 */        let parser = Parser()[0m
@@ -466,7 +664,7 @@
     [36m| [0m[34m|[0m /* 12.131 */        assertEqual("caught", "true", caught, true, isDelta: false)[0m
     [36m| [0m[34m|[0m /* 12.132 */    }[0m
     [36m| [0m[34m|[0m /* 12.133 */    [0m
-    [36m| [0m[34m|[0m /* 12.134 */    @Attribute[TestCase_110][0m
+    [36m| [0m[34m|[0m /* 12.134 */    @Attribute[TestCase_141][0m
     [36m| [0m[34m|[0m /* 12.135 */    func testUnknownShortFlag() {[0m
     [36m| [0m[34m|[0m /* 12.136 */        let cmd = Command("app")[0m
     [36m| [0m[34m|[0m /* 12.137 */        let parser = Parser()[0m
@@ -480,7 +678,7 @@
     [36m| [0m[34m|[0m /* 12.145 */        assertEqual("caught", "true", caught, true, isDelta: false)[0m
     [36m| [0m[34m|[0m /* 12.146 */    }[0m
     [36m| [0m[34m|[0m /* 12.147 */    [0m
-    [36m| [0m[34m|[0m /* 12.148 */    @Attribute[TestCase_111][0m
+    [36m| [0m[34m|[0m /* 12.148 */    @Attribute[TestCase_142][0m
     [36m| [0m[34m|[0m /* 12.149 */    func testFlagMissingValue() {[0m
     [36m| [0m[34m|[0m /* 12.150 */        let cmd = Command("app").flag(Flag("output").short(r'o'))[0m
     [36m| [0m[34m|[0m /* 12.151 */        let parser = Parser()[0m
@@ -494,7 +692,7 @@
     [36m| [0m[34m|[0m /* 12.159 */        assertEqual("caught", "true", caught, true, isDelta: false)[0m
     [36m| [0m[34m|[0m /* 12.160 */    }[0m
     [36m| [0m[34m|[0m /* 12.161 */    [0m
-    [36m| [0m[34m|[0m /* 12.162 */    @Attribute[TestCase_112][0m
+    [36m| [0m[34m|[0m /* 12.162 */    @Attribute[TestCase_143][0m
     [36m| [0m[34m|[0m /* 12.163 */    func testTypedFlagInt64() {[0m
     [36m| [0m[34m|[0m /* 12.164 */        let cmd = Command("app").flag(Flag("port").short(r'p').valueType(Int64Type))[0m
     [36m| [0m[34m|[0m /* 12.165 */        let parser = Parser()[0m
@@ -506,7 +704,7 @@
     [36m| [0m[34m|[0m /* 12.171 */        }[0m
     [36m| [0m[34m|[0m /* 12.172 */    }[0m
     [36m| [0m[34m|[0m /* 12.173 */    [0m
-    [36m| [0m[34m|[0m /* 12.174 */    @Attribute[TestCase_113][0m
+    [36m| [0m[34m|[0m /* 12.174 */    @Attribute[TestCase_144][0m
     [36m| [0m[34m|[0m /* 12.175 */    func testTypedFlagInt64Error() {[0m
     [36m| [0m[34m|[0m /* 12.176 */        let cmd = Command("app").flag(Flag("port").short(r'p').valueType(Int64Type))[0m
     [36m| [0m[34m|[0m /* 12.177 */        let parser = Parser()[0m
@@ -519,7 +717,7 @@
     [36m| [0m[34m|[0m /* 12.184 */        assertEqual("caught", "true", caught, true, isDelta: false)[0m
     [36m| [0m[34m|[0m /* 12.185 */    }[0m
     [36m| [0m[34m|[0m /* 12.186 */    [0m
-    [36m| [0m[34m|[0m /* 12.187 */    @Attribute[TestCase_114][0m
+    [36m| [0m[34m|[0m /* 12.187 */    @Attribute[TestCase_145][0m
     [36m| [0m[34m|[0m /* 12.188 */    func testTypedFlagBool() {[0m
     [36m| [0m[34m|[0m /* 12.189 */        let cmd = Command("app").flag(Flag("debug").valueType(BoolType))[0m
     [36m| [0m[34m|[0m /* 12.190 */        let parser = Parser()[0m
@@ -527,7 +725,7 @@
     [36m| [0m[34m|[0m /* 12.192 */        assertEqual("ctx.getFlagOrDefault(\"debug\", \"\") == \"true\"", "true", ctx.getFlagOrDefault("debug", "") == "true", true, isDelta: false)[0m
     [36m| [0m[34m|[0m /* 12.193 */    }[0m
     [36m| [0m[34m|[0m /* 12.194 */    [0m
-    [36m| [0m[34m|[0m /* 12.195 */    @Attribute[TestCase_115][0m
+    [36m| [0m[34m|[0m /* 12.195 */    @Attribute[TestCase_146][0m
     [36m| [0m[34m|[0m /* 12.196 */    func testSubcommandWithAlias() {[0m
     [36m| [0m[34m|[0m /* 12.197 */        let root = Command("tool").command(Command("install").alias("i").action({ ctx => 0 }))[0m
     [36m| [0m[34m|[0m /* 12.198 */        let parser = Parser()[0m
@@ -535,7 +733,7 @@
     [36m| [0m[34m|[0m /* 12.200 */        assertEqual("matched.getName() == \"install\"", "true", matched.getName() == "install", true, isDelta: false)[0m
     [36m| [0m[34m|[0m /* 12.201 */    }[0m
     [36m| [0m[34m|[0m /* 12.202 */    [0m
-    [36m| [0m[34m|[0m /* 12.203 */    @Attribute[TestCase_116][0m
+    [36m| [0m[34m|[0m /* 12.203 */    @Attribute[TestCase_147][0m
     [36m| [0m[34m|[0m /* 12.204 */    func testMixedFlagsAndArgs() {[0m
     [36m| [0m[34m|[0m /* 12.205 */        let cmd = Command("app").flag(Flag("verbose").short(r'v').asBool()).flag(Flag("output").short(r'o')).argument(Argument("input").required(true))[0m
     [36m| [0m[34m|[0m /* 12.206 */        let parser = Parser()[0m
@@ -548,7 +746,7 @@
     [36m| [0m[34m|[0m /* 12.213 */        }[0m
     [36m| [0m[34m|[0m /* 12.214 */    }[0m
     [36m| [0m[34m|[0m /* 12.215 */    [0m
-    [36m| [0m[34m|[0m /* 12.216 */    @Attribute[TestCase_117][0m
+    [36m| [0m[34m|[0m /* 12.216 */    @Attribute[TestCase_148][0m
     [36m| [0m[34m|[0m /* 12.217 */    func testVariadicMinCountViolation() {[0m
     [36m| [0m[34m|[0m /* 12.218 */        let cmd = Command("app").argument(Argument("files").variadic(true).minCount(2))[0m
     [36m| [0m[34m|[0m /* 12.219 */        let parser = Parser()[0m
@@ -562,7 +760,7 @@
     [36m| [0m[34m|[0m /* 12.227 */        assertEqual("caught", "true", caught, true, isDelta: false)[0m
     [36m| [0m[34m|[0m /* 12.228 */    }[0m
     [36m| [0m[34m|[0m /* 12.229 */    [0m
-    [36m| [0m[34m|[0m /* 12.230 */    @Attribute[TestCase_118][0m
+    [36m| [0m[34m|[0m /* 12.230 */    @Attribute[TestCase_149][0m
     [36m| [0m[34m|[0m /* 12.231 */    func testTerminateFlagThrows() {[0m
     [36m| [0m[34m|[0m /* 12.232 */        let cmd = Command("app").flag(Flag("help").short(r'h').action(FlagAction.Terminate({ => "Help text" })))[0m
     [36m| [0m[34m|[0m /* 12.233 */        let parser = Parser()[0m
@@ -576,7 +774,7 @@
     [36m| [0m[34m|[0m /* 12.241 */        assertEqual("caught", "true", caught, true, isDelta: false)[0m
     [36m| [0m[34m|[0m /* 12.242 */    }[0m
     [36m| [0m[34m|[0m /* 12.243 */    [0m
-    [36m| [0m[34m|[0m /* 12.244 */    @Attribute[TestCase_119][0m
+    [36m| [0m[34m|[0m /* 12.244 */    @Attribute[TestCase_150][0m
     [36m| [0m[34m|[0m /* 12.245 */    func testAppendAction() {[0m
     [36m| [0m[34m|[0m /* 12.246 */        let cmd = Command("app").flag(Flag("include").short(r'I').action(FlagAction.Append))[0m
     [36m| [0m[34m|[0m /* 12.247 */        let parser = Parser()[0m
@@ -589,7 +787,7 @@
     [36m| [0m[34m|[0m /* 12.254 */        }[0m
     [36m| [0m[34m|[0m /* 12.255 */    }[0m
     [36m| [0m[34m|[0m /* 12.256 */    [0m
-    [36m| [0m[34m|[0m /* 12.257 */    @Attribute[TestCase_120][0m
+    [36m| [0m[34m|[0m /* 12.257 */    @Attribute[TestCase_151][0m
     [36m| [0m[34m|[0m /* 12.258 */    func testSetTrueAction() {[0m
     [36m| [0m[34m|[0m /* 12.259 */        let cmd = Command("app").flag(Flag("verbose").action(FlagAction.SetTrue))[0m
     [36m| [0m[34m|[0m /* 12.260 */        let parser = Parser()[0m
@@ -597,7 +795,7 @@
     [36m| [0m[34m|[0m /* 12.262 */        assertEqual("ctx.getBoolFlag(\"verbose\") == true", "true", ctx.getBoolFlag("verbose") == true, true, isDelta: false)[0m
     [36m| [0m[34m|[0m /* 12.263 */    }[0m
     [36m| [0m[34m|[0m /* 12.264 */    [0m
-    [36m| [0m[34m|[0m /* 12.265 */    @Attribute[TestCase_121][0m
+    [36m| [0m[34m|[0m /* 12.265 */    @Attribute[TestCase_152][0m
     [36m| [0m[34m|[0m /* 12.266 */    func testSetFalseAction() {[0m
     [36m| [0m[34m|[0m /* 12.267 */        let cmd = Command("app").flag(Flag("no-color").action(FlagAction.SetFalse))[0m
     [36m| [0m[34m|[0m /* 12.268 */        let parser = Parser()[0m
@@ -605,7 +803,7 @@
     [36m| [0m[34m|[0m /* 12.270 */        assertEqual("ctx.getBoolFlag(\"no-color\") == false", "true", ctx.getBoolFlag("no-color") == false, true, isDelta: false)[0m
     [36m| [0m[34m|[0m /* 12.271 */    }[0m
     [36m| [0m[34m|[0m /* 12.272 */    [0m
-    [36m| [0m[34m|[0m /* 12.273 */    @Attribute[TestCase_122][0m
+    [36m| [0m[34m|[0m /* 12.273 */    @Attribute[TestCase_153][0m
     [36m| [0m[34m|[0m /* 12.274 */    func testBatchFlags() {[0m
     [36m| [0m[34m|[0m /* 12.275 */        let cmd = Command("app").flags([Flag("verbose").short(r'v').asBool(), Flag("config").short(r'c'), Flag("output").short(r'o')])[0m
     [36m| [0m[34m|[0m /* 12.276 */        let parser = Parser()[0m
@@ -1003,6 +1201,29 @@
    [36m| [0m
 
 [33mwarning[0m: unused variable:'ctx'
+  [36m==>[0m /home/otto/文档/Project/cli/src/test/constraint_test.cj:62:31:
+   [36m| [0m
+[36m62[0m [36m| [0m                    .action({ ctx => 0 })[0m
+   [36m| [0m                              [33m^ unused variable[0m
+   [36m| [0m
+   [36m#[0m [0mnote[0m: this warning can be suppressed by setting the compiler option `-Woff unused`
+[34mnote[0m: the warning occurs after the macro is expanded
+  [36m==>[0m /home/otto/文档/Project/cli/src/test/constraint_test.cj:12:1:
+   [36m| [0m
+[36m12[0m [36m| [0m  @Test[0m
+   [36m| [0m [34m_[0m[34m^[0m
+[36m13[0m [36m| [0m[34m|[0m class ConflictsTest {[0m
+   [36m| [0m[34m|[0m ...[0m
+[36m68[0m [36m| [0m[34m|[0m }[0m
+   [36m| [0m[34m|[0m[34m_[0m[34m^[0m
+   [36m| [0m
+[34mnote[0m: which is expanded as follows
+   [36m| [0m
+   [36m| [0m/* 12.26 */        let app = App("tool").command(Command("run").flag(Flag("verbose").short(r'v').asBool().conflictsWith("quiet")).flag(Flag("quiet").short(r'q').asBool().conflictsWith("verbose")).action({ ctx => 0 }))[0m
+   [36m| [0m                                                                                                                                                                                                             [34m^^^ [0m
+   [36m| [0m
+
+[33mwarning[0m: unused variable:'ctx'
   [36m==>[0m /home/otto/文档/Project/cli/src/test/lifecycle_test.cj:63:33:
    [36m| [0m
 [36m63[0m [36m| [0m            .persistentPreRun({ ctx =>[0m
@@ -1095,6 +1316,151 @@
    [36m| [0m
 
 [33mwarning[0m: unused variable:'ctx'
+  [36m==>[0m /home/otto/文档/Project/cli/src/test/constraint_test.cj:82:31:
+   [36m| [0m
+[36m82[0m [36m| [0m                    .action({ ctx => 0 })[0m
+   [36m| [0m                              [33m^ unused variable[0m
+   [36m| [0m
+   [36m#[0m [0mnote[0m: this warning can be suppressed by setting the compiler option `-Woff unused`
+[34mnote[0m: the warning occurs after the macro is expanded
+   [36m==>[0m /home/otto/文档/Project/cli/src/test/constraint_test.cj:73:1:
+    [36m| [0m
+[36m73[0m  [36m| [0m  @Test[0m
+    [36m| [0m [34m_[0m[34m^[0m
+[36m74[0m  [36m| [0m[34m|[0m class RequiresTest {[0m
+    [36m| [0m[34m|[0m ...[0m
+[36m131[0m [36m| [0m[34m|[0m }[0m
+    [36m| [0m[34m|[0m[34m_[0m[34m^[0m
+    [36m| [0m
+[34mnote[0m: the code after the macro is expanded as follows
+    [36m| [0m
+    [36m| [0m  /* 73.1 */@Attribute[TEST_GENERATED] class RequiresTest <: TestClass {[0m
+    [36m| [0m [34m_[0m[34m^[0m
+    [36m| [0m[34m|[0m /* 73.2 */    @Attribute[TestCase_21][0m
+    [36m| [0m[34m|[0m /* 73.3 */    func testRequiresMet() {[0m
+    [36m| [0m[34m|[0m /* 73.4 */        let app = App("tool").command(Command("export").flag(Flag("output").description("Output path")).flag(Flag("format").requires("output").description("Format")).action({ ctx => 0 }))[0m
+    [36m| [0m[34m|[0m /* 73.5 */        let result = app.mockRun(["export", "--output", "out.txt", "--format", "json"])[0m
+    [36m| [0m[34m|[0m /* 73.6 */        assertEqual("result.exitCode == 0", "true", result.exitCode == 0, true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 73.7 */    }[0m
+    [36m| [0m[34m|[0m /* 73.8 */    [0m
+    [36m| [0m[34m|[0m /* 73.9 */    @Attribute[TestCase_22][0m
+    [36m| [0m[34m|[0m /* 73.10 */    func testRequiresNotMet() {[0m
+    [36m| [0m[34m|[0m /* 73.11 */        let app = App("tool").command(Command("export").flag(Flag("output").description("Output path")).flag(Flag("format").requires("output").description("Format")).action({ ctx => 0 }))[0m
+    [36m| [0m[34m|[0m /* 73.12 */        let result = app.mockRun(["export", "--format", "json"])[0m
+    [36m| [0m[34m|[0m /* 73.13 */        assertEqual("result.exitCode == 2", "true", result.exitCode == 2, true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 73.14 */        assertEqual("result.stderr.contains(\"requires\")", "true", result.stderr.contains("requires"), true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 73.15 */        assertEqual("result.stderr.contains(\"--output\")", "true", result.stderr.contains("--output"), true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 73.16 */    }[0m
+    [36m| [0m[34m|[0m /* 73.17 */    [0m
+    [36m| [0m[34m|[0m /* 73.18 */    @Attribute[TestCase_23][0m
+    [36m| [0m[34m|[0m /* 73.19 */    func testRequiresSatisfiedByDefault() {[0m
+    [36m| [0m[34m|[0m /* 73.20 */        let app = App("tool").command(Command("export").flag(Flag("output").defaultValue("default.txt")).flag(Flag("format").requires("output")).action({ ctx => 0 }))[0m
+    [36m| [0m[34m|[0m /* 73.21 */        let result = app.mockRun(["export", "--format", "json"])[0m
+    [36m| [0m[34m|[0m /* 73.22 */        assertEqual("result.exitCode == 0", "true", result.exitCode == 0, true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 73.23 */    }[0m
+    [36m| [0m[34m|[0m /* 73.24 */    [0m
+    [36m| [0m[34m|[0m /* 73.25 */    @Attribute[TestCase_24][0m
+    [36m| [0m[34m|[0m /* 73.26 */    func testMultipleRequires() {[0m
+    [36m| [0m[34m|[0m /* 73.27 */        let app = App("tool").command(Command("deploy").flag(Flag("host")).flag(Flag("port").valueType(Int64Type)).flag(Flag("ssl").asBool().requires("host").requires("port")).action({ ctx => 0 }))[0m
+    [36m| [0m[34m|[0m /* 73.28 */        let result = app.mockRun(["deploy", "--ssl", "--host", "localhost"])[0m
+    [36m| [0m[34m|[0m /* 73.29 */        assertEqual("result.exitCode == 2", "true", result.exitCode == 2, true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 73.30 */        assertEqual("result.stderr.contains(\"--port\")", "true", result.stderr.contains("--port"), true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 73.31 */    }[0m
+    [36m| [0m[34m|[0m /* 73.32 */    [0m
+    [36m| [0m[34m|[0m /* 73.33 */    init() {[0m
+    [36m| [0m[34m|[0m /* 73.34 */    }[0m
+    [36m| [0m[34m|[0m /* 73.35 */    private func classConfiguration(): Configuration {[0m
+    [36m| [0m[34m|[0m /* 73.36 */        let configuration = Configuration()[0m
+    [36m| [0m[34m|[0m /* 73.37 */        [0m
+    [36m| [0m[34m|[0m /* 73.38 */        return configuration[0m
+    [36m| [0m[34m|[0m /* 73.39 */    }[0m
+    [36m| [0m[34m|[0m /* 73.40 */    public override func asTestSuite(): TestSuite {[0m
+    [36m| [0m[34m|[0m /* 73.41 */        [0m
+    [36m| [0m[34m|[0m /* 73.42 */        let suiteConfiguration = classConfiguration()[0m
+    [36m| [0m[34m|[0m /* 73.43 */        let suiteBuilder = TestSuite.builder("RequiresTest").configure(suiteConfiguration)[0m
+    [36m| [0m[34m|[0m /* 73.44 */        [0m
+    [36m| [0m[34m|[0m /* 73.45 */        { => let caseConfig = Configuration()[0m
+    [36m| [0m[34m|[0m /* 73.46 */            [0m
+    [36m| [0m[34m|[0m /* 73.47 */            let testRequiresMetTestFunc = { => testRequiresMet();() }[0m
+    [36m| [0m[34m|[0m /* 73.48 */            suiteBuilder.add([0m
+    [36m| [0m[34m|[0m /* 73.49 */            UnitTestCase.create([0m
+    [36m| [0m[34m|[0m /* 73.50 */            "testRequiresMet",[0m
+    [36m| [0m[34m|[0m /* 73.51 */            configuration: caseConfig,[0m
+    [36m| [0m[34m|[0m /* 73.52 */            body: testRequiresMetTestFunc[0m
+    [36m| [0m[34m|[0m /* 73.53 */            )[0m
+    [36m| [0m[34m|[0m /* 73.54 */            )[0m
+    [36m| [0m[34m|[0m /* 73.55 */            [0m
+    [36m| [0m[34m|[0m /* 73.56 */        }()[0m
+    [36m| [0m[34m|[0m /* 73.57 */        [0m
+    [36m| [0m[34m|[0m /* 73.58 */        [0m
+    [36m| [0m[34m|[0m /* 73.59 */        { => let caseConfig = Configuration()[0m
+    [36m| [0m[34m|[0m /* 73.60 */            [0m
+    [36m| [0m[34m|[0m /* 73.61 */            let testRequiresNotMetTestFunc = { => testRequiresNotMet();() }[0m
+    [36m| [0m[34m|[0m /* 73.62 */            suiteBuilder.add([0m
+    [36m| [0m[34m|[0m /* 73.63 */            UnitTestCase.create([0m
+    [36m| [0m[34m|[0m /* 73.64 */            "testRequiresNotMet",[0m
+    [36m| [0m[34m|[0m /* 73.65 */            configuration: caseConfig,[0m
+    [36m| [0m[34m|[0m /* 73.66 */            body: testRequiresNotMetTestFunc[0m
+    [36m| [0m[34m|[0m /* 73.67 */            )[0m
+    [36m| [0m[34m|[0m /* 73.68 */            )[0m
+    [36m| [0m[34m|[0m /* 73.69 */            [0m
+    [36m| [0m[34m|[0m /* 73.70 */        }()[0m
+    [36m| [0m[34m|[0m /* 73.71 */        [0m
+    [36m| [0m[34m|[0m /* 73.72 */        [0m
+    [36m| [0m[34m|[0m /* 73.73 */        { => let caseConfig = Configuration()[0m
+    [36m| [0m[34m|[0m /* 73.74 */            [0m
+    [36m| [0m[34m|[0m /* 73.75 */            let testRequiresSatisfiedByDefaultTestFunc = { => testRequiresSatisfiedByDefault();() }[0m
+    [36m| [0m[34m|[0m /* 73.76 */            suiteBuilder.add([0m
+    [36m| [0m[34m|[0m /* 73.77 */            UnitTestCase.create([0m
+    [36m| [0m[34m|[0m /* 73.78 */            "testRequiresSatisfiedByDefault",[0m
+    [36m| [0m[34m|[0m /* 73.79 */            configuration: caseConfig,[0m
+    [36m| [0m[34m|[0m /* 73.80 */            body: testRequiresSatisfiedByDefaultTestFunc[0m
+    [36m| [0m[34m|[0m /* 73.81 */            )[0m
+    [36m| [0m[34m|[0m /* 73.82 */            )[0m
+    [36m| [0m[34m|[0m /* 73.83 */            [0m
+    [36m| [0m[34m|[0m /* 73.84 */        }()[0m
+    [36m| [0m[34m|[0m /* 73.85 */        [0m
+    [36m| [0m[34m|[0m /* 73.86 */        [0m
+    [36m| [0m[34m|[0m /* 73.87 */        { => let caseConfig = Configuration()[0m
+    [36m| [0m[34m|[0m /* 73.88 */            [0m
+    [36m| [0m[34m|[0m /* 73.89 */            let testMultipleRequiresTestFunc = { => testMultipleRequires();() }[0m
+    [36m| [0m[34m|[0m /* 73.90 */            suiteBuilder.add([0m
+    [36m| [0m[34m|[0m /* 73.91 */            UnitTestCase.create([0m
+    [36m| [0m[34m|[0m /* 73.92 */            "testMultipleRequires",[0m
+    [36m| [0m[34m|[0m /* 73.93 */            configuration: caseConfig,[0m
+    [36m| [0m[34m|[0m /* 73.94 */            body: testMultipleRequiresTestFunc[0m
+    [36m| [0m[34m|[0m /* 73.95 */            )[0m
+    [36m| [0m[34m|[0m /* 73.96 */            )[0m
+    [36m| [0m[34m|[0m /* 73.97 */            [0m
+    [36m| [0m[34m|[0m /* 73.98 */        }()[0m
+    [36m| [0m[34m|[0m /* 73.99 */        [0m
+    [36m| [0m[34m|[0m /* 73.100 */        return suiteBuilder.build()[0m
+    [36m| [0m[34m|[0m /* 73.101 */    }[0m
+    [36m| [0m[34m|[0m /* 73.102 */    private func inheritedFromClassAnnotatedByTestTemplate < T >(): TestSuite where T <: TestClass {[0m
+    [36m| [0m[34m|[0m /* 73.103 */        throw Exception("Unreachable code")[0m
+    [36m| [0m[34m|[0m /* 73.104 */    }[0m
+    [36m| [0m[34m|[0m /* 73.105 */}[0m
+    [36m| [0m[34m|[0m /* 73.106 */[0m
+    [36m| [0m[34m|[0m /* 73.107 */[0m
+    [36m| [0m[34m|[0m /* 73.108 */interface TestPackageExtension_RequiresTest {[0m
+    [36m| [0m[34m|[0m /* 73.109 */    func registerRequiresTest(): Unit[0m
+    [36m| [0m[34m|[0m /* 73.110 */}[0m
+    [36m| [0m[34m|[0m /* 73.111 */extend TestPackage <: TestPackageExtension_RequiresTest {[0m
+    [36m| [0m[34m|[0m /* 73.112 */    @Attribute[TEST_REGISTER][0m
+    [36m| [0m[34m|[0m /* 73.113 */    public func registerRequiresTest() {[0m
+    [36m| [0m[34m|[0m /* 73.114 */        registerSuite({ => RequiresTest().asTestSuite() })[0m
+    [36m| [0m[34m|[0m /* 73.115 */    }[0m
+    [36m| [0m[34m|[0m /* 73.116 */}[0m
+    [36m| [0m[34m|[0m /* 73.117 */[0m
+    [36m| [0m[34m|[0m[34m_[0m[34m___________^[0m
+    [36m| [0m
+[34mnote[0m: which is expanded as follows
+    [36m| [0m
+    [36m| [0m/* 73.4 */        let app = App("tool").command(Command("export").flag(Flag("output").description("Output path")).flag(Flag("format").requires("output").description("Format")).action({ ctx => 0 }))[0m
+    [36m| [0m                                                                                                                                                                                         [34m^^^ [0m
+    [36m| [0m
+
+[33mwarning[0m: unused variable:'ctx'
   [36m==>[0m /home/otto/文档/Project/cli/src/test/lifecycle_test.cj:89:34:
    [36m| [0m
 [36m89[0m [36m| [0m            .persistentPostRun({ ctx =>[0m
@@ -1138,7 +1504,7 @@
     [36m| [0m
     [36m| [0m  /* 12.1 */@Attribute[TEST_GENERATED] class AppIntegrationTest <: TestClass {[0m
     [36m| [0m [34m_[0m[34m^[0m
-    [36m| [0m[34m|[0m /* 12.2 */    @Attribute[TestCase_55][0m
+    [36m| [0m[34m|[0m /* 12.2 */    @Attribute[TestCase_86][0m
     [36m| [0m[34m|[0m /* 12.3 */    func testAppBuilder() {[0m
     [36m| [0m[34m|[0m /* 12.4 */        let app = App("cj-tool").description("A cool CLI tool").version("v1.0.0")[0m
     [36m| [0m[34m|[0m /* 12.5 */        let root = app.getRootCommand()[0m
@@ -1147,7 +1513,7 @@
     [36m| [0m[34m|[0m /* 12.8 */        assertEqual("root.getVersionStr() == \"v1.0.0\"", "true", root.getVersionStr() == "v1.0.0", true, isDelta: false)[0m
     [36m| [0m[34m|[0m /* 12.9 */    }[0m
     [36m| [0m[34m|[0m /* 12.10 */    [0m
-    [36m| [0m[34m|[0m /* 12.11 */    @Attribute[TestCase_56][0m
+    [36m| [0m[34m|[0m /* 12.11 */    @Attribute[TestCase_87][0m
     [36m| [0m[34m|[0m /* 12.12 */    func testMockRunHelp() {[0m
     [36m| [0m[34m|[0m /* 12.13 */        let app = App("cj-tool").description("A testing tool").version("1.0.0").command(Command("lint").description("Lint code")).command(Command("fmt").description("Format code"))[0m
     [36m| [0m[34m|[0m /* 12.14 */        let result = app.mockRun(["--help"])[0m
@@ -1158,7 +1524,7 @@
     [36m| [0m[34m|[0m /* 12.19 */        assertEqual("result.stderr.contains(\"fmt\")", "true", result.stderr.contains("fmt"), true, isDelta: false)[0m
     [36m| [0m[34m|[0m /* 12.20 */    }[0m
     [36m| [0m[34m|[0m /* 12.21 */    [0m
-    [36m| [0m[34m|[0m /* 12.22 */    @Attribute[TestCase_57][0m
+    [36m| [0m[34m|[0m /* 12.22 */    @Attribute[TestCase_88][0m
     [36m| [0m[34m|[0m /* 12.23 */    func testMockRunHelpShort() {[0m
     [36m| [0m[34m|[0m /* 12.24 */        let app = App("cj-tool").version("1.0.0")[0m
     [36m| [0m[34m|[0m /* 12.25 */        let result = app.mockRun(["-h"])[0m
@@ -1166,7 +1532,7 @@
     [36m| [0m[34m|[0m /* 12.27 */        assertEqual("result.stderr.contains(\"Usage:\")", "true", result.stderr.contains("Usage:"), true, isDelta: false)[0m
     [36m| [0m[34m|[0m /* 12.28 */    }[0m
     [36m| [0m[34m|[0m /* 12.29 */    [0m
-    [36m| [0m[34m|[0m /* 12.30 */    @Attribute[TestCase_58][0m
+    [36m| [0m[34m|[0m /* 12.30 */    @Attribute[TestCase_89][0m
     [36m| [0m[34m|[0m /* 12.31 */    func testMockRunVersion() {[0m
     [36m| [0m[34m|[0m /* 12.32 */        let app = App("cj-tool").version("2.1.0")[0m
     [36m| [0m[34m|[0m /* 12.33 */        let result = app.mockRun(["--version"])[0m
@@ -1175,7 +1541,7 @@
     [36m| [0m[34m|[0m /* 12.36 */        assertEqual("result.stdout.contains(\"2.1.0\")", "true", result.stdout.contains("2.1.0"), true, isDelta: false)[0m
     [36m| [0m[34m|[0m /* 12.37 */    }[0m
     [36m| [0m[34m|[0m /* 12.38 */    [0m
-    [36m| [0m[34m|[0m /* 12.39 */    @Attribute[TestCase_59][0m
+    [36m| [0m[34m|[0m /* 12.39 */    @Attribute[TestCase_90][0m
     [36m| [0m[34m|[0m /* 12.40 */    func testMockRunVersionShort() {[0m
     [36m| [0m[34m|[0m /* 12.41 */        let app = App("cj-tool").version("2.1.0")[0m
     [36m| [0m[34m|[0m /* 12.42 */        let result = app.mockRun(["-V"])[0m
@@ -1183,7 +1549,7 @@
     [36m| [0m[34m|[0m /* 12.44 */        assertEqual("result.stdout.contains(\"2.1.0\")", "true", result.stdout.contains("2.1.0"), true, isDelta: false)[0m
     [36m| [0m[34m|[0m /* 12.45 */    }[0m
     [36m| [0m[34m|[0m /* 12.46 */    [0m
-    [36m| [0m[34m|[0m /* 12.47 */    @Attribute[TestCase_60][0m
+    [36m| [0m[34m|[0m /* 12.47 */    @Attribute[TestCase_91][0m
     [36m| [0m[34m|[0m /* 12.48 */    func testMockRunSubcommandHelp() {[0m
     [36m| [0m[34m|[0m /* 12.49 */        let app = App("tool").command(Command("lint").description("Lint source files").flag(Flag("fix").short(r'f').asBool().description("Auto-fix issues")))[0m
     [36m| [0m[34m|[0m /* 12.50 */        let result = app.mockRun(["lint", "--help"])[0m
@@ -1192,14 +1558,14 @@
     [36m| [0m[34m|[0m /* 12.53 */        assertEqual("result.stderr.contains(\"--fix\")", "true", result.stderr.contains("--fix"), true, isDelta: false)[0m
     [36m| [0m[34m|[0m /* 12.54 */    }[0m
     [36m| [0m[34m|[0m /* 12.55 */    [0m
-    [36m| [0m[34m|[0m /* 12.56 */    @Attribute[TestCase_61][0m
+    [36m| [0m[34m|[0m /* 12.56 */    @Attribute[TestCase_92][0m
     [36m| [0m[34m|[0m /* 12.57 */    func testMockRunWithAction() {[0m
     [36m| [0m[34m|[0m /* 12.58 */        let app = App("tool").command(Command("greet").flag(Flag("name").short(r'n').defaultValue("World")).action({ ctx => 0 }))[0m
     [36m| [0m[34m|[0m /* 12.59 */        let result = app.mockRun(["greet", "--name", "Cangjie"])[0m
     [36m| [0m[34m|[0m /* 12.60 */        assertEqual("result.exitCode == 0", "true", result.exitCode == 0, true, isDelta: false)[0m
     [36m| [0m[34m|[0m /* 12.61 */    }[0m
     [36m| [0m[34m|[0m /* 12.62 */    [0m
-    [36m| [0m[34m|[0m /* 12.63 */    @Attribute[TestCase_62][0m
+    [36m| [0m[34m|[0m /* 12.63 */    @Attribute[TestCase_93][0m
     [36m| [0m[34m|[0m /* 12.64 */    func testMockRunParseError() {[0m
     [36m| [0m[34m|[0m /* 12.65 */        let app = App("tool").flag(Flag("config").short(r'c'))[0m
     [36m| [0m[34m|[0m /* 12.66 */        let result = app.mockRun(["--unknown-flag"])[0m
@@ -1207,7 +1573,7 @@
     [36m| [0m[34m|[0m /* 12.68 */        assertEqual("result.stderr.contains(\"error:\")", "true", result.stderr.contains("error:"), true, isDelta: false)[0m
     [36m| [0m[34m|[0m /* 12.69 */    }[0m
     [36m| [0m[34m|[0m /* 12.70 */    [0m
-    [36m| [0m[34m|[0m /* 12.71 */    @Attribute[TestCase_63][0m
+    [36m| [0m[34m|[0m /* 12.71 */    @Attribute[TestCase_94][0m
     [36m| [0m[34m|[0m /* 12.72 */    func testMockRunRequiredFlagError() {[0m
     [36m| [0m[34m|[0m /* 12.73 */        let app = App("tool").flag(Flag("output").short(r'o').required(true))[0m
     [36m| [0m[34m|[0m /* 12.74 */        let result = app.mockRun([])[0m
@@ -1215,7 +1581,7 @@
     [36m| [0m[34m|[0m /* 12.76 */        assertEqual("result.stderr.contains(\"--output\")", "true", result.stderr.contains("--output"), true, isDelta: false)[0m
     [36m| [0m[34m|[0m /* 12.77 */    }[0m
     [36m| [0m[34m|[0m /* 12.78 */    [0m
-    [36m| [0m[34m|[0m /* 12.79 */    @Attribute[TestCase_64][0m
+    [36m| [0m[34m|[0m /* 12.79 */    @Attribute[TestCase_95][0m
     [36m| [0m[34m|[0m /* 12.80 */    func testMockRunTypedFlagError() {[0m
     [36m| [0m[34m|[0m /* 12.81 */        let app = App("tool").flag(Flag("port").short(r'p').valueType(Int64Type))[0m
     [36m| [0m[34m|[0m /* 12.82 */        let result = app.mockRun(["--port", "not-a-number"])[0m
@@ -1223,7 +1589,7 @@
     [36m| [0m[34m|[0m /* 12.84 */        assertEqual("result.stderr.contains(\"error:\")", "true", result.stderr.contains("error:"), true, isDelta: false)[0m
     [36m| [0m[34m|[0m /* 12.85 */    }[0m
     [36m| [0m[34m|[0m /* 12.86 */    [0m
-    [36m| [0m[34m|[0m /* 12.87 */    @Attribute[TestCase_65][0m
+    [36m| [0m[34m|[0m /* 12.87 */    @Attribute[TestCase_96][0m
     [36m| [0m[34m|[0m /* 12.88 */    func testMockRunComplexScenario() {[0m
     [36m| [0m[34m|[0m /* 12.89 */        let capturedEnv = ArrayList < String >()[0m
     [36m| [0m[34m|[0m /* 12.90 */        let capturedReplicas = ArrayList < String >()[0m
@@ -1246,14 +1612,14 @@
     [36m| [0m[34m|[0m /* 12.107 */        assertEqual("capturedServiceArgs[0] == \"my-service\"", "true", capturedServiceArgs[0] == "my-service", true, isDelta: false)[0m
     [36m| [0m[34m|[0m /* 12.108 */    }[0m
     [36m| [0m[34m|[0m /* 12.109 */    [0m
-    [36m| [0m[34m|[0m /* 12.110 */    @Attribute[TestCase_66][0m
+    [36m| [0m[34m|[0m /* 12.110 */    @Attribute[TestCase_97][0m
     [36m| [0m[34m|[0m /* 12.111 */    func testMockRunSubcommandByAlias() {[0m
     [36m| [0m[34m|[0m /* 12.112 */        let app = App("tool").command(Command("install").alias("i").action({ ctx => 0 }))[0m
     [36m| [0m[34m|[0m /* 12.113 */        let result = app.mockRun(["i"])[0m
     [36m| [0m[34m|[0m /* 12.114 */        assertEqual("result.exitCode == 0", "true", result.exitCode == 0, true, isDelta: false)[0m
     [36m| [0m[34m|[0m /* 12.115 */    }[0m
     [36m| [0m[34m|[0m /* 12.116 */    [0m
-    [36m| [0m[34m|[0m /* 12.117 */    @Attribute[TestCase_67][0m
+    [36m| [0m[34m|[0m /* 12.117 */    @Attribute[TestCase_98][0m
     [36m| [0m[34m|[0m /* 12.118 */    func testHelpContainsOptions() {[0m
     [36m| [0m[34m|[0m /* 12.119 */        let app = App("tool").flag(Flag("verbose").short(r'v').asBool().description("Enable verbose mode")).flag(Flag("config").short(r'c').description("Config file path").defaultValue("config.toml"))[0m
     [36m| [0m[34m|[0m /* 12.120 */        let result = app.mockRun(["--help"])[0m
@@ -1265,7 +1631,7 @@
     [36m| [0m[34m|[0m /* 12.126 */        assertEqual("result.stderr.contains(\"config.toml\")", "true", result.stderr.contains("config.toml"), true, isDelta: false)[0m
     [36m| [0m[34m|[0m /* 12.127 */    }[0m
     [36m| [0m[34m|[0m /* 12.128 */    [0m
-    [36m| [0m[34m|[0m /* 12.129 */    @Attribute[TestCase_68][0m
+    [36m| [0m[34m|[0m /* 12.129 */    @Attribute[TestCase_99][0m
     [36m| [0m[34m|[0m /* 12.130 */    func testHelpContainsArguments() {[0m
     [36m| [0m[34m|[0m /* 12.131 */        let app = App("tool").argument(Argument("input").description("Input file").required(true)).argument(Argument("files").description("Additional files").variadic(true))[0m
     [36m| [0m[34m|[0m /* 12.132 */        let result = app.mockRun(["--help"])[0m
@@ -1275,7 +1641,7 @@
     [36m| [0m[34m|[0m /* 12.136 */        assertEqual("result.stderr.contains(\"files\")", "true", result.stderr.contains("files"), true, isDelta: false)[0m
     [36m| [0m[34m|[0m /* 12.137 */    }[0m
     [36m| [0m[34m|[0m /* 12.138 */    [0m
-    [36m| [0m[34m|[0m /* 12.139 */    @Attribute[TestCase_69][0m
+    [36m| [0m[34m|[0m /* 12.139 */    @Attribute[TestCase_100][0m
     [36m| [0m[34m|[0m /* 12.140 */    func testNoActionShowsHelp() {[0m
     [36m| [0m[34m|[0m /* 12.141 */        let app = App("tool").description("A tool without actions").command(Command("sub1").description("First sub"))[0m
     [36m| [0m[34m|[0m /* 12.142 */        let result = app.mockRun([])[0m
@@ -1283,7 +1649,7 @@
     [36m| [0m[34m|[0m /* 12.144 */        assertEqual("result.stderr.contains(\"Usage:\")", "true", result.stderr.contains("Usage:"), true, isDelta: false)[0m
     [36m| [0m[34m|[0m /* 12.145 */    }[0m
     [36m| [0m[34m|[0m /* 12.146 */    [0m
-    [36m| [0m[34m|[0m /* 12.147 */    @Attribute[TestCase_70][0m
+    [36m| [0m[34m|[0m /* 12.147 */    @Attribute[TestCase_101][0m
     [36m| [0m[34m|[0m /* 12.148 */    func testDoubleDashInMockRun() {[0m
     [36m| [0m[34m|[0m /* 12.149 */        let argValues = ArrayList < String >()[0m
     [36m| [0m[34m|[0m /* 12.150 */        let app = App("tool").flag(Flag("verbose").short(r'v').asBool()).action({ ctx => let args = ctx.getArguments()[0m
@@ -1300,7 +1666,7 @@
     [36m| [0m[34m|[0m /* 12.161 */        assertEqual("argValues[1] == \"plain-arg\"", "true", argValues[1] == "plain-arg", true, isDelta: false)[0m
     [36m| [0m[34m|[0m /* 12.162 */    }[0m
     [36m| [0m[34m|[0m /* 12.163 */    [0m
-    [36m| [0m[34m|[0m /* 12.164 */    @Attribute[TestCase_71][0m
+    [36m| [0m[34m|[0m /* 12.164 */    @Attribute[TestCase_102][0m
     [36m| [0m[34m|[0m /* 12.165 */    func testMockRunBatchCommands() {[0m
     [36m| [0m[34m|[0m /* 12.166 */        let app = App("tool").commands([Command("lint").description("Lint code").action({ ctx => 0 }), Command("fmt").description("Format code").action({ ctx => 0 }), Command("test").description("Run tests").action({ ctx => 0 })])[0m
     [36m| [0m[34m|[0m /* 12.167 */        let result1 = app.mockRun(["lint"])[0m
@@ -1309,7 +1675,7 @@
     [36m| [0m[34m|[0m /* 12.170 */        assertEqual("result2.exitCode == 0", "true", result2.exitCode == 0, true, isDelta: false)[0m
     [36m| [0m[34m|[0m /* 12.171 */    }[0m
     [36m| [0m[34m|[0m /* 12.172 */    [0m
-    [36m| [0m[34m|[0m /* 12.173 */    @Attribute[TestCase_72][0m
+    [36m| [0m[34m|[0m /* 12.173 */    @Attribute[TestCase_103][0m
     [36m| [0m[34m|[0m /* 12.174 */    func testMockRunAppendAction() {[0m
     [36m| [0m[34m|[0m /* 12.175 */        let captured = ArrayList < String >()[0m
     [36m| [0m[34m|[0m /* 12.176 */        let app = App("tool").flag(Flag("include").short(r'I').action(FlagAction.Append)).action({ ctx => match(ctx.getFlagAll("include")) {[0m
@@ -1640,6 +2006,29 @@
    [36m| [0m
 
 [33mwarning[0m: unused variable:'ctx'
+  [36m==>[0m /home/otto/文档/Project/cli/src/test/constraint_test.cj:95:31:
+   [36m| [0m
+[36m95[0m [36m| [0m                    .action({ ctx => 0 })[0m
+   [36m| [0m                              [33m^ unused variable[0m
+   [36m| [0m
+   [36m#[0m [0mnote[0m: this warning can be suppressed by setting the compiler option `-Woff unused`
+[34mnote[0m: the warning occurs after the macro is expanded
+   [36m==>[0m /home/otto/文档/Project/cli/src/test/constraint_test.cj:73:1:
+    [36m| [0m
+[36m73[0m  [36m| [0m  @Test[0m
+    [36m| [0m [34m_[0m[34m^[0m
+[36m74[0m  [36m| [0m[34m|[0m class RequiresTest {[0m
+    [36m| [0m[34m|[0m ...[0m
+[36m131[0m [36m| [0m[34m|[0m }[0m
+    [36m| [0m[34m|[0m[34m_[0m[34m^[0m
+    [36m| [0m
+[34mnote[0m: which is expanded as follows
+    [36m| [0m
+    [36m| [0m/* 73.11 */        let app = App("tool").command(Command("export").flag(Flag("output").description("Output path")).flag(Flag("format").requires("output").description("Format")).action({ ctx => 0 }))[0m
+    [36m| [0m                                                                                                                                                                                          [34m^^^ [0m
+    [36m| [0m
+
+[33mwarning[0m: unused variable:'ctx'
   [36m==>[0m /home/otto/文档/Project/cli/src/test/lifecycle_test.cj:98:32:
    [36m| [0m
 [36m98[0m [36m| [0m                    .postRun({ ctx =>[0m
@@ -1661,6 +2050,29 @@
    [36m| [0m/* 13.43 */        0 }).postRun({ ctx => log.add("postRun") }))[0m
    [36m| [0m                                  [34m^^^ [0m
    [36m| [0m
+
+[33mwarning[0m: unused variable:'ctx'
+   [36m==>[0m /home/otto/文档/Project/cli/src/test/constraint_test.cj:111:31:
+    [36m| [0m
+[36m111[0m [36m| [0m                    .action({ ctx => 0 })[0m
+    [36m| [0m                              [33m^ unused variable[0m
+    [36m| [0m
+    [36m#[0m [0mnote[0m: this warning can be suppressed by setting the compiler option `-Woff unused`
+[34mnote[0m: the warning occurs after the macro is expanded
+   [36m==>[0m /home/otto/文档/Project/cli/src/test/constraint_test.cj:73:1:
+    [36m| [0m
+[36m73[0m  [36m| [0m  @Test[0m
+    [36m| [0m [34m_[0m[34m^[0m
+[36m74[0m  [36m| [0m[34m|[0m class RequiresTest {[0m
+    [36m| [0m[34m|[0m ...[0m
+[36m131[0m [36m| [0m[34m|[0m }[0m
+    [36m| [0m[34m|[0m[34m_[0m[34m^[0m
+    [36m| [0m
+[34mnote[0m: which is expanded as follows
+    [36m| [0m
+    [36m| [0m/* 73.20 */        let app = App("tool").command(Command("export").flag(Flag("output").defaultValue("default.txt")).flag(Flag("format").requires("output")).action({ ctx => 0 }))[0m
+    [36m| [0m                                                                                                                                                                     [34m^^^ [0m
+    [36m| [0m
 
 [33mwarning[0m: unused variable:'ctx'
    [36m==>[0m /home/otto/文档/Project/cli/src/test/lifecycle_test.cj:115:33:
@@ -1732,6 +2144,29 @@
    [36m| [0m
 
 [33mwarning[0m: unused variable:'ctx'
+   [36m==>[0m /home/otto/文档/Project/cli/src/test/constraint_test.cj:125:31:
+    [36m| [0m
+[36m125[0m [36m| [0m                    .action({ ctx => 0 })[0m
+    [36m| [0m                              [33m^ unused variable[0m
+    [36m| [0m
+    [36m#[0m [0mnote[0m: this warning can be suppressed by setting the compiler option `-Woff unused`
+[34mnote[0m: the warning occurs after the macro is expanded
+   [36m==>[0m /home/otto/文档/Project/cli/src/test/constraint_test.cj:73:1:
+    [36m| [0m
+[36m73[0m  [36m| [0m  @Test[0m
+    [36m| [0m [34m_[0m[34m^[0m
+[36m74[0m  [36m| [0m[34m|[0m class RequiresTest {[0m
+    [36m| [0m[34m|[0m ...[0m
+[36m131[0m [36m| [0m[34m|[0m }[0m
+    [36m| [0m[34m|[0m[34m_[0m[34m^[0m
+    [36m| [0m
+[34mnote[0m: which is expanded as follows
+    [36m| [0m
+    [36m| [0m/* 73.27 */        let app = App("tool").command(Command("deploy").flag(Flag("host")).flag(Flag("port").valueType(Int64Type)).flag(Flag("ssl").asBool().requires("host").requires("port")).action({ ctx => 0 }))[0m
+    [36m| [0m                                                                                                                                                                                                    [34m^^^ [0m
+    [36m| [0m
+
+[33mwarning[0m: unused variable:'ctx'
    [36m==>[0m /home/otto/文档/Project/cli/src/test/lifecycle_test.cj:126:31:
     [36m| [0m
 [36m126[0m [36m| [0m                    .action({ ctx =>[0m
@@ -1778,6 +2213,198 @@
    [36m| [0m
 
 [33mwarning[0m: unused variable:'ctx'
+   [36m==>[0m /home/otto/文档/Project/cli/src/test/constraint_test.cj:147:31:
+    [36m| [0m
+[36m147[0m [36m| [0m                    .action({ ctx => 0 })[0m
+    [36m| [0m                              [33m^ unused variable[0m
+    [36m| [0m
+    [36m#[0m [0mnote[0m: this warning can be suppressed by setting the compiler option `-Woff unused`
+[34mnote[0m: the warning occurs after the macro is expanded
+   [36m==>[0m /home/otto/文档/Project/cli/src/test/constraint_test.cj:136:1:
+    [36m| [0m
+[36m136[0m [36m| [0m  @Test[0m
+    [36m| [0m [34m_[0m[34m^[0m
+[36m137[0m [36m| [0m[34m|[0m class ValidatorTest {[0m
+    [36m| [0m[34m|[0m ...[0m
+[36m232[0m [36m| [0m[34m|[0m }[0m
+    [36m| [0m[34m|[0m[34m_[0m[34m^[0m
+    [36m| [0m
+[34mnote[0m: the code after the macro is expanded as follows
+    [36m| [0m
+    [36m| [0m  /* 136.1 */@Attribute[TEST_GENERATED] class ValidatorTest <: TestClass {[0m
+    [36m| [0m [34m_[0m[34m^[0m
+    [36m| [0m[34m|[0m /* 136.2 */    @Attribute[TestCase_26][0m
+    [36m| [0m[34m|[0m /* 136.3 */    func testValidatorPasses() {[0m
+    [36m| [0m[34m|[0m /* 136.4 */        let app = App("tool").command(Command("create").flag(Flag("name").validator({ s => s.size > 0 && s.size < 20 }, message: "must be 1-20 characters")).action({ ctx => 0 }))[0m
+    [36m| [0m[34m|[0m /* 136.5 */        let result = app.mockRun(["create", "--name", "hello"])[0m
+    [36m| [0m[34m|[0m /* 136.6 */        assertEqual("result.exitCode == 0", "true", result.exitCode == 0, true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 136.7 */    }[0m
+    [36m| [0m[34m|[0m /* 136.8 */    [0m
+    [36m| [0m[34m|[0m /* 136.9 */    @Attribute[TestCase_27][0m
+    [36m| [0m[34m|[0m /* 136.10 */    func testValidatorFails() {[0m
+    [36m| [0m[34m|[0m /* 136.11 */        let app = App("tool").command(Command("create").flag(Flag("name").validator({ s => s.size > 0 && s.size < 5 }, message: "must be 1-4 characters")).action({ ctx => 0 }))[0m
+    [36m| [0m[34m|[0m /* 136.12 */        let result = app.mockRun(["create", "--name", "toolongname"])[0m
+    [36m| [0m[34m|[0m /* 136.13 */        assertEqual("result.exitCode == 2", "true", result.exitCode == 2, true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 136.14 */        assertEqual("result.stderr.contains(\"Invalid value\")", "true", result.stderr.contains("Invalid value"), true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 136.15 */        assertEqual("result.stderr.contains(\"must be 1-4 characters\")", "true", result.stderr.contains("must be 1-4 characters"), true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 136.16 */    }[0m
+    [36m| [0m[34m|[0m /* 136.17 */    [0m
+    [36m| [0m[34m|[0m /* 136.18 */    @Attribute[TestCase_28][0m
+    [36m| [0m[34m|[0m /* 136.19 */    func testValidatorWithoutMessage() {[0m
+    [36m| [0m[34m|[0m /* 136.20 */        let app = App("tool").command(Command("init").flag(Flag("level").valueType(Int64Type).validator({ s => let runes = s.toRuneArray()[0m
+    [36m| [0m[34m|[0m /* 136.21 */            [0m
+    [36m| [0m[34m|[0m /* 136.22 */            var n: Int64 = 0[0m
+    [36m| [0m[34m|[0m /* 136.23 */            [0m
+    [36m| [0m[34m|[0m /* 136.24 */            for(r in runes) {[0m
+    [36m| [0m[34m|[0m /* 136.25 */                if(r >= r'0' && r <= r'9') {[0m
+    [36m| [0m[34m|[0m /* 136.26 */                    n = n * 10 +(Int64(UInt32(r)) - 48)[0m
+    [36m| [0m[34m|[0m /* 136.27 */                }[0m
+    [36m| [0m[34m|[0m /* 136.28 */            }[0m
+    [36m| [0m[34m|[0m /* 136.29 */            [0m
+    [36m| [0m[34m|[0m /* 136.30 */        n >= 1 && n <= 5 })).action({ ctx => 0 }))[0m
+    [36m| [0m[34m|[0m /* 136.31 */        let result = app.mockRun(["init", "--level", "9"])[0m
+    [36m| [0m[34m|[0m /* 136.32 */        assertEqual("result.exitCode == 2", "true", result.exitCode == 2, true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 136.33 */        assertEqual("result.stderr.contains(\"Invalid value for \'--level\'\")", "true", result.stderr.contains("Invalid value for '--level'"), true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 136.34 */    }[0m
+    [36m| [0m[34m|[0m /* 136.35 */    [0m
+    [36m| [0m[34m|[0m /* 136.36 */    @Attribute[TestCase_29][0m
+    [36m| [0m[34m|[0m /* 136.37 */    func testValidatorNotRunOnUnsetFlag() {[0m
+    [36m| [0m[34m|[0m /* 136.38 */        let app = App("tool").command(Command("test").flag(Flag("name").validator({ s => false }, message: "always fail")).action({ ctx => 0 }))[0m
+    [36m| [0m[34m|[0m /* 136.39 */        let result = app.mockRun(["test"])[0m
+    [36m| [0m[34m|[0m /* 136.40 */        assertEqual("result.exitCode == 0", "true", result.exitCode == 0, true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 136.41 */    }[0m
+    [36m| [0m[34m|[0m /* 136.42 */    [0m
+    [36m| [0m[34m|[0m /* 136.43 */    @Attribute[TestCase_30][0m
+    [36m| [0m[34m|[0m /* 136.44 */    func testLintNameValidator() {[0m
+    [36m| [0m[34m|[0m /* 136.45 */        let lintNameValidator = { s: String => let runes = s.toRuneArray()[0m
+    [36m| [0m[34m|[0m /* 136.46 */            [0m
+    [36m| [0m[34m|[0m /* 136.47 */            if(runes.size == 0) {[0m
+    [36m| [0m[34m|[0m /* 136.48 */                return false[0m
+    [36m| [0m[34m|[0m /* 136.49 */            }[0m
+    [36m| [0m[34m|[0m /* 136.50 */            [0m
+    [36m| [0m[34m|[0m /* 136.51 */            for(r in runes) {[0m
+    [36m| [0m[34m|[0m /* 136.52 */                if(!((r >= r'a' && r <= r'z') ||(r >= r'0' && r <= r'9') || r == r'_')) {[0m
+    [36m| [0m[34m|[0m /* 136.53 */                    return false[0m
+    [36m| [0m[34m|[0m /* 136.54 */                }[0m
+    [36m| [0m[34m|[0m /* 136.55 */            }[0m
+    [36m| [0m[34m|[0m /* 136.56 */            [0m
+    [36m| [0m[34m|[0m /* 136.57 */        true }[0m
+    [36m| [0m[34m|[0m /* 136.58 */        let app = App("tool").command(Command("lint").flag(Flag("name").validator(lintNameValidator, message: "must contain only lowercase letters, digits, and underscores")).action({ ctx => 0 }))[0m
+    [36m| [0m[34m|[0m /* 136.59 */        let r1 = app.mockRun(["lint", "--name", "my_lint_1"])[0m
+    [36m| [0m[34m|[0m /* 136.60 */        assertEqual("r1.exitCode == 0", "true", r1.exitCode == 0, true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 136.61 */        let r2 = app.mockRun(["lint", "--name", "MyLint"])[0m
+    [36m| [0m[34m|[0m /* 136.62 */        assertEqual("r2.exitCode == 2", "true", r2.exitCode == 2, true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 136.63 */        assertEqual("r2.stderr.contains(\"lowercase\")", "true", r2.stderr.contains("lowercase"), true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 136.64 */    }[0m
+    [36m| [0m[34m|[0m /* 136.65 */    [0m
+    [36m| [0m[34m|[0m /* 136.66 */    init() {[0m
+    [36m| [0m[34m|[0m /* 136.67 */    }[0m
+    [36m| [0m[34m|[0m /* 136.68 */    private func classConfiguration(): Configuration {[0m
+    [36m| [0m[34m|[0m /* 136.69 */        let configuration = Configuration()[0m
+    [36m| [0m[34m|[0m /* 136.70 */        [0m
+    [36m| [0m[34m|[0m /* 136.71 */        return configuration[0m
+    [36m| [0m[34m|[0m /* 136.72 */    }[0m
+    [36m| [0m[34m|[0m /* 136.73 */    public override func asTestSuite(): TestSuite {[0m
+    [36m| [0m[34m|[0m /* 136.74 */        [0m
+    [36m| [0m[34m|[0m /* 136.75 */        let suiteConfiguration = classConfiguration()[0m
+    [36m| [0m[34m|[0m /* 136.76 */        let suiteBuilder = TestSuite.builder("ValidatorTest").configure(suiteConfiguration)[0m
+    [36m| [0m[34m|[0m /* 136.77 */        [0m
+    [36m| [0m[34m|[0m /* 136.78 */        { => let caseConfig = Configuration()[0m
+    [36m| [0m[34m|[0m /* 136.79 */            [0m
+    [36m| [0m[34m|[0m /* 136.80 */            let testValidatorPassesTestFunc = { => testValidatorPasses();() }[0m
+    [36m| [0m[34m|[0m /* 136.81 */            suiteBuilder.add([0m
+    [36m| [0m[34m|[0m /* 136.82 */            UnitTestCase.create([0m
+    [36m| [0m[34m|[0m /* 136.83 */            "testValidatorPasses",[0m
+    [36m| [0m[34m|[0m /* 136.84 */            configuration: caseConfig,[0m
+    [36m| [0m[34m|[0m /* 136.85 */            body: testValidatorPassesTestFunc[0m
+    [36m| [0m[34m|[0m /* 136.86 */            )[0m
+    [36m| [0m[34m|[0m /* 136.87 */            )[0m
+    [36m| [0m[34m|[0m /* 136.88 */            [0m
+    [36m| [0m[34m|[0m /* 136.89 */        }()[0m
+    [36m| [0m[34m|[0m /* 136.90 */        [0m
+    [36m| [0m[34m|[0m /* 136.91 */        [0m
+    [36m| [0m[34m|[0m /* 136.92 */        { => let caseConfig = Configuration()[0m
+    [36m| [0m[34m|[0m /* 136.93 */            [0m
+    [36m| [0m[34m|[0m /* 136.94 */            let testValidatorFailsTestFunc = { => testValidatorFails();() }[0m
+    [36m| [0m[34m|[0m /* 136.95 */            suiteBuilder.add([0m
+    [36m| [0m[34m|[0m /* 136.96 */            UnitTestCase.create([0m
+    [36m| [0m[34m|[0m /* 136.97 */            "testValidatorFails",[0m
+    [36m| [0m[34m|[0m /* 136.98 */            configuration: caseConfig,[0m
+    [36m| [0m[34m|[0m /* 136.99 */            body: testValidatorFailsTestFunc[0m
+    [36m| [0m[34m|[0m /* 136.100 */            )[0m
+    [36m| [0m[34m|[0m /* 136.101 */            )[0m
+    [36m| [0m[34m|[0m /* 136.102 */            [0m
+    [36m| [0m[34m|[0m /* 136.103 */        }()[0m
+    [36m| [0m[34m|[0m /* 136.104 */        [0m
+    [36m| [0m[34m|[0m /* 136.105 */        [0m
+    [36m| [0m[34m|[0m /* 136.106 */        { => let caseConfig = Configuration()[0m
+    [36m| [0m[34m|[0m /* 136.107 */            [0m
+    [36m| [0m[34m|[0m /* 136.108 */            let testValidatorWithoutMessageTestFunc = { => testValidatorWithoutMessage();() }[0m
+    [36m| [0m[34m|[0m /* 136.109 */            suiteBuilder.add([0m
+    [36m| [0m[34m|[0m /* 136.110 */            UnitTestCase.create([0m
+    [36m| [0m[34m|[0m /* 136.111 */            "testValidatorWithoutMessage",[0m
+    [36m| [0m[34m|[0m /* 136.112 */            configuration: caseConfig,[0m
+    [36m| [0m[34m|[0m /* 136.113 */            body: testValidatorWithoutMessageTestFunc[0m
+    [36m| [0m[34m|[0m /* 136.114 */            )[0m
+    [36m| [0m[34m|[0m /* 136.115 */            )[0m
+    [36m| [0m[34m|[0m /* 136.116 */            [0m
+    [36m| [0m[34m|[0m /* 136.117 */        }()[0m
+    [36m| [0m[34m|[0m /* 136.118 */        [0m
+    [36m| [0m[34m|[0m /* 136.119 */        [0m
+    [36m| [0m[34m|[0m /* 136.120 */        { => let caseConfig = Configuration()[0m
+    [36m| [0m[34m|[0m /* 136.121 */            [0m
+    [36m| [0m[34m|[0m /* 136.122 */            let testValidatorNotRunOnUnsetFlagTestFunc = { => testValidatorNotRunOnUnsetFlag();() }[0m
+    [36m| [0m[34m|[0m /* 136.123 */            suiteBuilder.add([0m
+    [36m| [0m[34m|[0m /* 136.124 */            UnitTestCase.create([0m
+    [36m| [0m[34m|[0m /* 136.125 */            "testValidatorNotRunOnUnsetFlag",[0m
+    [36m| [0m[34m|[0m /* 136.126 */            configuration: caseConfig,[0m
+    [36m| [0m[34m|[0m /* 136.127 */            body: testValidatorNotRunOnUnsetFlagTestFunc[0m
+    [36m| [0m[34m|[0m /* 136.128 */            )[0m
+    [36m| [0m[34m|[0m /* 136.129 */            )[0m
+    [36m| [0m[34m|[0m /* 136.130 */            [0m
+    [36m| [0m[34m|[0m /* 136.131 */        }()[0m
+    [36m| [0m[34m|[0m /* 136.132 */        [0m
+    [36m| [0m[34m|[0m /* 136.133 */        [0m
+    [36m| [0m[34m|[0m /* 136.134 */        { => let caseConfig = Configuration()[0m
+    [36m| [0m[34m|[0m /* 136.135 */            [0m
+    [36m| [0m[34m|[0m /* 136.136 */            let testLintNameValidatorTestFunc = { => testLintNameValidator();() }[0m
+    [36m| [0m[34m|[0m /* 136.137 */            suiteBuilder.add([0m
+    [36m| [0m[34m|[0m /* 136.138 */            UnitTestCase.create([0m
+    [36m| [0m[34m|[0m /* 136.139 */            "testLintNameValidator",[0m
+    [36m| [0m[34m|[0m /* 136.140 */            configuration: caseConfig,[0m
+    [36m| [0m[34m|[0m /* 136.141 */            body: testLintNameValidatorTestFunc[0m
+    [36m| [0m[34m|[0m /* 136.142 */            )[0m
+    [36m| [0m[34m|[0m /* 136.143 */            )[0m
+    [36m| [0m[34m|[0m /* 136.144 */            [0m
+    [36m| [0m[34m|[0m /* 136.145 */        }()[0m
+    [36m| [0m[34m|[0m /* 136.146 */        [0m
+    [36m| [0m[34m|[0m /* 136.147 */        return suiteBuilder.build()[0m
+    [36m| [0m[34m|[0m /* 136.148 */    }[0m
+    [36m| [0m[34m|[0m /* 136.149 */    private func inheritedFromClassAnnotatedByTestTemplate < T >(): TestSuite where T <: TestClass {[0m
+    [36m| [0m[34m|[0m /* 136.150 */        throw Exception("Unreachable code")[0m
+    [36m| [0m[34m|[0m /* 136.151 */    }[0m
+    [36m| [0m[34m|[0m /* 136.152 */}[0m
+    [36m| [0m[34m|[0m /* 136.153 */[0m
+    [36m| [0m[34m|[0m /* 136.154 */[0m
+    [36m| [0m[34m|[0m /* 136.155 */interface TestPackageExtension_ValidatorTest {[0m
+    [36m| [0m[34m|[0m /* 136.156 */    func registerValidatorTest(): Unit[0m
+    [36m| [0m[34m|[0m /* 136.157 */}[0m
+    [36m| [0m[34m|[0m /* 136.158 */extend TestPackage <: TestPackageExtension_ValidatorTest {[0m
+    [36m| [0m[34m|[0m /* 136.159 */    @Attribute[TEST_REGISTER][0m
+    [36m| [0m[34m|[0m /* 136.160 */    public func registerValidatorTest() {[0m
+    [36m| [0m[34m|[0m /* 136.161 */        registerSuite({ => ValidatorTest().asTestSuite() })[0m
+    [36m| [0m[34m|[0m /* 136.162 */    }[0m
+    [36m| [0m[34m|[0m /* 136.163 */}[0m
+    [36m| [0m[34m|[0m /* 136.164 */[0m
+    [36m| [0m[34m|[0m[34m_[0m[34m____________^[0m
+    [36m| [0m
+[34mnote[0m: which is expanded as follows
+    [36m| [0m
+    [36m| [0m/* 136.4 */        let app = App("tool").command(Command("create").flag(Flag("name").validator({ s => s.size > 0 && s.size < 20 }, message: "must be 1-20 characters")).action({ ctx => 0 }))[0m
+    [36m| [0m                                                                                                                                                                                 [34m^^^ [0m
+    [36m| [0m
+
+[33mwarning[0m: unused variable:'ctx'
    [36m==>[0m /home/otto/文档/Project/cli/src/test/lifecycle_test.cj:150:31:
     [36m| [0m
 [36m150[0m [36m| [0m                    .action({ ctx => 42 })[0m
@@ -1801,6 +2428,29 @@
    [36m| [0m
 
 [33mwarning[0m: unused variable:'ctx'
+   [36m==>[0m /home/otto/文档/Project/cli/src/test/constraint_test.cj:162:31:
+    [36m| [0m
+[36m162[0m [36m| [0m                    .action({ ctx => 0 })[0m
+    [36m| [0m                              [33m^ unused variable[0m
+    [36m| [0m
+    [36m#[0m [0mnote[0m: this warning can be suppressed by setting the compiler option `-Woff unused`
+[34mnote[0m: the warning occurs after the macro is expanded
+   [36m==>[0m /home/otto/文档/Project/cli/src/test/constraint_test.cj:136:1:
+    [36m| [0m
+[36m136[0m [36m| [0m  @Test[0m
+    [36m| [0m [34m_[0m[34m^[0m
+[36m137[0m [36m| [0m[34m|[0m class ValidatorTest {[0m
+    [36m| [0m[34m|[0m ...[0m
+[36m232[0m [36m| [0m[34m|[0m }[0m
+    [36m| [0m[34m|[0m[34m_[0m[34m^[0m
+    [36m| [0m
+[34mnote[0m: which is expanded as follows
+    [36m| [0m
+    [36m| [0m/* 136.11 */        let app = App("tool").command(Command("create").flag(Flag("name").validator({ s => s.size > 0 && s.size < 5 }, message: "must be 1-4 characters")).action({ ctx => 0 }))[0m
+    [36m| [0m                                                                                                                                                                                [34m^^^ [0m
+    [36m| [0m
+
+[33mwarning[0m: unused variable:'ctx'
    [36m==>[0m /home/otto/文档/Project/cli/src/test/lifecycle_test.cj:167:20:
     [36m| [0m
 [36m167[0m [36m| [0m            .use({ ctx, next =>[0m
@@ -1821,7 +2471,7 @@
     [36m| [0m
     [36m| [0m  /* 161.1 */@Attribute[TEST_GENERATED] class MiddlewareTest <: TestClass {[0m
     [36m| [0m [34m_[0m[34m^[0m
-    [36m| [0m[34m|[0m /* 161.2 */    @Attribute[TestCase_81][0m
+    [36m| [0m[34m|[0m /* 161.2 */    @Attribute[TestCase_112][0m
     [36m| [0m[34m|[0m /* 161.3 */    func testGlobalMiddleware() {[0m
     [36m| [0m[34m|[0m /* 161.4 */        let log = ArrayList < String >()[0m
     [36m| [0m[34m|[0m /* 161.5 */        let app = App("tool").use({ ctx, next => log.add("mw-before")[0m
@@ -1838,7 +2488,7 @@
     [36m| [0m[34m|[0m /* 161.16 */        assertEqual("log[2] == \"mw-after\"", "true", log[2] == "mw-after", true, isDelta: false)[0m
     [36m| [0m[34m|[0m /* 161.17 */    }[0m
     [36m| [0m[34m|[0m /* 161.18 */    [0m
-    [36m| [0m[34m|[0m /* 161.19 */    @Attribute[TestCase_82][0m
+    [36m| [0m[34m|[0m /* 161.19 */    @Attribute[TestCase_113][0m
     [36m| [0m[34m|[0m /* 161.20 */    func testCommandLocalMiddleware() {[0m
     [36m| [0m[34m|[0m /* 161.21 */        let log = ArrayList < String >()[0m
     [36m| [0m[34m|[0m /* 161.22 */        let app = App("tool").command(Command("run").use({ ctx, next => log.add("local-mw")[0m
@@ -1851,7 +2501,7 @@
     [36m| [0m[34m|[0m /* 161.29 */        assertEqual("log[1] == \"action\"", "true", log[1] == "action", true, isDelta: false)[0m
     [36m| [0m[34m|[0m /* 161.30 */    }[0m
     [36m| [0m[34m|[0m /* 161.31 */    [0m
-    [36m| [0m[34m|[0m /* 161.32 */    @Attribute[TestCase_83][0m
+    [36m| [0m[34m|[0m /* 161.32 */    @Attribute[TestCase_114][0m
     [36m| [0m[34m|[0m /* 161.33 */    func testMultipleMiddlewareChaining() {[0m
     [36m| [0m[34m|[0m /* 161.34 */        let log = ArrayList < String >()[0m
     [36m| [0m[34m|[0m /* 161.35 */        let app = App("tool").use({ ctx, next => log.add("global-1")[0m
@@ -1868,7 +2518,7 @@
     [36m| [0m[34m|[0m /* 161.46 */        assertEqual("log[3] == \"action\"", "true", log[3] == "action", true, isDelta: false)[0m
     [36m| [0m[34m|[0m /* 161.47 */    }[0m
     [36m| [0m[34m|[0m /* 161.48 */    [0m
-    [36m| [0m[34m|[0m /* 161.49 */    @Attribute[TestCase_84][0m
+    [36m| [0m[34m|[0m /* 161.49 */    @Attribute[TestCase_115][0m
     [36m| [0m[34m|[0m /* 161.50 */    func testMiddlewareCanShortCircuit() {[0m
     [36m| [0m[34m|[0m /* 161.51 */        let log = ArrayList < String >()[0m
     [36m| [0m[34m|[0m /* 161.52 */        let app = App("tool").use({ ctx, next => log.add("auth-check")[0m
@@ -1880,7 +2530,7 @@
     [36m| [0m[34m|[0m /* 161.58 */        assertEqual("log[0] == \"auth-check\"", "true", log[0] == "auth-check", true, isDelta: false)[0m
     [36m| [0m[34m|[0m /* 161.59 */    }[0m
     [36m| [0m[34m|[0m /* 161.60 */    [0m
-    [36m| [0m[34m|[0m /* 161.61 */    @Attribute[TestCase_85][0m
+    [36m| [0m[34m|[0m /* 161.61 */    @Attribute[TestCase_116][0m
     [36m| [0m[34m|[0m /* 161.62 */    func testMiddlewareWithLifecycleHooks() {[0m
     [36m| [0m[34m|[0m /* 161.63 */        let log = ArrayList < String >()[0m
     [36m| [0m[34m|[0m /* 161.64 */        let app = App("tool").persistentPreRun({ ctx => log.add("1-persistentPreRun") }).use({ ctx, next => log.add("2-middleware")[0m
@@ -2025,7 +2675,7 @@
     [36m| [0m [34m_[0m[34m^[0m
     [36m| [0m[34m|[0m /* 13.2 */    let testDir = "src/test/snapshots"[0m
     [36m| [0m[34m|[0m /* 13.3 */    [0m
-    [36m| [0m[34m|[0m /* 13.4 */    @Attribute[TestCase_124][0m
+    [36m| [0m[34m|[0m /* 13.4 */    @Attribute[TestCase_155][0m
     [36m| [0m[34m|[0m /* 13.5 */    func testFirstRunCreatesGoldenFile() {[0m
     [36m| [0m[34m|[0m /* 13.6 */        let snap = Snapshot(snapshotDir: testDir)[0m
     [36m| [0m[34m|[0m /* 13.7 */        let name = "test_create_golden"[0m
@@ -2039,7 +2689,7 @@
     [36m| [0m[34m|[0m /* 13.15 */        remove(Path(goldenPath))[0m
     [36m| [0m[34m|[0m /* 13.16 */    }[0m
     [36m| [0m[34m|[0m /* 13.17 */    [0m
-    [36m| [0m[34m|[0m /* 13.18 */    @Attribute[TestCase_125][0m
+    [36m| [0m[34m|[0m /* 13.18 */    @Attribute[TestCase_156][0m
     [36m| [0m[34m|[0m /* 13.19 */    func testMatchingSnapshot() {[0m
     [36m| [0m[34m|[0m /* 13.20 */        let snap = Snapshot(snapshotDir: testDir)[0m
     [36m| [0m[34m|[0m /* 13.21 */        let name = "test_matching"[0m
@@ -2051,7 +2701,7 @@
     [36m| [0m[34m|[0m /* 13.27 */        remove(Path(goldenPath))[0m
     [36m| [0m[34m|[0m /* 13.28 */    }[0m
     [36m| [0m[34m|[0m /* 13.29 */    [0m
-    [36m| [0m[34m|[0m /* 13.30 */    @Attribute[TestCase_126][0m
+    [36m| [0m[34m|[0m /* 13.30 */    @Attribute[TestCase_157][0m
     [36m| [0m[34m|[0m /* 13.31 */    func testMismatchGeneratesNewFile() {[0m
     [36m| [0m[34m|[0m /* 13.32 */        let snap = Snapshot(snapshotDir: testDir)[0m
     [36m| [0m[34m|[0m /* 13.33 */        let name = "test_mismatch"[0m
@@ -2070,7 +2720,7 @@
     [36m| [0m[34m|[0m /* 13.46 */        }[0m
     [36m| [0m[34m|[0m /* 13.47 */    }[0m
     [36m| [0m[34m|[0m /* 13.48 */    [0m
-    [36m| [0m[34m|[0m /* 13.49 */    @Attribute[TestCase_127][0m
+    [36m| [0m[34m|[0m /* 13.49 */    @Attribute[TestCase_158][0m
     [36m| [0m[34m|[0m /* 13.50 */    func testUpdateOverwritesGolden() {[0m
     [36m| [0m[34m|[0m /* 13.51 */        let snap = Snapshot(snapshotDir: testDir)[0m
     [36m| [0m[34m|[0m /* 13.52 */        let name = "test_update"[0m
@@ -2090,7 +2740,7 @@
     [36m| [0m[34m|[0m /* 13.66 */        }[0m
     [36m| [0m[34m|[0m /* 13.67 */    }[0m
     [36m| [0m[34m|[0m /* 13.68 */    [0m
-    [36m| [0m[34m|[0m /* 13.69 */    @Attribute[TestCase_128][0m
+    [36m| [0m[34m|[0m /* 13.69 */    @Attribute[TestCase_159][0m
     [36m| [0m[34m|[0m /* 13.70 */    func testDiffShowsLineChanges() {[0m
     [36m| [0m[34m|[0m /* 13.71 */        let snap = Snapshot(snapshotDir: testDir)[0m
     [36m| [0m[34m|[0m /* 13.72 */        let name = "test_diff"[0m
@@ -2108,7 +2758,7 @@
     [36m| [0m[34m|[0m /* 13.84 */        }[0m
     [36m| [0m[34m|[0m /* 13.85 */    }[0m
     [36m| [0m[34m|[0m /* 13.86 */    [0m
-    [36m| [0m[34m|[0m /* 13.87 */    @Attribute[TestCase_129][0m
+    [36m| [0m[34m|[0m /* 13.87 */    @Attribute[TestCase_160][0m
     [36m| [0m[34m|[0m /* 13.88 */    func testHelpSnapshotRoundtrip() {[0m
     [36m| [0m[34m|[0m /* 13.89 */        let app = App("mytool").description("A great CLI tool").version("1.0.0").command(Command("lint").description("Run linter")).command(Command("fmt").description("Format code")).flag(Flag("verbose").short(r'v').asBool().description("Enable verbose output"))[0m
     [36m| [0m[34m|[0m /* 13.90 */        let result = app.mockRun(["--help"])[0m
@@ -2127,7 +2777,7 @@
     [36m| [0m[34m|[0m /* 13.103 */        remove(Path(goldenPath))[0m
     [36m| [0m[34m|[0m /* 13.104 */    }[0m
     [36m| [0m[34m|[0m /* 13.105 */    [0m
-    [36m| [0m[34m|[0m /* 13.106 */    @Attribute[TestCase_130][0m
+    [36m| [0m[34m|[0m /* 13.106 */    @Attribute[TestCase_161][0m
     [36m| [0m[34m|[0m /* 13.107 */    func testErrorSnapshotRoundtrip() {[0m
     [36m| [0m[34m|[0m /* 13.108 */        let app = App("tool").command(Command("run").action({ ctx => 0 }))[0m
     [36m| [0m[34m|[0m /* 13.109 */        let result = app.mockRun(["--unknown-flag"])[0m
@@ -2146,7 +2796,7 @@
     [36m| [0m[34m|[0m /* 13.122 */        remove(Path(goldenPath))[0m
     [36m| [0m[34m|[0m /* 13.123 */    }[0m
     [36m| [0m[34m|[0m /* 13.124 */    [0m
-    [36m| [0m[34m|[0m /* 13.125 */    @Attribute[TestCase_131][0m
+    [36m| [0m[34m|[0m /* 13.125 */    @Attribute[TestCase_162][0m
     [36m| [0m[34m|[0m /* 13.126 */    func testSubcommandHelpSnapshot() {[0m
     [36m| [0m[34m|[0m /* 13.127 */        let app = App("tool").command(Command("deploy").description("Deploy application").flag(Flag("env").short(r'e').description("Target environment")).flag(Flag("force").short(r'f').asBool().description("Force deploy")).argument(Argument("target").description("Deploy target")))[0m
     [36m| [0m[34m|[0m /* 13.128 */        let result = app.mockRun(["deploy", "--help"])[0m
@@ -2165,7 +2815,7 @@
     [36m| [0m[34m|[0m /* 13.141 */        remove(Path(goldenPath))[0m
     [36m| [0m[34m|[0m /* 13.142 */    }[0m
     [36m| [0m[34m|[0m /* 13.143 */    [0m
-    [36m| [0m[34m|[0m /* 13.144 */    @Attribute[TestCase_132][0m
+    [36m| [0m[34m|[0m /* 13.144 */    @Attribute[TestCase_163][0m
     [36m| [0m[34m|[0m /* 13.145 */    func testSnapshotDetectsUIRegression() {[0m
     [36m| [0m[34m|[0m /* 13.146 */        let snap = Snapshot(snapshotDir: testDir)[0m
     [36m| [0m[34m|[0m /* 13.147 */        let name = "test_ui_regression"[0m
@@ -2393,6 +3043,29 @@
     [36m| [0m
 
 [33mwarning[0m: unused variable:'ctx'
+   [36m==>[0m /home/otto/文档/Project/cli/src/test/constraint_test.cj:185:31:
+    [36m| [0m
+[36m185[0m [36m| [0m                    .action({ ctx => 0 })[0m
+    [36m| [0m                              [33m^ unused variable[0m
+    [36m| [0m
+    [36m#[0m [0mnote[0m: this warning can be suppressed by setting the compiler option `-Woff unused`
+[34mnote[0m: the warning occurs after the macro is expanded
+   [36m==>[0m /home/otto/文档/Project/cli/src/test/constraint_test.cj:136:1:
+    [36m| [0m
+[36m136[0m [36m| [0m  @Test[0m
+    [36m| [0m [34m_[0m[34m^[0m
+[36m137[0m [36m| [0m[34m|[0m class ValidatorTest {[0m
+    [36m| [0m[34m|[0m ...[0m
+[36m232[0m [36m| [0m[34m|[0m }[0m
+    [36m| [0m[34m|[0m[34m_[0m[34m^[0m
+    [36m| [0m
+[34mnote[0m: which is expanded as follows
+    [36m| [0m
+    [36m| [0m/* 136.30 */        n >= 1 && n <= 5 })).action({ ctx => 0 }))[0m
+    [36m| [0m                                                  [34m^^^ [0m
+    [36m| [0m
+
+[33mwarning[0m: unused variable:'ctx'
    [36m==>[0m /home/otto/文档/Project/cli/src/test/lifecycle_test.cj:195:28:
     [36m| [0m
 [36m195[0m [36m| [0m                    .use({ ctx, next =>[0m
@@ -2413,6 +3086,52 @@
     [36m| [0m
     [36m| [0m/* 161.22 */        let app = App("tool").command(Command("run").use({ ctx, next => log.add("local-mw")[0m
     [36m| [0m                                                                       [34m^^^ [0m
+    [36m| [0m
+
+[33mwarning[0m: unused variable:'s'
+   [36m==>[0m /home/otto/文档/Project/cli/src/test/constraint_test.cj:198:52:
+    [36m| [0m
+[36m198[0m [36m| [0m                    .flag(Flag("name").validator({ s => false }, message: "always fail"))[0m
+    [36m| [0m                                                   [33m^ unused variable[0m
+    [36m| [0m
+    [36m#[0m [0mnote[0m: this warning can be suppressed by setting the compiler option `-Woff unused`
+[34mnote[0m: the warning occurs after the macro is expanded
+   [36m==>[0m /home/otto/文档/Project/cli/src/test/constraint_test.cj:136:1:
+    [36m| [0m
+[36m136[0m [36m| [0m  @Test[0m
+    [36m| [0m [34m_[0m[34m^[0m
+[36m137[0m [36m| [0m[34m|[0m class ValidatorTest {[0m
+    [36m| [0m[34m|[0m ...[0m
+[36m232[0m [36m| [0m[34m|[0m }[0m
+    [36m| [0m[34m|[0m[34m_[0m[34m^[0m
+    [36m| [0m
+[34mnote[0m: which is expanded as follows
+    [36m| [0m
+    [36m| [0m/* 136.38 */        let app = App("tool").command(Command("test").flag(Flag("name").validator({ s => false }, message: "always fail")).action({ ctx => 0 }))[0m
+    [36m| [0m                                                                                                [34m^ [0m
+    [36m| [0m
+
+[33mwarning[0m: unused variable:'ctx'
+   [36m==>[0m /home/otto/文档/Project/cli/src/test/constraint_test.cj:199:31:
+    [36m| [0m
+[36m199[0m [36m| [0m                    .action({ ctx => 0 })[0m
+    [36m| [0m                              [33m^ unused variable[0m
+    [36m| [0m
+    [36m#[0m [0mnote[0m: this warning can be suppressed by setting the compiler option `-Woff unused`
+[34mnote[0m: the warning occurs after the macro is expanded
+   [36m==>[0m /home/otto/文档/Project/cli/src/test/constraint_test.cj:136:1:
+    [36m| [0m
+[36m136[0m [36m| [0m  @Test[0m
+    [36m| [0m [34m_[0m[34m^[0m
+[36m137[0m [36m| [0m[34m|[0m class ValidatorTest {[0m
+    [36m| [0m[34m|[0m ...[0m
+[36m232[0m [36m| [0m[34m|[0m }[0m
+    [36m| [0m[34m|[0m[34m_[0m[34m^[0m
+    [36m| [0m
+[34mnote[0m: which is expanded as follows
+    [36m| [0m
+    [36m| [0m/* 136.38 */        let app = App("tool").command(Command("test").flag(Flag("name").validator({ s => false }, message: "always fail")).action({ ctx => 0 }))[0m
+    [36m| [0m                                                                                                                                                [34m^^^ [0m
     [36m| [0m
 
 [33mwarning[0m: unused variable:'ctx'
@@ -2482,6 +3201,29 @@
     [36m| [0m
     [36m| [0m/* 161.36 */        next() }).use({ ctx, next => log.add("global-2")[0m
     [36m| [0m                                    [34m^^^ [0m
+    [36m| [0m
+
+[33mwarning[0m: unused variable:'ctx'
+   [36m==>[0m /home/otto/文档/Project/cli/src/test/constraint_test.cj:222:31:
+    [36m| [0m
+[36m222[0m [36m| [0m                    .action({ ctx => 0 })[0m
+    [36m| [0m                              [33m^ unused variable[0m
+    [36m| [0m
+    [36m#[0m [0mnote[0m: this warning can be suppressed by setting the compiler option `-Woff unused`
+[34mnote[0m: the warning occurs after the macro is expanded
+   [36m==>[0m /home/otto/文档/Project/cli/src/test/constraint_test.cj:136:1:
+    [36m| [0m
+[36m136[0m [36m| [0m  @Test[0m
+    [36m| [0m [34m_[0m[34m^[0m
+[36m137[0m [36m| [0m[34m|[0m class ValidatorTest {[0m
+    [36m| [0m[34m|[0m ...[0m
+[36m232[0m [36m| [0m[34m|[0m }[0m
+    [36m| [0m[34m|[0m[34m_[0m[34m^[0m
+    [36m| [0m
+[34mnote[0m: which is expanded as follows
+    [36m| [0m
+    [36m| [0m/* 136.58 */        let app = App("tool").command(Command("lint").flag(Flag("name").validator(lintNameValidator, message: "must contain only lowercase letters, digits, and underscores")).action({ ctx => 0 }))[0m
+    [36m| [0m                                                                                                                                                                                                    [34m^^^ [0m
     [36m| [0m
 
 [33mwarning[0m: unused variable:'ctx'
@@ -2784,6 +3526,436 @@
     [36m| [0m
 
 [33mwarning[0m: unused variable:'ctx'
+   [36m==>[0m /home/otto/文档/Project/cli/src/test/constraint_test.cj:292:31:
+    [36m| [0m
+[36m292[0m [36m| [0m                    .action({ ctx => 0 })[0m
+    [36m| [0m                              [33m^ unused variable[0m
+    [36m| [0m
+    [36m#[0m [0mnote[0m: this warning can be suppressed by setting the compiler option `-Woff unused`
+[34mnote[0m: the warning occurs after the macro is expanded
+   [36m==>[0m /home/otto/文档/Project/cli/src/test/constraint_test.cj:282:1:
+    [36m| [0m
+[36m282[0m [36m| [0m  @Test[0m
+    [36m| [0m [34m_[0m[34m^[0m
+[36m283[0m [36m| [0m[34m|[0m class FlagGroupTest {[0m
+    [36m| [0m[34m|[0m ...[0m
+[36m366[0m [36m| [0m[34m|[0m }[0m
+    [36m| [0m[34m|[0m[34m_[0m[34m^[0m
+    [36m| [0m
+[34mnote[0m: the code after the macro is expanded as follows
+    [36m| [0m
+    [36m| [0m  /* 282.1 */@Attribute[TEST_GENERATED] class FlagGroupTest <: TestClass {[0m
+    [36m| [0m [34m_[0m[34m^[0m
+    [36m| [0m[34m|[0m /* 282.2 */    @Attribute[TestCase_37][0m
+    [36m| [0m[34m|[0m /* 282.3 */    func testRequireGroupSatisfied() {[0m
+    [36m| [0m[34m|[0m /* 282.4 */        let app = App("tool").command(Command("run").flag(Flag("file").description("Input file")).flag(Flag("stdin").asBool().description("Read from stdin")).requireGroup("input",["file", "stdin"]).action({ ctx => 0 }))[0m
+    [36m| [0m[34m|[0m /* 282.5 */        let result = app.mockRun(["run", "--file", "input.txt"])[0m
+    [36m| [0m[34m|[0m /* 282.6 */        assertEqual("result.exitCode == 0", "true", result.exitCode == 0, true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 282.7 */    }[0m
+    [36m| [0m[34m|[0m /* 282.8 */    [0m
+    [36m| [0m[34m|[0m /* 282.9 */    @Attribute[TestCase_38][0m
+    [36m| [0m[34m|[0m /* 282.10 */    func testRequireGroupNotSatisfied() {[0m
+    [36m| [0m[34m|[0m /* 282.11 */        let app = App("tool").command(Command("run").flag(Flag("file").description("Input file")).flag(Flag("stdin").asBool().description("Read from stdin")).requireGroup("input",["file", "stdin"]).action({ ctx => 0 }))[0m
+    [36m| [0m[34m|[0m /* 282.12 */        let result = app.mockRun(["run"])[0m
+    [36m| [0m[34m|[0m /* 282.13 */        assertEqual("result.exitCode == 2", "true", result.exitCode == 2, true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 282.14 */        assertEqual("result.stderr.contains(\"group \'input\'\")", "true", result.stderr.contains("group 'input'"), true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 282.15 */        assertEqual("result.stderr.contains(\"required\")", "true", result.stderr.contains("required"), true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 282.16 */    }[0m
+    [36m| [0m[34m|[0m /* 282.17 */    [0m
+    [36m| [0m[34m|[0m /* 282.18 */    @Attribute[TestCase_39][0m
+    [36m| [0m[34m|[0m /* 282.19 */    func testMutuallyExclusiveGroupOK() {[0m
+    [36m| [0m[34m|[0m /* 282.20 */        let app = App("tool").command(Command("output").flag(Flag("json").asBool()).flag(Flag("yaml").asBool()).flag(Flag("text").asBool()).mutuallyExclusiveGroup("format",["json", "yaml", "text"]).action({ ctx => 0 }))[0m
+    [36m| [0m[34m|[0m /* 282.21 */        let result = app.mockRun(["output", "--json"])[0m
+    [36m| [0m[34m|[0m /* 282.22 */        assertEqual("result.exitCode == 0", "true", result.exitCode == 0, true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 282.23 */    }[0m
+    [36m| [0m[34m|[0m /* 282.24 */    [0m
+    [36m| [0m[34m|[0m /* 282.25 */    @Attribute[TestCase_40][0m
+    [36m| [0m[34m|[0m /* 282.26 */    func testMutuallyExclusiveGroupViolation() {[0m
+    [36m| [0m[34m|[0m /* 282.27 */        let app = App("tool").command(Command("output").flag(Flag("json").asBool()).flag(Flag("yaml").asBool()).mutuallyExclusiveGroup("format",["json", "yaml"]).action({ ctx => 0 }))[0m
+    [36m| [0m[34m|[0m /* 282.28 */        let result = app.mockRun(["output", "--json", "--yaml"])[0m
+    [36m| [0m[34m|[0m /* 282.29 */        assertEqual("result.exitCode == 2", "true", result.exitCode == 2, true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 282.30 */        assertEqual("result.stderr.contains(\"mutually exclusive\")", "true", result.stderr.contains("mutually exclusive"), true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 282.31 */    }[0m
+    [36m| [0m[34m|[0m /* 282.32 */    [0m
+    [36m| [0m[34m|[0m /* 282.33 */    @Attribute[TestCase_41][0m
+    [36m| [0m[34m|[0m /* 282.34 */    func testRequireGroupWithExclusiveCombined() {[0m
+    [36m| [0m[34m|[0m /* 282.35 */        let app = App("tool").command(Command("run").flag(Flag("fast").asBool()).flag(Flag("safe").asBool()).requireGroup("mode",["fast", "safe"]).mutuallyExclusiveGroup("mode",["fast", "safe"]).action({ ctx => 0 }))[0m
+    [36m| [0m[34m|[0m /* 282.36 */        let r1 = app.mockRun(["run", "--fast"])[0m
+    [36m| [0m[34m|[0m /* 282.37 */        assertEqual("r1.exitCode == 0", "true", r1.exitCode == 0, true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 282.38 */        let r2 = app.mockRun(["run", "--fast", "--safe"])[0m
+    [36m| [0m[34m|[0m /* 282.39 */        assertEqual("r2.exitCode == 2", "true", r2.exitCode == 2, true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 282.40 */        let r3 = app.mockRun(["run"])[0m
+    [36m| [0m[34m|[0m /* 282.41 */        assertEqual("r3.exitCode == 2", "true", r3.exitCode == 2, true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 282.42 */    }[0m
+    [36m| [0m[34m|[0m /* 282.43 */    [0m
+    [36m| [0m[34m|[0m /* 282.44 */    init() {[0m
+    [36m| [0m[34m|[0m /* 282.45 */    }[0m
+    [36m| [0m[34m|[0m /* 282.46 */    private func classConfiguration(): Configuration {[0m
+    [36m| [0m[34m|[0m /* 282.47 */        let configuration = Configuration()[0m
+    [36m| [0m[34m|[0m /* 282.48 */        [0m
+    [36m| [0m[34m|[0m /* 282.49 */        return configuration[0m
+    [36m| [0m[34m|[0m /* 282.50 */    }[0m
+    [36m| [0m[34m|[0m /* 282.51 */    public override func asTestSuite(): TestSuite {[0m
+    [36m| [0m[34m|[0m /* 282.52 */        [0m
+    [36m| [0m[34m|[0m /* 282.53 */        let suiteConfiguration = classConfiguration()[0m
+    [36m| [0m[34m|[0m /* 282.54 */        let suiteBuilder = TestSuite.builder("FlagGroupTest").configure(suiteConfiguration)[0m
+    [36m| [0m[34m|[0m /* 282.55 */        [0m
+    [36m| [0m[34m|[0m /* 282.56 */        { => let caseConfig = Configuration()[0m
+    [36m| [0m[34m|[0m /* 282.57 */            [0m
+    [36m| [0m[34m|[0m /* 282.58 */            let testRequireGroupSatisfiedTestFunc = { => testRequireGroupSatisfied();() }[0m
+    [36m| [0m[34m|[0m /* 282.59 */            suiteBuilder.add([0m
+    [36m| [0m[34m|[0m /* 282.60 */            UnitTestCase.create([0m
+    [36m| [0m[34m|[0m /* 282.61 */            "testRequireGroupSatisfied",[0m
+    [36m| [0m[34m|[0m /* 282.62 */            configuration: caseConfig,[0m
+    [36m| [0m[34m|[0m /* 282.63 */            body: testRequireGroupSatisfiedTestFunc[0m
+    [36m| [0m[34m|[0m /* 282.64 */            )[0m
+    [36m| [0m[34m|[0m /* 282.65 */            )[0m
+    [36m| [0m[34m|[0m /* 282.66 */            [0m
+    [36m| [0m[34m|[0m /* 282.67 */        }()[0m
+    [36m| [0m[34m|[0m /* 282.68 */        [0m
+    [36m| [0m[34m|[0m /* 282.69 */        [0m
+    [36m| [0m[34m|[0m /* 282.70 */        { => let caseConfig = Configuration()[0m
+    [36m| [0m[34m|[0m /* 282.71 */            [0m
+    [36m| [0m[34m|[0m /* 282.72 */            let testRequireGroupNotSatisfiedTestFunc = { => testRequireGroupNotSatisfied();() }[0m
+    [36m| [0m[34m|[0m /* 282.73 */            suiteBuilder.add([0m
+    [36m| [0m[34m|[0m /* 282.74 */            UnitTestCase.create([0m
+    [36m| [0m[34m|[0m /* 282.75 */            "testRequireGroupNotSatisfied",[0m
+    [36m| [0m[34m|[0m /* 282.76 */            configuration: caseConfig,[0m
+    [36m| [0m[34m|[0m /* 282.77 */            body: testRequireGroupNotSatisfiedTestFunc[0m
+    [36m| [0m[34m|[0m /* 282.78 */            )[0m
+    [36m| [0m[34m|[0m /* 282.79 */            )[0m
+    [36m| [0m[34m|[0m /* 282.80 */            [0m
+    [36m| [0m[34m|[0m /* 282.81 */        }()[0m
+    [36m| [0m[34m|[0m /* 282.82 */        [0m
+    [36m| [0m[34m|[0m /* 282.83 */        [0m
+    [36m| [0m[34m|[0m /* 282.84 */        { => let caseConfig = Configuration()[0m
+    [36m| [0m[34m|[0m /* 282.85 */            [0m
+    [36m| [0m[34m|[0m /* 282.86 */            let testMutuallyExclusiveGroupOKTestFunc = { => testMutuallyExclusiveGroupOK();() }[0m
+    [36m| [0m[34m|[0m /* 282.87 */            suiteBuilder.add([0m
+    [36m| [0m[34m|[0m /* 282.88 */            UnitTestCase.create([0m
+    [36m| [0m[34m|[0m /* 282.89 */            "testMutuallyExclusiveGroupOK",[0m
+    [36m| [0m[34m|[0m /* 282.90 */            configuration: caseConfig,[0m
+    [36m| [0m[34m|[0m /* 282.91 */            body: testMutuallyExclusiveGroupOKTestFunc[0m
+    [36m| [0m[34m|[0m /* 282.92 */            )[0m
+    [36m| [0m[34m|[0m /* 282.93 */            )[0m
+    [36m| [0m[34m|[0m /* 282.94 */            [0m
+    [36m| [0m[34m|[0m /* 282.95 */        }()[0m
+    [36m| [0m[34m|[0m /* 282.96 */        [0m
+    [36m| [0m[34m|[0m /* 282.97 */        [0m
+    [36m| [0m[34m|[0m /* 282.98 */        { => let caseConfig = Configuration()[0m
+    [36m| [0m[34m|[0m /* 282.99 */            [0m
+    [36m| [0m[34m|[0m /* 282.100 */            let testMutuallyExclusiveGroupViolationTestFunc = { => testMutuallyExclusiveGroupViolation();() }[0m
+    [36m| [0m[34m|[0m /* 282.101 */            suiteBuilder.add([0m
+    [36m| [0m[34m|[0m /* 282.102 */            UnitTestCase.create([0m
+    [36m| [0m[34m|[0m /* 282.103 */            "testMutuallyExclusiveGroupViolation",[0m
+    [36m| [0m[34m|[0m /* 282.104 */            configuration: caseConfig,[0m
+    [36m| [0m[34m|[0m /* 282.105 */            body: testMutuallyExclusiveGroupViolationTestFunc[0m
+    [36m| [0m[34m|[0m /* 282.106 */            )[0m
+    [36m| [0m[34m|[0m /* 282.107 */            )[0m
+    [36m| [0m[34m|[0m /* 282.108 */            [0m
+    [36m| [0m[34m|[0m /* 282.109 */        }()[0m
+    [36m| [0m[34m|[0m /* 282.110 */        [0m
+    [36m| [0m[34m|[0m /* 282.111 */        [0m
+    [36m| [0m[34m|[0m /* 282.112 */        { => let caseConfig = Configuration()[0m
+    [36m| [0m[34m|[0m /* 282.113 */            [0m
+    [36m| [0m[34m|[0m /* 282.114 */            let testRequireGroupWithExclusiveCombinedTestFunc = { => testRequireGroupWithExclusiveCombined();() }[0m
+    [36m| [0m[34m|[0m /* 282.115 */            suiteBuilder.add([0m
+    [36m| [0m[34m|[0m /* 282.116 */            UnitTestCase.create([0m
+    [36m| [0m[34m|[0m /* 282.117 */            "testRequireGroupWithExclusiveCombined",[0m
+    [36m| [0m[34m|[0m /* 282.118 */            configuration: caseConfig,[0m
+    [36m| [0m[34m|[0m /* 282.119 */            body: testRequireGroupWithExclusiveCombinedTestFunc[0m
+    [36m| [0m[34m|[0m /* 282.120 */            )[0m
+    [36m| [0m[34m|[0m /* 282.121 */            )[0m
+    [36m| [0m[34m|[0m /* 282.122 */            [0m
+    [36m| [0m[34m|[0m /* 282.123 */        }()[0m
+    [36m| [0m[34m|[0m /* 282.124 */        [0m
+    [36m| [0m[34m|[0m /* 282.125 */        return suiteBuilder.build()[0m
+    [36m| [0m[34m|[0m /* 282.126 */    }[0m
+    [36m| [0m[34m|[0m /* 282.127 */    private func inheritedFromClassAnnotatedByTestTemplate < T >(): TestSuite where T <: TestClass {[0m
+    [36m| [0m[34m|[0m /* 282.128 */        throw Exception("Unreachable code")[0m
+    [36m| [0m[34m|[0m /* 282.129 */    }[0m
+    [36m| [0m[34m|[0m /* 282.130 */}[0m
+    [36m| [0m[34m|[0m /* 282.131 */[0m
+    [36m| [0m[34m|[0m /* 282.132 */[0m
+    [36m| [0m[34m|[0m /* 282.133 */interface TestPackageExtension_FlagGroupTest {[0m
+    [36m| [0m[34m|[0m /* 282.134 */    func registerFlagGroupTest(): Unit[0m
+    [36m| [0m[34m|[0m /* 282.135 */}[0m
+    [36m| [0m[34m|[0m /* 282.136 */extend TestPackage <: TestPackageExtension_FlagGroupTest {[0m
+    [36m| [0m[34m|[0m /* 282.137 */    @Attribute[TEST_REGISTER][0m
+    [36m| [0m[34m|[0m /* 282.138 */    public func registerFlagGroupTest() {[0m
+    [36m| [0m[34m|[0m /* 282.139 */        registerSuite({ => FlagGroupTest().asTestSuite() })[0m
+    [36m| [0m[34m|[0m /* 282.140 */    }[0m
+    [36m| [0m[34m|[0m /* 282.141 */}[0m
+    [36m| [0m[34m|[0m /* 282.142 */[0m
+    [36m| [0m[34m|[0m[34m_[0m[34m____________^[0m
+    [36m| [0m
+[34mnote[0m: which is expanded as follows
+    [36m| [0m
+    [36m| [0m/* 282.4 */        let app = App("tool").command(Command("run").flag(Flag("file").description("Input file")).flag(Flag("stdin").asBool().description("Read from stdin")).requireGroup("input",["file", "stdin"]).action({ ctx => 0 }))[0m
+    [36m| [0m                                                                                                                                                                                                                          [34m^^^ [0m
+    [36m| [0m
+
+[33mwarning[0m: unused variable:'ctx'
+   [36m==>[0m /home/otto/文档/Project/cli/src/test/constraint_test.cj:306:31:
+    [36m| [0m
+[36m306[0m [36m| [0m                    .action({ ctx => 0 })[0m
+    [36m| [0m                              [33m^ unused variable[0m
+    [36m| [0m
+    [36m#[0m [0mnote[0m: this warning can be suppressed by setting the compiler option `-Woff unused`
+[34mnote[0m: the warning occurs after the macro is expanded
+   [36m==>[0m /home/otto/文档/Project/cli/src/test/constraint_test.cj:282:1:
+    [36m| [0m
+[36m282[0m [36m| [0m  @Test[0m
+    [36m| [0m [34m_[0m[34m^[0m
+[36m283[0m [36m| [0m[34m|[0m class FlagGroupTest {[0m
+    [36m| [0m[34m|[0m ...[0m
+[36m366[0m [36m| [0m[34m|[0m }[0m
+    [36m| [0m[34m|[0m[34m_[0m[34m^[0m
+    [36m| [0m
+[34mnote[0m: which is expanded as follows
+    [36m| [0m
+    [36m| [0m/* 282.11 */        let app = App("tool").command(Command("run").flag(Flag("file").description("Input file")).flag(Flag("stdin").asBool().description("Read from stdin")).requireGroup("input",["file", "stdin"]).action({ ctx => 0 }))[0m
+    [36m| [0m                                                                                                                                                                                                                           [34m^^^ [0m
+    [36m| [0m
+
+[33mwarning[0m: unused variable:'ctx'
+   [36m==>[0m /home/otto/文档/Project/cli/src/test/constraint_test.cj:323:31:
+    [36m| [0m
+[36m323[0m [36m| [0m                    .action({ ctx => 0 })[0m
+    [36m| [0m                              [33m^ unused variable[0m
+    [36m| [0m
+    [36m#[0m [0mnote[0m: this warning can be suppressed by setting the compiler option `-Woff unused`
+[34mnote[0m: the warning occurs after the macro is expanded
+   [36m==>[0m /home/otto/文档/Project/cli/src/test/constraint_test.cj:282:1:
+    [36m| [0m
+[36m282[0m [36m| [0m  @Test[0m
+    [36m| [0m [34m_[0m[34m^[0m
+[36m283[0m [36m| [0m[34m|[0m class FlagGroupTest {[0m
+    [36m| [0m[34m|[0m ...[0m
+[36m366[0m [36m| [0m[34m|[0m }[0m
+    [36m| [0m[34m|[0m[34m_[0m[34m^[0m
+    [36m| [0m
+[34mnote[0m: which is expanded as follows
+    [36m| [0m
+    [36m| [0m/* 282.20 */        let app = App("tool").command(Command("output").flag(Flag("json").asBool()).flag(Flag("yaml").asBool()).flag(Flag("text").asBool()).mutuallyExclusiveGroup("format",["json", "yaml", "text"]).action({ ctx => 0 }))[0m
+    [36m| [0m                                                                                                                                                                                                                           [34m^^^ [0m
+    [36m| [0m
+
+[33mwarning[0m: unused variable:'ctx'
+   [36m==>[0m /home/otto/文档/Project/cli/src/test/constraint_test.cj:337:31:
+    [36m| [0m
+[36m337[0m [36m| [0m                    .action({ ctx => 0 })[0m
+    [36m| [0m                              [33m^ unused variable[0m
+    [36m| [0m
+    [36m#[0m [0mnote[0m: this warning can be suppressed by setting the compiler option `-Woff unused`
+[34mnote[0m: the warning occurs after the macro is expanded
+   [36m==>[0m /home/otto/文档/Project/cli/src/test/constraint_test.cj:282:1:
+    [36m| [0m
+[36m282[0m [36m| [0m  @Test[0m
+    [36m| [0m [34m_[0m[34m^[0m
+[36m283[0m [36m| [0m[34m|[0m class FlagGroupTest {[0m
+    [36m| [0m[34m|[0m ...[0m
+[36m366[0m [36m| [0m[34m|[0m }[0m
+    [36m| [0m[34m|[0m[34m_[0m[34m^[0m
+    [36m| [0m
+[34mnote[0m: which is expanded as follows
+    [36m| [0m
+    [36m| [0m/* 282.27 */        let app = App("tool").command(Command("output").flag(Flag("json").asBool()).flag(Flag("yaml").asBool()).mutuallyExclusiveGroup("format",["json", "yaml"]).action({ ctx => 0 }))[0m
+    [36m| [0m                                                                                                                                                                                       [34m^^^ [0m
+    [36m| [0m
+
+[33mwarning[0m: unused variable:'ctx'
+   [36m==>[0m /home/otto/文档/Project/cli/src/test/constraint_test.cj:354:31:
+    [36m| [0m
+[36m354[0m [36m| [0m                    .action({ ctx => 0 })[0m
+    [36m| [0m                              [33m^ unused variable[0m
+    [36m| [0m
+    [36m#[0m [0mnote[0m: this warning can be suppressed by setting the compiler option `-Woff unused`
+[34mnote[0m: the warning occurs after the macro is expanded
+   [36m==>[0m /home/otto/文档/Project/cli/src/test/constraint_test.cj:282:1:
+    [36m| [0m
+[36m282[0m [36m| [0m  @Test[0m
+    [36m| [0m [34m_[0m[34m^[0m
+[36m283[0m [36m| [0m[34m|[0m class FlagGroupTest {[0m
+    [36m| [0m[34m|[0m ...[0m
+[36m366[0m [36m| [0m[34m|[0m }[0m
+    [36m| [0m[34m|[0m[34m_[0m[34m^[0m
+    [36m| [0m
+[34mnote[0m: which is expanded as follows
+    [36m| [0m
+    [36m| [0m/* 282.35 */        let app = App("tool").command(Command("run").flag(Flag("fast").asBool()).flag(Flag("safe").asBool()).requireGroup("mode",["fast", "safe"]).mutuallyExclusiveGroup("mode",["fast", "safe"]).action({ ctx => 0 }))[0m
+    [36m| [0m                                                                                                                                                                                                                        [34m^^^ [0m
+    [36m| [0m
+
+[33mwarning[0m: unused variable:'ctx'
+   [36m==>[0m /home/otto/文档/Project/cli/src/test/constraint_test.cj:379:23:
+    [36m| [0m
+[36m379[0m [36m| [0m            .action({ ctx => 0 })[0m
+    [36m| [0m                      [33m^ unused variable[0m
+    [36m| [0m
+    [36m#[0m [0mnote[0m: this warning can be suppressed by setting the compiler option `-Woff unused`
+[34mnote[0m: the warning occurs after the macro is expanded
+   [36m==>[0m /home/otto/文档/Project/cli/src/test/constraint_test.cj:371:1:
+    [36m| [0m
+[36m371[0m [36m| [0m  @Test[0m
+    [36m| [0m [34m_[0m[34m^[0m
+[36m372[0m [36m| [0m[34m|[0m class ConstraintIntegrationTest {[0m
+    [36m| [0m[34m|[0m ...[0m
+[36m441[0m [36m| [0m[34m|[0m }[0m
+    [36m| [0m[34m|[0m[34m_[0m[34m^[0m
+    [36m| [0m
+[34mnote[0m: the code after the macro is expanded as follows
+    [36m| [0m
+    [36m| [0m  /* 371.1 */@Attribute[TEST_GENERATED] class ConstraintIntegrationTest <: TestClass {[0m
+    [36m| [0m [34m_[0m[34m^[0m
+    [36m| [0m[34m|[0m /* 371.2 */    @Attribute[TestCase_43][0m
+    [36m| [0m[34m|[0m /* 371.3 */    func testClippyLintcheckPattern() {[0m
+    [36m| [0m[34m|[0m /* 371.4 */        let app = App("lintcheck").flag(Flag("fix").asBool().conflictsWith("max-jobs")).flag(Flag("max-jobs").valueType(Int64Type).defaultValue("4")).action({ ctx => 0 })[0m
+    [36m| [0m[34m|[0m /* 371.5 */        let r1 = app.mockRun(["--fix"])[0m
+    [36m| [0m[34m|[0m /* 371.6 */        assertEqual("r1.exitCode == 0", "true", r1.exitCode == 0, true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 371.7 */        let r2 = app.mockRun(["--fix", "--max-jobs", "2"])[0m
+    [36m| [0m[34m|[0m /* 371.8 */        assertEqual("r2.exitCode == 2", "true", r2.exitCode == 2, true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 371.9 */        assertEqual("r2.stderr.contains(\"cannot be used together\")", "true", r2.stderr.contains("cannot be used together"), true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 371.10 */    }[0m
+    [36m| [0m[34m|[0m /* 371.11 */    [0m
+    [36m| [0m[34m|[0m /* 371.12 */    @Attribute[TestCase_44][0m
+    [36m| [0m[34m|[0m /* 371.13 */    func testOutputFormatDependsOnOutput() {[0m
+    [36m| [0m[34m|[0m /* 371.14 */        let app = App("tool").flag(Flag("output").short(r'o')).flag(Flag("output-format").requires("output")).action({ ctx => 0 })[0m
+    [36m| [0m[34m|[0m /* 371.15 */        let r1 = app.mockRun(["--output", "file.txt", "--output-format", "json"])[0m
+    [36m| [0m[34m|[0m /* 371.16 */        assertEqual("r1.exitCode == 0", "true", r1.exitCode == 0, true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 371.17 */        let r2 = app.mockRun(["--output-format", "json"])[0m
+    [36m| [0m[34m|[0m /* 371.18 */        assertEqual("r2.exitCode == 2", "true", r2.exitCode == 2, true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 371.19 */    }[0m
+    [36m| [0m[34m|[0m /* 371.20 */    [0m
+    [36m| [0m[34m|[0m /* 371.21 */    @Attribute[TestCase_45][0m
+    [36m| [0m[34m|[0m /* 371.22 */    func testAllConstraintsCombined() {[0m
+    [36m| [0m[34m|[0m /* 371.23 */        let portValidator = { s: String => let runes = s.toRuneArray()[0m
+    [36m| [0m[34m|[0m /* 371.24 */            [0m
+    [36m| [0m[34m|[0m /* 371.25 */            var n: Int64 = 0[0m
+    [36m| [0m[34m|[0m /* 371.26 */            [0m
+    [36m| [0m[34m|[0m /* 371.27 */            for(r in runes) {[0m
+    [36m| [0m[34m|[0m /* 371.28 */                if(r >= r'0' && r <= r'9') {[0m
+    [36m| [0m[34m|[0m /* 371.29 */                    n = n * 10 +(Int64(UInt32(r)) - 48)[0m
+    [36m| [0m[34m|[0m /* 371.30 */                }[0m
+    [36m| [0m[34m|[0m /* 371.31 */            }[0m
+    [36m| [0m[34m|[0m /* 371.32 */            [0m
+    [36m| [0m[34m|[0m /* 371.33 */        n >= 1 && n <= 65535 }[0m
+    [36m| [0m[34m|[0m /* 371.34 */        let app = App("server").command(Command("start").flag(Flag("host").defaultValue("localhost")).flag(Flag("port").valueType(Int64Type).validator(portValidator, message: "must be 1-65535").requires("host")).flag(Flag("http").asBool()).flag(Flag("https").asBool()).flag(Flag("internal-id").hidden()).mutuallyExclusiveGroup("protocol",["http", "https"]).action({ ctx => 0 }))[0m
+    [36m| [0m[34m|[0m /* 371.35 */        let r1 = app.mockRun(["start", "--port", "8080", "--http"])[0m
+    [36m| [0m[34m|[0m /* 371.36 */        assertEqual("r1.exitCode == 0", "true", r1.exitCode == 0, true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 371.37 */        let r2 = app.mockRun(["start", "--port", "99999", "--http"])[0m
+    [36m| [0m[34m|[0m /* 371.38 */        assertEqual("r2.exitCode == 2", "true", r2.exitCode == 2, true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 371.39 */        assertEqual("r2.stderr.contains(\"must be 1-65535\")", "true", r2.stderr.contains("must be 1-65535"), true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 371.40 */        let r3 = app.mockRun(["start", "--http", "--https"])[0m
+    [36m| [0m[34m|[0m /* 371.41 */        assertEqual("r3.exitCode == 2", "true", r3.exitCode == 2, true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 371.42 */        let r4 = app.mockRun(["start", "--help"])[0m
+    [36m| [0m[34m|[0m /* 371.43 */        assertEqual("! r4.stderr.contains(\"internal-id\")", "true", ! r4.stderr.contains("internal-id"), true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 371.44 */        assertEqual("r4.stderr.contains(\"--port\")", "true", r4.stderr.contains("--port"), true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 371.45 */    }[0m
+    [36m| [0m[34m|[0m /* 371.46 */    [0m
+    [36m| [0m[34m|[0m /* 371.47 */    init() {[0m
+    [36m| [0m[34m|[0m /* 371.48 */    }[0m
+    [36m| [0m[34m|[0m /* 371.49 */    private func classConfiguration(): Configuration {[0m
+    [36m| [0m[34m|[0m /* 371.50 */        let configuration = Configuration()[0m
+    [36m| [0m[34m|[0m /* 371.51 */        [0m
+    [36m| [0m[34m|[0m /* 371.52 */        return configuration[0m
+    [36m| [0m[34m|[0m /* 371.53 */    }[0m
+    [36m| [0m[34m|[0m /* 371.54 */    public override func asTestSuite(): TestSuite {[0m
+    [36m| [0m[34m|[0m /* 371.55 */        [0m
+    [36m| [0m[34m|[0m /* 371.56 */        let suiteConfiguration = classConfiguration()[0m
+    [36m| [0m[34m|[0m /* 371.57 */        let suiteBuilder = TestSuite.builder("ConstraintIntegrationTest").configure(suiteConfiguration)[0m
+    [36m| [0m[34m|[0m /* 371.58 */        [0m
+    [36m| [0m[34m|[0m /* 371.59 */        { => let caseConfig = Configuration()[0m
+    [36m| [0m[34m|[0m /* 371.60 */            [0m
+    [36m| [0m[34m|[0m /* 371.61 */            let testClippyLintcheckPatternTestFunc = { => testClippyLintcheckPattern();() }[0m
+    [36m| [0m[34m|[0m /* 371.62 */            suiteBuilder.add([0m
+    [36m| [0m[34m|[0m /* 371.63 */            UnitTestCase.create([0m
+    [36m| [0m[34m|[0m /* 371.64 */            "testClippyLintcheckPattern",[0m
+    [36m| [0m[34m|[0m /* 371.65 */            configuration: caseConfig,[0m
+    [36m| [0m[34m|[0m /* 371.66 */            body: testClippyLintcheckPatternTestFunc[0m
+    [36m| [0m[34m|[0m /* 371.67 */            )[0m
+    [36m| [0m[34m|[0m /* 371.68 */            )[0m
+    [36m| [0m[34m|[0m /* 371.69 */            [0m
+    [36m| [0m[34m|[0m /* 371.70 */        }()[0m
+    [36m| [0m[34m|[0m /* 371.71 */        [0m
+    [36m| [0m[34m|[0m /* 371.72 */        [0m
+    [36m| [0m[34m|[0m /* 371.73 */        { => let caseConfig = Configuration()[0m
+    [36m| [0m[34m|[0m /* 371.74 */            [0m
+    [36m| [0m[34m|[0m /* 371.75 */            let testOutputFormatDependsOnOutputTestFunc = { => testOutputFormatDependsOnOutput();() }[0m
+    [36m| [0m[34m|[0m /* 371.76 */            suiteBuilder.add([0m
+    [36m| [0m[34m|[0m /* 371.77 */            UnitTestCase.create([0m
+    [36m| [0m[34m|[0m /* 371.78 */            "testOutputFormatDependsOnOutput",[0m
+    [36m| [0m[34m|[0m /* 371.79 */            configuration: caseConfig,[0m
+    [36m| [0m[34m|[0m /* 371.80 */            body: testOutputFormatDependsOnOutputTestFunc[0m
+    [36m| [0m[34m|[0m /* 371.81 */            )[0m
+    [36m| [0m[34m|[0m /* 371.82 */            )[0m
+    [36m| [0m[34m|[0m /* 371.83 */            [0m
+    [36m| [0m[34m|[0m /* 371.84 */        }()[0m
+    [36m| [0m[34m|[0m /* 371.85 */        [0m
+    [36m| [0m[34m|[0m /* 371.86 */        [0m
+    [36m| [0m[34m|[0m /* 371.87 */        { => let caseConfig = Configuration()[0m
+    [36m| [0m[34m|[0m /* 371.88 */            [0m
+    [36m| [0m[34m|[0m /* 371.89 */            let testAllConstraintsCombinedTestFunc = { => testAllConstraintsCombined();() }[0m
+    [36m| [0m[34m|[0m /* 371.90 */            suiteBuilder.add([0m
+    [36m| [0m[34m|[0m /* 371.91 */            UnitTestCase.create([0m
+    [36m| [0m[34m|[0m /* 371.92 */            "testAllConstraintsCombined",[0m
+    [36m| [0m[34m|[0m /* 371.93 */            configuration: caseConfig,[0m
+    [36m| [0m[34m|[0m /* 371.94 */            body: testAllConstraintsCombinedTestFunc[0m
+    [36m| [0m[34m|[0m /* 371.95 */            )[0m
+    [36m| [0m[34m|[0m /* 371.96 */            )[0m
+    [36m| [0m[34m|[0m /* 371.97 */            [0m
+    [36m| [0m[34m|[0m /* 371.98 */        }()[0m
+    [36m| [0m[34m|[0m /* 371.99 */        [0m
+    [36m| [0m[34m|[0m /* 371.100 */        return suiteBuilder.build()[0m
+    [36m| [0m[34m|[0m /* 371.101 */    }[0m
+    [36m| [0m[34m|[0m /* 371.102 */    private func inheritedFromClassAnnotatedByTestTemplate < T >(): TestSuite where T <: TestClass {[0m
+    [36m| [0m[34m|[0m /* 371.103 */        throw Exception("Unreachable code")[0m
+    [36m| [0m[34m|[0m /* 371.104 */    }[0m
+    [36m| [0m[34m|[0m /* 371.105 */}[0m
+    [36m| [0m[34m|[0m /* 371.106 */[0m
+    [36m| [0m[34m|[0m /* 371.107 */[0m
+    [36m| [0m[34m|[0m /* 371.108 */interface TestPackageExtension_ConstraintIntegrationTest {[0m
+    [36m| [0m[34m|[0m /* 371.109 */    func registerConstraintIntegrationTest(): Unit[0m
+    [36m| [0m[34m|[0m /* 371.110 */}[0m
+    [36m| [0m[34m|[0m /* 371.111 */extend TestPackage <: TestPackageExtension_ConstraintIntegrationTest {[0m
+    [36m| [0m[34m|[0m /* 371.112 */    @Attribute[TEST_REGISTER][0m
+    [36m| [0m[34m|[0m /* 371.113 */    public func registerConstraintIntegrationTest() {[0m
+    [36m| [0m[34m|[0m /* 371.114 */        registerSuite({ => ConstraintIntegrationTest().asTestSuite() })[0m
+    [36m| [0m[34m|[0m /* 371.115 */    }[0m
+    [36m| [0m[34m|[0m /* 371.116 */}[0m
+    [36m| [0m[34m|[0m /* 371.117 */[0m
+    [36m| [0m[34m|[0m[34m_[0m[34m____________^[0m
+    [36m| [0m
+[34mnote[0m: which is expanded as follows
+    [36m| [0m
+    [36m| [0m/* 371.4 */        let app = App("lintcheck").flag(Flag("fix").asBool().conflictsWith("max-jobs")).flag(Flag("max-jobs").valueType(Int64Type).defaultValue("4")).action({ ctx => 0 })[0m
+    [36m| [0m                                                                                                                                                                          [34m^^^ [0m
+    [36m| [0m
+
+[33mwarning[0m: unused variable:'ctx'
+   [36m==>[0m /home/otto/文档/Project/cli/src/test/constraint_test.cj:395:23:
+    [36m| [0m
+[36m395[0m [36m| [0m            .action({ ctx => 0 })[0m
+    [36m| [0m                      [33m^ unused variable[0m
+    [36m| [0m
+    [36m#[0m [0mnote[0m: this warning can be suppressed by setting the compiler option `-Woff unused`
+[34mnote[0m: the warning occurs after the macro is expanded
+   [36m==>[0m /home/otto/文档/Project/cli/src/test/constraint_test.cj:371:1:
+    [36m| [0m
+[36m371[0m [36m| [0m  @Test[0m
+    [36m| [0m [34m_[0m[34m^[0m
+[36m372[0m [36m| [0m[34m|[0m class ConstraintIntegrationTest {[0m
+    [36m| [0m[34m|[0m ...[0m
+[36m441[0m [36m| [0m[34m|[0m }[0m
+    [36m| [0m[34m|[0m[34m_[0m[34m^[0m
+    [36m| [0m
+[34mnote[0m: which is expanded as follows
+    [36m| [0m
+    [36m| [0m/* 371.14 */        let app = App("tool").flag(Flag("output").short(r'o')).flag(Flag("output-format").requires("output")).action({ ctx => 0 })[0m
+    [36m| [0m                                                                                                                                   [34m^^^ [0m
+    [36m| [0m
+
+[33mwarning[0m: unused variable:'ctx'
    [36m==>[0m /home/otto/文档/Project/cli/src/test/widget_test.cj:412:31:
     [36m| [0m
 [36m412[0m [36m| [0m                    .action({ ctx =>[0m
@@ -2804,7 +3976,7 @@
      [36m| [0m
      [36m| [0m  /* 404.1 */@Attribute[TEST_GENERATED] class WidgetIntegrationTest <: TestClass {[0m
      [36m| [0m [34m_[0m[34m^[0m
-     [36m| [0m[34m|[0m /* 404.2 */    @Attribute[TestCase_233][0m
+     [36m| [0m[34m|[0m /* 404.2 */    @Attribute[TestCase_264][0m
      [36m| [0m[34m|[0m /* 404.3 */    func testSpinnerInAction() {[0m
      [36m| [0m[34m|[0m /* 404.4 */        let log = ArrayList < String >()[0m
      [36m| [0m[34m|[0m /* 404.5 */        let app = App("tool").command(Command("build").action({ ctx => let s = Spinner().message("Compiling...")[0m
@@ -2823,7 +3995,7 @@
      [36m| [0m[34m|[0m /* 404.18 */        assertEqual("log[2].contains(\"Build complete\")", "true", log[2].contains("Build complete"), true, isDelta: false)[0m
      [36m| [0m[34m|[0m /* 404.19 */    }[0m
      [36m| [0m[34m|[0m /* 404.20 */    [0m
-     [36m| [0m[34m|[0m /* 404.21 */    @Attribute[TestCase_234][0m
+     [36m| [0m[34m|[0m /* 404.21 */    @Attribute[TestCase_265][0m
      [36m| [0m[34m|[0m /* 404.22 */    func testProgressBarInAction() {[0m
      [36m| [0m[34m|[0m /* 404.23 */        let log = ArrayList < String >()[0m
      [36m| [0m[34m|[0m /* 404.24 */        let app = App("tool").command(Command("download").action({ ctx => let bar = ProgressBar(3).width(10)[0m
@@ -2844,7 +4016,7 @@
      [36m| [0m[34m|[0m /* 404.39 */        assertEqual("log[0].contains(\"100%\")", "true", log[0].contains("100%"), true, isDelta: false)[0m
      [36m| [0m[34m|[0m /* 404.40 */    }[0m
      [36m| [0m[34m|[0m /* 404.41 */    [0m
-     [36m| [0m[34m|[0m /* 404.42 */    @Attribute[TestCase_235][0m
+     [36m| [0m[34m|[0m /* 404.42 */    @Attribute[TestCase_266][0m
      [36m| [0m[34m|[0m /* 404.43 */    func testConfirmInAction() {[0m
      [36m| [0m[34m|[0m /* 404.44 */        let mock = InputMock().addLine("yes")[0m
      [36m| [0m[34m|[0m /* 404.45 */        let log = ArrayList < String >()[0m
@@ -2864,7 +4036,7 @@
      [36m| [0m[34m|[0m /* 404.59 */        assertEqual("log[0] == \"deleted\"", "true", log[0] == "deleted", true, isDelta: false)[0m
      [36m| [0m[34m|[0m /* 404.60 */    }[0m
      [36m| [0m[34m|[0m /* 404.61 */    [0m
-     [36m| [0m[34m|[0m /* 404.62 */    @Attribute[TestCase_236][0m
+     [36m| [0m[34m|[0m /* 404.62 */    @Attribute[TestCase_267][0m
      [36m| [0m[34m|[0m /* 404.63 */    func testSelectInAction() {[0m
      [36m| [0m[34m|[0m /* 404.64 */        let mock = InputMock().addLine("2")[0m
      [36m| [0m[34m|[0m /* 404.65 */        let log = ArrayList < String >()[0m
@@ -2994,7 +4166,7 @@
     [36m| [0m
     [36m| [0m  /* 315.1 */@Attribute[TEST_GENERATED] class PromptTest <: TestClass {[0m
     [36m| [0m [34m_[0m[34m^[0m
-    [36m| [0m[34m|[0m /* 315.2 */    @Attribute[TestCase_140][0m
+    [36m| [0m[34m|[0m /* 315.2 */    @Attribute[TestCase_171][0m
     [36m| [0m[34m|[0m /* 315.3 */    func testAsk() {[0m
     [36m| [0m[34m|[0m /* 315.4 */        let mock = InputMock().addLine("otto")[0m
     [36m| [0m[34m|[0m /* 315.5 */        let prompt = Prompt(mock)[0m
@@ -3004,7 +4176,7 @@
     [36m| [0m[34m|[0m /* 315.9 */        }[0m
     [36m| [0m[34m|[0m /* 315.10 */    }[0m
     [36m| [0m[34m|[0m /* 315.11 */    [0m
-    [36m| [0m[34m|[0m /* 315.12 */    @Attribute[TestCase_141][0m
+    [36m| [0m[34m|[0m /* 315.12 */    @Attribute[TestCase_172][0m
     [36m| [0m[34m|[0m /* 315.13 */    func testAskOrDefault() {[0m
     [36m| [0m[34m|[0m /* 315.14 */        let mock = InputMock().addLine("").addLine("custom")[0m
     [36m| [0m[34m|[0m /* 315.15 */        let prompt = Prompt(mock)[0m
@@ -3012,7 +4184,7 @@
     [36m| [0m[34m|[0m /* 315.17 */        assertEqual("prompt.askOrDefault(\"Q?\", \"default\") == \"custom\"", "true", prompt.askOrDefault("Q?", "default") == "custom", true, isDelta: false)[0m
     [36m| [0m[34m|[0m /* 315.18 */    }[0m
     [36m| [0m[34m|[0m /* 315.19 */    [0m
-    [36m| [0m[34m|[0m /* 315.20 */    @Attribute[TestCase_142][0m
+    [36m| [0m[34m|[0m /* 315.20 */    @Attribute[TestCase_173][0m
     [36m| [0m[34m|[0m /* 315.21 */    func testConfirmYes() {[0m
     [36m| [0m[34m|[0m /* 315.22 */        let mock = InputMock().addLine("y").addLine("yes").addLine("YES").addLine("Y")[0m
     [36m| [0m[34m|[0m /* 315.23 */        let prompt = Prompt(mock)[0m
@@ -3022,7 +4194,7 @@
     [36m| [0m[34m|[0m /* 315.27 */        assertEqual("prompt.confirm(\"Sure?\")", "true", prompt.confirm("Sure?"), true, isDelta: false)[0m
     [36m| [0m[34m|[0m /* 315.28 */    }[0m
     [36m| [0m[34m|[0m /* 315.29 */    [0m
-    [36m| [0m[34m|[0m /* 315.30 */    @Attribute[TestCase_143][0m
+    [36m| [0m[34m|[0m /* 315.30 */    @Attribute[TestCase_174][0m
     [36m| [0m[34m|[0m /* 315.31 */    func testConfirmNo() {[0m
     [36m| [0m[34m|[0m /* 315.32 */        let mock = InputMock().addLine("n").addLine("no").addLine("")[0m
     [36m| [0m[34m|[0m /* 315.33 */        let prompt = Prompt(mock)[0m
@@ -3031,14 +4203,14 @@
     [36m| [0m[34m|[0m /* 315.36 */        assertEqual("! prompt.confirm(\"Sure?\")", "true", ! prompt.confirm("Sure?"), true, isDelta: false)[0m
     [36m| [0m[34m|[0m /* 315.37 */    }[0m
     [36m| [0m[34m|[0m /* 315.38 */    [0m
-    [36m| [0m[34m|[0m /* 315.39 */    @Attribute[TestCase_144][0m
+    [36m| [0m[34m|[0m /* 315.39 */    @Attribute[TestCase_175][0m
     [36m| [0m[34m|[0m /* 315.40 */    func testConfirmEOF() {[0m
     [36m| [0m[34m|[0m /* 315.41 */        let mock = InputMock()[0m
     [36m| [0m[34m|[0m /* 315.42 */        let prompt = Prompt(mock)[0m
     [36m| [0m[34m|[0m /* 315.43 */        assertEqual("! prompt.confirm(\"Sure?\")", "true", ! prompt.confirm("Sure?"), true, isDelta: false)[0m
     [36m| [0m[34m|[0m /* 315.44 */    }[0m
     [36m| [0m[34m|[0m /* 315.45 */    [0m
-    [36m| [0m[34m|[0m /* 315.46 */    @Attribute[TestCase_145][0m
+    [36m| [0m[34m|[0m /* 315.46 */    @Attribute[TestCase_176][0m
     [36m| [0m[34m|[0m /* 315.47 */    func testSelect() {[0m
     [36m| [0m[34m|[0m /* 315.48 */        let options =["apple", "banana", "cherry"][0m
     [36m| [0m[34m|[0m /* 315.49 */        let mock = InputMock().addLine("2")[0m
@@ -3049,7 +4221,7 @@
     [36m| [0m[34m|[0m /* 315.54 */        }[0m
     [36m| [0m[34m|[0m /* 315.55 */    }[0m
     [36m| [0m[34m|[0m /* 315.56 */    [0m
-    [36m| [0m[34m|[0m /* 315.57 */    @Attribute[TestCase_146][0m
+    [36m| [0m[34m|[0m /* 315.57 */    @Attribute[TestCase_177][0m
     [36m| [0m[34m|[0m /* 315.58 */    func testSelectInvalid() {[0m
     [36m| [0m[34m|[0m /* 315.59 */        let options =["a", "b"][0m
     [36m| [0m[34m|[0m /* 315.60 */        let mock = InputMock().addLine("5")[0m
@@ -3057,7 +4229,7 @@
     [36m| [0m[34m|[0m /* 315.62 */        assertEqual("prompt.select(\"Choose:\", options).isNone()", "true", prompt.select("Choose:", options).isNone(), true, isDelta: false)[0m
     [36m| [0m[34m|[0m /* 315.63 */    }[0m
     [36m| [0m[34m|[0m /* 315.64 */    [0m
-    [36m| [0m[34m|[0m /* 315.65 */    @Attribute[TestCase_147][0m
+    [36m| [0m[34m|[0m /* 315.65 */    @Attribute[TestCase_178][0m
     [36m| [0m[34m|[0m /* 315.66 */    func testSelectZero() {[0m
     [36m| [0m[34m|[0m /* 315.67 */        let options =["a", "b"][0m
     [36m| [0m[34m|[0m /* 315.68 */        let mock = InputMock().addLine("0")[0m
@@ -3065,7 +4237,7 @@
     [36m| [0m[34m|[0m /* 315.70 */        assertEqual("prompt.select(\"Choose:\", options).isNone()", "true", prompt.select("Choose:", options).isNone(), true, isDelta: false)[0m
     [36m| [0m[34m|[0m /* 315.71 */    }[0m
     [36m| [0m[34m|[0m /* 315.72 */    [0m
-    [36m| [0m[34m|[0m /* 315.73 */    @Attribute[TestCase_148][0m
+    [36m| [0m[34m|[0m /* 315.73 */    @Attribute[TestCase_179][0m
     [36m| [0m[34m|[0m /* 315.74 */    func testPromptInAction() {[0m
     [36m| [0m[34m|[0m /* 315.75 */        let log = ArrayList < String >()[0m
     [36m| [0m[34m|[0m /* 315.76 */        let mock = InputMock().addLine("production")[0m
@@ -3246,6 +4418,29 @@
     [36m| [0m
 
 [33mwarning[0m: unused variable:'ctx'
+   [36m==>[0m /home/otto/文档/Project/cli/src/test/constraint_test.cj:424:31:
+    [36m| [0m
+[36m424[0m [36m| [0m                    .action({ ctx => 0 })[0m
+    [36m| [0m                              [33m^ unused variable[0m
+    [36m| [0m
+    [36m#[0m [0mnote[0m: this warning can be suppressed by setting the compiler option `-Woff unused`
+[34mnote[0m: the warning occurs after the macro is expanded
+   [36m==>[0m /home/otto/文档/Project/cli/src/test/constraint_test.cj:371:1:
+    [36m| [0m
+[36m371[0m [36m| [0m  @Test[0m
+    [36m| [0m [34m_[0m[34m^[0m
+[36m372[0m [36m| [0m[34m|[0m class ConstraintIntegrationTest {[0m
+    [36m| [0m[34m|[0m ...[0m
+[36m441[0m [36m| [0m[34m|[0m }[0m
+    [36m| [0m[34m|[0m[34m_[0m[34m^[0m
+    [36m| [0m
+[34mnote[0m: which is expanded as follows
+    [36m| [0m
+    [36m| [0m/* 371.34 */        let app = App("server").command(Command("start").flag(Flag("host").defaultValue("localhost")).flag(Flag("port").valueType(Int64Type).validator(portValidator, message: "must be 1-65535").requires("host")).flag(Flag("http").asBool()).flag(Flag("https").asBool()).flag(Flag("internal-id").hidden()).mutuallyExclusiveGroup("protocol",["http", "https"]).action({ ctx => 0 }))[0m
+    [36m| [0m                                                                                                                                                                                                                                                                                                                                                                                          [34m^^^ [0m
+    [36m| [0m
+
+[33mwarning[0m: unused variable:'ctx'
    [36m==>[0m /home/otto/文档/Project/cli/src/test/widget_test.cj:437:31:
     [36m| [0m
 [36m437[0m [36m| [0m                    .action({ ctx =>[0m
@@ -3314,4 +4509,4 @@
      [36m| [0m                                                                             [34m^^^ [0m
      [36m| [0m
 
-49 warnings generated, 49 warnings printed.
+72 warnings generated, 72 warnings printed.

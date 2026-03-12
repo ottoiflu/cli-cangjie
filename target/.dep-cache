@@ -183,7 +183,7 @@
       "package": "cli.test",
       "isMacro": false,
       "accessLevel": "internal",
-      "timeStamp": 1773315722,
+      "timeStamp": 1773317115,
       "dependencies": [
         {
           "orPackage": "",
@@ -195,6 +195,9 @@
             },
             {
               "file": "/home/otto/文档/Project/cli/src/test/command_test.cj"
+            },
+            {
+              "file": "/home/otto/文档/Project/cli/src/test/constraint_test.cj"
             },
             {
               "file": "/home/otto/文档/Project/cli/src/test/context_test.cj"
@@ -243,6 +246,9 @@
             },
             {
               "file": "/home/otto/文档/Project/cli/src/test/command_test.cj"
+            },
+            {
+              "file": "/home/otto/文档/Project/cli/src/test/constraint_test.cj"
             },
             {
               "file": "/home/otto/文档/Project/cli/src/test/context_test.cj"
@@ -311,6 +317,9 @@
               "file": "/home/otto/文档/Project/cli/src/test/command_test.cj"
             },
             {
+              "file": "/home/otto/文档/Project/cli/src/test/constraint_test.cj"
+            },
+            {
               "file": "/home/otto/文档/Project/cli/src/test/context_test.cj"
             },
             {
@@ -355,6 +364,9 @@
             },
             {
               "file": "/home/otto/文档/Project/cli/src/test/command_test.cj"
+            },
+            {
+              "file": "/home/otto/文档/Project/cli/src/test/constraint_test.cj"
             },
             {
               "file": "/home/otto/文档/Project/cli/src/test/context_test.cj"

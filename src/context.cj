@@ -13,6 +13,8 @@ public class Context {
     let _commandPath: ArrayList<String> = ArrayList<String>()
     // 自定义值存储（依赖注入）: key -> value
     let _values: HashMap<String, String> = HashMap<String, String>()
+    // Phase 6: 用户显式设置的 Flag 追踪（区分于默认值）
+    let _explicitFlags: ArrayList<String> = ArrayList<String>()
 
     // 设置 flag 值（覆盖模式：Set / SetTrue / SetFalse）
     public func setFlag(name: String, value: String): Unit {
@@ -178,6 +180,18 @@ public class Context {
     // 检查自定义值是否存在
     public func hasValue(key: String): Bool {
         _values.contains(key)
+    }
+
+    // Phase 6: 标记 Flag 为用户显式设置
+    public func markExplicit(name: String): Unit {
+        if (!_explicitFlags.contains(name)) {
+            _explicitFlags.add(name)
+        }
+    }
+
+    // Phase 6: 检查 Flag 是否为用户显式设置
+    public func isExplicit(name: String): Bool {
+        _explicitFlags.contains(name)
     }
 }
 

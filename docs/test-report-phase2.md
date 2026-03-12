@@ -2,14 +2,14 @@
 
 ## 1. 基本信息
 
-| 项目     | 值                                              |
-| -------- | ----------------------------------------------- |
-| 项目名称 | cangjie-cli-framework                           |
-| 阶段     | Phase 2 — 诊断系统与 Clippy 级别用户体验        |
-| 版本     | v0.2.0                                          |
-| 测试框架 | `std.unittest` (cjpm test)                      |
-| 执行环境 | Linux x86_64                                    |
-| 执行日期 | 2026-03-12                                      |
+| 项目     | 值                                       |
+| -------- | ---------------------------------------- |
+| 项目名称 | cangjie-cli-framework                    |
+| 阶段     | Phase 2 — 诊断系统与 Clippy 级别用户体验 |
+| 版本     | v0.2.0                                   |
+| 测试框架 | `std.unittest` (cjpm test)               |
+| 执行环境 | Linux x86_64                             |
+| 执行日期 | 2026-03-12                               |
 
 ## 2. 测试执行总览
 
@@ -27,74 +27,74 @@
 
 ### 3.1 SuggestTest — 14/14 PASSED (新增)
 
-| 用例名                          | 结果   | 耗时 (ns) |
-| ------------------------------- | ------ | --------- |
-| testLevenshteinIdentical        | PASSED | 11,280    |
-| testLevenshteinEmpty            | PASSED | 7,157     |
-| testLevenshteinSingleEdit       | PASSED | 14,433    |
-| testLevenshteinMultiEdit        | PASSED | 15,662    |
-| testLevenshteinCompleteDiff     | PASSED | 6,893     |
-| testSimilarityIdentical         | PASSED | 12,568    |
-| testSimilarityClose             | PASSED | 9,752     |
-| testSimilarityLow               | PASSED | 7,777     |
-| testSimilarityEmptyBoth         | PASSED | 5,764     |
-| testFindSuggestionMatch         | PASSED | 34,489    |
-| testFindSuggestionNoMatch       | PASSED | 22,877    |
-| testFindSuggestionTypo          | PASSED | 17,506    |
-| testFindSuggestionCaseInsensitive | PASSED | 18,823  |
-| testFindAllSuggestionsSorted    | PASSED | 29,209    |
+| 用例名                            | 结果   | 耗时 (ns) |
+| --------------------------------- | ------ | --------- |
+| testLevenshteinIdentical          | PASSED | 11,280    |
+| testLevenshteinEmpty              | PASSED | 7,157     |
+| testLevenshteinSingleEdit         | PASSED | 14,433    |
+| testLevenshteinMultiEdit          | PASSED | 15,662    |
+| testLevenshteinCompleteDiff       | PASSED | 6,893     |
+| testSimilarityIdentical           | PASSED | 12,568    |
+| testSimilarityClose               | PASSED | 9,752     |
+| testSimilarityLow                 | PASSED | 7,777     |
+| testSimilarityEmptyBoth           | PASSED | 5,764     |
+| testFindSuggestionMatch           | PASSED | 34,489    |
+| testFindSuggestionNoMatch         | PASSED | 22,877    |
+| testFindSuggestionTypo            | PASSED | 17,506    |
+| testFindSuggestionCaseInsensitive | PASSED | 18,823    |
+| testFindAllSuggestionsSorted      | PASSED | 29,209    |
 
 ### 3.2 StyleTest — 10/10 PASSED (新增)
 
-| 用例名                 | 结果   | 耗时 (ns) |
-| ---------------------- | ------ | --------- |
-| testBoldWithColor      | PASSED | 7,699     |
-| testBoldWithoutColor   | PASSED | 6,717     |
-| testColorEnabled       | PASSED | 8,520     |
-| testColorDisabled      | PASSED | 7,257     |
-| testBoldColor          | PASSED | 6,381     |
-| testUnderline          | PASSED | 7,052     |
-| testItalic             | PASSED | 7,066     |
-| testDim                | PASSED | 7,401     |
-| testAllColorsEnabled   | PASSED | 21,758    |
-| testAllColorsDisabled  | PASSED | 7,639     |
+| 用例名                | 结果   | 耗时 (ns) |
+| --------------------- | ------ | --------- |
+| testBoldWithColor     | PASSED | 7,699     |
+| testBoldWithoutColor  | PASSED | 6,717     |
+| testColorEnabled      | PASSED | 8,520     |
+| testColorDisabled     | PASSED | 7,257     |
+| testBoldColor         | PASSED | 6,381     |
+| testUnderline         | PASSED | 7,052     |
+| testItalic            | PASSED | 7,066     |
+| testDim               | PASSED | 7,401     |
+| testAllColorsEnabled  | PASSED | 21,758    |
+| testAllColorsDisabled | PASSED | 7,639     |
 
 ### 3.3 DiagnosticTest — 9/9 PASSED (新增)
 
-| 用例名                      | 结果   | 耗时 (ns) |
-| --------------------------- | ------ | --------- |
-| testErrorDiagRender         | PASSED | ——        |
-| testWarningDiagRender       | PASSED | ——        |
-| testHelpDiagRender          | PASSED | ——        |
-| testNoteDiagRender          | PASSED | ——        |
-| testDiagWithContext         | PASSED | ——        |
-| testDiagWithHints           | PASSED | ——        |
-| testDiagWithColorEnabled    | PASSED | ——        |
-| testDiagWithColorDisabled   | PASSED | ——        |
-| testRenderAll               | PASSED | ——        |
+| 用例名                    | 结果   | 耗时 (ns) |
+| ------------------------- | ------ | --------- |
+| testErrorDiagRender       | PASSED | ——        |
+| testWarningDiagRender     | PASSED | ——        |
+| testHelpDiagRender        | PASSED | ——        |
+| testNoteDiagRender        | PASSED | ——        |
+| testDiagWithContext       | PASSED | ——        |
+| testDiagWithHints         | PASSED | ——        |
+| testDiagWithColorEnabled  | PASSED | ——        |
+| testDiagWithColorDisabled | PASSED | ——        |
+| testRenderAll             | PASSED | ——        |
 
 ### 3.4 DidYouMeanIntegrationTest — 6/6 PASSED (新增)
 
-| 用例名                        | 结果   | 耗时 (ns) |
-| ----------------------------- | ------ | --------- |
-| testUnknownFlagSuggestion     | PASSED | ——        |
-| testUnknownCommandSuggestion  | PASSED | ——        |
-| testUnknownCommandNoSuggestion | PASSED | ——       |
-| testUnknownFlagNoSuggestion   | PASSED | ——        |
-| testDiagnosticContextInError  | PASSED | ——        |
-| testErrorContainsHelpHint     | PASSED | ——        |
+| 用例名                         | 结果   | 耗时 (ns) |
+| ------------------------------ | ------ | --------- |
+| testUnknownFlagSuggestion      | PASSED | ——        |
+| testUnknownCommandSuggestion   | PASSED | ——        |
+| testUnknownCommandNoSuggestion | PASSED | ——        |
+| testUnknownFlagNoSuggestion    | PASSED | ——        |
+| testDiagnosticContextInError   | PASSED | ——        |
+| testErrorContainsHelpHint      | PASSED | ——        |
 
 ### 3.5 既有模块 (Phase 1 回归) — 87/87 PASSED
 
-| 模块                  | 用例数 | 结果       |
-| --------------------- | ------ | ---------- |
-| CommandBuilderTest    | 6      | 全部通过   |
-| FlagDefinitionTest    | 4      | 全部通过   |
-| ArgumentDefinitionTest | 3     | 全部通过   |
-| TypeConversionTest    | 10     | 全部通过   |
-| ContextTest           | 6      | 全部通过   |
-| ParserTest            | 24     | 全部通过   |
-| AppIntegrationTest    | 16     | 全部通过   |
+| 模块                   | 用例数 | 结果     |
+| ---------------------- | ------ | -------- |
+| CommandBuilderTest     | 6      | 全部通过 |
+| FlagDefinitionTest     | 4      | 全部通过 |
+| ArgumentDefinitionTest | 3      | 全部通过 |
+| TypeConversionTest     | 10     | 全部通过 |
+| ContextTest            | 6      | 全部通过 |
+| ParserTest             | 24     | 全部通过 |
+| AppIntegrationTest     | 16     | 全部通过 |
 
 ## 4. Phase 2 功能覆盖分析
 

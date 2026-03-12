@@ -2,6 +2,20 @@
 
 本文件记录版本变更历史，遵循 [语义化版本 2.0.0](https://semver.org/lang/zh-CN/) 规范。
 
+## [0.6.0] - 2026-03-12
+
+### 新增
+- **Flag 互斥约束** (`conflictsWith`)：运行时检测冲突的显式标志并生成诊断报错。对标 clap 的 `conflicts_with`
+- **Flag 依赖声明** (`requires`)：指定 Flag 前置依赖，缺少时生成友好提示
+- **自定义验证器** (`validator((String) -> Bool, message)`)：框架层拦截不合法值。对标 Clippy clippy_dev 的 `lint_name()` 校验器
+- **隐藏标志与命令** (`hidden()`)：从 Help 输出中隐藏但仍可正常使用。对标 clap 的 `hide = true`
+- **标志组验证**：`requireGroup(name, members)` (至少选一)、`mutuallyExclusiveGroup(name, members)` (最多选一)
+- **显式 Flag 追踪**：Context 新增 `markExplicit()`/`isExplicit()` 区分用户输入与默认值
+
+### 测试
+- 新增 `ConflictsTest` (4 用例)、`RequiresTest` (4)、`ValidatorTest` (5)、`HiddenTest` (4)、`FlagGroupTest` (5)、`ConstraintIntegrationTest` (3)
+- 测试总数：214 → 239 (新增 25 用例，通过率 100%)
+
 ## [0.5.0] - 2026-03-12
 
 ### 新增

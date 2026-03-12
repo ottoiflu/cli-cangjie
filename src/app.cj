@@ -312,9 +312,10 @@ public class App {
         // 子命令列表（支持分组）
         let subcommands = cmd.getSubcommands()
         if (subcommands.size > 0) {
-            // 计算动态对齐宽度
+            // 计算动态对齐宽度（跳过隐藏命令）
             var maxWidth: Int64 = 0
             for (sub in subcommands) {
+                if (sub.isHidden()) { continue }
                 var w = sub.getName().size
                 if (sub.getAliases().size > 0) {
                     for (a in sub.getAliases()) {
@@ -328,6 +329,7 @@ public class App {
 
             help = help + "\nCommands:\n"
             for (sub in subcommands) {
+                if (sub.isHidden()) { continue }
                 var nameStr = sub.getName()
                 if (sub.getAliases().size > 0) {
                     nameStr = nameStr + " ("
@@ -359,10 +361,11 @@ public class App {
         // 选项列表（支持分组）
         let flags = cmd.getFlags()
         if (flags.size > 0) {
-            // 按 group 分组
+            // 按 group 分组（跳过隐藏 Flag）
             let groups = HashMap<String, ArrayList<Flag>>()
             let groupOrder = ArrayList<String>()
             for (f in flags) {
+                if (f.isHidden()) { continue }
                 let g = f.getGroup()
                 if (!groups.contains(g)) {
                     groups[g] = ArrayList<Flag>()
