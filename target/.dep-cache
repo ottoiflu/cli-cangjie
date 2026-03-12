@@ -1,0 +1,163 @@
+{
+  "bin": {},
+  "pkg-build": {},
+  "pkg-test": {
+    "/home/otto/文档/Project/cli/src": {
+      "package": "cli",
+      "isMacro": false,
+      "accessLevel": "public",
+      "timeStamp": 1773307894,
+      "dependencies": [],
+      "std-dependencies": [
+        {
+          "orPackage": "",
+          "package": "std.collection",
+          "isStd": true,
+          "imports": [
+            {
+              "file": "/home/otto/文档/Project/cli/src/app.cj"
+            },
+            {
+              "file": "/home/otto/文档/Project/cli/src/command.cj"
+            },
+            {
+              "file": "/home/otto/文档/Project/cli/src/context.cj"
+            },
+            {
+              "file": "/home/otto/文档/Project/cli/src/flag.cj"
+            },
+            {
+              "file": "/home/otto/文档/Project/cli/src/parser.cj"
+            }
+          ]
+        }
+      ],
+      "testUsed": false,
+      "mockUsed": false
+    },
+    "/home/otto/文档/Project/cli/src/test": {
+      "package": "cli.test",
+      "isMacro": false,
+      "accessLevel": "internal",
+      "timeStamp": 1773307970,
+      "dependencies": [
+        {
+          "orPackage": "",
+          "package": "cli",
+          "isStd": false,
+          "imports": [
+            {
+              "file": "/home/otto/文档/Project/cli/src/test/argument_test.cj"
+            },
+            {
+              "file": "/home/otto/文档/Project/cli/src/test/command_test.cj"
+            },
+            {
+              "file": "/home/otto/文档/Project/cli/src/test/context_test.cj"
+            },
+            {
+              "file": "/home/otto/文档/Project/cli/src/test/flag_test.cj"
+            },
+            {
+              "file": "/home/otto/文档/Project/cli/src/test/integration_test.cj"
+            },
+            {
+              "file": "/home/otto/文档/Project/cli/src/test/parser_test.cj"
+            },
+            {
+              "file": "/home/otto/文档/Project/cli/src/test/types_test.cj"
+            }
+          ]
+        }
+      ],
+      "std-dependencies": [
+        {
+          "orPackage": "",
+          "package": "std.collection",
+          "isStd": true,
+          "imports": [
+            {
+              "file": "/home/otto/文档/Project/cli/src/test/argument_test.cj"
+            },
+            {
+              "file": "/home/otto/文档/Project/cli/src/test/command_test.cj"
+            },
+            {
+              "file": "/home/otto/文档/Project/cli/src/test/context_test.cj"
+            },
+            {
+              "file": "/home/otto/文档/Project/cli/src/test/flag_test.cj"
+            },
+            {
+              "file": "/home/otto/文档/Project/cli/src/test/integration_test.cj"
+            },
+            {
+              "file": "/home/otto/文档/Project/cli/src/test/parser_test.cj"
+            },
+            {
+              "file": "/home/otto/文档/Project/cli/src/test/types_test.cj"
+            }
+          ]
+        },
+        {
+          "orPackage": "",
+          "package": "std.unittest",
+          "isStd": true,
+          "imports": [
+            {
+              "file": "/home/otto/文档/Project/cli/src/test/argument_test.cj"
+            },
+            {
+              "file": "/home/otto/文档/Project/cli/src/test/command_test.cj"
+            },
+            {
+              "file": "/home/otto/文档/Project/cli/src/test/context_test.cj"
+            },
+            {
+              "file": "/home/otto/文档/Project/cli/src/test/flag_test.cj"
+            },
+            {
+              "file": "/home/otto/文档/Project/cli/src/test/integration_test.cj"
+            },
+            {
+              "file": "/home/otto/文档/Project/cli/src/test/parser_test.cj"
+            },
+            {
+              "file": "/home/otto/文档/Project/cli/src/test/types_test.cj"
+            }
+          ]
+        },
+        {
+          "orPackage": "",
+          "package": "std.unittest.testmacro",
+          "isStd": true,
+          "imports": [
+            {
+              "file": "/home/otto/文档/Project/cli/src/test/argument_test.cj"
+            },
+            {
+              "file": "/home/otto/文档/Project/cli/src/test/command_test.cj"
+            },
+            {
+              "file": "/home/otto/文档/Project/cli/src/test/context_test.cj"
+            },
+            {
+              "file": "/home/otto/文档/Project/cli/src/test/flag_test.cj"
+            },
+            {
+              "file": "/home/otto/文档/Project/cli/src/test/integration_test.cj"
+            },
+            {
+              "file": "/home/otto/文档/Project/cli/src/test/parser_test.cj"
+            },
+            {
+              "file": "/home/otto/文档/Project/cli/src/test/types_test.cj"
+            }
+          ]
+        }
+      ],
+      "testUsed": true,
+      "mockUsed": false
+    }
+  }
+}

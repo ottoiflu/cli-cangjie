@@ -1,0 +1,7 @@
+/reference
+/.agent
+/.git
+/.github
+/.vscode
+/.cache
+*.macrocall
