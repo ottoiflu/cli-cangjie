@@ -2,6 +2,15 @@
 
 本文件记录版本变更历史，遵循 [语义化版本 2.0.0](https://semver.org/lang/zh-CN/) 规范。
 
+## [1.0.1] - 2026-03-13
+
+### 新增
+- **`App.run()` / `App.run(args)` 方法**：真实执行入口，桥接 `mockRun()` 到真实 `stdout`/`stderr` 并返回退出码。`run()` 无参版本自动从 `getCommandLine()` 获取参数
+- **独立可执行示例项目 (`example/`)**：基于 cjpm 路径依赖 (`cli = { path = ".." }`) 的完整 DevOps CLI 工具
+  - `example/src/main.cj`：可直接编译运行的 `main()` 入口，6 个子命令 (serve/deploy/cloud/lint/config/completion)
+  - `example/cjpm.toml`：独立项目配置，`output-type = "executable"`
+  - `example/README.md`：详细使用文档，涵盖所有命令示例、错误诊断演示、环境变量映射、退出码规范、框架特性速查表
+
 ## [1.0.0] - 2026-03-13
 
 ### 新增
