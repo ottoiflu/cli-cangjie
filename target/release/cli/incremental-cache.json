@@ -1,18 +1,18 @@
 {
   "packageInformation": {
-    "cli.test": {
+    "cli": {
       "rootPackageName": "cli",
-      "fileNameHash": "-2985696159600687674",
-      "timeStamp": 1773310169,
-      "isBuilt": false,
+      "fileNameHash": "-7723728745814422706",
+      "timeStamp": 1773311850,
+      "isBuilt": true,
       "exeName": "",
       "hasSubPkgs": true
     },
-    "cli": {
+    "cli.test": {
       "rootPackageName": "cli",
-      "fileNameHash": "-3808725860623566585",
-      "timeStamp": 1773310169,
-      "isBuilt": true,
+      "fileNameHash": "-1375010066185197460",
+      "timeStamp": 1773311940,
+      "isBuilt": false,
       "exeName": "",
       "hasSubPkgs": true
     }

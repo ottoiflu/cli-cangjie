@@ -22,7 +22,9 @@
       "native-link-option": "",
       "requires": [],
       "std-requires": [
-        "std.collection"
+        "std.collection",
+        "std.convert",
+        "std.env"
       ],
       "c_libs": {},
       "hasTestFiles": false,

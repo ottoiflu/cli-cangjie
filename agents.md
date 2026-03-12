@@ -103,23 +103,30 @@ func testDidYouMean() {
 
 为了在开发阶段有据可依并更好地指导各模块测试的展开，请参照此清单进行渐进式开发与校验分配（强烈对标 Clippy 及其底层 clap/cargo 的底层设计思路）：
 
-1. **Phase 1: 核心路由与基础解析引擎 (The Core)**
-    - [ ] **命令树构建 (Command Builder)**：支持多级层级声明和基础元数据设置。
-    - [ ] **多形态参数捕获 (Flags/Options/Args)**：短/长选项、布尔开关及定长/变长位置参数。
-    - [ ] **参数强类型转换**：内建转换器及解析异常自动上抛框架层。
+1. **Phase 1: 核心路由与基础解析引擎 (The Core)** — `v0.1.0` ✅ 已完成
+    - [x] **命令树构建 (Command Builder)**：支持多级层级声明和基础元数据设置。
+    - [x] **多形态参数捕获 (Flags/Options/Args)**：短/长选项、布尔开关及定长/变长位置参数。
+    - [x] **参数强类型转换**：内建转换器及解析异常自动上抛框架层。
+    - [x] **mockRun 沙箱**：内存级执行，stdout/stderr 独立捕获，exitCode 断言。
+    - [x] **Help/Version 自动生成**：`--help`/`-h`/`--version`/`-V` 自动注入与输出。
+    - **测试**: 87 用例全部通过，覆盖命令树、解析器、类型转换、上下文、集成场景。
 
-2. **Phase 2: 诊断系统与 Clippy 级别用户体验 (UX & Diagnostics)**
-    - [ ] **智能拼写纠错 (Did-You-Mean)**：Levenshtein 算法，提供阈值 0.7 的相似度命令选项推荐。
-    - [ ] **终端美化与无障碍引擎**：ANSI 样式受 `NO_COLOR` 控制，结合结构化错误摘要实现视觉定位。
-    - [ ] **自动生成 Help & Version**：根据节点自动化推演帮助树，并在标准输出结构化 JSON 支持功能保留。
+2. **Phase 2: 诊断系统与 Clippy 级别用户体验 (UX & Diagnostics)** — `v0.2.0`
+    - [ ] **智能拼写纠错 (Did-You-Mean)**：Levenshtein 算法，提供阈值 0.7 的相似度命令/选项推荐。对标 Clippy 的 `--explain` 纠错体验。
+    - [ ] **终端美化与无障碍引擎**：ANSI 样式（加粗、颜色、下划线）输出。自动检测 `NO_COLOR` 环境变量及非 TTY 环境，自动退化为纯文本。
+    - [ ] **结构化诊断输出**：内置 Note, Help, Warning, Error 四级语义化输出格式，对标 Rust 编译器 / Clippy 的诊断样式。
+    - [ ] **视觉化错误定位**：报错时指出具体参数位置上下文，支持高亮标注错误 token。
 
-3. **Phase 3: 配置合并流与生命周期抽象 (Context & Pipeline)**
-    - [ ] **生命周期流转机制**：实现 `PreRun`/`Run`/`PostRun` 并提供 Middleware 挂载抽象能力。
-    - [ ] **多源配置合并 (Pipeline)**：从 ENV、`.toml` 配置、CLI 标志流式回填属性到 Context 中去。
+3. **Phase 3: 配置合并流与生命周期抽象 (Context & Pipeline)** — `v0.3.0`
+    - [ ] **生命周期流转机制**：实现 `PersistentPreRun`/`PreRun`/`Run`/`PostRun`/`PersistentPostRun` 钩子函数。
+    - [ ] **中间件 (Middleware)**：支持全局/局部中间件注册，用于日志、耗时统计、鉴权等横切关注点。
+    - [ ] **环境变量配置合并**：Flag 自动关联环境变量（如 `--db-host` → `PREFIX_DB_HOST`），优先级：CLI > ENV > 默认值。
+    - [ ] **Context 依赖注入**：Context 对象支持在生命周期中安全存储和传递请求维度状态。
 
-4. **Phase 4: 测试套件发布与内部自验证 (Testing Infra)**
-    - [ ] **内存级执行沙箱与接口封装**：完成 `mockRun` 及标准流捕获（分离 stdout 与 stderr）。
-    - [ ] **Golden Files (快照测试)**：对比生成的 CLI 打印文本树是否产生回退。
+4. **Phase 4: 测试套件增强与快照测试 (Testing Infra)** — `v0.4.0`
+    - [ ] **Golden Files (快照测试)**：对比生成的 Help 树、错误输出等文本快照，检测 UI 回退。
+    - [ ] **交互式模拟 (Input Mock)**：支持预设 stdin 输入流数据，自动化测试 Prompt 交互。
 
-5. **Phase 5: 交互式组件集支持补充**
-    - [ ] **交互式终端模拟**：补齐如 Spinner、Progress Bar, Confirm / Select 以及针对它们的交互测试 `Input Mock` 方案。
+5. **Phase 5: 交互式组件集支持补充** — `v0.5.0`
+    - [ ] **交互式终端组件**：Spinner、Progress Bar、Confirm / Select 组件。
+    - [ ] **交互测试 Input Mock 方案**：针对交互式组件的自动化测试方案。

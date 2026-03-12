@@ -345,9 +345,14 @@ public class App {
         ver + "\n"
     }
 
-    // 格式化框架层错误输出
+    // 格式化框架层错误输出（使用诊断系统）
+    // mockRun 中始终禁用颜色，保证测试断言稳定
     func formatError(e: CliException, args: Array<String>): String {
-        var msg = "error: ${e.message}\n"
+        let style = StyleEngine(false)  // mockRun 内禁用颜色
+        let renderer = DiagnosticRenderer(style)
+        let diag = errorDiag(e.message)
+
+        // 构建输入上下文字符串
         var inputStr = ""
         for (a in args) {
             if (inputStr.size > 0) {
@@ -356,9 +361,59 @@ public class App {
             inputStr = inputStr + a
         }
         if (inputStr.size > 0) {
-            msg = msg + "\n  Input: ${inputStr}\n"
+            diag.context(inputStr)
+            // 尝试定位错误 token 的位置
+            let errorPos = findErrorTokenPosition(e.message, args)
+            match (errorPos) {
+                case Some(pos) => diag.position(pos)
+                case None => ()
+            }
         }
-        msg = msg + "\nFor more information, try '--help'.\n"
-        msg
+
+        diag.hint("For more information, try '--help'.")
+        renderer.render(diag)
+    }
+
+    // 从错误消息中提取错误 token，然后在参数列表中定位其位置
+    func findErrorTokenPosition(message: String, args: Array<String>): Option<Int64> {
+        // 尝试从消息中提取引号内的 token（如 '--unknown' 或 'lint'）
+        var token = extractQuotedToken(message)
+        match (token) {
+            case Some(t) =>
+                var pos: Int64 = 0
+                for (a in args) {
+                    if (a == t || a.contains(t)) {
+                        return Some(pos)
+                    }
+                    pos = pos + a.size + 1  // +1 for space
+                }
+                None
+            case None => None
+        }
+    }
+
+    // 从字符串中提取单引号括起的第一个 token
+    func extractQuotedToken(s: String): Option<String> {
+        let runes = s.toRuneArray()
+        var i: Int64 = 0
+        while (i < runes.size) {
+            if (runes[i] == r'\'') {
+                var j = i + 1
+                while (j < runes.size && runes[j] != r'\'') {
+                    j++
+                }
+                if (j < runes.size) {
+                    var token = ""
+                    var k = i + 1
+                    while (k < j) {
+                        token = token + runes[k].toString()
+                        k++
+                    }
+                    return Some(token)
+                }
+            }
+            i++
+        }
+        None
     }
 }

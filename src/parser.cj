@@ -23,6 +23,16 @@ public class Parser {
                     ctx.pushCommandPath(sub.getName())
                     argIndex++
                 case None =>
+                    // 若当前命令有子命令但未匹配: Did-You-Mean
+                    if (currentCmd.getSubcommands().size > 0 && currentCmd.getArguments().size == 0) {
+                        let cmdNames = currentCmd.allCommandNames()
+                        match (findSuggestion(arg, cmdNames)) {
+                            case Some(suggestion) =>
+                                throw ParseException("Unknown command '${arg}'. Did you mean '${suggestion}'?")
+                            case None =>
+                                throw ParseException("Unknown command '${arg}'.")
+                        }
+                    }
                     break
             }
         }
@@ -219,7 +229,19 @@ public class Parser {
                 case None => ()
             }
         }
-        throw ParseException("Unknown option '--${name}'.")
+        // Did-You-Mean: 从所有 flag 名称中找到最相似的候选
+        let candidates = currentCmd.allFlagNames()
+        if (currentCmd.getName() != rootCmd.getName()) {
+            for (n in rootCmd.allFlagNames()) {
+                candidates.add(n)
+            }
+        }
+        match (findSuggestion(name, candidates)) {
+            case Some(suggestion) =>
+                throw ParseException("Unknown option '--${name}'. Did you mean '--${suggestion}'?")
+            case None =>
+                throw ParseException("Unknown option '--${name}'.")
+        }
     }
 
     // 在当前命令和根命令中查找短名称匹配的 flag
