@@ -242,13 +242,13 @@ DEVTOOL_HOST=0.0.0.0 ./target/release/bin/main serve
 
 ## 退出码规范
 
-| 退出码 | 含义 |
-|--------|------|
-| 0      | 执行成功 |
-| 1      | 业务逻辑错误 |
+| 退出码 | 含义              |
+| ------ | ----------------- |
+| 0      | 执行成功          |
+| 1      | 业务逻辑错误      |
 | 2      | 参数解析/框架错误 |
-| 130    | SIGINT (Ctrl+C) |
-| 143    | SIGTERM |
+| 130    | SIGINT (Ctrl+C)   |
+| 143    | SIGTERM           |
 
 ```bash
 # 验证退出码
@@ -270,33 +270,33 @@ example/
 
 本示例覆盖的框架特性完整列表：
 
-| 特性 | 演示位置 |
-|------|----------|
-| 子命令树 (无限层级) | `cloud list`, `cloud start` |
-| 命令别名 | `serve`→`s`, `deploy`→`d`, `cloud`→`c`, `lint`→`l` |
-| 短选项 | `-p`, `-H`, `-e`, `-t`, `-r`, `-n`, `-v`, `-f` |
-| 布尔开关 | `--tls`, `--fix`, `--dry-run`, `--force`, `--wait` |
-| 必填标志 | `--env`, `--tag`, `--shell` |
-| 默认值 | `--port 8080`, `--host 127.0.0.1`, `--replicas 1` |
-| 枚举值约束 (choices) | `--env`, `--color`, `--format`, `--shell` |
-| 值分隔符 (delimiter) | `--notify slack,email` |
-| 自定义验证器 | `--replicas` (1-100) |
-| 互斥标志 | `--force` ⟂ `--dry-run` |
-| Flag 依赖 | `--cert`→`--tls`, `--output-format`→`--output` |
-| 位置参数 | `cloud start <instance-id>`, `config set <key> <value>` |
-| Pass-Through (`--`) | `lint ./src -- --strict` |
-| 全局标志传播 | `--verbose`, `--color`, `--format` |
-| 中间件 | verbose 模式调试输出 |
-| 生命周期钩子 | `persistentPreRun`, `persistentPostRun` |
-| 环境变量映射 | `DEVTOOL_PORT`, `DEVTOOL_HOST` |
-| 配置文件 | `devtool.toml` |
-| Shell 补全生成 | Bash / Zsh / Fish |
-| 版本信息 (构建元数据) | commit hash, 构建时间 |
-| 弃用命令 | `config init` |
-| 隐藏命令 | `config debug` |
-| 子命令分组显示 | Server / Deploy / Cloud / Dev / Config / Utility |
-| 帮助 Examples | `serve --help`, `lint --help` |
-| afterHelp / beforeHelp | `serve --help`, `lint --help` |
-| Did-You-Mean 智能建议 | 命令/选项拼写错误 |
-| 视觉化错误定位 | 所有错误输出 |
-| 标准退出码 | 0 / 1 / 2 / 130 / 143 |
+| 特性                   | 演示位置                                                |
+| ---------------------- | ------------------------------------------------------- |
+| 子命令树 (无限层级)    | `cloud list`, `cloud start`                             |
+| 命令别名               | `serve`→`s`, `deploy`→`d`, `cloud`→`c`, `lint`→`l`      |
+| 短选项                 | `-p`, `-H`, `-e`, `-t`, `-r`, `-n`, `-v`, `-f`          |
+| 布尔开关               | `--tls`, `--fix`, `--dry-run`, `--force`, `--wait`      |
+| 必填标志               | `--env`, `--tag`, `--shell`                             |
+| 默认值                 | `--port 8080`, `--host 127.0.0.1`, `--replicas 1`       |
+| 枚举值约束 (choices)   | `--env`, `--color`, `--format`, `--shell`               |
+| 值分隔符 (delimiter)   | `--notify slack,email`                                  |
+| 自定义验证器           | `--replicas` (1-100)                                    |
+| 互斥标志               | `--force` ⟂ `--dry-run`                                 |
+| Flag 依赖              | `--cert`→`--tls`, `--output-format`→`--output`          |
+| 位置参数               | `cloud start <instance-id>`, `config set <key> <value>` |
+| Pass-Through (`--`)    | `lint ./src -- --strict`                                |
+| 全局标志传播           | `--verbose`, `--color`, `--format`                      |
+| 中间件                 | verbose 模式调试输出                                    |
+| 生命周期钩子           | `persistentPreRun`, `persistentPostRun`                 |
+| 环境变量映射           | `DEVTOOL_PORT`, `DEVTOOL_HOST`                          |
+| 配置文件               | `devtool.toml`                                          |
+| Shell 补全生成         | Bash / Zsh / Fish                                       |
+| 版本信息 (构建元数据)  | commit hash, 构建时间                                   |
+| 弃用命令               | `config init`                                           |
+| 隐藏命令               | `config debug`                                          |
+| 子命令分组显示         | Server / Deploy / Cloud / Dev / Config / Utility        |
+| 帮助 Examples          | `serve --help`, `lint --help`                           |
+| afterHelp / beforeHelp | `serve --help`, `lint --help`                           |
+| Did-You-Mean 智能建议  | 命令/选项拼写错误                                       |
+| 视觉化错误定位         | 所有错误输出                                            |
+| 标准退出码             | 0 / 1 / 2 / 130 / 143                                   |
