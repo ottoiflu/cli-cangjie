@@ -8,26 +8,36 @@ public enum ValueType {
     | BoolType
 }
 
+// Flag 动作类型枚举（对标参考实现的 ArgAction）
+public enum FlagAction {
+    | Set           // 设置值（默认）
+    | SetTrue       // 布尔开关：设为 true
+    | SetFalse      // 布尔开关：设为 false
+    | Append        // 追加模式：支持 --flag a --flag b
+    | Terminate(() -> String)  // 触发回调并终止（如 --help / --version）
+}
+
 // 检查字符串是否为合法整数格式
 public func isValidInt(s: String): Bool {
     if (s.size == 0) {
         return false
     }
-    var isFirst = true
+    let runes = s.toRuneArray()
+    var startIdx: Int64 = 0
     var hasDigit = false
-    for (c in s) {
-        let cv = UInt32(c)
-        if (isFirst && (cv == 45 || cv == 43)) {  // '-'=45, '+'=43
-            isFirst = false
-            continue
-        }
-        isFirst = false
-        if (cv < 48 || cv > 57) {  // '0'=48, '9'=57
+    if (runes[0] == r'-' || runes[0] == r'+') {
+        startIdx = 1
+    }
+    var i = startIdx
+    while (i < runes.size) {
+        let c = runes[i]
+        if (c < r'0' || c > r'9') {
             return false
         }
         hasDigit = true
+        i++
     }
-    return hasDigit
+    hasDigit
 }
 
 // 检查字符串是否为合法浮点数格式
@@ -35,29 +45,31 @@ public func isValidFloat(s: String): Bool {
     if (s.size == 0) {
         return false
     }
+    let runes = s.toRuneArray()
+    var startIdx: Int64 = 0
     var hasDot = false
     var hasDigit = false
-    var isFirst = true
-    for (c in s) {
-        let cv = UInt32(c)
-        if (isFirst && (cv == 45 || cv == 43)) {  // '-'=45, '+'=43
-            isFirst = false
-            continue
-        }
-        isFirst = false
-        if (cv == 46) {  // '.'=46
+    if (runes[0] == r'-' || runes[0] == r'+') {
+        startIdx = 1
+    }
+    var i = startIdx
+    while (i < runes.size) {
+        let c = runes[i]
+        if (c == r'.') {
             if (hasDot) {
                 return false
             }
             hasDot = true
+            i++
             continue
         }
-        if (cv < 48 || cv > 57) {  // '0'=48, '9'=57
+        if (c < r'0' || c > r'9') {
             return false
         }
         hasDigit = true
+        i++
     }
-    return hasDigit
+    hasDigit
 }
 
 // 规范化布尔值字符串

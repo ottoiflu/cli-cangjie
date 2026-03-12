@@ -19,8 +19,8 @@ class AppIntegrationTest {
 
         let root = app.getRootCommand()
         @Assert(root.getName() == "cj-tool")
-        @Assert(root.getDescription() == "A cool CLI tool")
-        @Assert(root.getVersion() == "v1.0.0")
+        @Assert(root.getDescriptionStr() == "A cool CLI tool")
+        @Assert(root.getVersionStr() == "v1.0.0")
     }
 
     @TestCase
@@ -74,7 +74,7 @@ class AppIntegrationTest {
             .command(
                 Command("lint")
                     .description("Lint source files")
-                    .flag(Flag("fix", "f").asBool().description("Auto-fix issues"))
+                    .flag(Flag("fix").short(r'f').asBool().description("Auto-fix issues"))
             )
 
         let result = app.mockRun(["lint", "--help"])
@@ -89,7 +89,7 @@ class AppIntegrationTest {
         let app = App("tool")
             .command(
                 Command("greet")
-                    .flag(Flag("name", "n").defaultValue("World"))
+                    .flag(Flag("name").short(r'n').defaultValue("World"))
                     .action({ ctx =>
                         0
                     })
@@ -103,7 +103,7 @@ class AppIntegrationTest {
     @TestCase
     func testMockRunParseError() {
         let app = App("tool")
-            .flag(Flag("config", "c"))
+            .flag(Flag("config").short(r'c'))
 
         let result = app.mockRun(["--unknown-flag"])
 
@@ -114,7 +114,7 @@ class AppIntegrationTest {
     @TestCase
     func testMockRunRequiredFlagError() {
         let app = App("tool")
-            .flag(Flag("output", "o").required(true))
+            .flag(Flag("output").short(r'o').required(true))
 
         let result = app.mockRun([])
 
@@ -125,7 +125,7 @@ class AppIntegrationTest {
     @TestCase
     func testMockRunTypedFlagError() {
         let app = App("tool")
-            .flag(Flag("port", "p").valueType(Int64Type))
+            .flag(Flag("port").short(r'p').valueType(Int64Type))
 
         let result = app.mockRun(["--port", "not-a-number"])
 
@@ -141,13 +141,13 @@ class AppIntegrationTest {
         let app = App("deploy-tool")
             .version("3.0.0")
             .description("Deployment tool")
-            .flag(Flag("verbose", "v").asBool().description("Verbose output"))
+            .flag(Flag("verbose").short(r'v').asBool().description("Verbose output"))
             .command(
                 Command("deploy")
                     .description("Deploy application")
                     .alias("d")
-                    .flag(Flag("env", "e").required(true).description("Target environment"))
-                    .flag(Flag("replicas", "r").valueType(Int64Type).defaultValue("1"))
+                    .flag(Flag("env").short(r'e').required(true).description("Target environment"))
+                    .flag(Flag("replicas").short(r'r').valueType(Int64Type).defaultValue("1"))
                     .argument(Argument("service").required(true).description("Service name"))
                     .action({ ctx =>
                         capturedEnv.add(ctx.getFlagOrDefault("env", ""))
@@ -187,8 +187,8 @@ class AppIntegrationTest {
     @TestCase
     func testHelpContainsOptions() {
         let app = App("tool")
-            .flag(Flag("verbose", "v").asBool().description("Enable verbose mode"))
-            .flag(Flag("config", "c").description("Config file path").defaultValue("config.toml"))
+            .flag(Flag("verbose").short(r'v').asBool().description("Enable verbose mode"))
+            .flag(Flag("config").short(r'c').description("Config file path").defaultValue("config.toml"))
 
         let result = app.mockRun(["--help"])
 
@@ -230,7 +230,7 @@ class AppIntegrationTest {
     func testDoubleDashInMockRun() {
         let argValues = ArrayList<String>()
         let app = App("tool")
-            .flag(Flag("verbose", "v").asBool())
+            .flag(Flag("verbose").short(r'v').asBool())
             .action({ ctx =>
                 let args = ctx.getArguments()
                 for (a in args) {
@@ -245,5 +245,44 @@ class AppIntegrationTest {
         @Assert(argValues.size == 2)
         @Assert(argValues[0] == "--not-flag")
         @Assert(argValues[1] == "plain-arg")
+    }
+
+    @TestCase
+    func testMockRunBatchCommands() {
+        let app = App("tool").commands([
+            Command("lint").description("Lint code").action({ ctx => 0 }),
+            Command("fmt").description("Format code").action({ ctx => 0 }),
+            Command("test").description("Run tests").action({ ctx => 0 })
+        ])
+
+        let result1 = app.mockRun(["lint"])
+        @Assert(result1.exitCode == 0)
+
+        let result2 = app.mockRun(["fmt"])
+        @Assert(result2.exitCode == 0)
+    }
+
+    @TestCase
+    func testMockRunAppendAction() {
+        let captured = ArrayList<String>()
+        let app = App("tool")
+            .flag(Flag("include").short(r'I').action(FlagAction.Append))
+            .action({ ctx =>
+                match (ctx.getFlagAll("include")) {
+                    case Some(vals) =>
+                        for (v in vals) {
+                            captured.add(v)
+                        }
+                    case None => ()
+                }
+                0
+            })
+
+        let result = app.mockRun(["-I", "src/", "-I", "lib/", "-I", "test/"])
+        @Assert(result.exitCode == 0)
+        @Assert(captured.size == 3)
+        @Assert(captured[0] == "src/")
+        @Assert(captured[1] == "lib/")
+        @Assert(captured[2] == "test/")
     }
 }

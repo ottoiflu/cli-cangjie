@@ -19,9 +19,12 @@ class CommandBuilderTest {
             .author("dev")
 
         @Assert(cmd.getName() == "lint")
-        @Assert(cmd.getDescription() == "Lint source code")
-        @Assert(cmd.getVersion() == "1.0.0")
-        @Assert(cmd.getAuthor() == "dev")
+        @Assert(cmd.getDescriptionStr() == "Lint source code")
+        @Assert(cmd.getVersionStr() == "1.0.0")
+        match (cmd.getAuthor()) {
+            case Some(a) => @Assert(a == "dev")
+            case None => @Assert(false)
+        }
     }
 
     @TestCase
@@ -53,7 +56,7 @@ class CommandBuilderTest {
         @Assert(server.getName() == "server")
         let start = server.getSubcommands()[0]
         @Assert(start.getName() == "start")
-        @Assert(start.getDescription() == "Start the server")
+        @Assert(start.getDescriptionStr() == "Start the server")
     }
 
     @TestCase
@@ -88,6 +91,36 @@ class CommandBuilderTest {
 
         match (root.findSubcommand("i")) {
             case Some(cmd) => @Assert(cmd.getName() == "install")
+            case None => @Assert(false)
+        }
+    }
+
+    @TestCase
+    func testBatchSubcommands() {
+        let root = Command("tool").commands([
+            Command("lint").description("Lint code"),
+            Command("fmt").description("Format code"),
+            Command("test").description("Run tests")
+        ])
+
+        @Assert(root.getSubcommands().size == 3)
+    }
+
+    @TestCase
+    func testBatchAliases() {
+        let cmd = Command("install").aliases(["i", "add", "a"])
+        @Assert(cmd.getAliases().size == 3)
+    }
+
+    @TestCase
+    func testHashMapLookupO1() {
+        let root = Command("tool")
+            .command(Command("lint"))
+            .command(Command("fmt"))
+
+        // HashMap 查找应为 O(1)
+        match (root.findSubcommand("lint")) {
+            case Some(cmd) => @Assert(cmd.getName() == "lint")
             case None => @Assert(false)
         }
     }

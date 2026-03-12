@@ -8,19 +8,19 @@
 
 ## 2. 总体架构对比
 
-| 维度             | 参考实现 (cli-cj)                           | 当前实现 (src/)                              | 评估   |
-| ---------------- | ------------------------------------------- | -------------------------------------------- | ------ |
-| 包输出类型       | `static`（库）                              | `executable`                                 | ⚠️ 改进 |
-| API 风格         | `Command` + `Arg` + `ArgMatch`，声明式      | `App` + `Command` + `Flag` + `Argument` + `Context` | 合理但繁琐 |
-| Builder 返回类型 | `This`（支持子类继承）                       | 具体类名 `Command` / `Flag` / `App`           | ⚠️ 改进 |
-| 参数与命令合一   | `Arg` 同时表示 flag 和位置参数               | `Flag` 与 `Argument` 分离                      | 各有利弊 |
-| 类型安全取值     | 泛型 `get<T>()` + `Parsable<T>` 约束        | 手动 `getInt64Flag()` / `getBoolFlag()`        | ⚠️ 改进 |
-| 帮助系统         | `--help` 注册为 `Terminate` 动作的 Arg       | `mockRun` 中硬编码特殊处理                      | ⚠️ 改进 |
-| 构建入口         | `command.build()` 直接读 `getCommandLine()`  | `app.mockRun(args)` 纯内存沙箱                 | ✅ 优势 |
-| 参数分组         | 支持 `.group()` 分组输出                     | 不支持                                        | ⚠️ 缺失 |
-| 参数动作类型     | `ArgAction` 枚举 (Set/SetTrue/SetFalse/Append/Terminate) | `asBool()` 仅布尔开关               | ⚠️ 改进 |
-| 位置参数优先级   | `positionalArgsSet` 带 priority 分级接收     | 按定义顺序线性消费                              | 各有利弊 |
-| 测试包声明       | `internal package cli.test`（独立内部子包）  | `package cli`（与源码同包）                     | ⚠️ 改进 |
+| 维度             | 参考实现 (cli-cj)                                        | 当前实现 (src/)                                     | 评估       |
+| ---------------- | -------------------------------------------------------- | --------------------------------------------------- | ---------- |
+| 包输出类型       | `static`（库）                                           | `executable`                                        | ⚠️ 改进     |
+| API 风格         | `Command` + `Arg` + `ArgMatch`，声明式                   | `App` + `Command` + `Flag` + `Argument` + `Context` | 合理但繁琐 |
+| Builder 返回类型 | `This`（支持子类继承）                                   | 具体类名 `Command` / `Flag` / `App`                 | ⚠️ 改进     |
+| 参数与命令合一   | `Arg` 同时表示 flag 和位置参数                           | `Flag` 与 `Argument` 分离                           | 各有利弊   |
+| 类型安全取值     | 泛型 `get<T>()` + `Parsable<T>` 约束                     | 手动 `getInt64Flag()` / `getBoolFlag()`             | ⚠️ 改进     |
+| 帮助系统         | `--help` 注册为 `Terminate` 动作的 Arg                   | `mockRun` 中硬编码特殊处理                          | ⚠️ 改进     |
+| 构建入口         | `command.build()` 直接读 `getCommandLine()`              | `app.mockRun(args)` 纯内存沙箱                      | ✅ 优势     |
+| 参数分组         | 支持 `.group()` 分组输出                                 | 不支持                                              | ⚠️ 缺失     |
+| 参数动作类型     | `ArgAction` 枚举 (Set/SetTrue/SetFalse/Append/Terminate) | `asBool()` 仅布尔开关                               | ⚠️ 改进     |
+| 位置参数优先级   | `positionalArgsSet` 带 priority 分级接收                 | 按定义顺序线性消费                                  | 各有利弊   |
+| 测试包声明       | `internal package cli.test`（独立内部子包）              | `package cli`（与源码同包）                         | ⚠️ 改进     |
 
 ---
 
@@ -120,10 +120,10 @@ command._args.add("help", Arg("help").short(r'h').action(Terminate {
 
 **对比**：
 
-| 操作 | 参考实现 | 当前实现 |
-|------|----------|----------|
-| 前缀检测 | `_inputArg.startsWith("-")` | 自定义 `startsWith(s, prefix)` 用 split 模拟 |
-| 前缀移除 | `name[2..]`（String 切片） | 自定义 `removePrefix()` 用 split + 拼接 |
+| 操作     | 参考实现                           | 当前实现                                           |
+| -------- | ---------------------------------- | -------------------------------------------------- |
+| 前缀检测 | `_inputArg.startsWith("-")`        | 自定义 `startsWith(s, prefix)` 用 split 模拟       |
+| 前缀移除 | `name[2..]`（String 切片）         | 自定义 `removePrefix()` 用 split + 拼接            |
 | 字符遍历 | `toRuneArray()` 获得 `Array<Rune>` | `for (b in s)` 遍历 UInt8 + `Rune(UInt32(b))` 转换 |
 
 **建议**：
@@ -209,17 +209,17 @@ public open class CliException <: Exception {
 
 对标参考实现，当前框架缺少以下功能：
 
-| 缺失功能 | 参考实现支持情况 | 优先级 |
-| -------- | --------------- | ------ |
-| `ArgAction.Append`（多值追加） | ✅ 支持重复 `--flag a --flag b` | 高 |
-| `ArgAction.Terminate`（触发回调退出） | ✅ `--help` 基于此实现 | 高 |
-| `ArgAction.SetTrue` / `SetFalse` | ✅ 枚举化的布尔动作 | 中 |
-| 参数分组（`.group()`） | ✅ 帮助输出中分组展示 | 中 |
-| `noInputBuild`（无输入时默认参数） | ✅ 为空命令提供默认行为 | 低 |
-| 泛型取值 `get<T>()` | ✅ 基于 `Parsable<T>` | 高 |
-| 批量添加 `.args()` / `.subcommands()` | ✅ 接受 Array 批量注册 | 低 |
-| 帮助文本自动对齐 (`maxSubcommandOrArgSize`) | ✅ 动态计算最大宽度对齐 | 中 |
-| `PeekableIterator` 模式 | ✅ 通过扩展 Iterator 实现 | 低 |
+| 缺失功能                                    | 参考实现支持情况               | 优先级 |
+| ------------------------------------------- | ------------------------------ | ------ |
+| `ArgAction.Append`（多值追加）              | ✅ 支持重复 `--flag a --flag b` | 高     |
+| `ArgAction.Terminate`（触发回调退出）       | ✅ `--help` 基于此实现          | 高     |
+| `ArgAction.SetTrue` / `SetFalse`            | ✅ 枚举化的布尔动作             | 中     |
+| 参数分组（`.group()`）                      | ✅ 帮助输出中分组展示           | 中     |
+| `noInputBuild`（无输入时默认参数）          | ✅ 为空命令提供默认行为         | 低     |
+| 泛型取值 `get<T>()`                         | ✅ 基于 `Parsable<T>`           | 高     |
+| 批量添加 `.args()` / `.subcommands()`       | ✅ 接受 Array 批量注册          | 低     |
+| 帮助文本自动对齐 (`maxSubcommandOrArgSize`) | ✅ 动态计算最大宽度对齐         | 中     |
+| `PeekableIterator` 模式                     | ✅ 通过扩展 Iterator 实现       | 低     |
 
 ---
 
@@ -227,15 +227,15 @@ public open class CliException <: Exception {
 
 对比参考实现，当前框架有以下**独有优势**：
 
-| 优势项 | 说明 |
-| ------ | ---- |
-| `mockRun()` 沙箱 | 参考实现无此功能。支持纯内存测试捕获 stdout/stderr/exitCode，是本框架的核心测试基础设施。 |
-| `TestResult` 结构 | 参考实现的测试需要通过 `Box` 手动捕获状态，本框架的 TestResult 更优雅。 |
-| 退出码规范化 | 明确区分 0（成功）/1（业务错误）/2（解析错误），参考实现只有 0 和 1。 |
-| 环境变量映射预留 | `Flag.envVar()` 为 Phase 3 配置合并流打基础，参考实现无此设计。 |
-| 错误上下文输出 | `formatError()` 显示用户输入上下文，辅助定位问题。 |
-| Flag 别名系统 | Flag 级别的别名（参考实现只有 Command 级别别名）。 |
-| 变长参数的 min/max 校验 | 两者都支持，当前实现更明确地暴露在 API 上。 |
+| 优势项                  | 说明                                                                                      |
+| ----------------------- | ----------------------------------------------------------------------------------------- |
+| `mockRun()` 沙箱        | 参考实现无此功能。支持纯内存测试捕获 stdout/stderr/exitCode，是本框架的核心测试基础设施。 |
+| `TestResult` 结构       | 参考实现的测试需要通过 `Box` 手动捕获状态，本框架的 TestResult 更优雅。                   |
+| 退出码规范化            | 明确区分 0（成功）/1（业务错误）/2（解析错误），参考实现只有 0 和 1。                     |
+| 环境变量映射预留        | `Flag.envVar()` 为 Phase 3 配置合并流打基础，参考实现无此设计。                           |
+| 错误上下文输出          | `formatError()` 显示用户输入上下文，辅助定位问题。                                        |
+| Flag 别名系统           | Flag 级别的别名（参考实现只有 Command 级别别名）。                                        |
+| 变长参数的 min/max 校验 | 两者都支持，当前实现更明确地暴露在 API 上。                                               |
 
 ---
 

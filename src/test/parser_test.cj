@@ -15,7 +15,7 @@ class ParserTest {
     func testParseLongFlag() {
         let cmd = Command("app")
             .flag(Flag("verbose").asBool())
-            .flag(Flag("config").short("c"))
+            .flag(Flag("config").short(r'c'))
 
         let parser = Parser()
         let (_, ctx) = parser.parse(cmd, ["--verbose", "--config", "app.toml"])
@@ -27,7 +27,7 @@ class ParserTest {
     @TestCase
     func testParseLongFlagWithEquals() {
         let cmd = Command("app")
-            .flag(Flag("config").short("c"))
+            .flag(Flag("config").short(r'c'))
 
         let parser = Parser()
         let (_, ctx) = parser.parse(cmd, ["--config=app.toml"])
@@ -38,8 +38,8 @@ class ParserTest {
     @TestCase
     func testParseShortFlag() {
         let cmd = Command("app")
-            .flag(Flag("verbose", "v").asBool())
-            .flag(Flag("config", "c"))
+            .flag(Flag("verbose").short(r'v').asBool())
+            .flag(Flag("config").short(r'c'))
 
         let parser = Parser()
         let (_, ctx) = parser.parse(cmd, ["-v", "-c", "app.toml"])
@@ -53,7 +53,7 @@ class ParserTest {
         let root = Command("tool")
             .command(
                 Command("lint")
-                    .flag(Flag("fix", "f").asBool())
+                    .flag(Flag("fix").short(r'f').asBool())
                     .action({ ctx => 0 })
             )
 
@@ -73,7 +73,7 @@ class ParserTest {
                         Command("server")
                             .command(
                                 Command("start")
-                                    .flag(Flag("port", "p").valueType(Int64Type))
+                                    .flag(Flag("port").short(r'p').valueType(Int64Type))
                                     .action({ ctx => 0 })
                             )
                     )
@@ -121,7 +121,7 @@ class ParserTest {
     @TestCase
     func testDoubleDashSeparator() {
         let cmd = Command("app")
-            .flag(Flag("verbose", "v").asBool())
+            .flag(Flag("verbose").short(r'v').asBool())
 
         let parser = Parser()
         let (_, ctx) = parser.parse(cmd, ["--verbose", "--", "--not-a-flag", "file.txt"])
@@ -148,7 +148,7 @@ class ParserTest {
     @TestCase
     func testRequiredFlagMissing() {
         let cmd = Command("app")
-            .flag(Flag("output", "o").required(true))
+            .flag(Flag("output").short(r'o').required(true))
 
         let parser = Parser()
         var caught = false
@@ -210,7 +210,7 @@ class ParserTest {
     @TestCase
     func testFlagMissingValue() {
         let cmd = Command("app")
-            .flag(Flag("output", "o"))
+            .flag(Flag("output").short(r'o'))
 
         let parser = Parser()
         var caught = false
@@ -226,7 +226,7 @@ class ParserTest {
     @TestCase
     func testTypedFlagInt64() {
         let cmd = Command("app")
-            .flag(Flag("port", "p").valueType(Int64Type))
+            .flag(Flag("port").short(r'p').valueType(Int64Type))
 
         let parser = Parser()
         let (_, ctx) = parser.parse(cmd, ["--port", "8080"])
@@ -241,7 +241,7 @@ class ParserTest {
     @TestCase
     func testTypedFlagInt64Error() {
         let cmd = Command("app")
-            .flag(Flag("port", "p").valueType(Int64Type))
+            .flag(Flag("port").short(r'p').valueType(Int64Type))
 
         let parser = Parser()
         var caught = false
@@ -278,8 +278,8 @@ class ParserTest {
     @TestCase
     func testMixedFlagsAndArgs() {
         let cmd = Command("app")
-            .flag(Flag("verbose", "v").asBool())
-            .flag(Flag("output", "o"))
+            .flag(Flag("verbose").short(r'v').asBool())
+            .flag(Flag("output").short(r'o'))
             .argument(Argument("input").required(true))
 
         let parser = Parser()
@@ -307,5 +307,76 @@ class ParserTest {
             @Assert(e.message.contains("at least"))
         }
         @Assert(caught)
+    }
+
+    @TestCase
+    func testTerminateFlagThrows() {
+        let cmd = Command("app")
+            .flag(Flag("help").short(r'h').action(FlagAction.Terminate({ => "Help text" })))
+
+        let parser = Parser()
+        var caught = false
+        try {
+            parser.parse(cmd, ["--help"])
+        } catch (e: TerminateException) {
+            caught = true
+            @Assert(e.execute() == "Help text")
+        }
+        @Assert(caught)
+    }
+
+    @TestCase
+    func testAppendAction() {
+        let cmd = Command("app")
+            .flag(Flag("include").short(r'I').action(FlagAction.Append))
+
+        let parser = Parser()
+        let (_, ctx) = parser.parse(cmd, ["-I", "src/", "-I", "lib/"])
+
+        match (ctx.getFlagAll("include")) {
+            case Some(vals) =>
+                @Assert(vals.size == 2)
+                @Assert(vals[0] == "src/")
+                @Assert(vals[1] == "lib/")
+            case None => @Assert(false)
+        }
+    }
+
+    @TestCase
+    func testSetTrueAction() {
+        let cmd = Command("app")
+            .flag(Flag("verbose").action(FlagAction.SetTrue))
+
+        let parser = Parser()
+        let (_, ctx) = parser.parse(cmd, ["--verbose"])
+
+        @Assert(ctx.getBoolFlag("verbose") == true)
+    }
+
+    @TestCase
+    func testSetFalseAction() {
+        let cmd = Command("app")
+            .flag(Flag("no-color").action(FlagAction.SetFalse))
+
+        let parser = Parser()
+        let (_, ctx) = parser.parse(cmd, ["--no-color"])
+
+        @Assert(ctx.getBoolFlag("no-color") == false)
+    }
+
+    @TestCase
+    func testBatchFlags() {
+        let cmd = Command("app").flags([
+            Flag("verbose").short(r'v').asBool(),
+            Flag("config").short(r'c'),
+            Flag("output").short(r'o')
+        ])
+
+        let parser = Parser()
+        let (_, ctx) = parser.parse(cmd, ["-v", "-c", "app.toml", "-o", "out.txt"])
+
+        @Assert(ctx.getBoolFlag("verbose") == true)
+        @Assert(ctx.getFlagOrDefault("config", "") == "app.toml")
+        @Assert(ctx.getFlagOrDefault("output", "") == "out.txt")
     }
 }

@@ -7,153 +7,223 @@ public type ActionHandler = (Context) -> Int64
 
 // 增强型命令定义：支持子命令树、Flag、Argument、别名与动作处理
 public class Command {
-    private let _name: String
-    private var _description: String = ""
-    private var _version: String = ""
-    private var _author: String = ""
-    private let _aliases: ArrayList<String> = ArrayList<String>()
+    let _name: String
+    var _description: Option<String> = None
+    var _version: Option<String> = None
+    var _author: Option<String> = None
+    let _aliases: ArrayList<String> = ArrayList<String>()
 
-    private let _subcommands: ArrayList<Command> = ArrayList<Command>()
-    private let _flags: ArrayList<Flag> = ArrayList<Flag>()
-    private let _arguments: ArrayList<Argument> = ArrayList<Argument>()
+    // 子命令：HashMap 提供 O(1) 查找（名称+别名均映射）
+    let _subcommands: HashMap<String, Command> = HashMap<String, Command>()
+    // 保留注册顺序用于 help 输出
+    let _subcommandOrder: ArrayList<String> = ArrayList<String>()
+    let _flags: ArrayList<Flag> = ArrayList<Flag>()
+    let _arguments: ArrayList<Argument> = ArrayList<Argument>()
 
-    private var _action: Option<ActionHandler> = None
+    var _action: Option<ActionHandler> = None
+
+    // 帮助输出的动态对齐宽度
+    var _maxNameWidth: Int64 = 0
 
     public init(name: String) {
-        this._name = name
+        _name = name
     }
 
-    // Builder 方法（返回 this 支持链式调用）
+    // Builder 方法：统一返回 This
 
-    public func description(desc: String): Command {
-        this._description = desc
-        return this
+    public func description(desc: String): This {
+        _description = Some(desc)
+        this
     }
 
-    public func version(ver: String): Command {
-        this._version = ver
-        return this
+    public func version(ver: String): This {
+        _version = Some(ver)
+        this
     }
 
-    public func author(auth: String): Command {
-        this._author = auth
-        return this
+    public func author(auth: String): This {
+        _author = Some(auth)
+        this
     }
 
-    public func alias(a: String): Command {
-        this._aliases.add(a)
-        return this
+    public func alias(a: String): This {
+        _aliases.add(a)
+        this
     }
 
-    public func command(subCmd: Command): Command {
-        this._subcommands.add(subCmd)
-        return this
+    public func aliases(arr: Array<String>): This {
+        for (a in arr) {
+            _aliases.add(a)
+        }
+        this
     }
 
-    public func flag(f: Flag): Command {
-        this._flags.add(f)
-        return this
+    public func command(subCmd: Command): This {
+        _subcommands[subCmd.getName()] = subCmd
+        _subcommandOrder.add(subCmd.getName())
+        for (a in subCmd.getAliases()) {
+            _subcommands[a] = subCmd
+        }
+        // 更新动态对齐宽度
+        if (subCmd.getName().size > _maxNameWidth) {
+            _maxNameWidth = subCmd.getName().size
+        }
+        this
     }
 
-    public func argument(arg: Argument): Command {
-        this._arguments.add(arg)
-        return this
+    // 批量注册子命令
+    public func commands(subs: Array<Command>): This {
+        for (sub in subs) {
+            command(sub)
+        }
+        this
     }
 
-    public func action(handler: ActionHandler): Command {
-        this._action = Some(handler)
-        return this
+    public func flag(f: Flag): This {
+        _flags.add(f)
+        // 更新动态对齐宽度：考虑短选项前缀
+        var nameLen = f.getLongName().size + 2  // "--" prefix
+        match (f.getShortName()) {
+            case Some(_) => nameLen = nameLen + 4  // "-x, " prefix
+            case None => ()
+        }
+        if (nameLen > _maxNameWidth) {
+            _maxNameWidth = nameLen
+        }
+        this
+    }
+
+    // 批量注册 flag
+    public func flags(fs: Array<Flag>): This {
+        for (f in fs) {
+            flag(f)
+        }
+        this
+    }
+
+    public func argument(arg: Argument): This {
+        _arguments.add(arg)
+        if (arg.getName().size > _maxNameWidth) {
+            _maxNameWidth = arg.getName().size
+        }
+        this
+    }
+
+    // 批量注册位置参数
+    public func arguments(args: Array<Argument>): This {
+        for (arg in args) {
+            argument(arg)
+        }
+        this
+    }
+
+    public func action(handler: ActionHandler): This {
+        _action = Some(handler)
+        this
     }
 
     // Getter 方法
 
-    public func getName(): String {
-        return this._name
+    public func getName(): String { _name }
+
+    public func getDescription(): Option<String> { _description }
+
+    public func getDescriptionStr(): String {
+        match (_description) {
+            case Some(d) => d
+            case None => ""
+        }
     }
 
-    public func getDescription(): String {
-        return this._description
+    public func getVersion(): Option<String> { _version }
+
+    public func getVersionStr(): String {
+        match (_version) {
+            case Some(v) => v
+            case None => ""
+        }
     }
 
-    public func getVersion(): String {
-        return this._version
-    }
+    public func getAuthor(): Option<String> { _author }
 
-    public func getAuthor(): String {
-        return this._author
-    }
+    public func getAliases(): ArrayList<String> { _aliases }
 
-    public func getAliases(): ArrayList<String> {
-        return this._aliases
-    }
+    public func getSubcommandMap(): HashMap<String, Command> { _subcommands }
 
+    // 按注册顺序返回子命令（去重）
     public func getSubcommands(): ArrayList<Command> {
-        return this._subcommands
-    }
-
-    public func getFlags(): ArrayList<Flag> {
-        return this._flags
-    }
-
-    public func getArguments(): ArrayList<Argument> {
-        return this._arguments
-    }
-
-    public func getAction(): Option<ActionHandler> {
-        return this._action
-    }
-
-    // 按名称或别名查找子命令
-    public func findSubcommand(name: String): Option<Command> {
-        for (sub in _subcommands) {
-            if (sub.getName() == name) {
-                return Some(sub)
-            }
-            for (a in sub.getAliases()) {
-                if (a == name) {
-                    return Some(sub)
-                }
+        let result = ArrayList<Command>()
+        for (name in _subcommandOrder) {
+            match (_subcommands.get(name)) {
+                case Some(cmd) => result.add(cmd)
+                case None => ()
             }
         }
-        return None
+        result
     }
 
-    // 按长名、短名或别名查找 Flag
+    public func getFlags(): ArrayList<Flag> { _flags }
+
+    public func getArguments(): ArrayList<Argument> { _arguments }
+
+    public func getAction(): Option<ActionHandler> { _action }
+
+    public func getMaxNameWidth(): Int64 { _maxNameWidth }
+
+    // 按名称或别名查找子命令（O(1)）
+    public func findSubcommand(name: String): Option<Command> {
+        _subcommands.get(name)
+    }
+
+    // 按长名或别名查找 Flag
     public func findFlag(name: String): Option<Flag> {
         for (f in _flags) {
             if (f.matches(name)) {
                 return Some(f)
             }
         }
-        return None
+        None
+    }
+
+    // 按短名查找 Flag
+    public func findFlagByShort(c: Rune): Option<Flag> {
+        for (f in _flags) {
+            if (f.matchesShort(c)) {
+                return Some(f)
+            }
+        }
+        None
     }
 
     // 获取所有已注册命令名称（含别名）用于错误提示
     public func allCommandNames(): ArrayList<String> {
         let names = ArrayList<String>()
-        for (sub in _subcommands) {
-            names.add(sub.getName())
-            for (a in sub.getAliases()) {
-                names.add(a)
+        for (name in _subcommandOrder) {
+            names.add(name)
+            match (_subcommands.get(name)) {
+                case Some(cmd) =>
+                    for (a in cmd.getAliases()) {
+                        names.add(a)
+                    }
+                case None => ()
             }
         }
-        return names
+        names
     }
 
-    // 获取所有已注册 Flag 名称（含别名）用于错误提示
+    // 获取所有已注册 Flag 名称用于错误提示
     public func allFlagNames(): ArrayList<String> {
         let names = ArrayList<String>()
         for (f in _flags) {
-            if (f.getLongName().size > 0) {
-                names.add(f.getLongName())
-            }
-            if (f.getShortName().size > 0) {
-                names.add(f.getShortName())
+            names.add(f.getLongName())
+            match (f.getShortNameStr()) {
+                case Some(s) => names.add(s)
+                case None => ()
             }
             for (a in f.getAliases()) {
                 names.add(a)
             }
         }
-        return names
+        names
     }
 }

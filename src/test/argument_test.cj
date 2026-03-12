@@ -18,7 +18,10 @@ class ArgumentDefinitionTest {
             .required(true)
 
         @Assert(arg.getName() == "file")
-        @Assert(arg.getDescription() == "Input file")
+        match (arg.getDescription()) {
+            case Some(d) => @Assert(d == "Input file")
+            case None => @Assert(false)
+        }
         @Assert(arg.isRequired() == true)
         @Assert(arg.isVariadic() == false)
     }
@@ -41,6 +44,27 @@ class ArgumentDefinitionTest {
             .valueType(Int64Type)
             .defaultValue("5")
 
-        @Assert(arg.getDefaultValue() == "5")
+        match (arg.getDefaultValue()) {
+            case Some(d) => @Assert(d == "5")
+            case None => @Assert(false)
+        }
+    }
+
+    @TestCase
+    func testArgumentNoDescription() {
+        let arg = Argument("file")
+        match (arg.getDescription()) {
+            case Some(_) => @Assert(false)
+            case None => @Assert(true)
+        }
+    }
+
+    @TestCase
+    func testArgumentNoDefaultValue() {
+        let arg = Argument("file")
+        match (arg.getDefaultValue()) {
+            case Some(_) => @Assert(false)
+            case None => @Assert(true)
+        }
     }
 }

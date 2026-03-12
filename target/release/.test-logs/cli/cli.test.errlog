@@ -7,23 +7,7 @@
   [36m#[0m [0mnote[0m: this warning can be suppressed by setting the compiler option `-Woff unused`
 
 [33mwarning[0m: unused import 'std.collection.*'
- [36m==>[0m /home/otto/文档/Project/cli/src/test/context_test.cj:5:1:
-  [36m| [0m
-[36m5[0m [36m| [0mimport std.collection.*[0m
-  [36m| [0m[33m^^^^^^^^^^^^^^^^^^^^^^^ unused import[0m
-  [36m| [0m
-  [36m#[0m [0mnote[0m: this warning can be suppressed by setting the compiler option `-Woff unused`
-
-[33mwarning[0m: unused import 'std.collection.*'
  [36m==>[0m /home/otto/文档/Project/cli/src/test/flag_test.cj:5:1:
-  [36m| [0m
-[36m5[0m [36m| [0mimport std.collection.*[0m
-  [36m| [0m[33m^^^^^^^^^^^^^^^^^^^^^^^ unused import[0m
-  [36m| [0m
-  [36m#[0m [0mnote[0m: this warning can be suppressed by setting the compiler option `-Woff unused`
-
-[33mwarning[0m: unused import 'std.collection.*'
- [36m==>[0m /home/otto/文档/Project/cli/src/test/parser_test.cj:5:1:
   [36m| [0m
 [36m5[0m [36m| [0mimport std.collection.*[0m
   [36m| [0m[33m^^^^^^^^^^^^^^^^^^^^^^^ unused import[0m
@@ -52,51 +36,51 @@
     [36m| [0m [34m_[0m[34m^[0m
 [36m13[0m  [36m| [0m[34m|[0m class ParserTest {[0m
     [36m| [0m[34m|[0m ...[0m
-[36m311[0m [36m| [0m[34m|[0m }[0m
+[36m382[0m [36m| [0m[34m|[0m }[0m
     [36m| [0m[34m|[0m[34m_[0m[34m^[0m
     [36m| [0m
 [34mnote[0m: the code after the macro is expanded as follows
     [36m| [0m
     [36m| [0m  /* 12.1 */@Attribute[TEST_GENERATED] class ParserTest <: TestClass {[0m
     [36m| [0m [34m_[0m[34m^[0m
-    [36m| [0m[34m|[0m /* 12.2 */    @Attribute[TestCase_40][0m
+    [36m| [0m[34m|[0m /* 12.2 */    @Attribute[TestCase_57][0m
     [36m| [0m[34m|[0m /* 12.3 */    func testParseLongFlag() {[0m
-    [36m| [0m[34m|[0m /* 12.4 */        let cmd = Command("app").flag(Flag("verbose").asBool()).flag(Flag("config").short("c"))[0m
+    [36m| [0m[34m|[0m /* 12.4 */        let cmd = Command("app").flag(Flag("verbose").asBool()).flag(Flag("config").short(r'c'))[0m
     [36m| [0m[34m|[0m /* 12.5 */        let parser = Parser()[0m
     [36m| [0m[34m|[0m /* 12.6 */        let(_, ctx) = parser.parse(cmd,["--verbose", "--config", "app.toml"])[0m
     [36m| [0m[34m|[0m /* 12.7 */        assertEqual("ctx.getBoolFlag(\"verbose\") == true", "true", ctx.getBoolFlag("verbose") == true, true, isDelta: false)[0m
     [36m| [0m[34m|[0m /* 12.8 */        assertEqual("ctx.getFlagOrDefault(\"config\", \"\") == \"app.toml\"", "true", ctx.getFlagOrDefault("config", "") == "app.toml", true, isDelta: false)[0m
     [36m| [0m[34m|[0m /* 12.9 */    }[0m
     [36m| [0m[34m|[0m /* 12.10 */    [0m
-    [36m| [0m[34m|[0m /* 12.11 */    @Attribute[TestCase_41][0m
+    [36m| [0m[34m|[0m /* 12.11 */    @Attribute[TestCase_58][0m
     [36m| [0m[34m|[0m /* 12.12 */    func testParseLongFlagWithEquals() {[0m
-    [36m| [0m[34m|[0m /* 12.13 */        let cmd = Command("app").flag(Flag("config").short("c"))[0m
+    [36m| [0m[34m|[0m /* 12.13 */        let cmd = Command("app").flag(Flag("config").short(r'c'))[0m
     [36m| [0m[34m|[0m /* 12.14 */        let parser = Parser()[0m
     [36m| [0m[34m|[0m /* 12.15 */        let(_, ctx) = parser.parse(cmd,["--config=app.toml"])[0m
     [36m| [0m[34m|[0m /* 12.16 */        assertEqual("ctx.getFlagOrDefault(\"config\", \"\") == \"app.toml\"", "true", ctx.getFlagOrDefault("config", "") == "app.toml", true, isDelta: false)[0m
     [36m| [0m[34m|[0m /* 12.17 */    }[0m
     [36m| [0m[34m|[0m /* 12.18 */    [0m
-    [36m| [0m[34m|[0m /* 12.19 */    @Attribute[TestCase_42][0m
+    [36m| [0m[34m|[0m /* 12.19 */    @Attribute[TestCase_59][0m
     [36m| [0m[34m|[0m /* 12.20 */    func testParseShortFlag() {[0m
-    [36m| [0m[34m|[0m /* 12.21 */        let cmd = Command("app").flag(Flag("verbose", "v").asBool()).flag(Flag("config", "c"))[0m
+    [36m| [0m[34m|[0m /* 12.21 */        let cmd = Command("app").flag(Flag("verbose").short(r'v').asBool()).flag(Flag("config").short(r'c'))[0m
     [36m| [0m[34m|[0m /* 12.22 */        let parser = Parser()[0m
     [36m| [0m[34m|[0m /* 12.23 */        let(_, ctx) = parser.parse(cmd,["-v", "-c", "app.toml"])[0m
     [36m| [0m[34m|[0m /* 12.24 */        assertEqual("ctx.getBoolFlag(\"verbose\") == true", "true", ctx.getBoolFlag("verbose") == true, true, isDelta: false)[0m
     [36m| [0m[34m|[0m /* 12.25 */        assertEqual("ctx.getFlagOrDefault(\"config\", \"\") == \"app.toml\"", "true", ctx.getFlagOrDefault("config", "") == "app.toml", true, isDelta: false)[0m
     [36m| [0m[34m|[0m /* 12.26 */    }[0m
     [36m| [0m[34m|[0m /* 12.27 */    [0m
-    [36m| [0m[34m|[0m /* 12.28 */    @Attribute[TestCase_43][0m
+    [36m| [0m[34m|[0m /* 12.28 */    @Attribute[TestCase_60][0m
     [36m| [0m[34m|[0m /* 12.29 */    func testSubcommandRouting() {[0m
-    [36m| [0m[34m|[0m /* 12.30 */        let root = Command("tool").command(Command("lint").flag(Flag("fix", "f").asBool()).action({ ctx => 0 }))[0m
+    [36m| [0m[34m|[0m /* 12.30 */        let root = Command("tool").command(Command("lint").flag(Flag("fix").short(r'f').asBool()).action({ ctx => 0 }))[0m
     [36m| [0m[34m|[0m /* 12.31 */        let parser = Parser()[0m
     [36m| [0m[34m|[0m /* 12.32 */        let(matched, ctx) = parser.parse(root,["lint", "--fix"])[0m
     [36m| [0m[34m|[0m /* 12.33 */        assertEqual("matched.getName() == \"lint\"", "true", matched.getName() == "lint", true, isDelta: false)[0m
     [36m| [0m[34m|[0m /* 12.34 */        assertEqual("ctx.getBoolFlag(\"fix\") == true", "true", ctx.getBoolFlag("fix") == true, true, isDelta: false)[0m
     [36m| [0m[34m|[0m /* 12.35 */    }[0m
     [36m| [0m[34m|[0m /* 12.36 */    [0m
-    [36m| [0m[34m|[0m /* 12.37 */    @Attribute[TestCase_44][0m
+    [36m| [0m[34m|[0m /* 12.37 */    @Attribute[TestCase_61][0m
     [36m| [0m[34m|[0m /* 12.38 */    func testDeepSubcommandRouting() {[0m
-    [36m| [0m[34m|[0m /* 12.39 */        let root = Command("tool").command(Command("cloud").command(Command("server").command(Command("start").flag(Flag("port", "p").valueType(Int64Type)).action({ ctx => 0 }))))[0m
+    [36m| [0m[34m|[0m /* 12.39 */        let root = Command("tool").command(Command("cloud").command(Command("server").command(Command("start").flag(Flag("port").short(r'p').valueType(Int64Type)).action({ ctx => 0 }))))[0m
     [36m| [0m[34m|[0m /* 12.40 */        let parser = Parser()[0m
     [36m| [0m[34m|[0m /* 12.41 */        let(matched, ctx) = parser.parse(root,["cloud", "server", "start", "--port", "8080"])[0m
     [36m| [0m[34m|[0m /* 12.42 */        assertEqual("matched.getName() == \"start\"", "true", matched.getName() == "start", true, isDelta: false)[0m
@@ -104,7 +88,7 @@
     [36m| [0m[34m|[0m /* 12.44 */        assertEqual("ctx.getCommandPathStr() == \"tool cloud server start\"", "true", ctx.getCommandPathStr() == "tool cloud server start", true, isDelta: false)[0m
     [36m| [0m[34m|[0m /* 12.45 */    }[0m
     [36m| [0m[34m|[0m /* 12.46 */    [0m
-    [36m| [0m[34m|[0m /* 12.47 */    @Attribute[TestCase_45][0m
+    [36m| [0m[34m|[0m /* 12.47 */    @Attribute[TestCase_62][0m
     [36m| [0m[34m|[0m /* 12.48 */    func testPositionalArguments() {[0m
     [36m| [0m[34m|[0m /* 12.49 */        let cmd = Command("app").argument(Argument("input").required(true)).argument(Argument("output"))[0m
     [36m| [0m[34m|[0m /* 12.50 */        let parser = Parser()[0m
@@ -120,7 +104,7 @@
     [36m| [0m[34m|[0m /* 12.60 */        }[0m
     [36m| [0m[34m|[0m /* 12.61 */    }[0m
     [36m| [0m[34m|[0m /* 12.62 */    [0m
-    [36m| [0m[34m|[0m /* 12.63 */    @Attribute[TestCase_46][0m
+    [36m| [0m[34m|[0m /* 12.63 */    @Attribute[TestCase_63][0m
     [36m| [0m[34m|[0m /* 12.64 */    func testVariadicArguments() {[0m
     [36m| [0m[34m|[0m /* 12.65 */        let cmd = Command("app").argument(Argument("files").variadic(true).minCount(1))[0m
     [36m| [0m[34m|[0m /* 12.66 */        let parser = Parser()[0m
@@ -128,9 +112,9 @@
     [36m| [0m[34m|[0m /* 12.68 */        assertEqual("ctx.argumentCount() == 3", "true", ctx.argumentCount() == 3, true, isDelta: false)[0m
     [36m| [0m[34m|[0m /* 12.69 */    }[0m
     [36m| [0m[34m|[0m /* 12.70 */    [0m
-    [36m| [0m[34m|[0m /* 12.71 */    @Attribute[TestCase_47][0m
+    [36m| [0m[34m|[0m /* 12.71 */    @Attribute[TestCase_64][0m
     [36m| [0m[34m|[0m /* 12.72 */    func testDoubleDashSeparator() {[0m
-    [36m| [0m[34m|[0m /* 12.73 */        let cmd = Command("app").flag(Flag("verbose", "v").asBool())[0m
+    [36m| [0m[34m|[0m /* 12.73 */        let cmd = Command("app").flag(Flag("verbose").short(r'v').asBool())[0m
     [36m| [0m[34m|[0m /* 12.74 */        let parser = Parser()[0m
     [36m| [0m[34m|[0m /* 12.75 */        let(_, ctx) = parser.parse(cmd,["--verbose", "--", "--not-a-flag", "file.txt"])[0m
     [36m| [0m[34m|[0m /* 12.76 */        assertEqual("ctx.getBoolFlag(\"verbose\") == true", "true", ctx.getBoolFlag("verbose") == true, true, isDelta: false)[0m
@@ -141,7 +125,7 @@
     [36m| [0m[34m|[0m /* 12.81 */        }[0m
     [36m| [0m[34m|[0m /* 12.82 */    }[0m
     [36m| [0m[34m|[0m /* 12.83 */    [0m
-    [36m| [0m[34m|[0m /* 12.84 */    @Attribute[TestCase_48][0m
+    [36m| [0m[34m|[0m /* 12.84 */    @Attribute[TestCase_65][0m
     [36m| [0m[34m|[0m /* 12.85 */    func testDefaultValues() {[0m
     [36m| [0m[34m|[0m /* 12.86 */        let cmd = Command("app").flag(Flag("config").defaultValue("default.toml"))[0m
     [36m| [0m[34m|[0m /* 12.87 */        let parser = Parser()[0m
@@ -149,9 +133,9 @@
     [36m| [0m[34m|[0m /* 12.89 */        assertEqual("ctx.getFlagOrDefault(\"config\", \"\") == \"default.toml\"", "true", ctx.getFlagOrDefault("config", "") == "default.toml", true, isDelta: false)[0m
     [36m| [0m[34m|[0m /* 12.90 */    }[0m
     [36m| [0m[34m|[0m /* 12.91 */    [0m
-    [36m| [0m[34m|[0m /* 12.92 */    @Attribute[TestCase_49][0m
+    [36m| [0m[34m|[0m /* 12.92 */    @Attribute[TestCase_66][0m
     [36m| [0m[34m|[0m /* 12.93 */    func testRequiredFlagMissing() {[0m
-    [36m| [0m[34m|[0m /* 12.94 */        let cmd = Command("app").flag(Flag("output", "o").required(true))[0m
+    [36m| [0m[34m|[0m /* 12.94 */        let cmd = Command("app").flag(Flag("output").short(r'o').required(true))[0m
     [36m| [0m[34m|[0m /* 12.95 */        let parser = Parser()[0m
     [36m| [0m[34m|[0m /* 12.96 */        var caught = false[0m
     [36m| [0m[34m|[0m /* 12.97 */        try {[0m
@@ -163,7 +147,7 @@
     [36m| [0m[34m|[0m /* 12.103 */        assertEqual("caught", "true", caught, true, isDelta: false)[0m
     [36m| [0m[34m|[0m /* 12.104 */    }[0m
     [36m| [0m[34m|[0m /* 12.105 */    [0m
-    [36m| [0m[34m|[0m /* 12.106 */    @Attribute[TestCase_50][0m
+    [36m| [0m[34m|[0m /* 12.106 */    @Attribute[TestCase_67][0m
     [36m| [0m[34m|[0m /* 12.107 */    func testRequiredArgumentMissing() {[0m
     [36m| [0m[34m|[0m /* 12.108 */        let cmd = Command("app").argument(Argument("file").required(true))[0m
     [36m| [0m[34m|[0m /* 12.109 */        let parser = Parser()[0m
@@ -177,7 +161,7 @@
     [36m| [0m[34m|[0m /* 12.117 */        assertEqual("caught", "true", caught, true, isDelta: false)[0m
     [36m| [0m[34m|[0m /* 12.118 */    }[0m
     [36m| [0m[34m|[0m /* 12.119 */    [0m
-    [36m| [0m[34m|[0m /* 12.120 */    @Attribute[TestCase_51][0m
+    [36m| [0m[34m|[0m /* 12.120 */    @Attribute[TestCase_68][0m
     [36m| [0m[34m|[0m /* 12.121 */    func testUnknownLongFlag() {[0m
     [36m| [0m[34m|[0m /* 12.122 */        let cmd = Command("app")[0m
     [36m| [0m[34m|[0m /* 12.123 */        let parser = Parser()[0m
@@ -191,7 +175,7 @@
     [36m| [0m[34m|[0m /* 12.131 */        assertEqual("caught", "true", caught, true, isDelta: false)[0m
     [36m| [0m[34m|[0m /* 12.132 */    }[0m
     [36m| [0m[34m|[0m /* 12.133 */    [0m
-    [36m| [0m[34m|[0m /* 12.134 */    @Attribute[TestCase_52][0m
+    [36m| [0m[34m|[0m /* 12.134 */    @Attribute[TestCase_69][0m
     [36m| [0m[34m|[0m /* 12.135 */    func testUnknownShortFlag() {[0m
     [36m| [0m[34m|[0m /* 12.136 */        let cmd = Command("app")[0m
     [36m| [0m[34m|[0m /* 12.137 */        let parser = Parser()[0m
@@ -205,9 +189,9 @@
     [36m| [0m[34m|[0m /* 12.145 */        assertEqual("caught", "true", caught, true, isDelta: false)[0m
     [36m| [0m[34m|[0m /* 12.146 */    }[0m
     [36m| [0m[34m|[0m /* 12.147 */    [0m
-    [36m| [0m[34m|[0m /* 12.148 */    @Attribute[TestCase_53][0m
+    [36m| [0m[34m|[0m /* 12.148 */    @Attribute[TestCase_70][0m
     [36m| [0m[34m|[0m /* 12.149 */    func testFlagMissingValue() {[0m
-    [36m| [0m[34m|[0m /* 12.150 */        let cmd = Command("app").flag(Flag("output", "o"))[0m
+    [36m| [0m[34m|[0m /* 12.150 */        let cmd = Command("app").flag(Flag("output").short(r'o'))[0m
     [36m| [0m[34m|[0m /* 12.151 */        let parser = Parser()[0m
     [36m| [0m[34m|[0m /* 12.152 */        var caught = false[0m
     [36m| [0m[34m|[0m /* 12.153 */        try {[0m
@@ -219,9 +203,9 @@
     [36m| [0m[34m|[0m /* 12.159 */        assertEqual("caught", "true", caught, true, isDelta: false)[0m
     [36m| [0m[34m|[0m /* 12.160 */    }[0m
     [36m| [0m[34m|[0m /* 12.161 */    [0m
-    [36m| [0m[34m|[0m /* 12.162 */    @Attribute[TestCase_54][0m
+    [36m| [0m[34m|[0m /* 12.162 */    @Attribute[TestCase_71][0m
     [36m| [0m[34m|[0m /* 12.163 */    func testTypedFlagInt64() {[0m
-    [36m| [0m[34m|[0m /* 12.164 */        let cmd = Command("app").flag(Flag("port", "p").valueType(Int64Type))[0m
+    [36m| [0m[34m|[0m /* 12.164 */        let cmd = Command("app").flag(Flag("port").short(r'p').valueType(Int64Type))[0m
     [36m| [0m[34m|[0m /* 12.165 */        let parser = Parser()[0m
     [36m| [0m[34m|[0m /* 12.166 */        let(_, ctx) = parser.parse(cmd,["--port", "8080"])[0m
     [36m| [0m[34m|[0m /* 12.167 */        assertEqual("ctx.getFlagOrDefault(\"port\", \"\") == \"8080\"", "true", ctx.getFlagOrDefault("port", "") == "8080", true, isDelta: false)[0m
@@ -231,9 +215,9 @@
     [36m| [0m[34m|[0m /* 12.171 */        }[0m
     [36m| [0m[34m|[0m /* 12.172 */    }[0m
     [36m| [0m[34m|[0m /* 12.173 */    [0m
-    [36m| [0m[34m|[0m /* 12.174 */    @Attribute[TestCase_55][0m
+    [36m| [0m[34m|[0m /* 12.174 */    @Attribute[TestCase_72][0m
     [36m| [0m[34m|[0m /* 12.175 */    func testTypedFlagInt64Error() {[0m
-    [36m| [0m[34m|[0m /* 12.176 */        let cmd = Command("app").flag(Flag("port", "p").valueType(Int64Type))[0m
+    [36m| [0m[34m|[0m /* 12.176 */        let cmd = Command("app").flag(Flag("port").short(r'p').valueType(Int64Type))[0m
     [36m| [0m[34m|[0m /* 12.177 */        let parser = Parser()[0m
     [36m| [0m[34m|[0m /* 12.178 */        var caught = false[0m
     [36m| [0m[34m|[0m /* 12.179 */        try {[0m
@@ -244,7 +228,7 @@
     [36m| [0m[34m|[0m /* 12.184 */        assertEqual("caught", "true", caught, true, isDelta: false)[0m
     [36m| [0m[34m|[0m /* 12.185 */    }[0m
     [36m| [0m[34m|[0m /* 12.186 */    [0m
-    [36m| [0m[34m|[0m /* 12.187 */    @Attribute[TestCase_56][0m
+    [36m| [0m[34m|[0m /* 12.187 */    @Attribute[TestCase_73][0m
     [36m| [0m[34m|[0m /* 12.188 */    func testTypedFlagBool() {[0m
     [36m| [0m[34m|[0m /* 12.189 */        let cmd = Command("app").flag(Flag("debug").valueType(BoolType))[0m
     [36m| [0m[34m|[0m /* 12.190 */        let parser = Parser()[0m
@@ -252,7 +236,7 @@
     [36m| [0m[34m|[0m /* 12.192 */        assertEqual("ctx.getFlagOrDefault(\"debug\", \"\") == \"true\"", "true", ctx.getFlagOrDefault("debug", "") == "true", true, isDelta: false)[0m
     [36m| [0m[34m|[0m /* 12.193 */    }[0m
     [36m| [0m[34m|[0m /* 12.194 */    [0m
-    [36m| [0m[34m|[0m /* 12.195 */    @Attribute[TestCase_57][0m
+    [36m| [0m[34m|[0m /* 12.195 */    @Attribute[TestCase_74][0m
     [36m| [0m[34m|[0m /* 12.196 */    func testSubcommandWithAlias() {[0m
     [36m| [0m[34m|[0m /* 12.197 */        let root = Command("tool").command(Command("install").alias("i").action({ ctx => 0 }))[0m
     [36m| [0m[34m|[0m /* 12.198 */        let parser = Parser()[0m
@@ -260,9 +244,9 @@
     [36m| [0m[34m|[0m /* 12.200 */        assertEqual("matched.getName() == \"install\"", "true", matched.getName() == "install", true, isDelta: false)[0m
     [36m| [0m[34m|[0m /* 12.201 */    }[0m
     [36m| [0m[34m|[0m /* 12.202 */    [0m
-    [36m| [0m[34m|[0m /* 12.203 */    @Attribute[TestCase_58][0m
+    [36m| [0m[34m|[0m /* 12.203 */    @Attribute[TestCase_75][0m
     [36m| [0m[34m|[0m /* 12.204 */    func testMixedFlagsAndArgs() {[0m
-    [36m| [0m[34m|[0m /* 12.205 */        let cmd = Command("app").flag(Flag("verbose", "v").asBool()).flag(Flag("output", "o")).argument(Argument("input").required(true))[0m
+    [36m| [0m[34m|[0m /* 12.205 */        let cmd = Command("app").flag(Flag("verbose").short(r'v').asBool()).flag(Flag("output").short(r'o')).argument(Argument("input").required(true))[0m
     [36m| [0m[34m|[0m /* 12.206 */        let parser = Parser()[0m
     [36m| [0m[34m|[0m /* 12.207 */        let(_, ctx) = parser.parse(cmd,["input.txt", "--verbose", "-o", "output.txt"])[0m
     [36m| [0m[34m|[0m /* 12.208 */        assertEqual("ctx.getBoolFlag(\"verbose\") == true", "true", ctx.getBoolFlag("verbose") == true, true, isDelta: false)[0m
@@ -273,7 +257,7 @@
     [36m| [0m[34m|[0m /* 12.213 */        }[0m
     [36m| [0m[34m|[0m /* 12.214 */    }[0m
     [36m| [0m[34m|[0m /* 12.215 */    [0m
-    [36m| [0m[34m|[0m /* 12.216 */    @Attribute[TestCase_59][0m
+    [36m| [0m[34m|[0m /* 12.216 */    @Attribute[TestCase_76][0m
     [36m| [0m[34m|[0m /* 12.217 */    func testVariadicMinCountViolation() {[0m
     [36m| [0m[34m|[0m /* 12.218 */        let cmd = Command("app").argument(Argument("files").variadic(true).minCount(2))[0m
     [36m| [0m[34m|[0m /* 12.219 */        let parser = Parser()[0m
@@ -287,321 +271,444 @@
     [36m| [0m[34m|[0m /* 12.227 */        assertEqual("caught", "true", caught, true, isDelta: false)[0m
     [36m| [0m[34m|[0m /* 12.228 */    }[0m
     [36m| [0m[34m|[0m /* 12.229 */    [0m
-    [36m| [0m[34m|[0m /* 12.230 */    init() {[0m
-    [36m| [0m[34m|[0m /* 12.231 */    }[0m
-    [36m| [0m[34m|[0m /* 12.232 */    private func classConfiguration(): Configuration {[0m
-    [36m| [0m[34m|[0m /* 12.233 */        let configuration = Configuration()[0m
-    [36m| [0m[34m|[0m /* 12.234 */        [0m
-    [36m| [0m[34m|[0m /* 12.235 */        return configuration[0m
-    [36m| [0m[34m|[0m /* 12.236 */    }[0m
-    [36m| [0m[34m|[0m /* 12.237 */    public override func asTestSuite(): TestSuite {[0m
-    [36m| [0m[34m|[0m /* 12.238 */        [0m
-    [36m| [0m[34m|[0m /* 12.239 */        let suiteConfiguration = classConfiguration()[0m
-    [36m| [0m[34m|[0m /* 12.240 */        let suiteBuilder = TestSuite.builder("ParserTest").configure(suiteConfiguration)[0m
-    [36m| [0m[34m|[0m /* 12.241 */        [0m
-    [36m| [0m[34m|[0m /* 12.242 */        { => let caseConfig = Configuration()[0m
-    [36m| [0m[34m|[0m /* 12.243 */            [0m
-    [36m| [0m[34m|[0m /* 12.244 */            let testParseLongFlagTestFunc = { => testParseLongFlag();() }[0m
-    [36m| [0m[34m|[0m /* 12.245 */            suiteBuilder.add([0m
-    [36m| [0m[34m|[0m /* 12.246 */            UnitTestCase.create([0m
-    [36m| [0m[34m|[0m /* 12.247 */            "testParseLongFlag",[0m
-    [36m| [0m[34m|[0m /* 12.248 */            configuration: caseConfig,[0m
-    [36m| [0m[34m|[0m /* 12.249 */            body: testParseLongFlagTestFunc[0m
-    [36m| [0m[34m|[0m /* 12.250 */            )[0m
-    [36m| [0m[34m|[0m /* 12.251 */            )[0m
-    [36m| [0m[34m|[0m /* 12.252 */            [0m
-    [36m| [0m[34m|[0m /* 12.253 */        }()[0m
-    [36m| [0m[34m|[0m /* 12.254 */        [0m
-    [36m| [0m[34m|[0m /* 12.255 */        [0m
-    [36m| [0m[34m|[0m /* 12.256 */        { => let caseConfig = Configuration()[0m
-    [36m| [0m[34m|[0m /* 12.257 */            [0m
-    [36m| [0m[34m|[0m /* 12.258 */            let testParseLongFlagWithEqualsTestFunc = { => testParseLongFlagWithEquals();() }[0m
-    [36m| [0m[34m|[0m /* 12.259 */            suiteBuilder.add([0m
-    [36m| [0m[34m|[0m /* 12.260 */            UnitTestCase.create([0m
-    [36m| [0m[34m|[0m /* 12.261 */            "testParseLongFlagWithEquals",[0m
-    [36m| [0m[34m|[0m /* 12.262 */            configuration: caseConfig,[0m
-    [36m| [0m[34m|[0m /* 12.263 */            body: testParseLongFlagWithEqualsTestFunc[0m
-    [36m| [0m[34m|[0m /* 12.264 */            )[0m
-    [36m| [0m[34m|[0m /* 12.265 */            )[0m
-    [36m| [0m[34m|[0m /* 12.266 */            [0m
-    [36m| [0m[34m|[0m /* 12.267 */        }()[0m
-    [36m| [0m[34m|[0m /* 12.268 */        [0m
-    [36m| [0m[34m|[0m /* 12.269 */        [0m
-    [36m| [0m[34m|[0m /* 12.270 */        { => let caseConfig = Configuration()[0m
-    [36m| [0m[34m|[0m /* 12.271 */            [0m
-    [36m| [0m[34m|[0m /* 12.272 */            let testParseShortFlagTestFunc = { => testParseShortFlag();() }[0m
-    [36m| [0m[34m|[0m /* 12.273 */            suiteBuilder.add([0m
-    [36m| [0m[34m|[0m /* 12.274 */            UnitTestCase.create([0m
-    [36m| [0m[34m|[0m /* 12.275 */            "testParseShortFlag",[0m
-    [36m| [0m[34m|[0m /* 12.276 */            configuration: caseConfig,[0m
-    [36m| [0m[34m|[0m /* 12.277 */            body: testParseShortFlagTestFunc[0m
-    [36m| [0m[34m|[0m /* 12.278 */            )[0m
-    [36m| [0m[34m|[0m /* 12.279 */            )[0m
-    [36m| [0m[34m|[0m /* 12.280 */            [0m
-    [36m| [0m[34m|[0m /* 12.281 */        }()[0m
-    [36m| [0m[34m|[0m /* 12.282 */        [0m
-    [36m| [0m[34m|[0m /* 12.283 */        [0m
-    [36m| [0m[34m|[0m /* 12.284 */        { => let caseConfig = Configuration()[0m
-    [36m| [0m[34m|[0m /* 12.285 */            [0m
-    [36m| [0m[34m|[0m /* 12.286 */            let testSubcommandRoutingTestFunc = { => testSubcommandRouting();() }[0m
-    [36m| [0m[34m|[0m /* 12.287 */            suiteBuilder.add([0m
-    [36m| [0m[34m|[0m /* 12.288 */            UnitTestCase.create([0m
-    [36m| [0m[34m|[0m /* 12.289 */            "testSubcommandRouting",[0m
-    [36m| [0m[34m|[0m /* 12.290 */            configuration: caseConfig,[0m
-    [36m| [0m[34m|[0m /* 12.291 */            body: testSubcommandRoutingTestFunc[0m
-    [36m| [0m[34m|[0m /* 12.292 */            )[0m
-    [36m| [0m[34m|[0m /* 12.293 */            )[0m
-    [36m| [0m[34m|[0m /* 12.294 */            [0m
-    [36m| [0m[34m|[0m /* 12.295 */        }()[0m
-    [36m| [0m[34m|[0m /* 12.296 */        [0m
-    [36m| [0m[34m|[0m /* 12.297 */        [0m
-    [36m| [0m[34m|[0m /* 12.298 */        { => let caseConfig = Configuration()[0m
-    [36m| [0m[34m|[0m /* 12.299 */            [0m
-    [36m| [0m[34m|[0m /* 12.300 */            let testDeepSubcommandRoutingTestFunc = { => testDeepSubcommandRouting();() }[0m
-    [36m| [0m[34m|[0m /* 12.301 */            suiteBuilder.add([0m
-    [36m| [0m[34m|[0m /* 12.302 */            UnitTestCase.create([0m
-    [36m| [0m[34m|[0m /* 12.303 */            "testDeepSubcommandRouting",[0m
-    [36m| [0m[34m|[0m /* 12.304 */            configuration: caseConfig,[0m
-    [36m| [0m[34m|[0m /* 12.305 */            body: testDeepSubcommandRoutingTestFunc[0m
-    [36m| [0m[34m|[0m /* 12.306 */            )[0m
-    [36m| [0m[34m|[0m /* 12.307 */            )[0m
-    [36m| [0m[34m|[0m /* 12.308 */            [0m
-    [36m| [0m[34m|[0m /* 12.309 */        }()[0m
-    [36m| [0m[34m|[0m /* 12.310 */        [0m
-    [36m| [0m[34m|[0m /* 12.311 */        [0m
-    [36m| [0m[34m|[0m /* 12.312 */        { => let caseConfig = Configuration()[0m
-    [36m| [0m[34m|[0m /* 12.313 */            [0m
-    [36m| [0m[34m|[0m /* 12.314 */            let testPositionalArgumentsTestFunc = { => testPositionalArguments();() }[0m
-    [36m| [0m[34m|[0m /* 12.315 */            suiteBuilder.add([0m
-    [36m| [0m[34m|[0m /* 12.316 */            UnitTestCase.create([0m
-    [36m| [0m[34m|[0m /* 12.317 */            "testPositionalArguments",[0m
-    [36m| [0m[34m|[0m /* 12.318 */            configuration: caseConfig,[0m
-    [36m| [0m[34m|[0m /* 12.319 */            body: testPositionalArgumentsTestFunc[0m
-    [36m| [0m[34m|[0m /* 12.320 */            )[0m
-    [36m| [0m[34m|[0m /* 12.321 */            )[0m
-    [36m| [0m[34m|[0m /* 12.322 */            [0m
-    [36m| [0m[34m|[0m /* 12.323 */        }()[0m
-    [36m| [0m[34m|[0m /* 12.324 */        [0m
-    [36m| [0m[34m|[0m /* 12.325 */        [0m
-    [36m| [0m[34m|[0m /* 12.326 */        { => let caseConfig = Configuration()[0m
-    [36m| [0m[34m|[0m /* 12.327 */            [0m
-    [36m| [0m[34m|[0m /* 12.328 */            let testVariadicArgumentsTestFunc = { => testVariadicArguments();() }[0m
-    [36m| [0m[34m|[0m /* 12.329 */            suiteBuilder.add([0m
-    [36m| [0m[34m|[0m /* 12.330 */            UnitTestCase.create([0m
-    [36m| [0m[34m|[0m /* 12.331 */            "testVariadicArguments",[0m
-    [36m| [0m[34m|[0m /* 12.332 */            configuration: caseConfig,[0m
-    [36m| [0m[34m|[0m /* 12.333 */            body: testVariadicArgumentsTestFunc[0m
-    [36m| [0m[34m|[0m /* 12.334 */            )[0m
-    [36m| [0m[34m|[0m /* 12.335 */            )[0m
-    [36m| [0m[34m|[0m /* 12.336 */            [0m
-    [36m| [0m[34m|[0m /* 12.337 */        }()[0m
-    [36m| [0m[34m|[0m /* 12.338 */        [0m
-    [36m| [0m[34m|[0m /* 12.339 */        [0m
-    [36m| [0m[34m|[0m /* 12.340 */        { => let caseConfig = Configuration()[0m
-    [36m| [0m[34m|[0m /* 12.341 */            [0m
-    [36m| [0m[34m|[0m /* 12.342 */            let testDoubleDashSeparatorTestFunc = { => testDoubleDashSeparator();() }[0m
-    [36m| [0m[34m|[0m /* 12.343 */            suiteBuilder.add([0m
-    [36m| [0m[34m|[0m /* 12.344 */            UnitTestCase.create([0m
-    [36m| [0m[34m|[0m /* 12.345 */            "testDoubleDashSeparator",[0m
-    [36m| [0m[34m|[0m /* 12.346 */            configuration: caseConfig,[0m
-    [36m| [0m[34m|[0m /* 12.347 */            body: testDoubleDashSeparatorTestFunc[0m
-    [36m| [0m[34m|[0m /* 12.348 */            )[0m
-    [36m| [0m[34m|[0m /* 12.349 */            )[0m
-    [36m| [0m[34m|[0m /* 12.350 */            [0m
-    [36m| [0m[34m|[0m /* 12.351 */        }()[0m
-    [36m| [0m[34m|[0m /* 12.352 */        [0m
-    [36m| [0m[34m|[0m /* 12.353 */        [0m
-    [36m| [0m[34m|[0m /* 12.354 */        { => let caseConfig = Configuration()[0m
-    [36m| [0m[34m|[0m /* 12.355 */            [0m
-    [36m| [0m[34m|[0m /* 12.356 */            let testDefaultValuesTestFunc = { => testDefaultValues();() }[0m
-    [36m| [0m[34m|[0m /* 12.357 */            suiteBuilder.add([0m
-    [36m| [0m[34m|[0m /* 12.358 */            UnitTestCase.create([0m
-    [36m| [0m[34m|[0m /* 12.359 */            "testDefaultValues",[0m
-    [36m| [0m[34m|[0m /* 12.360 */            configuration: caseConfig,[0m
-    [36m| [0m[34m|[0m /* 12.361 */            body: testDefaultValuesTestFunc[0m
-    [36m| [0m[34m|[0m /* 12.362 */            )[0m
-    [36m| [0m[34m|[0m /* 12.363 */            )[0m
-    [36m| [0m[34m|[0m /* 12.364 */            [0m
-    [36m| [0m[34m|[0m /* 12.365 */        }()[0m
-    [36m| [0m[34m|[0m /* 12.366 */        [0m
-    [36m| [0m[34m|[0m /* 12.367 */        [0m
-    [36m| [0m[34m|[0m /* 12.368 */        { => let caseConfig = Configuration()[0m
-    [36m| [0m[34m|[0m /* 12.369 */            [0m
-    [36m| [0m[34m|[0m /* 12.370 */            let testRequiredFlagMissingTestFunc = { => testRequiredFlagMissing();() }[0m
-    [36m| [0m[34m|[0m /* 12.371 */            suiteBuilder.add([0m
-    [36m| [0m[34m|[0m /* 12.372 */            UnitTestCase.create([0m
-    [36m| [0m[34m|[0m /* 12.373 */            "testRequiredFlagMissing",[0m
-    [36m| [0m[34m|[0m /* 12.374 */            configuration: caseConfig,[0m
-    [36m| [0m[34m|[0m /* 12.375 */            body: testRequiredFlagMissingTestFunc[0m
-    [36m| [0m[34m|[0m /* 12.376 */            )[0m
-    [36m| [0m[34m|[0m /* 12.377 */            )[0m
-    [36m| [0m[34m|[0m /* 12.378 */            [0m
-    [36m| [0m[34m|[0m /* 12.379 */        }()[0m
-    [36m| [0m[34m|[0m /* 12.380 */        [0m
-    [36m| [0m[34m|[0m /* 12.381 */        [0m
-    [36m| [0m[34m|[0m /* 12.382 */        { => let caseConfig = Configuration()[0m
-    [36m| [0m[34m|[0m /* 12.383 */            [0m
-    [36m| [0m[34m|[0m /* 12.384 */            let testRequiredArgumentMissingTestFunc = { => testRequiredArgumentMissing();() }[0m
-    [36m| [0m[34m|[0m /* 12.385 */            suiteBuilder.add([0m
-    [36m| [0m[34m|[0m /* 12.386 */            UnitTestCase.create([0m
-    [36m| [0m[34m|[0m /* 12.387 */            "testRequiredArgumentMissing",[0m
-    [36m| [0m[34m|[0m /* 12.388 */            configuration: caseConfig,[0m
-    [36m| [0m[34m|[0m /* 12.389 */            body: testRequiredArgumentMissingTestFunc[0m
-    [36m| [0m[34m|[0m /* 12.390 */            )[0m
-    [36m| [0m[34m|[0m /* 12.391 */            )[0m
-    [36m| [0m[34m|[0m /* 12.392 */            [0m
-    [36m| [0m[34m|[0m /* 12.393 */        }()[0m
-    [36m| [0m[34m|[0m /* 12.394 */        [0m
-    [36m| [0m[34m|[0m /* 12.395 */        [0m
-    [36m| [0m[34m|[0m /* 12.396 */        { => let caseConfig = Configuration()[0m
-    [36m| [0m[34m|[0m /* 12.397 */            [0m
-    [36m| [0m[34m|[0m /* 12.398 */            let testUnknownLongFlagTestFunc = { => testUnknownLongFlag();() }[0m
-    [36m| [0m[34m|[0m /* 12.399 */            suiteBuilder.add([0m
-    [36m| [0m[34m|[0m /* 12.400 */            UnitTestCase.create([0m
-    [36m| [0m[34m|[0m /* 12.401 */            "testUnknownLongFlag",[0m
-    [36m| [0m[34m|[0m /* 12.402 */            configuration: caseConfig,[0m
-    [36m| [0m[34m|[0m /* 12.403 */            body: testUnknownLongFlagTestFunc[0m
-    [36m| [0m[34m|[0m /* 12.404 */            )[0m
-    [36m| [0m[34m|[0m /* 12.405 */            )[0m
-    [36m| [0m[34m|[0m /* 12.406 */            [0m
-    [36m| [0m[34m|[0m /* 12.407 */        }()[0m
-    [36m| [0m[34m|[0m /* 12.408 */        [0m
-    [36m| [0m[34m|[0m /* 12.409 */        [0m
-    [36m| [0m[34m|[0m /* 12.410 */        { => let caseConfig = Configuration()[0m
-    [36m| [0m[34m|[0m /* 12.411 */            [0m
-    [36m| [0m[34m|[0m /* 12.412 */            let testUnknownShortFlagTestFunc = { => testUnknownShortFlag();() }[0m
-    [36m| [0m[34m|[0m /* 12.413 */            suiteBuilder.add([0m
-    [36m| [0m[34m|[0m /* 12.414 */            UnitTestCase.create([0m
-    [36m| [0m[34m|[0m /* 12.415 */            "testUnknownShortFlag",[0m
-    [36m| [0m[34m|[0m /* 12.416 */            configuration: caseConfig,[0m
-    [36m| [0m[34m|[0m /* 12.417 */            body: testUnknownShortFlagTestFunc[0m
-    [36m| [0m[34m|[0m /* 12.418 */            )[0m
-    [36m| [0m[34m|[0m /* 12.419 */            )[0m
-    [36m| [0m[34m|[0m /* 12.420 */            [0m
-    [36m| [0m[34m|[0m /* 12.421 */        }()[0m
-    [36m| [0m[34m|[0m /* 12.422 */        [0m
-    [36m| [0m[34m|[0m /* 12.423 */        [0m
-    [36m| [0m[34m|[0m /* 12.424 */        { => let caseConfig = Configuration()[0m
-    [36m| [0m[34m|[0m /* 12.425 */            [0m
-    [36m| [0m[34m|[0m /* 12.426 */            let testFlagMissingValueTestFunc = { => testFlagMissingValue();() }[0m
-    [36m| [0m[34m|[0m /* 12.427 */            suiteBuilder.add([0m
-    [36m| [0m[34m|[0m /* 12.428 */            UnitTestCase.create([0m
-    [36m| [0m[34m|[0m /* 12.429 */            "testFlagMissingValue",[0m
-    [36m| [0m[34m|[0m /* 12.430 */            configuration: caseConfig,[0m
-    [36m| [0m[34m|[0m /* 12.431 */            body: testFlagMissingValueTestFunc[0m
-    [36m| [0m[34m|[0m /* 12.432 */            )[0m
-    [36m| [0m[34m|[0m /* 12.433 */            )[0m
-    [36m| [0m[34m|[0m /* 12.434 */            [0m
-    [36m| [0m[34m|[0m /* 12.435 */        }()[0m
-    [36m| [0m[34m|[0m /* 12.436 */        [0m
-    [36m| [0m[34m|[0m /* 12.437 */        [0m
-    [36m| [0m[34m|[0m /* 12.438 */        { => let caseConfig = Configuration()[0m
-    [36m| [0m[34m|[0m /* 12.439 */            [0m
-    [36m| [0m[34m|[0m /* 12.440 */            let testTypedFlagInt64TestFunc = { => testTypedFlagInt64();() }[0m
-    [36m| [0m[34m|[0m /* 12.441 */            suiteBuilder.add([0m
-    [36m| [0m[34m|[0m /* 12.442 */            UnitTestCase.create([0m
-    [36m| [0m[34m|[0m /* 12.443 */            "testTypedFlagInt64",[0m
-    [36m| [0m[34m|[0m /* 12.444 */            configuration: caseConfig,[0m
-    [36m| [0m[34m|[0m /* 12.445 */            body: testTypedFlagInt64TestFunc[0m
-    [36m| [0m[34m|[0m /* 12.446 */            )[0m
-    [36m| [0m[34m|[0m /* 12.447 */            )[0m
-    [36m| [0m[34m|[0m /* 12.448 */            [0m
-    [36m| [0m[34m|[0m /* 12.449 */        }()[0m
-    [36m| [0m[34m|[0m /* 12.450 */        [0m
-    [36m| [0m[34m|[0m /* 12.451 */        [0m
-    [36m| [0m[34m|[0m /* 12.452 */        { => let caseConfig = Configuration()[0m
-    [36m| [0m[34m|[0m /* 12.453 */            [0m
-    [36m| [0m[34m|[0m /* 12.454 */            let testTypedFlagInt64ErrorTestFunc = { => testTypedFlagInt64Error();() }[0m
-    [36m| [0m[34m|[0m /* 12.455 */            suiteBuilder.add([0m
-    [36m| [0m[34m|[0m /* 12.456 */            UnitTestCase.create([0m
-    [36m| [0m[34m|[0m /* 12.457 */            "testTypedFlagInt64Error",[0m
-    [36m| [0m[34m|[0m /* 12.458 */            configuration: caseConfig,[0m
-    [36m| [0m[34m|[0m /* 12.459 */            body: testTypedFlagInt64ErrorTestFunc[0m
-    [36m| [0m[34m|[0m /* 12.460 */            )[0m
-    [36m| [0m[34m|[0m /* 12.461 */            )[0m
-    [36m| [0m[34m|[0m /* 12.462 */            [0m
-    [36m| [0m[34m|[0m /* 12.463 */        }()[0m
-    [36m| [0m[34m|[0m /* 12.464 */        [0m
-    [36m| [0m[34m|[0m /* 12.465 */        [0m
-    [36m| [0m[34m|[0m /* 12.466 */        { => let caseConfig = Configuration()[0m
-    [36m| [0m[34m|[0m /* 12.467 */            [0m
-    [36m| [0m[34m|[0m /* 12.468 */            let testTypedFlagBoolTestFunc = { => testTypedFlagBool();() }[0m
-    [36m| [0m[34m|[0m /* 12.469 */            suiteBuilder.add([0m
-    [36m| [0m[34m|[0m /* 12.470 */            UnitTestCase.create([0m
-    [36m| [0m[34m|[0m /* 12.471 */            "testTypedFlagBool",[0m
-    [36m| [0m[34m|[0m /* 12.472 */            configuration: caseConfig,[0m
-    [36m| [0m[34m|[0m /* 12.473 */            body: testTypedFlagBoolTestFunc[0m
-    [36m| [0m[34m|[0m /* 12.474 */            )[0m
-    [36m| [0m[34m|[0m /* 12.475 */            )[0m
-    [36m| [0m[34m|[0m /* 12.476 */            [0m
-    [36m| [0m[34m|[0m /* 12.477 */        }()[0m
-    [36m| [0m[34m|[0m /* 12.478 */        [0m
-    [36m| [0m[34m|[0m /* 12.479 */        [0m
-    [36m| [0m[34m|[0m /* 12.480 */        { => let caseConfig = Configuration()[0m
-    [36m| [0m[34m|[0m /* 12.481 */            [0m
-    [36m| [0m[34m|[0m /* 12.482 */            let testSubcommandWithAliasTestFunc = { => testSubcommandWithAlias();() }[0m
-    [36m| [0m[34m|[0m /* 12.483 */            suiteBuilder.add([0m
-    [36m| [0m[34m|[0m /* 12.484 */            UnitTestCase.create([0m
-    [36m| [0m[34m|[0m /* 12.485 */            "testSubcommandWithAlias",[0m
-    [36m| [0m[34m|[0m /* 12.486 */            configuration: caseConfig,[0m
-    [36m| [0m[34m|[0m /* 12.487 */            body: testSubcommandWithAliasTestFunc[0m
-    [36m| [0m[34m|[0m /* 12.488 */            )[0m
-    [36m| [0m[34m|[0m /* 12.489 */            )[0m
-    [36m| [0m[34m|[0m /* 12.490 */            [0m
-    [36m| [0m[34m|[0m /* 12.491 */        }()[0m
-    [36m| [0m[34m|[0m /* 12.492 */        [0m
-    [36m| [0m[34m|[0m /* 12.493 */        [0m
-    [36m| [0m[34m|[0m /* 12.494 */        { => let caseConfig = Configuration()[0m
-    [36m| [0m[34m|[0m /* 12.495 */            [0m
-    [36m| [0m[34m|[0m /* 12.496 */            let testMixedFlagsAndArgsTestFunc = { => testMixedFlagsAndArgs();() }[0m
-    [36m| [0m[34m|[0m /* 12.497 */            suiteBuilder.add([0m
-    [36m| [0m[34m|[0m /* 12.498 */            UnitTestCase.create([0m
-    [36m| [0m[34m|[0m /* 12.499 */            "testMixedFlagsAndArgs",[0m
-    [36m| [0m[34m|[0m /* 12.500 */            configuration: caseConfig,[0m
-    [36m| [0m[34m|[0m /* 12.501 */            body: testMixedFlagsAndArgsTestFunc[0m
-    [36m| [0m[34m|[0m /* 12.502 */            )[0m
-    [36m| [0m[34m|[0m /* 12.503 */            )[0m
-    [36m| [0m[34m|[0m /* 12.504 */            [0m
-    [36m| [0m[34m|[0m /* 12.505 */        }()[0m
-    [36m| [0m[34m|[0m /* 12.506 */        [0m
-    [36m| [0m[34m|[0m /* 12.507 */        [0m
-    [36m| [0m[34m|[0m /* 12.508 */        { => let caseConfig = Configuration()[0m
-    [36m| [0m[34m|[0m /* 12.509 */            [0m
-    [36m| [0m[34m|[0m /* 12.510 */            let testVariadicMinCountViolationTestFunc = { => testVariadicMinCountViolation();() }[0m
-    [36m| [0m[34m|[0m /* 12.511 */            suiteBuilder.add([0m
-    [36m| [0m[34m|[0m /* 12.512 */            UnitTestCase.create([0m
-    [36m| [0m[34m|[0m /* 12.513 */            "testVariadicMinCountViolation",[0m
-    [36m| [0m[34m|[0m /* 12.514 */            configuration: caseConfig,[0m
-    [36m| [0m[34m|[0m /* 12.515 */            body: testVariadicMinCountViolationTestFunc[0m
-    [36m| [0m[34m|[0m /* 12.516 */            )[0m
-    [36m| [0m[34m|[0m /* 12.517 */            )[0m
-    [36m| [0m[34m|[0m /* 12.518 */            [0m
-    [36m| [0m[34m|[0m /* 12.519 */        }()[0m
-    [36m| [0m[34m|[0m /* 12.520 */        [0m
-    [36m| [0m[34m|[0m /* 12.521 */        return suiteBuilder.build()[0m
-    [36m| [0m[34m|[0m /* 12.522 */    }[0m
-    [36m| [0m[34m|[0m /* 12.523 */    private func inheritedFromClassAnnotatedByTestTemplate < T >(): TestSuite where T <: TestClass {[0m
-    [36m| [0m[34m|[0m /* 12.524 */        throw Exception("Unreachable code")[0m
-    [36m| [0m[34m|[0m /* 12.525 */    }[0m
-    [36m| [0m[34m|[0m /* 12.526 */}[0m
-    [36m| [0m[34m|[0m /* 12.527 */[0m
-    [36m| [0m[34m|[0m /* 12.528 */[0m
-    [36m| [0m[34m|[0m /* 12.529 */interface TestPackageExtension_ParserTest {[0m
-    [36m| [0m[34m|[0m /* 12.530 */    func registerParserTest(): Unit[0m
-    [36m| [0m[34m|[0m /* 12.531 */}[0m
-    [36m| [0m[34m|[0m /* 12.532 */extend TestPackage <: TestPackageExtension_ParserTest {[0m
-    [36m| [0m[34m|[0m /* 12.533 */    @Attribute[TEST_REGISTER][0m
-    [36m| [0m[34m|[0m /* 12.534 */    public func registerParserTest() {[0m
-    [36m| [0m[34m|[0m /* 12.535 */        registerSuite({ => ParserTest().asTestSuite() })[0m
-    [36m| [0m[34m|[0m /* 12.536 */    }[0m
-    [36m| [0m[34m|[0m /* 12.537 */}[0m
-    [36m| [0m[34m|[0m /* 12.538 */[0m
+    [36m| [0m[34m|[0m /* 12.230 */    @Attribute[TestCase_77][0m
+    [36m| [0m[34m|[0m /* 12.231 */    func testTerminateFlagThrows() {[0m
+    [36m| [0m[34m|[0m /* 12.232 */        let cmd = Command("app").flag(Flag("help").short(r'h').action(FlagAction.Terminate({ => "Help text" })))[0m
+    [36m| [0m[34m|[0m /* 12.233 */        let parser = Parser()[0m
+    [36m| [0m[34m|[0m /* 12.234 */        var caught = false[0m
+    [36m| [0m[34m|[0m /* 12.235 */        try {[0m
+    [36m| [0m[34m|[0m /* 12.236 */            parser.parse(cmd,["--help"])[0m
+    [36m| [0m[34m|[0m /* 12.237 */        } catch(e: TerminateException) {[0m
+    [36m| [0m[34m|[0m /* 12.238 */            caught = true[0m
+    [36m| [0m[34m|[0m /* 12.239 */            assertEqual("e.execute() == \"Help text\"", "true", e.execute() == "Help text", true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 12.240 */        }[0m
+    [36m| [0m[34m|[0m /* 12.241 */        assertEqual("caught", "true", caught, true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 12.242 */    }[0m
+    [36m| [0m[34m|[0m /* 12.243 */    [0m
+    [36m| [0m[34m|[0m /* 12.244 */    @Attribute[TestCase_78][0m
+    [36m| [0m[34m|[0m /* 12.245 */    func testAppendAction() {[0m
+    [36m| [0m[34m|[0m /* 12.246 */        let cmd = Command("app").flag(Flag("include").short(r'I').action(FlagAction.Append))[0m
+    [36m| [0m[34m|[0m /* 12.247 */        let parser = Parser()[0m
+    [36m| [0m[34m|[0m /* 12.248 */        let(_, ctx) = parser.parse(cmd,["-I", "src/", "-I", "lib/"])[0m
+    [36m| [0m[34m|[0m /* 12.249 */        match(ctx.getFlagAll("include")) {[0m
+    [36m| [0m[34m|[0m /* 12.250 */            case Some(vals) => assertEqual("vals.size == 2", "true", vals.size == 2, true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 12.251 */            assertEqual("vals[0] == \"src/\"", "true", vals[0] == "src/", true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 12.252 */            assertEqual("vals[1] == \"lib/\"", "true", vals[1] == "lib/", true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 12.253 */            case None => assertEqual("false", "true", false, true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 12.254 */        }[0m
+    [36m| [0m[34m|[0m /* 12.255 */    }[0m
+    [36m| [0m[34m|[0m /* 12.256 */    [0m
+    [36m| [0m[34m|[0m /* 12.257 */    @Attribute[TestCase_79][0m
+    [36m| [0m[34m|[0m /* 12.258 */    func testSetTrueAction() {[0m
+    [36m| [0m[34m|[0m /* 12.259 */        let cmd = Command("app").flag(Flag("verbose").action(FlagAction.SetTrue))[0m
+    [36m| [0m[34m|[0m /* 12.260 */        let parser = Parser()[0m
+    [36m| [0m[34m|[0m /* 12.261 */        let(_, ctx) = parser.parse(cmd,["--verbose"])[0m
+    [36m| [0m[34m|[0m /* 12.262 */        assertEqual("ctx.getBoolFlag(\"verbose\") == true", "true", ctx.getBoolFlag("verbose") == true, true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 12.263 */    }[0m
+    [36m| [0m[34m|[0m /* 12.264 */    [0m
+    [36m| [0m[34m|[0m /* 12.265 */    @Attribute[TestCase_80][0m
+    [36m| [0m[34m|[0m /* 12.266 */    func testSetFalseAction() {[0m
+    [36m| [0m[34m|[0m /* 12.267 */        let cmd = Command("app").flag(Flag("no-color").action(FlagAction.SetFalse))[0m
+    [36m| [0m[34m|[0m /* 12.268 */        let parser = Parser()[0m
+    [36m| [0m[34m|[0m /* 12.269 */        let(_, ctx) = parser.parse(cmd,["--no-color"])[0m
+    [36m| [0m[34m|[0m /* 12.270 */        assertEqual("ctx.getBoolFlag(\"no-color\") == false", "true", ctx.getBoolFlag("no-color") == false, true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 12.271 */    }[0m
+    [36m| [0m[34m|[0m /* 12.272 */    [0m
+    [36m| [0m[34m|[0m /* 12.273 */    @Attribute[TestCase_81][0m
+    [36m| [0m[34m|[0m /* 12.274 */    func testBatchFlags() {[0m
+    [36m| [0m[34m|[0m /* 12.275 */        let cmd = Command("app").flags([Flag("verbose").short(r'v').asBool(), Flag("config").short(r'c'), Flag("output").short(r'o')])[0m
+    [36m| [0m[34m|[0m /* 12.276 */        let parser = Parser()[0m
+    [36m| [0m[34m|[0m /* 12.277 */        let(_, ctx) = parser.parse(cmd,["-v", "-c", "app.toml", "-o", "out.txt"])[0m
+    [36m| [0m[34m|[0m /* 12.278 */        assertEqual("ctx.getBoolFlag(\"verbose\") == true", "true", ctx.getBoolFlag("verbose") == true, true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 12.279 */        assertEqual("ctx.getFlagOrDefault(\"config\", \"\") == \"app.toml\"", "true", ctx.getFlagOrDefault("config", "") == "app.toml", true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 12.280 */        assertEqual("ctx.getFlagOrDefault(\"output\", \"\") == \"out.txt\"", "true", ctx.getFlagOrDefault("output", "") == "out.txt", true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 12.281 */    }[0m
+    [36m| [0m[34m|[0m /* 12.282 */    [0m
+    [36m| [0m[34m|[0m /* 12.283 */    init() {[0m
+    [36m| [0m[34m|[0m /* 12.284 */    }[0m
+    [36m| [0m[34m|[0m /* 12.285 */    private func classConfiguration(): Configuration {[0m
+    [36m| [0m[34m|[0m /* 12.286 */        let configuration = Configuration()[0m
+    [36m| [0m[34m|[0m /* 12.287 */        [0m
+    [36m| [0m[34m|[0m /* 12.288 */        return configuration[0m
+    [36m| [0m[34m|[0m /* 12.289 */    }[0m
+    [36m| [0m[34m|[0m /* 12.290 */    public override func asTestSuite(): TestSuite {[0m
+    [36m| [0m[34m|[0m /* 12.291 */        [0m
+    [36m| [0m[34m|[0m /* 12.292 */        let suiteConfiguration = classConfiguration()[0m
+    [36m| [0m[34m|[0m /* 12.293 */        let suiteBuilder = TestSuite.builder("ParserTest").configure(suiteConfiguration)[0m
+    [36m| [0m[34m|[0m /* 12.294 */        [0m
+    [36m| [0m[34m|[0m /* 12.295 */        { => let caseConfig = Configuration()[0m
+    [36m| [0m[34m|[0m /* 12.296 */            [0m
+    [36m| [0m[34m|[0m /* 12.297 */            let testParseLongFlagTestFunc = { => testParseLongFlag();() }[0m
+    [36m| [0m[34m|[0m /* 12.298 */            suiteBuilder.add([0m
+    [36m| [0m[34m|[0m /* 12.299 */            UnitTestCase.create([0m
+    [36m| [0m[34m|[0m /* 12.300 */            "testParseLongFlag",[0m
+    [36m| [0m[34m|[0m /* 12.301 */            configuration: caseConfig,[0m
+    [36m| [0m[34m|[0m /* 12.302 */            body: testParseLongFlagTestFunc[0m
+    [36m| [0m[34m|[0m /* 12.303 */            )[0m
+    [36m| [0m[34m|[0m /* 12.304 */            )[0m
+    [36m| [0m[34m|[0m /* 12.305 */            [0m
+    [36m| [0m[34m|[0m /* 12.306 */        }()[0m
+    [36m| [0m[34m|[0m /* 12.307 */        [0m
+    [36m| [0m[34m|[0m /* 12.308 */        [0m
+    [36m| [0m[34m|[0m /* 12.309 */        { => let caseConfig = Configuration()[0m
+    [36m| [0m[34m|[0m /* 12.310 */            [0m
+    [36m| [0m[34m|[0m /* 12.311 */            let testParseLongFlagWithEqualsTestFunc = { => testParseLongFlagWithEquals();() }[0m
+    [36m| [0m[34m|[0m /* 12.312 */            suiteBuilder.add([0m
+    [36m| [0m[34m|[0m /* 12.313 */            UnitTestCase.create([0m
+    [36m| [0m[34m|[0m /* 12.314 */            "testParseLongFlagWithEquals",[0m
+    [36m| [0m[34m|[0m /* 12.315 */            configuration: caseConfig,[0m
+    [36m| [0m[34m|[0m /* 12.316 */            body: testParseLongFlagWithEqualsTestFunc[0m
+    [36m| [0m[34m|[0m /* 12.317 */            )[0m
+    [36m| [0m[34m|[0m /* 12.318 */            )[0m
+    [36m| [0m[34m|[0m /* 12.319 */            [0m
+    [36m| [0m[34m|[0m /* 12.320 */        }()[0m
+    [36m| [0m[34m|[0m /* 12.321 */        [0m
+    [36m| [0m[34m|[0m /* 12.322 */        [0m
+    [36m| [0m[34m|[0m /* 12.323 */        { => let caseConfig = Configuration()[0m
+    [36m| [0m[34m|[0m /* 12.324 */            [0m
+    [36m| [0m[34m|[0m /* 12.325 */            let testParseShortFlagTestFunc = { => testParseShortFlag();() }[0m
+    [36m| [0m[34m|[0m /* 12.326 */            suiteBuilder.add([0m
+    [36m| [0m[34m|[0m /* 12.327 */            UnitTestCase.create([0m
+    [36m| [0m[34m|[0m /* 12.328 */            "testParseShortFlag",[0m
+    [36m| [0m[34m|[0m /* 12.329 */            configuration: caseConfig,[0m
+    [36m| [0m[34m|[0m /* 12.330 */            body: testParseShortFlagTestFunc[0m
+    [36m| [0m[34m|[0m /* 12.331 */            )[0m
+    [36m| [0m[34m|[0m /* 12.332 */            )[0m
+    [36m| [0m[34m|[0m /* 12.333 */            [0m
+    [36m| [0m[34m|[0m /* 12.334 */        }()[0m
+    [36m| [0m[34m|[0m /* 12.335 */        [0m
+    [36m| [0m[34m|[0m /* 12.336 */        [0m
+    [36m| [0m[34m|[0m /* 12.337 */        { => let caseConfig = Configuration()[0m
+    [36m| [0m[34m|[0m /* 12.338 */            [0m
+    [36m| [0m[34m|[0m /* 12.339 */            let testSubcommandRoutingTestFunc = { => testSubcommandRouting();() }[0m
+    [36m| [0m[34m|[0m /* 12.340 */            suiteBuilder.add([0m
+    [36m| [0m[34m|[0m /* 12.341 */            UnitTestCase.create([0m
+    [36m| [0m[34m|[0m /* 12.342 */            "testSubcommandRouting",[0m
+    [36m| [0m[34m|[0m /* 12.343 */            configuration: caseConfig,[0m
+    [36m| [0m[34m|[0m /* 12.344 */            body: testSubcommandRoutingTestFunc[0m
+    [36m| [0m[34m|[0m /* 12.345 */            )[0m
+    [36m| [0m[34m|[0m /* 12.346 */            )[0m
+    [36m| [0m[34m|[0m /* 12.347 */            [0m
+    [36m| [0m[34m|[0m /* 12.348 */        }()[0m
+    [36m| [0m[34m|[0m /* 12.349 */        [0m
+    [36m| [0m[34m|[0m /* 12.350 */        [0m
+    [36m| [0m[34m|[0m /* 12.351 */        { => let caseConfig = Configuration()[0m
+    [36m| [0m[34m|[0m /* 12.352 */            [0m
+    [36m| [0m[34m|[0m /* 12.353 */            let testDeepSubcommandRoutingTestFunc = { => testDeepSubcommandRouting();() }[0m
+    [36m| [0m[34m|[0m /* 12.354 */            suiteBuilder.add([0m
+    [36m| [0m[34m|[0m /* 12.355 */            UnitTestCase.create([0m
+    [36m| [0m[34m|[0m /* 12.356 */            "testDeepSubcommandRouting",[0m
+    [36m| [0m[34m|[0m /* 12.357 */            configuration: caseConfig,[0m
+    [36m| [0m[34m|[0m /* 12.358 */            body: testDeepSubcommandRoutingTestFunc[0m
+    [36m| [0m[34m|[0m /* 12.359 */            )[0m
+    [36m| [0m[34m|[0m /* 12.360 */            )[0m
+    [36m| [0m[34m|[0m /* 12.361 */            [0m
+    [36m| [0m[34m|[0m /* 12.362 */        }()[0m
+    [36m| [0m[34m|[0m /* 12.363 */        [0m
+    [36m| [0m[34m|[0m /* 12.364 */        [0m
+    [36m| [0m[34m|[0m /* 12.365 */        { => let caseConfig = Configuration()[0m
+    [36m| [0m[34m|[0m /* 12.366 */            [0m
+    [36m| [0m[34m|[0m /* 12.367 */            let testPositionalArgumentsTestFunc = { => testPositionalArguments();() }[0m
+    [36m| [0m[34m|[0m /* 12.368 */            suiteBuilder.add([0m
+    [36m| [0m[34m|[0m /* 12.369 */            UnitTestCase.create([0m
+    [36m| [0m[34m|[0m /* 12.370 */            "testPositionalArguments",[0m
+    [36m| [0m[34m|[0m /* 12.371 */            configuration: caseConfig,[0m
+    [36m| [0m[34m|[0m /* 12.372 */            body: testPositionalArgumentsTestFunc[0m
+    [36m| [0m[34m|[0m /* 12.373 */            )[0m
+    [36m| [0m[34m|[0m /* 12.374 */            )[0m
+    [36m| [0m[34m|[0m /* 12.375 */            [0m
+    [36m| [0m[34m|[0m /* 12.376 */        }()[0m
+    [36m| [0m[34m|[0m /* 12.377 */        [0m
+    [36m| [0m[34m|[0m /* 12.378 */        [0m
+    [36m| [0m[34m|[0m /* 12.379 */        { => let caseConfig = Configuration()[0m
+    [36m| [0m[34m|[0m /* 12.380 */            [0m
+    [36m| [0m[34m|[0m /* 12.381 */            let testVariadicArgumentsTestFunc = { => testVariadicArguments();() }[0m
+    [36m| [0m[34m|[0m /* 12.382 */            suiteBuilder.add([0m
+    [36m| [0m[34m|[0m /* 12.383 */            UnitTestCase.create([0m
+    [36m| [0m[34m|[0m /* 12.384 */            "testVariadicArguments",[0m
+    [36m| [0m[34m|[0m /* 12.385 */            configuration: caseConfig,[0m
+    [36m| [0m[34m|[0m /* 12.386 */            body: testVariadicArgumentsTestFunc[0m
+    [36m| [0m[34m|[0m /* 12.387 */            )[0m
+    [36m| [0m[34m|[0m /* 12.388 */            )[0m
+    [36m| [0m[34m|[0m /* 12.389 */            [0m
+    [36m| [0m[34m|[0m /* 12.390 */        }()[0m
+    [36m| [0m[34m|[0m /* 12.391 */        [0m
+    [36m| [0m[34m|[0m /* 12.392 */        [0m
+    [36m| [0m[34m|[0m /* 12.393 */        { => let caseConfig = Configuration()[0m
+    [36m| [0m[34m|[0m /* 12.394 */            [0m
+    [36m| [0m[34m|[0m /* 12.395 */            let testDoubleDashSeparatorTestFunc = { => testDoubleDashSeparator();() }[0m
+    [36m| [0m[34m|[0m /* 12.396 */            suiteBuilder.add([0m
+    [36m| [0m[34m|[0m /* 12.397 */            UnitTestCase.create([0m
+    [36m| [0m[34m|[0m /* 12.398 */            "testDoubleDashSeparator",[0m
+    [36m| [0m[34m|[0m /* 12.399 */            configuration: caseConfig,[0m
+    [36m| [0m[34m|[0m /* 12.400 */            body: testDoubleDashSeparatorTestFunc[0m
+    [36m| [0m[34m|[0m /* 12.401 */            )[0m
+    [36m| [0m[34m|[0m /* 12.402 */            )[0m
+    [36m| [0m[34m|[0m /* 12.403 */            [0m
+    [36m| [0m[34m|[0m /* 12.404 */        }()[0m
+    [36m| [0m[34m|[0m /* 12.405 */        [0m
+    [36m| [0m[34m|[0m /* 12.406 */        [0m
+    [36m| [0m[34m|[0m /* 12.407 */        { => let caseConfig = Configuration()[0m
+    [36m| [0m[34m|[0m /* 12.408 */            [0m
+    [36m| [0m[34m|[0m /* 12.409 */            let testDefaultValuesTestFunc = { => testDefaultValues();() }[0m
+    [36m| [0m[34m|[0m /* 12.410 */            suiteBuilder.add([0m
+    [36m| [0m[34m|[0m /* 12.411 */            UnitTestCase.create([0m
+    [36m| [0m[34m|[0m /* 12.412 */            "testDefaultValues",[0m
+    [36m| [0m[34m|[0m /* 12.413 */            configuration: caseConfig,[0m
+    [36m| [0m[34m|[0m /* 12.414 */            body: testDefaultValuesTestFunc[0m
+    [36m| [0m[34m|[0m /* 12.415 */            )[0m
+    [36m| [0m[34m|[0m /* 12.416 */            )[0m
+    [36m| [0m[34m|[0m /* 12.417 */            [0m
+    [36m| [0m[34m|[0m /* 12.418 */        }()[0m
+    [36m| [0m[34m|[0m /* 12.419 */        [0m
+    [36m| [0m[34m|[0m /* 12.420 */        [0m
+    [36m| [0m[34m|[0m /* 12.421 */        { => let caseConfig = Configuration()[0m
+    [36m| [0m[34m|[0m /* 12.422 */            [0m
+    [36m| [0m[34m|[0m /* 12.423 */            let testRequiredFlagMissingTestFunc = { => testRequiredFlagMissing();() }[0m
+    [36m| [0m[34m|[0m /* 12.424 */            suiteBuilder.add([0m
+    [36m| [0m[34m|[0m /* 12.425 */            UnitTestCase.create([0m
+    [36m| [0m[34m|[0m /* 12.426 */            "testRequiredFlagMissing",[0m
+    [36m| [0m[34m|[0m /* 12.427 */            configuration: caseConfig,[0m
+    [36m| [0m[34m|[0m /* 12.428 */            body: testRequiredFlagMissingTestFunc[0m
+    [36m| [0m[34m|[0m /* 12.429 */            )[0m
+    [36m| [0m[34m|[0m /* 12.430 */            )[0m
+    [36m| [0m[34m|[0m /* 12.431 */            [0m
+    [36m| [0m[34m|[0m /* 12.432 */        }()[0m
+    [36m| [0m[34m|[0m /* 12.433 */        [0m
+    [36m| [0m[34m|[0m /* 12.434 */        [0m
+    [36m| [0m[34m|[0m /* 12.435 */        { => let caseConfig = Configuration()[0m
+    [36m| [0m[34m|[0m /* 12.436 */            [0m
+    [36m| [0m[34m|[0m /* 12.437 */            let testRequiredArgumentMissingTestFunc = { => testRequiredArgumentMissing();() }[0m
+    [36m| [0m[34m|[0m /* 12.438 */            suiteBuilder.add([0m
+    [36m| [0m[34m|[0m /* 12.439 */            UnitTestCase.create([0m
+    [36m| [0m[34m|[0m /* 12.440 */            "testRequiredArgumentMissing",[0m
+    [36m| [0m[34m|[0m /* 12.441 */            configuration: caseConfig,[0m
+    [36m| [0m[34m|[0m /* 12.442 */            body: testRequiredArgumentMissingTestFunc[0m
+    [36m| [0m[34m|[0m /* 12.443 */            )[0m
+    [36m| [0m[34m|[0m /* 12.444 */            )[0m
+    [36m| [0m[34m|[0m /* 12.445 */            [0m
+    [36m| [0m[34m|[0m /* 12.446 */        }()[0m
+    [36m| [0m[34m|[0m /* 12.447 */        [0m
+    [36m| [0m[34m|[0m /* 12.448 */        [0m
+    [36m| [0m[34m|[0m /* 12.449 */        { => let caseConfig = Configuration()[0m
+    [36m| [0m[34m|[0m /* 12.450 */            [0m
+    [36m| [0m[34m|[0m /* 12.451 */            let testUnknownLongFlagTestFunc = { => testUnknownLongFlag();() }[0m
+    [36m| [0m[34m|[0m /* 12.452 */            suiteBuilder.add([0m
+    [36m| [0m[34m|[0m /* 12.453 */            UnitTestCase.create([0m
+    [36m| [0m[34m|[0m /* 12.454 */            "testUnknownLongFlag",[0m
+    [36m| [0m[34m|[0m /* 12.455 */            configuration: caseConfig,[0m
+    [36m| [0m[34m|[0m /* 12.456 */            body: testUnknownLongFlagTestFunc[0m
+    [36m| [0m[34m|[0m /* 12.457 */            )[0m
+    [36m| [0m[34m|[0m /* 12.458 */            )[0m
+    [36m| [0m[34m|[0m /* 12.459 */            [0m
+    [36m| [0m[34m|[0m /* 12.460 */        }()[0m
+    [36m| [0m[34m|[0m /* 12.461 */        [0m
+    [36m| [0m[34m|[0m /* 12.462 */        [0m
+    [36m| [0m[34m|[0m /* 12.463 */        { => let caseConfig = Configuration()[0m
+    [36m| [0m[34m|[0m /* 12.464 */            [0m
+    [36m| [0m[34m|[0m /* 12.465 */            let testUnknownShortFlagTestFunc = { => testUnknownShortFlag();() }[0m
+    [36m| [0m[34m|[0m /* 12.466 */            suiteBuilder.add([0m
+    [36m| [0m[34m|[0m /* 12.467 */            UnitTestCase.create([0m
+    [36m| [0m[34m|[0m /* 12.468 */            "testUnknownShortFlag",[0m
+    [36m| [0m[34m|[0m /* 12.469 */            configuration: caseConfig,[0m
+    [36m| [0m[34m|[0m /* 12.470 */            body: testUnknownShortFlagTestFunc[0m
+    [36m| [0m[34m|[0m /* 12.471 */            )[0m
+    [36m| [0m[34m|[0m /* 12.472 */            )[0m
+    [36m| [0m[34m|[0m /* 12.473 */            [0m
+    [36m| [0m[34m|[0m /* 12.474 */        }()[0m
+    [36m| [0m[34m|[0m /* 12.475 */        [0m
+    [36m| [0m[34m|[0m /* 12.476 */        [0m
+    [36m| [0m[34m|[0m /* 12.477 */        { => let caseConfig = Configuration()[0m
+    [36m| [0m[34m|[0m /* 12.478 */            [0m
+    [36m| [0m[34m|[0m /* 12.479 */            let testFlagMissingValueTestFunc = { => testFlagMissingValue();() }[0m
+    [36m| [0m[34m|[0m /* 12.480 */            suiteBuilder.add([0m
+    [36m| [0m[34m|[0m /* 12.481 */            UnitTestCase.create([0m
+    [36m| [0m[34m|[0m /* 12.482 */            "testFlagMissingValue",[0m
+    [36m| [0m[34m|[0m /* 12.483 */            configuration: caseConfig,[0m
+    [36m| [0m[34m|[0m /* 12.484 */            body: testFlagMissingValueTestFunc[0m
+    [36m| [0m[34m|[0m /* 12.485 */            )[0m
+    [36m| [0m[34m|[0m /* 12.486 */            )[0m
+    [36m| [0m[34m|[0m /* 12.487 */            [0m
+    [36m| [0m[34m|[0m /* 12.488 */        }()[0m
+    [36m| [0m[34m|[0m /* 12.489 */        [0m
+    [36m| [0m[34m|[0m /* 12.490 */        [0m
+    [36m| [0m[34m|[0m /* 12.491 */        { => let caseConfig = Configuration()[0m
+    [36m| [0m[34m|[0m /* 12.492 */            [0m
+    [36m| [0m[34m|[0m /* 12.493 */            let testTypedFlagInt64TestFunc = { => testTypedFlagInt64();() }[0m
+    [36m| [0m[34m|[0m /* 12.494 */            suiteBuilder.add([0m
+    [36m| [0m[34m|[0m /* 12.495 */            UnitTestCase.create([0m
+    [36m| [0m[34m|[0m /* 12.496 */            "testTypedFlagInt64",[0m
+    [36m| [0m[34m|[0m /* 12.497 */            configuration: caseConfig,[0m
+    [36m| [0m[34m|[0m /* 12.498 */            body: testTypedFlagInt64TestFunc[0m
+    [36m| [0m[34m|[0m /* 12.499 */            )[0m
+    [36m| [0m[34m|[0m /* 12.500 */            )[0m
+    [36m| [0m[34m|[0m /* 12.501 */            [0m
+    [36m| [0m[34m|[0m /* 12.502 */        }()[0m
+    [36m| [0m[34m|[0m /* 12.503 */        [0m
+    [36m| [0m[34m|[0m /* 12.504 */        [0m
+    [36m| [0m[34m|[0m /* 12.505 */        { => let caseConfig = Configuration()[0m
+    [36m| [0m[34m|[0m /* 12.506 */            [0m
+    [36m| [0m[34m|[0m /* 12.507 */            let testTypedFlagInt64ErrorTestFunc = { => testTypedFlagInt64Error();() }[0m
+    [36m| [0m[34m|[0m /* 12.508 */            suiteBuilder.add([0m
+    [36m| [0m[34m|[0m /* 12.509 */            UnitTestCase.create([0m
+    [36m| [0m[34m|[0m /* 12.510 */            "testTypedFlagInt64Error",[0m
+    [36m| [0m[34m|[0m /* 12.511 */            configuration: caseConfig,[0m
+    [36m| [0m[34m|[0m /* 12.512 */            body: testTypedFlagInt64ErrorTestFunc[0m
+    [36m| [0m[34m|[0m /* 12.513 */            )[0m
+    [36m| [0m[34m|[0m /* 12.514 */            )[0m
+    [36m| [0m[34m|[0m /* 12.515 */            [0m
+    [36m| [0m[34m|[0m /* 12.516 */        }()[0m
+    [36m| [0m[34m|[0m /* 12.517 */        [0m
+    [36m| [0m[34m|[0m /* 12.518 */        [0m
+    [36m| [0m[34m|[0m /* 12.519 */        { => let caseConfig = Configuration()[0m
+    [36m| [0m[34m|[0m /* 12.520 */            [0m
+    [36m| [0m[34m|[0m /* 12.521 */            let testTypedFlagBoolTestFunc = { => testTypedFlagBool();() }[0m
+    [36m| [0m[34m|[0m /* 12.522 */            suiteBuilder.add([0m
+    [36m| [0m[34m|[0m /* 12.523 */            UnitTestCase.create([0m
+    [36m| [0m[34m|[0m /* 12.524 */            "testTypedFlagBool",[0m
+    [36m| [0m[34m|[0m /* 12.525 */            configuration: caseConfig,[0m
+    [36m| [0m[34m|[0m /* 12.526 */            body: testTypedFlagBoolTestFunc[0m
+    [36m| [0m[34m|[0m /* 12.527 */            )[0m
+    [36m| [0m[34m|[0m /* 12.528 */            )[0m
+    [36m| [0m[34m|[0m /* 12.529 */            [0m
+    [36m| [0m[34m|[0m /* 12.530 */        }()[0m
+    [36m| [0m[34m|[0m /* 12.531 */        [0m
+    [36m| [0m[34m|[0m /* 12.532 */        [0m
+    [36m| [0m[34m|[0m /* 12.533 */        { => let caseConfig = Configuration()[0m
+    [36m| [0m[34m|[0m /* 12.534 */            [0m
+    [36m| [0m[34m|[0m /* 12.535 */            let testSubcommandWithAliasTestFunc = { => testSubcommandWithAlias();() }[0m
+    [36m| [0m[34m|[0m /* 12.536 */            suiteBuilder.add([0m
+    [36m| [0m[34m|[0m /* 12.537 */            UnitTestCase.create([0m
+    [36m| [0m[34m|[0m /* 12.538 */            "testSubcommandWithAlias",[0m
+    [36m| [0m[34m|[0m /* 12.539 */            configuration: caseConfig,[0m
+    [36m| [0m[34m|[0m /* 12.540 */            body: testSubcommandWithAliasTestFunc[0m
+    [36m| [0m[34m|[0m /* 12.541 */            )[0m
+    [36m| [0m[34m|[0m /* 12.542 */            )[0m
+    [36m| [0m[34m|[0m /* 12.543 */            [0m
+    [36m| [0m[34m|[0m /* 12.544 */        }()[0m
+    [36m| [0m[34m|[0m /* 12.545 */        [0m
+    [36m| [0m[34m|[0m /* 12.546 */        [0m
+    [36m| [0m[34m|[0m /* 12.547 */        { => let caseConfig = Configuration()[0m
+    [36m| [0m[34m|[0m /* 12.548 */            [0m
+    [36m| [0m[34m|[0m /* 12.549 */            let testMixedFlagsAndArgsTestFunc = { => testMixedFlagsAndArgs();() }[0m
+    [36m| [0m[34m|[0m /* 12.550 */            suiteBuilder.add([0m
+    [36m| [0m[34m|[0m /* 12.551 */            UnitTestCase.create([0m
+    [36m| [0m[34m|[0m /* 12.552 */            "testMixedFlagsAndArgs",[0m
+    [36m| [0m[34m|[0m /* 12.553 */            configuration: caseConfig,[0m
+    [36m| [0m[34m|[0m /* 12.554 */            body: testMixedFlagsAndArgsTestFunc[0m
+    [36m| [0m[34m|[0m /* 12.555 */            )[0m
+    [36m| [0m[34m|[0m /* 12.556 */            )[0m
+    [36m| [0m[34m|[0m /* 12.557 */            [0m
+    [36m| [0m[34m|[0m /* 12.558 */        }()[0m
+    [36m| [0m[34m|[0m /* 12.559 */        [0m
+    [36m| [0m[34m|[0m /* 12.560 */        [0m
+    [36m| [0m[34m|[0m /* 12.561 */        { => let caseConfig = Configuration()[0m
+    [36m| [0m[34m|[0m /* 12.562 */            [0m
+    [36m| [0m[34m|[0m /* 12.563 */            let testVariadicMinCountViolationTestFunc = { => testVariadicMinCountViolation();() }[0m
+    [36m| [0m[34m|[0m /* 12.564 */            suiteBuilder.add([0m
+    [36m| [0m[34m|[0m /* 12.565 */            UnitTestCase.create([0m
+    [36m| [0m[34m|[0m /* 12.566 */            "testVariadicMinCountViolation",[0m
+    [36m| [0m[34m|[0m /* 12.567 */            configuration: caseConfig,[0m
+    [36m| [0m[34m|[0m /* 12.568 */            body: testVariadicMinCountViolationTestFunc[0m
+    [36m| [0m[34m|[0m /* 12.569 */            )[0m
+    [36m| [0m[34m|[0m /* 12.570 */            )[0m
+    [36m| [0m[34m|[0m /* 12.571 */            [0m
+    [36m| [0m[34m|[0m /* 12.572 */        }()[0m
+    [36m| [0m[34m|[0m /* 12.573 */        [0m
+    [36m| [0m[34m|[0m /* 12.574 */        [0m
+    [36m| [0m[34m|[0m /* 12.575 */        { => let caseConfig = Configuration()[0m
+    [36m| [0m[34m|[0m /* 12.576 */            [0m
+    [36m| [0m[34m|[0m /* 12.577 */            let testTerminateFlagThrowsTestFunc = { => testTerminateFlagThrows();() }[0m
+    [36m| [0m[34m|[0m /* 12.578 */            suiteBuilder.add([0m
+    [36m| [0m[34m|[0m /* 12.579 */            UnitTestCase.create([0m
+    [36m| [0m[34m|[0m /* 12.580 */            "testTerminateFlagThrows",[0m
+    [36m| [0m[34m|[0m /* 12.581 */            configuration: caseConfig,[0m
+    [36m| [0m[34m|[0m /* 12.582 */            body: testTerminateFlagThrowsTestFunc[0m
+    [36m| [0m[34m|[0m /* 12.583 */            )[0m
+    [36m| [0m[34m|[0m /* 12.584 */            )[0m
+    [36m| [0m[34m|[0m /* 12.585 */            [0m
+    [36m| [0m[34m|[0m /* 12.586 */        }()[0m
+    [36m| [0m[34m|[0m /* 12.587 */        [0m
+    [36m| [0m[34m|[0m /* 12.588 */        [0m
+    [36m| [0m[34m|[0m /* 12.589 */        { => let caseConfig = Configuration()[0m
+    [36m| [0m[34m|[0m /* 12.590 */            [0m
+    [36m| [0m[34m|[0m /* 12.591 */            let testAppendActionTestFunc = { => testAppendAction();() }[0m
+    [36m| [0m[34m|[0m /* 12.592 */            suiteBuilder.add([0m
+    [36m| [0m[34m|[0m /* 12.593 */            UnitTestCase.create([0m
+    [36m| [0m[34m|[0m /* 12.594 */            "testAppendAction",[0m
+    [36m| [0m[34m|[0m /* 12.595 */            configuration: caseConfig,[0m
+    [36m| [0m[34m|[0m /* 12.596 */            body: testAppendActionTestFunc[0m
+    [36m| [0m[34m|[0m /* 12.597 */            )[0m
+    [36m| [0m[34m|[0m /* 12.598 */            )[0m
+    [36m| [0m[34m|[0m /* 12.599 */            [0m
+    [36m| [0m[34m|[0m /* 12.600 */        }()[0m
+    [36m| [0m[34m|[0m /* 12.601 */        [0m
+    [36m| [0m[34m|[0m /* 12.602 */        [0m
+    [36m| [0m[34m|[0m /* 12.603 */        { => let caseConfig = Configuration()[0m
+    [36m| [0m[34m|[0m /* 12.604 */            [0m
+    [36m| [0m[34m|[0m /* 12.605 */            let testSetTrueActionTestFunc = { => testSetTrueAction();() }[0m
+    [36m| [0m[34m|[0m /* 12.606 */            suiteBuilder.add([0m
+    [36m| [0m[34m|[0m /* 12.607 */            UnitTestCase.create([0m
+    [36m| [0m[34m|[0m /* 12.608 */            "testSetTrueAction",[0m
+    [36m| [0m[34m|[0m /* 12.609 */            configuration: caseConfig,[0m
+    [36m| [0m[34m|[0m /* 12.610 */            body: testSetTrueActionTestFunc[0m
+    [36m| [0m[34m|[0m /* 12.611 */            )[0m
+    [36m| [0m[34m|[0m /* 12.612 */            )[0m
+    [36m| [0m[34m|[0m /* 12.613 */            [0m
+    [36m| [0m[34m|[0m /* 12.614 */        }()[0m
+    [36m| [0m[34m|[0m /* 12.615 */        [0m
+    [36m| [0m[34m|[0m /* 12.616 */        [0m
+    [36m| [0m[34m|[0m /* 12.617 */        { => let caseConfig = Configuration()[0m
+    [36m| [0m[34m|[0m /* 12.618 */            [0m
+    [36m| [0m[34m|[0m /* 12.619 */            let testSetFalseActionTestFunc = { => testSetFalseAction();() }[0m
+    [36m| [0m[34m|[0m /* 12.620 */            suiteBuilder.add([0m
+    [36m| [0m[34m|[0m /* 12.621 */            UnitTestCase.create([0m
+    [36m| [0m[34m|[0m /* 12.622 */            "testSetFalseAction",[0m
+    [36m| [0m[34m|[0m /* 12.623 */            configuration: caseConfig,[0m
+    [36m| [0m[34m|[0m /* 12.624 */            body: testSetFalseActionTestFunc[0m
+    [36m| [0m[34m|[0m /* 12.625 */            )[0m
+    [36m| [0m[34m|[0m /* 12.626 */            )[0m
+    [36m| [0m[34m|[0m /* 12.627 */            [0m
+    [36m| [0m[34m|[0m /* 12.628 */        }()[0m
+    [36m| [0m[34m|[0m /* 12.629 */        [0m
+    [36m| [0m[34m|[0m /* 12.630 */        [0m
+    [36m| [0m[34m|[0m /* 12.631 */        { => let caseConfig = Configuration()[0m
+    [36m| [0m[34m|[0m /* 12.632 */            [0m
+    [36m| [0m[34m|[0m /* 12.633 */            let testBatchFlagsTestFunc = { => testBatchFlags();() }[0m
+    [36m| [0m[34m|[0m /* 12.634 */            suiteBuilder.add([0m
+    [36m| [0m[34m|[0m /* 12.635 */            UnitTestCase.create([0m
+    [36m| [0m[34m|[0m /* 12.636 */            "testBatchFlags",[0m
+    [36m| [0m[34m|[0m /* 12.637 */            configuration: caseConfig,[0m
+    [36m| [0m[34m|[0m /* 12.638 */            body: testBatchFlagsTestFunc[0m
+    [36m| [0m[34m|[0m /* 12.639 */            )[0m
+    [36m| [0m[34m|[0m /* 12.640 */            )[0m
+    [36m| [0m[34m|[0m /* 12.641 */            [0m
+    [36m| [0m[34m|[0m /* 12.642 */        }()[0m
+    [36m| [0m[34m|[0m /* 12.643 */        [0m
+    [36m| [0m[34m|[0m /* 12.644 */        return suiteBuilder.build()[0m
+    [36m| [0m[34m|[0m /* 12.645 */    }[0m
+    [36m| [0m[34m|[0m /* 12.646 */    private func inheritedFromClassAnnotatedByTestTemplate < T >(): TestSuite where T <: TestClass {[0m
+    [36m| [0m[34m|[0m /* 12.647 */        throw Exception("Unreachable code")[0m
+    [36m| [0m[34m|[0m /* 12.648 */    }[0m
+    [36m| [0m[34m|[0m /* 12.649 */}[0m
+    [36m| [0m[34m|[0m /* 12.650 */[0m
+    [36m| [0m[34m|[0m /* 12.651 */[0m
+    [36m| [0m[34m|[0m /* 12.652 */interface TestPackageExtension_ParserTest {[0m
+    [36m| [0m[34m|[0m /* 12.653 */    func registerParserTest(): Unit[0m
+    [36m| [0m[34m|[0m /* 12.654 */}[0m
+    [36m| [0m[34m|[0m /* 12.655 */extend TestPackage <: TestPackageExtension_ParserTest {[0m
+    [36m| [0m[34m|[0m /* 12.656 */    @Attribute[TEST_REGISTER][0m
+    [36m| [0m[34m|[0m /* 12.657 */    public func registerParserTest() {[0m
+    [36m| [0m[34m|[0m /* 12.658 */        registerSuite({ => ParserTest().asTestSuite() })[0m
+    [36m| [0m[34m|[0m /* 12.659 */    }[0m
+    [36m| [0m[34m|[0m /* 12.660 */}[0m
+    [36m| [0m[34m|[0m /* 12.661 */[0m
     [36m| [0m[34m|[0m[34m_[0m[34m___________^[0m
     [36m| [0m
 [34mnote[0m: which is expanded as follows
    [36m| [0m
-   [36m| [0m/* 12.30 */        let root = Command("tool").command(Command("lint").flag(Flag("fix", "f").asBool()).action({ ctx => 0 }))[0m
-   [36m| [0m                                                                                                               [34m^^^ [0m
+   [36m| [0m/* 12.30 */        let root = Command("tool").command(Command("lint").flag(Flag("fix").short(r'f').asBool()).action({ ctx => 0 }))[0m
+   [36m| [0m                                                                                                                      [34m^^^ [0m
    [36m| [0m
 
 [33mwarning[0m: unused variable:'ctx'
@@ -618,13 +725,13 @@
     [36m| [0m [34m_[0m[34m^[0m
 [36m13[0m  [36m| [0m[34m|[0m class ParserTest {[0m
     [36m| [0m[34m|[0m ...[0m
-[36m311[0m [36m| [0m[34m|[0m }[0m
+[36m382[0m [36m| [0m[34m|[0m }[0m
     [36m| [0m[34m|[0m[34m_[0m[34m^[0m
     [36m| [0m
 [34mnote[0m: which is expanded as follows
    [36m| [0m
-   [36m| [0m/* 12.39 */        let root = Command("tool").command(Command("cloud").command(Command("server").command(Command("start").flag(Flag("port", "p").valueType(Int64Type)).action({ ctx => 0 }))))[0m
-   [36m| [0m                                                                                                                                                                                [34m^^^ [0m
+   [36m| [0m/* 12.39 */        let root = Command("tool").command(Command("cloud").command(Command("server").command(Command("start").flag(Flag("port").short(r'p').valueType(Int64Type)).action({ ctx => 0 }))))[0m
+   [36m| [0m                                                                                                                                                                                       [34m^^^ [0m
    [36m| [0m
 
 [33mwarning[0m: unused variable:'ctx'
@@ -641,23 +748,23 @@
     [36m| [0m [34m_[0m[34m^[0m
 [36m13[0m  [36m| [0m[34m|[0m class AppIntegrationTest {[0m
     [36m| [0m[34m|[0m ...[0m
-[36m249[0m [36m| [0m[34m|[0m }[0m
+[36m288[0m [36m| [0m[34m|[0m }[0m
     [36m| [0m[34m|[0m[34m_[0m[34m^[0m
     [36m| [0m
 [34mnote[0m: the code after the macro is expanded as follows
     [36m| [0m
     [36m| [0m  /* 12.1 */@Attribute[TEST_GENERATED] class AppIntegrationTest <: TestClass {[0m
     [36m| [0m [34m_[0m[34m^[0m
-    [36m| [0m[34m|[0m /* 12.2 */    @Attribute[TestCase_23][0m
+    [36m| [0m[34m|[0m /* 12.2 */    @Attribute[TestCase_38][0m
     [36m| [0m[34m|[0m /* 12.3 */    func testAppBuilder() {[0m
     [36m| [0m[34m|[0m /* 12.4 */        let app = App("cj-tool").description("A cool CLI tool").version("v1.0.0")[0m
     [36m| [0m[34m|[0m /* 12.5 */        let root = app.getRootCommand()[0m
     [36m| [0m[34m|[0m /* 12.6 */        assertEqual("root.getName() == \"cj-tool\"", "true", root.getName() == "cj-tool", true, isDelta: false)[0m
-    [36m| [0m[34m|[0m /* 12.7 */        assertEqual("root.getDescription() == \"A cool CLI tool\"", "true", root.getDescription() == "A cool CLI tool", true, isDelta: false)[0m
-    [36m| [0m[34m|[0m /* 12.8 */        assertEqual("root.getVersion() == \"v1.0.0\"", "true", root.getVersion() == "v1.0.0", true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 12.7 */        assertEqual("root.getDescriptionStr() == \"A cool CLI tool\"", "true", root.getDescriptionStr() == "A cool CLI tool", true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 12.8 */        assertEqual("root.getVersionStr() == \"v1.0.0\"", "true", root.getVersionStr() == "v1.0.0", true, isDelta: false)[0m
     [36m| [0m[34m|[0m /* 12.9 */    }[0m
     [36m| [0m[34m|[0m /* 12.10 */    [0m
-    [36m| [0m[34m|[0m /* 12.11 */    @Attribute[TestCase_24][0m
+    [36m| [0m[34m|[0m /* 12.11 */    @Attribute[TestCase_39][0m
     [36m| [0m[34m|[0m /* 12.12 */    func testMockRunHelp() {[0m
     [36m| [0m[34m|[0m /* 12.13 */        let app = App("cj-tool").description("A testing tool").version("1.0.0").command(Command("lint").description("Lint code")).command(Command("fmt").description("Format code"))[0m
     [36m| [0m[34m|[0m /* 12.14 */        let result = app.mockRun(["--help"])[0m
@@ -668,7 +775,7 @@
     [36m| [0m[34m|[0m /* 12.19 */        assertEqual("result.stderr.contains(\"fmt\")", "true", result.stderr.contains("fmt"), true, isDelta: false)[0m
     [36m| [0m[34m|[0m /* 12.20 */    }[0m
     [36m| [0m[34m|[0m /* 12.21 */    [0m
-    [36m| [0m[34m|[0m /* 12.22 */    @Attribute[TestCase_25][0m
+    [36m| [0m[34m|[0m /* 12.22 */    @Attribute[TestCase_40][0m
     [36m| [0m[34m|[0m /* 12.23 */    func testMockRunHelpShort() {[0m
     [36m| [0m[34m|[0m /* 12.24 */        let app = App("cj-tool").version("1.0.0")[0m
     [36m| [0m[34m|[0m /* 12.25 */        let result = app.mockRun(["-h"])[0m
@@ -676,7 +783,7 @@
     [36m| [0m[34m|[0m /* 12.27 */        assertEqual("result.stderr.contains(\"Usage:\")", "true", result.stderr.contains("Usage:"), true, isDelta: false)[0m
     [36m| [0m[34m|[0m /* 12.28 */    }[0m
     [36m| [0m[34m|[0m /* 12.29 */    [0m
-    [36m| [0m[34m|[0m /* 12.30 */    @Attribute[TestCase_26][0m
+    [36m| [0m[34m|[0m /* 12.30 */    @Attribute[TestCase_41][0m
     [36m| [0m[34m|[0m /* 12.31 */    func testMockRunVersion() {[0m
     [36m| [0m[34m|[0m /* 12.32 */        let app = App("cj-tool").version("2.1.0")[0m
     [36m| [0m[34m|[0m /* 12.33 */        let result = app.mockRun(["--version"])[0m
@@ -685,7 +792,7 @@
     [36m| [0m[34m|[0m /* 12.36 */        assertEqual("result.stdout.contains(\"2.1.0\")", "true", result.stdout.contains("2.1.0"), true, isDelta: false)[0m
     [36m| [0m[34m|[0m /* 12.37 */    }[0m
     [36m| [0m[34m|[0m /* 12.38 */    [0m
-    [36m| [0m[34m|[0m /* 12.39 */    @Attribute[TestCase_27][0m
+    [36m| [0m[34m|[0m /* 12.39 */    @Attribute[TestCase_42][0m
     [36m| [0m[34m|[0m /* 12.40 */    func testMockRunVersionShort() {[0m
     [36m| [0m[34m|[0m /* 12.41 */        let app = App("cj-tool").version("2.1.0")[0m
     [36m| [0m[34m|[0m /* 12.42 */        let result = app.mockRun(["-V"])[0m
@@ -693,52 +800,52 @@
     [36m| [0m[34m|[0m /* 12.44 */        assertEqual("result.stdout.contains(\"2.1.0\")", "true", result.stdout.contains("2.1.0"), true, isDelta: false)[0m
     [36m| [0m[34m|[0m /* 12.45 */    }[0m
     [36m| [0m[34m|[0m /* 12.46 */    [0m
-    [36m| [0m[34m|[0m /* 12.47 */    @Attribute[TestCase_28][0m
+    [36m| [0m[34m|[0m /* 12.47 */    @Attribute[TestCase_43][0m
     [36m| [0m[34m|[0m /* 12.48 */    func testMockRunSubcommandHelp() {[0m
-    [36m| [0m[34m|[0m /* 12.49 */        let app = App("tool").command(Command("lint").description("Lint source files").flag(Flag("fix", "f").asBool().description("Auto-fix issues")))[0m
+    [36m| [0m[34m|[0m /* 12.49 */        let app = App("tool").command(Command("lint").description("Lint source files").flag(Flag("fix").short(r'f').asBool().description("Auto-fix issues")))[0m
     [36m| [0m[34m|[0m /* 12.50 */        let result = app.mockRun(["lint", "--help"])[0m
     [36m| [0m[34m|[0m /* 12.51 */        assertEqual("result.exitCode == 0", "true", result.exitCode == 0, true, isDelta: false)[0m
     [36m| [0m[34m|[0m /* 12.52 */        assertEqual("result.stderr.contains(\"Lint source files\")", "true", result.stderr.contains("Lint source files"), true, isDelta: false)[0m
     [36m| [0m[34m|[0m /* 12.53 */        assertEqual("result.stderr.contains(\"--fix\")", "true", result.stderr.contains("--fix"), true, isDelta: false)[0m
     [36m| [0m[34m|[0m /* 12.54 */    }[0m
     [36m| [0m[34m|[0m /* 12.55 */    [0m
-    [36m| [0m[34m|[0m /* 12.56 */    @Attribute[TestCase_29][0m
+    [36m| [0m[34m|[0m /* 12.56 */    @Attribute[TestCase_44][0m
     [36m| [0m[34m|[0m /* 12.57 */    func testMockRunWithAction() {[0m
-    [36m| [0m[34m|[0m /* 12.58 */        let app = App("tool").command(Command("greet").flag(Flag("name", "n").defaultValue("World")).action({ ctx => 0 }))[0m
+    [36m| [0m[34m|[0m /* 12.58 */        let app = App("tool").command(Command("greet").flag(Flag("name").short(r'n').defaultValue("World")).action({ ctx => 0 }))[0m
     [36m| [0m[34m|[0m /* 12.59 */        let result = app.mockRun(["greet", "--name", "Cangjie"])[0m
     [36m| [0m[34m|[0m /* 12.60 */        assertEqual("result.exitCode == 0", "true", result.exitCode == 0, true, isDelta: false)[0m
     [36m| [0m[34m|[0m /* 12.61 */    }[0m
     [36m| [0m[34m|[0m /* 12.62 */    [0m
-    [36m| [0m[34m|[0m /* 12.63 */    @Attribute[TestCase_30][0m
+    [36m| [0m[34m|[0m /* 12.63 */    @Attribute[TestCase_45][0m
     [36m| [0m[34m|[0m /* 12.64 */    func testMockRunParseError() {[0m
-    [36m| [0m[34m|[0m /* 12.65 */        let app = App("tool").flag(Flag("config", "c"))[0m
+    [36m| [0m[34m|[0m /* 12.65 */        let app = App("tool").flag(Flag("config").short(r'c'))[0m
     [36m| [0m[34m|[0m /* 12.66 */        let result = app.mockRun(["--unknown-flag"])[0m
     [36m| [0m[34m|[0m /* 12.67 */        assertEqual("result.exitCode == 2", "true", result.exitCode == 2, true, isDelta: false)[0m
     [36m| [0m[34m|[0m /* 12.68 */        assertEqual("result.stderr.contains(\"error:\")", "true", result.stderr.contains("error:"), true, isDelta: false)[0m
     [36m| [0m[34m|[0m /* 12.69 */    }[0m
     [36m| [0m[34m|[0m /* 12.70 */    [0m
-    [36m| [0m[34m|[0m /* 12.71 */    @Attribute[TestCase_31][0m
+    [36m| [0m[34m|[0m /* 12.71 */    @Attribute[TestCase_46][0m
     [36m| [0m[34m|[0m /* 12.72 */    func testMockRunRequiredFlagError() {[0m
-    [36m| [0m[34m|[0m /* 12.73 */        let app = App("tool").flag(Flag("output", "o").required(true))[0m
+    [36m| [0m[34m|[0m /* 12.73 */        let app = App("tool").flag(Flag("output").short(r'o').required(true))[0m
     [36m| [0m[34m|[0m /* 12.74 */        let result = app.mockRun([])[0m
     [36m| [0m[34m|[0m /* 12.75 */        assertEqual("result.exitCode == 2", "true", result.exitCode == 2, true, isDelta: false)[0m
     [36m| [0m[34m|[0m /* 12.76 */        assertEqual("result.stderr.contains(\"--output\")", "true", result.stderr.contains("--output"), true, isDelta: false)[0m
     [36m| [0m[34m|[0m /* 12.77 */    }[0m
     [36m| [0m[34m|[0m /* 12.78 */    [0m
-    [36m| [0m[34m|[0m /* 12.79 */    @Attribute[TestCase_32][0m
+    [36m| [0m[34m|[0m /* 12.79 */    @Attribute[TestCase_47][0m
     [36m| [0m[34m|[0m /* 12.80 */    func testMockRunTypedFlagError() {[0m
-    [36m| [0m[34m|[0m /* 12.81 */        let app = App("tool").flag(Flag("port", "p").valueType(Int64Type))[0m
+    [36m| [0m[34m|[0m /* 12.81 */        let app = App("tool").flag(Flag("port").short(r'p').valueType(Int64Type))[0m
     [36m| [0m[34m|[0m /* 12.82 */        let result = app.mockRun(["--port", "not-a-number"])[0m
     [36m| [0m[34m|[0m /* 12.83 */        assertEqual("result.exitCode == 2", "true", result.exitCode == 2, true, isDelta: false)[0m
     [36m| [0m[34m|[0m /* 12.84 */        assertEqual("result.stderr.contains(\"error:\")", "true", result.stderr.contains("error:"), true, isDelta: false)[0m
     [36m| [0m[34m|[0m /* 12.85 */    }[0m
     [36m| [0m[34m|[0m /* 12.86 */    [0m
-    [36m| [0m[34m|[0m /* 12.87 */    @Attribute[TestCase_33][0m
+    [36m| [0m[34m|[0m /* 12.87 */    @Attribute[TestCase_48][0m
     [36m| [0m[34m|[0m /* 12.88 */    func testMockRunComplexScenario() {[0m
     [36m| [0m[34m|[0m /* 12.89 */        let capturedEnv = ArrayList < String >()[0m
     [36m| [0m[34m|[0m /* 12.90 */        let capturedReplicas = ArrayList < String >()[0m
     [36m| [0m[34m|[0m /* 12.91 */        let capturedServiceArgs = ArrayList < String >()[0m
-    [36m| [0m[34m|[0m /* 12.92 */        let app = App("deploy-tool").version("3.0.0").description("Deployment tool").flag(Flag("verbose", "v").asBool().description("Verbose output")).command(Command("deploy").description("Deploy application").alias("d").flag(Flag("env", "e").required(true).description("Target environment")).flag(Flag("replicas", "r").valueType(Int64Type).defaultValue("1")).argument(Argument("service").required(true).description("Service name")).action({ ctx => capturedEnv.add(ctx.getFlagOrDefault("env", ""))[0m
+    [36m| [0m[34m|[0m /* 12.92 */        let app = App("deploy-tool").version("3.0.0").description("Deployment tool").flag(Flag("verbose").short(r'v').asBool().description("Verbose output")).command(Command("deploy").description("Deploy application").alias("d").flag(Flag("env").short(r'e').required(true).description("Target environment")).flag(Flag("replicas").short(r'r').valueType(Int64Type).defaultValue("1")).argument(Argument("service").required(true).description("Service name")).action({ ctx => capturedEnv.add(ctx.getFlagOrDefault("env", ""))[0m
     [36m| [0m[34m|[0m /* 12.93 */            capturedReplicas.add(ctx.getFlagOrDefault("replicas", ""))[0m
     [36m| [0m[34m|[0m /* 12.94 */            let args = ctx.getArguments()[0m
     [36m| [0m[34m|[0m /* 12.95 */            [0m
@@ -756,16 +863,16 @@
     [36m| [0m[34m|[0m /* 12.107 */        assertEqual("capturedServiceArgs[0] == \"my-service\"", "true", capturedServiceArgs[0] == "my-service", true, isDelta: false)[0m
     [36m| [0m[34m|[0m /* 12.108 */    }[0m
     [36m| [0m[34m|[0m /* 12.109 */    [0m
-    [36m| [0m[34m|[0m /* 12.110 */    @Attribute[TestCase_34][0m
+    [36m| [0m[34m|[0m /* 12.110 */    @Attribute[TestCase_49][0m
     [36m| [0m[34m|[0m /* 12.111 */    func testMockRunSubcommandByAlias() {[0m
     [36m| [0m[34m|[0m /* 12.112 */        let app = App("tool").command(Command("install").alias("i").action({ ctx => 0 }))[0m
     [36m| [0m[34m|[0m /* 12.113 */        let result = app.mockRun(["i"])[0m
     [36m| [0m[34m|[0m /* 12.114 */        assertEqual("result.exitCode == 0", "true", result.exitCode == 0, true, isDelta: false)[0m
     [36m| [0m[34m|[0m /* 12.115 */    }[0m
     [36m| [0m[34m|[0m /* 12.116 */    [0m
-    [36m| [0m[34m|[0m /* 12.117 */    @Attribute[TestCase_35][0m
+    [36m| [0m[34m|[0m /* 12.117 */    @Attribute[TestCase_50][0m
     [36m| [0m[34m|[0m /* 12.118 */    func testHelpContainsOptions() {[0m
-    [36m| [0m[34m|[0m /* 12.119 */        let app = App("tool").flag(Flag("verbose", "v").asBool().description("Enable verbose mode")).flag(Flag("config", "c").description("Config file path").defaultValue("config.toml"))[0m
+    [36m| [0m[34m|[0m /* 12.119 */        let app = App("tool").flag(Flag("verbose").short(r'v').asBool().description("Enable verbose mode")).flag(Flag("config").short(r'c').description("Config file path").defaultValue("config.toml"))[0m
     [36m| [0m[34m|[0m /* 12.120 */        let result = app.mockRun(["--help"])[0m
     [36m| [0m[34m|[0m /* 12.121 */        assertEqual("result.exitCode == 0", "true", result.exitCode == 0, true, isDelta: false)[0m
     [36m| [0m[34m|[0m /* 12.122 */        assertEqual("result.stderr.contains(\"Options:\")", "true", result.stderr.contains("Options:"), true, isDelta: false)[0m
@@ -775,7 +882,7 @@
     [36m| [0m[34m|[0m /* 12.126 */        assertEqual("result.stderr.contains(\"config.toml\")", "true", result.stderr.contains("config.toml"), true, isDelta: false)[0m
     [36m| [0m[34m|[0m /* 12.127 */    }[0m
     [36m| [0m[34m|[0m /* 12.128 */    [0m
-    [36m| [0m[34m|[0m /* 12.129 */    @Attribute[TestCase_36][0m
+    [36m| [0m[34m|[0m /* 12.129 */    @Attribute[TestCase_51][0m
     [36m| [0m[34m|[0m /* 12.130 */    func testHelpContainsArguments() {[0m
     [36m| [0m[34m|[0m /* 12.131 */        let app = App("tool").argument(Argument("input").description("Input file").required(true)).argument(Argument("files").description("Additional files").variadic(true))[0m
     [36m| [0m[34m|[0m /* 12.132 */        let result = app.mockRun(["--help"])[0m
@@ -785,7 +892,7 @@
     [36m| [0m[34m|[0m /* 12.136 */        assertEqual("result.stderr.contains(\"files\")", "true", result.stderr.contains("files"), true, isDelta: false)[0m
     [36m| [0m[34m|[0m /* 12.137 */    }[0m
     [36m| [0m[34m|[0m /* 12.138 */    [0m
-    [36m| [0m[34m|[0m /* 12.139 */    @Attribute[TestCase_37][0m
+    [36m| [0m[34m|[0m /* 12.139 */    @Attribute[TestCase_52][0m
     [36m| [0m[34m|[0m /* 12.140 */    func testNoActionShowsHelp() {[0m
     [36m| [0m[34m|[0m /* 12.141 */        let app = App("tool").description("A tool without actions").command(Command("sub1").description("First sub"))[0m
     [36m| [0m[34m|[0m /* 12.142 */        let result = app.mockRun([])[0m
@@ -793,10 +900,10 @@
     [36m| [0m[34m|[0m /* 12.144 */        assertEqual("result.stderr.contains(\"Usage:\")", "true", result.stderr.contains("Usage:"), true, isDelta: false)[0m
     [36m| [0m[34m|[0m /* 12.145 */    }[0m
     [36m| [0m[34m|[0m /* 12.146 */    [0m
-    [36m| [0m[34m|[0m /* 12.147 */    @Attribute[TestCase_38][0m
+    [36m| [0m[34m|[0m /* 12.147 */    @Attribute[TestCase_53][0m
     [36m| [0m[34m|[0m /* 12.148 */    func testDoubleDashInMockRun() {[0m
     [36m| [0m[34m|[0m /* 12.149 */        let argValues = ArrayList < String >()[0m
-    [36m| [0m[34m|[0m /* 12.150 */        let app = App("tool").flag(Flag("verbose", "v").asBool()).action({ ctx => let args = ctx.getArguments()[0m
+    [36m| [0m[34m|[0m /* 12.150 */        let app = App("tool").flag(Flag("verbose").short(r'v').asBool()).action({ ctx => let args = ctx.getArguments()[0m
     [36m| [0m[34m|[0m /* 12.151 */            [0m
     [36m| [0m[34m|[0m /* 12.152 */            for(a in args) {[0m
     [36m| [0m[34m|[0m /* 12.153 */                argValues.add(a)[0m
@@ -810,265 +917,320 @@
     [36m| [0m[34m|[0m /* 12.161 */        assertEqual("argValues[1] == \"plain-arg\"", "true", argValues[1] == "plain-arg", true, isDelta: false)[0m
     [36m| [0m[34m|[0m /* 12.162 */    }[0m
     [36m| [0m[34m|[0m /* 12.163 */    [0m
-    [36m| [0m[34m|[0m /* 12.164 */    init() {[0m
-    [36m| [0m[34m|[0m /* 12.165 */    }[0m
-    [36m| [0m[34m|[0m /* 12.166 */    private func classConfiguration(): Configuration {[0m
-    [36m| [0m[34m|[0m /* 12.167 */        let configuration = Configuration()[0m
-    [36m| [0m[34m|[0m /* 12.168 */        [0m
-    [36m| [0m[34m|[0m /* 12.169 */        return configuration[0m
-    [36m| [0m[34m|[0m /* 12.170 */    }[0m
-    [36m| [0m[34m|[0m /* 12.171 */    public override func asTestSuite(): TestSuite {[0m
-    [36m| [0m[34m|[0m /* 12.172 */        [0m
-    [36m| [0m[34m|[0m /* 12.173 */        let suiteConfiguration = classConfiguration()[0m
-    [36m| [0m[34m|[0m /* 12.174 */        let suiteBuilder = TestSuite.builder("AppIntegrationTest").configure(suiteConfiguration)[0m
-    [36m| [0m[34m|[0m /* 12.175 */        [0m
-    [36m| [0m[34m|[0m /* 12.176 */        { => let caseConfig = Configuration()[0m
-    [36m| [0m[34m|[0m /* 12.177 */            [0m
-    [36m| [0m[34m|[0m /* 12.178 */            let testAppBuilderTestFunc = { => testAppBuilder();() }[0m
-    [36m| [0m[34m|[0m /* 12.179 */            suiteBuilder.add([0m
-    [36m| [0m[34m|[0m /* 12.180 */            UnitTestCase.create([0m
-    [36m| [0m[34m|[0m /* 12.181 */            "testAppBuilder",[0m
-    [36m| [0m[34m|[0m /* 12.182 */            configuration: caseConfig,[0m
-    [36m| [0m[34m|[0m /* 12.183 */            body: testAppBuilderTestFunc[0m
-    [36m| [0m[34m|[0m /* 12.184 */            )[0m
-    [36m| [0m[34m|[0m /* 12.185 */            )[0m
-    [36m| [0m[34m|[0m /* 12.186 */            [0m
-    [36m| [0m[34m|[0m /* 12.187 */        }()[0m
-    [36m| [0m[34m|[0m /* 12.188 */        [0m
-    [36m| [0m[34m|[0m /* 12.189 */        [0m
-    [36m| [0m[34m|[0m /* 12.190 */        { => let caseConfig = Configuration()[0m
-    [36m| [0m[34m|[0m /* 12.191 */            [0m
-    [36m| [0m[34m|[0m /* 12.192 */            let testMockRunHelpTestFunc = { => testMockRunHelp();() }[0m
-    [36m| [0m[34m|[0m /* 12.193 */            suiteBuilder.add([0m
-    [36m| [0m[34m|[0m /* 12.194 */            UnitTestCase.create([0m
-    [36m| [0m[34m|[0m /* 12.195 */            "testMockRunHelp",[0m
-    [36m| [0m[34m|[0m /* 12.196 */            configuration: caseConfig,[0m
-    [36m| [0m[34m|[0m /* 12.197 */            body: testMockRunHelpTestFunc[0m
-    [36m| [0m[34m|[0m /* 12.198 */            )[0m
-    [36m| [0m[34m|[0m /* 12.199 */            )[0m
-    [36m| [0m[34m|[0m /* 12.200 */            [0m
-    [36m| [0m[34m|[0m /* 12.201 */        }()[0m
-    [36m| [0m[34m|[0m /* 12.202 */        [0m
-    [36m| [0m[34m|[0m /* 12.203 */        [0m
-    [36m| [0m[34m|[0m /* 12.204 */        { => let caseConfig = Configuration()[0m
-    [36m| [0m[34m|[0m /* 12.205 */            [0m
-    [36m| [0m[34m|[0m /* 12.206 */            let testMockRunHelpShortTestFunc = { => testMockRunHelpShort();() }[0m
-    [36m| [0m[34m|[0m /* 12.207 */            suiteBuilder.add([0m
-    [36m| [0m[34m|[0m /* 12.208 */            UnitTestCase.create([0m
-    [36m| [0m[34m|[0m /* 12.209 */            "testMockRunHelpShort",[0m
-    [36m| [0m[34m|[0m /* 12.210 */            configuration: caseConfig,[0m
-    [36m| [0m[34m|[0m /* 12.211 */            body: testMockRunHelpShortTestFunc[0m
-    [36m| [0m[34m|[0m /* 12.212 */            )[0m
-    [36m| [0m[34m|[0m /* 12.213 */            )[0m
-    [36m| [0m[34m|[0m /* 12.214 */            [0m
-    [36m| [0m[34m|[0m /* 12.215 */        }()[0m
-    [36m| [0m[34m|[0m /* 12.216 */        [0m
-    [36m| [0m[34m|[0m /* 12.217 */        [0m
-    [36m| [0m[34m|[0m /* 12.218 */        { => let caseConfig = Configuration()[0m
-    [36m| [0m[34m|[0m /* 12.219 */            [0m
-    [36m| [0m[34m|[0m /* 12.220 */            let testMockRunVersionTestFunc = { => testMockRunVersion();() }[0m
-    [36m| [0m[34m|[0m /* 12.221 */            suiteBuilder.add([0m
-    [36m| [0m[34m|[0m /* 12.222 */            UnitTestCase.create([0m
-    [36m| [0m[34m|[0m /* 12.223 */            "testMockRunVersion",[0m
-    [36m| [0m[34m|[0m /* 12.224 */            configuration: caseConfig,[0m
-    [36m| [0m[34m|[0m /* 12.225 */            body: testMockRunVersionTestFunc[0m
-    [36m| [0m[34m|[0m /* 12.226 */            )[0m
-    [36m| [0m[34m|[0m /* 12.227 */            )[0m
-    [36m| [0m[34m|[0m /* 12.228 */            [0m
-    [36m| [0m[34m|[0m /* 12.229 */        }()[0m
-    [36m| [0m[34m|[0m /* 12.230 */        [0m
-    [36m| [0m[34m|[0m /* 12.231 */        [0m
-    [36m| [0m[34m|[0m /* 12.232 */        { => let caseConfig = Configuration()[0m
-    [36m| [0m[34m|[0m /* 12.233 */            [0m
-    [36m| [0m[34m|[0m /* 12.234 */            let testMockRunVersionShortTestFunc = { => testMockRunVersionShort();() }[0m
-    [36m| [0m[34m|[0m /* 12.235 */            suiteBuilder.add([0m
-    [36m| [0m[34m|[0m /* 12.236 */            UnitTestCase.create([0m
-    [36m| [0m[34m|[0m /* 12.237 */            "testMockRunVersionShort",[0m
-    [36m| [0m[34m|[0m /* 12.238 */            configuration: caseConfig,[0m
-    [36m| [0m[34m|[0m /* 12.239 */            body: testMockRunVersionShortTestFunc[0m
-    [36m| [0m[34m|[0m /* 12.240 */            )[0m
-    [36m| [0m[34m|[0m /* 12.241 */            )[0m
-    [36m| [0m[34m|[0m /* 12.242 */            [0m
-    [36m| [0m[34m|[0m /* 12.243 */        }()[0m
-    [36m| [0m[34m|[0m /* 12.244 */        [0m
-    [36m| [0m[34m|[0m /* 12.245 */        [0m
-    [36m| [0m[34m|[0m /* 12.246 */        { => let caseConfig = Configuration()[0m
-    [36m| [0m[34m|[0m /* 12.247 */            [0m
-    [36m| [0m[34m|[0m /* 12.248 */            let testMockRunSubcommandHelpTestFunc = { => testMockRunSubcommandHelp();() }[0m
-    [36m| [0m[34m|[0m /* 12.249 */            suiteBuilder.add([0m
-    [36m| [0m[34m|[0m /* 12.250 */            UnitTestCase.create([0m
-    [36m| [0m[34m|[0m /* 12.251 */            "testMockRunSubcommandHelp",[0m
-    [36m| [0m[34m|[0m /* 12.252 */            configuration: caseConfig,[0m
-    [36m| [0m[34m|[0m /* 12.253 */            body: testMockRunSubcommandHelpTestFunc[0m
-    [36m| [0m[34m|[0m /* 12.254 */            )[0m
-    [36m| [0m[34m|[0m /* 12.255 */            )[0m
-    [36m| [0m[34m|[0m /* 12.256 */            [0m
-    [36m| [0m[34m|[0m /* 12.257 */        }()[0m
-    [36m| [0m[34m|[0m /* 12.258 */        [0m
-    [36m| [0m[34m|[0m /* 12.259 */        [0m
-    [36m| [0m[34m|[0m /* 12.260 */        { => let caseConfig = Configuration()[0m
-    [36m| [0m[34m|[0m /* 12.261 */            [0m
-    [36m| [0m[34m|[0m /* 12.262 */            let testMockRunWithActionTestFunc = { => testMockRunWithAction();() }[0m
-    [36m| [0m[34m|[0m /* 12.263 */            suiteBuilder.add([0m
-    [36m| [0m[34m|[0m /* 12.264 */            UnitTestCase.create([0m
-    [36m| [0m[34m|[0m /* 12.265 */            "testMockRunWithAction",[0m
-    [36m| [0m[34m|[0m /* 12.266 */            configuration: caseConfig,[0m
-    [36m| [0m[34m|[0m /* 12.267 */            body: testMockRunWithActionTestFunc[0m
-    [36m| [0m[34m|[0m /* 12.268 */            )[0m
-    [36m| [0m[34m|[0m /* 12.269 */            )[0m
-    [36m| [0m[34m|[0m /* 12.270 */            [0m
-    [36m| [0m[34m|[0m /* 12.271 */        }()[0m
-    [36m| [0m[34m|[0m /* 12.272 */        [0m
-    [36m| [0m[34m|[0m /* 12.273 */        [0m
-    [36m| [0m[34m|[0m /* 12.274 */        { => let caseConfig = Configuration()[0m
-    [36m| [0m[34m|[0m /* 12.275 */            [0m
-    [36m| [0m[34m|[0m /* 12.276 */            let testMockRunParseErrorTestFunc = { => testMockRunParseError();() }[0m
-    [36m| [0m[34m|[0m /* 12.277 */            suiteBuilder.add([0m
-    [36m| [0m[34m|[0m /* 12.278 */            UnitTestCase.create([0m
-    [36m| [0m[34m|[0m /* 12.279 */            "testMockRunParseError",[0m
-    [36m| [0m[34m|[0m /* 12.280 */            configuration: caseConfig,[0m
-    [36m| [0m[34m|[0m /* 12.281 */            body: testMockRunParseErrorTestFunc[0m
-    [36m| [0m[34m|[0m /* 12.282 */            )[0m
-    [36m| [0m[34m|[0m /* 12.283 */            )[0m
-    [36m| [0m[34m|[0m /* 12.284 */            [0m
-    [36m| [0m[34m|[0m /* 12.285 */        }()[0m
-    [36m| [0m[34m|[0m /* 12.286 */        [0m
-    [36m| [0m[34m|[0m /* 12.287 */        [0m
-    [36m| [0m[34m|[0m /* 12.288 */        { => let caseConfig = Configuration()[0m
-    [36m| [0m[34m|[0m /* 12.289 */            [0m
-    [36m| [0m[34m|[0m /* 12.290 */            let testMockRunRequiredFlagErrorTestFunc = { => testMockRunRequiredFlagError();() }[0m
-    [36m| [0m[34m|[0m /* 12.291 */            suiteBuilder.add([0m
-    [36m| [0m[34m|[0m /* 12.292 */            UnitTestCase.create([0m
-    [36m| [0m[34m|[0m /* 12.293 */            "testMockRunRequiredFlagError",[0m
-    [36m| [0m[34m|[0m /* 12.294 */            configuration: caseConfig,[0m
-    [36m| [0m[34m|[0m /* 12.295 */            body: testMockRunRequiredFlagErrorTestFunc[0m
-    [36m| [0m[34m|[0m /* 12.296 */            )[0m
-    [36m| [0m[34m|[0m /* 12.297 */            )[0m
-    [36m| [0m[34m|[0m /* 12.298 */            [0m
-    [36m| [0m[34m|[0m /* 12.299 */        }()[0m
-    [36m| [0m[34m|[0m /* 12.300 */        [0m
-    [36m| [0m[34m|[0m /* 12.301 */        [0m
-    [36m| [0m[34m|[0m /* 12.302 */        { => let caseConfig = Configuration()[0m
-    [36m| [0m[34m|[0m /* 12.303 */            [0m
-    [36m| [0m[34m|[0m /* 12.304 */            let testMockRunTypedFlagErrorTestFunc = { => testMockRunTypedFlagError();() }[0m
-    [36m| [0m[34m|[0m /* 12.305 */            suiteBuilder.add([0m
-    [36m| [0m[34m|[0m /* 12.306 */            UnitTestCase.create([0m
-    [36m| [0m[34m|[0m /* 12.307 */            "testMockRunTypedFlagError",[0m
-    [36m| [0m[34m|[0m /* 12.308 */            configuration: caseConfig,[0m
-    [36m| [0m[34m|[0m /* 12.309 */            body: testMockRunTypedFlagErrorTestFunc[0m
-    [36m| [0m[34m|[0m /* 12.310 */            )[0m
-    [36m| [0m[34m|[0m /* 12.311 */            )[0m
-    [36m| [0m[34m|[0m /* 12.312 */            [0m
-    [36m| [0m[34m|[0m /* 12.313 */        }()[0m
-    [36m| [0m[34m|[0m /* 12.314 */        [0m
-    [36m| [0m[34m|[0m /* 12.315 */        [0m
-    [36m| [0m[34m|[0m /* 12.316 */        { => let caseConfig = Configuration()[0m
-    [36m| [0m[34m|[0m /* 12.317 */            [0m
-    [36m| [0m[34m|[0m /* 12.318 */            let testMockRunComplexScenarioTestFunc = { => testMockRunComplexScenario();() }[0m
-    [36m| [0m[34m|[0m /* 12.319 */            suiteBuilder.add([0m
-    [36m| [0m[34m|[0m /* 12.320 */            UnitTestCase.create([0m
-    [36m| [0m[34m|[0m /* 12.321 */            "testMockRunComplexScenario",[0m
-    [36m| [0m[34m|[0m /* 12.322 */            configuration: caseConfig,[0m
-    [36m| [0m[34m|[0m /* 12.323 */            body: testMockRunComplexScenarioTestFunc[0m
-    [36m| [0m[34m|[0m /* 12.324 */            )[0m
-    [36m| [0m[34m|[0m /* 12.325 */            )[0m
-    [36m| [0m[34m|[0m /* 12.326 */            [0m
-    [36m| [0m[34m|[0m /* 12.327 */        }()[0m
-    [36m| [0m[34m|[0m /* 12.328 */        [0m
-    [36m| [0m[34m|[0m /* 12.329 */        [0m
-    [36m| [0m[34m|[0m /* 12.330 */        { => let caseConfig = Configuration()[0m
-    [36m| [0m[34m|[0m /* 12.331 */            [0m
-    [36m| [0m[34m|[0m /* 12.332 */            let testMockRunSubcommandByAliasTestFunc = { => testMockRunSubcommandByAlias();() }[0m
-    [36m| [0m[34m|[0m /* 12.333 */            suiteBuilder.add([0m
-    [36m| [0m[34m|[0m /* 12.334 */            UnitTestCase.create([0m
-    [36m| [0m[34m|[0m /* 12.335 */            "testMockRunSubcommandByAlias",[0m
-    [36m| [0m[34m|[0m /* 12.336 */            configuration: caseConfig,[0m
-    [36m| [0m[34m|[0m /* 12.337 */            body: testMockRunSubcommandByAliasTestFunc[0m
-    [36m| [0m[34m|[0m /* 12.338 */            )[0m
-    [36m| [0m[34m|[0m /* 12.339 */            )[0m
-    [36m| [0m[34m|[0m /* 12.340 */            [0m
-    [36m| [0m[34m|[0m /* 12.341 */        }()[0m
-    [36m| [0m[34m|[0m /* 12.342 */        [0m
-    [36m| [0m[34m|[0m /* 12.343 */        [0m
-    [36m| [0m[34m|[0m /* 12.344 */        { => let caseConfig = Configuration()[0m
-    [36m| [0m[34m|[0m /* 12.345 */            [0m
-    [36m| [0m[34m|[0m /* 12.346 */            let testHelpContainsOptionsTestFunc = { => testHelpContainsOptions();() }[0m
-    [36m| [0m[34m|[0m /* 12.347 */            suiteBuilder.add([0m
-    [36m| [0m[34m|[0m /* 12.348 */            UnitTestCase.create([0m
-    [36m| [0m[34m|[0m /* 12.349 */            "testHelpContainsOptions",[0m
-    [36m| [0m[34m|[0m /* 12.350 */            configuration: caseConfig,[0m
-    [36m| [0m[34m|[0m /* 12.351 */            body: testHelpContainsOptionsTestFunc[0m
-    [36m| [0m[34m|[0m /* 12.352 */            )[0m
-    [36m| [0m[34m|[0m /* 12.353 */            )[0m
-    [36m| [0m[34m|[0m /* 12.354 */            [0m
-    [36m| [0m[34m|[0m /* 12.355 */        }()[0m
-    [36m| [0m[34m|[0m /* 12.356 */        [0m
-    [36m| [0m[34m|[0m /* 12.357 */        [0m
-    [36m| [0m[34m|[0m /* 12.358 */        { => let caseConfig = Configuration()[0m
-    [36m| [0m[34m|[0m /* 12.359 */            [0m
-    [36m| [0m[34m|[0m /* 12.360 */            let testHelpContainsArgumentsTestFunc = { => testHelpContainsArguments();() }[0m
-    [36m| [0m[34m|[0m /* 12.361 */            suiteBuilder.add([0m
-    [36m| [0m[34m|[0m /* 12.362 */            UnitTestCase.create([0m
-    [36m| [0m[34m|[0m /* 12.363 */            "testHelpContainsArguments",[0m
-    [36m| [0m[34m|[0m /* 12.364 */            configuration: caseConfig,[0m
-    [36m| [0m[34m|[0m /* 12.365 */            body: testHelpContainsArgumentsTestFunc[0m
-    [36m| [0m[34m|[0m /* 12.366 */            )[0m
-    [36m| [0m[34m|[0m /* 12.367 */            )[0m
-    [36m| [0m[34m|[0m /* 12.368 */            [0m
-    [36m| [0m[34m|[0m /* 12.369 */        }()[0m
-    [36m| [0m[34m|[0m /* 12.370 */        [0m
-    [36m| [0m[34m|[0m /* 12.371 */        [0m
-    [36m| [0m[34m|[0m /* 12.372 */        { => let caseConfig = Configuration()[0m
-    [36m| [0m[34m|[0m /* 12.373 */            [0m
-    [36m| [0m[34m|[0m /* 12.374 */            let testNoActionShowsHelpTestFunc = { => testNoActionShowsHelp();() }[0m
-    [36m| [0m[34m|[0m /* 12.375 */            suiteBuilder.add([0m
-    [36m| [0m[34m|[0m /* 12.376 */            UnitTestCase.create([0m
-    [36m| [0m[34m|[0m /* 12.377 */            "testNoActionShowsHelp",[0m
-    [36m| [0m[34m|[0m /* 12.378 */            configuration: caseConfig,[0m
-    [36m| [0m[34m|[0m /* 12.379 */            body: testNoActionShowsHelpTestFunc[0m
-    [36m| [0m[34m|[0m /* 12.380 */            )[0m
-    [36m| [0m[34m|[0m /* 12.381 */            )[0m
-    [36m| [0m[34m|[0m /* 12.382 */            [0m
-    [36m| [0m[34m|[0m /* 12.383 */        }()[0m
-    [36m| [0m[34m|[0m /* 12.384 */        [0m
-    [36m| [0m[34m|[0m /* 12.385 */        [0m
-    [36m| [0m[34m|[0m /* 12.386 */        { => let caseConfig = Configuration()[0m
-    [36m| [0m[34m|[0m /* 12.387 */            [0m
-    [36m| [0m[34m|[0m /* 12.388 */            let testDoubleDashInMockRunTestFunc = { => testDoubleDashInMockRun();() }[0m
-    [36m| [0m[34m|[0m /* 12.389 */            suiteBuilder.add([0m
-    [36m| [0m[34m|[0m /* 12.390 */            UnitTestCase.create([0m
-    [36m| [0m[34m|[0m /* 12.391 */            "testDoubleDashInMockRun",[0m
-    [36m| [0m[34m|[0m /* 12.392 */            configuration: caseConfig,[0m
-    [36m| [0m[34m|[0m /* 12.393 */            body: testDoubleDashInMockRunTestFunc[0m
-    [36m| [0m[34m|[0m /* 12.394 */            )[0m
-    [36m| [0m[34m|[0m /* 12.395 */            )[0m
-    [36m| [0m[34m|[0m /* 12.396 */            [0m
-    [36m| [0m[34m|[0m /* 12.397 */        }()[0m
-    [36m| [0m[34m|[0m /* 12.398 */        [0m
-    [36m| [0m[34m|[0m /* 12.399 */        return suiteBuilder.build()[0m
-    [36m| [0m[34m|[0m /* 12.400 */    }[0m
-    [36m| [0m[34m|[0m /* 12.401 */    private func inheritedFromClassAnnotatedByTestTemplate < T >(): TestSuite where T <: TestClass {[0m
-    [36m| [0m[34m|[0m /* 12.402 */        throw Exception("Unreachable code")[0m
-    [36m| [0m[34m|[0m /* 12.403 */    }[0m
-    [36m| [0m[34m|[0m /* 12.404 */}[0m
-    [36m| [0m[34m|[0m /* 12.405 */[0m
-    [36m| [0m[34m|[0m /* 12.406 */[0m
-    [36m| [0m[34m|[0m /* 12.407 */interface TestPackageExtension_AppIntegrationTest {[0m
-    [36m| [0m[34m|[0m /* 12.408 */    func registerAppIntegrationTest(): Unit[0m
-    [36m| [0m[34m|[0m /* 12.409 */}[0m
-    [36m| [0m[34m|[0m /* 12.410 */extend TestPackage <: TestPackageExtension_AppIntegrationTest {[0m
-    [36m| [0m[34m|[0m /* 12.411 */    @Attribute[TEST_REGISTER][0m
-    [36m| [0m[34m|[0m /* 12.412 */    public func registerAppIntegrationTest() {[0m
-    [36m| [0m[34m|[0m /* 12.413 */        registerSuite({ => AppIntegrationTest().asTestSuite() })[0m
-    [36m| [0m[34m|[0m /* 12.414 */    }[0m
-    [36m| [0m[34m|[0m /* 12.415 */}[0m
-    [36m| [0m[34m|[0m /* 12.416 */[0m
+    [36m| [0m[34m|[0m /* 12.164 */    @Attribute[TestCase_54][0m
+    [36m| [0m[34m|[0m /* 12.165 */    func testMockRunBatchCommands() {[0m
+    [36m| [0m[34m|[0m /* 12.166 */        let app = App("tool").commands([Command("lint").description("Lint code").action({ ctx => 0 }), Command("fmt").description("Format code").action({ ctx => 0 }), Command("test").description("Run tests").action({ ctx => 0 })])[0m
+    [36m| [0m[34m|[0m /* 12.167 */        let result1 = app.mockRun(["lint"])[0m
+    [36m| [0m[34m|[0m /* 12.168 */        assertEqual("result1.exitCode == 0", "true", result1.exitCode == 0, true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 12.169 */        let result2 = app.mockRun(["fmt"])[0m
+    [36m| [0m[34m|[0m /* 12.170 */        assertEqual("result2.exitCode == 0", "true", result2.exitCode == 0, true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 12.171 */    }[0m
+    [36m| [0m[34m|[0m /* 12.172 */    [0m
+    [36m| [0m[34m|[0m /* 12.173 */    @Attribute[TestCase_55][0m
+    [36m| [0m[34m|[0m /* 12.174 */    func testMockRunAppendAction() {[0m
+    [36m| [0m[34m|[0m /* 12.175 */        let captured = ArrayList < String >()[0m
+    [36m| [0m[34m|[0m /* 12.176 */        let app = App("tool").flag(Flag("include").short(r'I').action(FlagAction.Append)).action({ ctx => match(ctx.getFlagAll("include")) {[0m
+    [36m| [0m[34m|[0m /* 12.177 */            case Some(vals) => for(v in vals) {[0m
+    [36m| [0m[34m|[0m /* 12.178 */                captured.add(v)[0m
+    [36m| [0m[34m|[0m /* 12.179 */            }[0m
+    [36m| [0m[34m|[0m /* 12.180 */            case None =>()[0m
+    [36m| [0m[34m|[0m /* 12.181 */        }[0m
+    [36m| [0m[34m|[0m /* 12.182 */    0 })[0m
+    [36m| [0m[34m|[0m /* 12.183 */    let result = app.mockRun(["-I", "src/", "-I", "lib/", "-I", "test/"])[0m
+    [36m| [0m[34m|[0m /* 12.184 */    assertEqual("result.exitCode == 0", "true", result.exitCode == 0, true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 12.185 */    assertEqual("captured.size == 3", "true", captured.size == 3, true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 12.186 */    assertEqual("captured[0] == \"src/\"", "true", captured[0] == "src/", true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 12.187 */    assertEqual("captured[1] == \"lib/\"", "true", captured[1] == "lib/", true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 12.188 */    assertEqual("captured[2] == \"test/\"", "true", captured[2] == "test/", true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 12.189 */}[0m
+    [36m| [0m[34m|[0m /* 12.190 */[0m
+    [36m| [0m[34m|[0m /* 12.191 */init() {[0m
+    [36m| [0m[34m|[0m /* 12.192 */}[0m
+    [36m| [0m[34m|[0m /* 12.193 */private func classConfiguration(): Configuration {[0m
+    [36m| [0m[34m|[0m /* 12.194 */    let configuration = Configuration()[0m
+    [36m| [0m[34m|[0m /* 12.195 */    [0m
+    [36m| [0m[34m|[0m /* 12.196 */    return configuration[0m
+    [36m| [0m[34m|[0m /* 12.197 */}[0m
+    [36m| [0m[34m|[0m /* 12.198 */public override func asTestSuite(): TestSuite {[0m
+    [36m| [0m[34m|[0m /* 12.199 */    [0m
+    [36m| [0m[34m|[0m /* 12.200 */    let suiteConfiguration = classConfiguration()[0m
+    [36m| [0m[34m|[0m /* 12.201 */    let suiteBuilder = TestSuite.builder("AppIntegrationTest").configure(suiteConfiguration)[0m
+    [36m| [0m[34m|[0m /* 12.202 */    [0m
+    [36m| [0m[34m|[0m /* 12.203 */    { => let caseConfig = Configuration()[0m
+    [36m| [0m[34m|[0m /* 12.204 */        [0m
+    [36m| [0m[34m|[0m /* 12.205 */        let testAppBuilderTestFunc = { => testAppBuilder();() }[0m
+    [36m| [0m[34m|[0m /* 12.206 */        suiteBuilder.add([0m
+    [36m| [0m[34m|[0m /* 12.207 */        UnitTestCase.create([0m
+    [36m| [0m[34m|[0m /* 12.208 */        "testAppBuilder",[0m
+    [36m| [0m[34m|[0m /* 12.209 */        configuration: caseConfig,[0m
+    [36m| [0m[34m|[0m /* 12.210 */        body: testAppBuilderTestFunc[0m
+    [36m| [0m[34m|[0m /* 12.211 */        )[0m
+    [36m| [0m[34m|[0m /* 12.212 */        )[0m
+    [36m| [0m[34m|[0m /* 12.213 */        [0m
+    [36m| [0m[34m|[0m /* 12.214 */    }()[0m
+    [36m| [0m[34m|[0m /* 12.215 */    [0m
+    [36m| [0m[34m|[0m /* 12.216 */    [0m
+    [36m| [0m[34m|[0m /* 12.217 */    { => let caseConfig = Configuration()[0m
+    [36m| [0m[34m|[0m /* 12.218 */        [0m
+    [36m| [0m[34m|[0m /* 12.219 */        let testMockRunHelpTestFunc = { => testMockRunHelp();() }[0m
+    [36m| [0m[34m|[0m /* 12.220 */        suiteBuilder.add([0m
+    [36m| [0m[34m|[0m /* 12.221 */        UnitTestCase.create([0m
+    [36m| [0m[34m|[0m /* 12.222 */        "testMockRunHelp",[0m
+    [36m| [0m[34m|[0m /* 12.223 */        configuration: caseConfig,[0m
+    [36m| [0m[34m|[0m /* 12.224 */        body: testMockRunHelpTestFunc[0m
+    [36m| [0m[34m|[0m /* 12.225 */        )[0m
+    [36m| [0m[34m|[0m /* 12.226 */        )[0m
+    [36m| [0m[34m|[0m /* 12.227 */        [0m
+    [36m| [0m[34m|[0m /* 12.228 */    }()[0m
+    [36m| [0m[34m|[0m /* 12.229 */    [0m
+    [36m| [0m[34m|[0m /* 12.230 */    [0m
+    [36m| [0m[34m|[0m /* 12.231 */    { => let caseConfig = Configuration()[0m
+    [36m| [0m[34m|[0m /* 12.232 */        [0m
+    [36m| [0m[34m|[0m /* 12.233 */        let testMockRunHelpShortTestFunc = { => testMockRunHelpShort();() }[0m
+    [36m| [0m[34m|[0m /* 12.234 */        suiteBuilder.add([0m
+    [36m| [0m[34m|[0m /* 12.235 */        UnitTestCase.create([0m
+    [36m| [0m[34m|[0m /* 12.236 */        "testMockRunHelpShort",[0m
+    [36m| [0m[34m|[0m /* 12.237 */        configuration: caseConfig,[0m
+    [36m| [0m[34m|[0m /* 12.238 */        body: testMockRunHelpShortTestFunc[0m
+    [36m| [0m[34m|[0m /* 12.239 */        )[0m
+    [36m| [0m[34m|[0m /* 12.240 */        )[0m
+    [36m| [0m[34m|[0m /* 12.241 */        [0m
+    [36m| [0m[34m|[0m /* 12.242 */    }()[0m
+    [36m| [0m[34m|[0m /* 12.243 */    [0m
+    [36m| [0m[34m|[0m /* 12.244 */    [0m
+    [36m| [0m[34m|[0m /* 12.245 */    { => let caseConfig = Configuration()[0m
+    [36m| [0m[34m|[0m /* 12.246 */        [0m
+    [36m| [0m[34m|[0m /* 12.247 */        let testMockRunVersionTestFunc = { => testMockRunVersion();() }[0m
+    [36m| [0m[34m|[0m /* 12.248 */        suiteBuilder.add([0m
+    [36m| [0m[34m|[0m /* 12.249 */        UnitTestCase.create([0m
+    [36m| [0m[34m|[0m /* 12.250 */        "testMockRunVersion",[0m
+    [36m| [0m[34m|[0m /* 12.251 */        configuration: caseConfig,[0m
+    [36m| [0m[34m|[0m /* 12.252 */        body: testMockRunVersionTestFunc[0m
+    [36m| [0m[34m|[0m /* 12.253 */        )[0m
+    [36m| [0m[34m|[0m /* 12.254 */        )[0m
+    [36m| [0m[34m|[0m /* 12.255 */        [0m
+    [36m| [0m[34m|[0m /* 12.256 */    }()[0m
+    [36m| [0m[34m|[0m /* 12.257 */    [0m
+    [36m| [0m[34m|[0m /* 12.258 */    [0m
+    [36m| [0m[34m|[0m /* 12.259 */    { => let caseConfig = Configuration()[0m
+    [36m| [0m[34m|[0m /* 12.260 */        [0m
+    [36m| [0m[34m|[0m /* 12.261 */        let testMockRunVersionShortTestFunc = { => testMockRunVersionShort();() }[0m
+    [36m| [0m[34m|[0m /* 12.262 */        suiteBuilder.add([0m
+    [36m| [0m[34m|[0m /* 12.263 */        UnitTestCase.create([0m
+    [36m| [0m[34m|[0m /* 12.264 */        "testMockRunVersionShort",[0m
+    [36m| [0m[34m|[0m /* 12.265 */        configuration: caseConfig,[0m
+    [36m| [0m[34m|[0m /* 12.266 */        body: testMockRunVersionShortTestFunc[0m
+    [36m| [0m[34m|[0m /* 12.267 */        )[0m
+    [36m| [0m[34m|[0m /* 12.268 */        )[0m
+    [36m| [0m[34m|[0m /* 12.269 */        [0m
+    [36m| [0m[34m|[0m /* 12.270 */    }()[0m
+    [36m| [0m[34m|[0m /* 12.271 */    [0m
+    [36m| [0m[34m|[0m /* 12.272 */    [0m
+    [36m| [0m[34m|[0m /* 12.273 */    { => let caseConfig = Configuration()[0m
+    [36m| [0m[34m|[0m /* 12.274 */        [0m
+    [36m| [0m[34m|[0m /* 12.275 */        let testMockRunSubcommandHelpTestFunc = { => testMockRunSubcommandHelp();() }[0m
+    [36m| [0m[34m|[0m /* 12.276 */        suiteBuilder.add([0m
+    [36m| [0m[34m|[0m /* 12.277 */        UnitTestCase.create([0m
+    [36m| [0m[34m|[0m /* 12.278 */        "testMockRunSubcommandHelp",[0m
+    [36m| [0m[34m|[0m /* 12.279 */        configuration: caseConfig,[0m
+    [36m| [0m[34m|[0m /* 12.280 */        body: testMockRunSubcommandHelpTestFunc[0m
+    [36m| [0m[34m|[0m /* 12.281 */        )[0m
+    [36m| [0m[34m|[0m /* 12.282 */        )[0m
+    [36m| [0m[34m|[0m /* 12.283 */        [0m
+    [36m| [0m[34m|[0m /* 12.284 */    }()[0m
+    [36m| [0m[34m|[0m /* 12.285 */    [0m
+    [36m| [0m[34m|[0m /* 12.286 */    [0m
+    [36m| [0m[34m|[0m /* 12.287 */    { => let caseConfig = Configuration()[0m
+    [36m| [0m[34m|[0m /* 12.288 */        [0m
+    [36m| [0m[34m|[0m /* 12.289 */        let testMockRunWithActionTestFunc = { => testMockRunWithAction();() }[0m
+    [36m| [0m[34m|[0m /* 12.290 */        suiteBuilder.add([0m
+    [36m| [0m[34m|[0m /* 12.291 */        UnitTestCase.create([0m
+    [36m| [0m[34m|[0m /* 12.292 */        "testMockRunWithAction",[0m
+    [36m| [0m[34m|[0m /* 12.293 */        configuration: caseConfig,[0m
+    [36m| [0m[34m|[0m /* 12.294 */        body: testMockRunWithActionTestFunc[0m
+    [36m| [0m[34m|[0m /* 12.295 */        )[0m
+    [36m| [0m[34m|[0m /* 12.296 */        )[0m
+    [36m| [0m[34m|[0m /* 12.297 */        [0m
+    [36m| [0m[34m|[0m /* 12.298 */    }()[0m
+    [36m| [0m[34m|[0m /* 12.299 */    [0m
+    [36m| [0m[34m|[0m /* 12.300 */    [0m
+    [36m| [0m[34m|[0m /* 12.301 */    { => let caseConfig = Configuration()[0m
+    [36m| [0m[34m|[0m /* 12.302 */        [0m
+    [36m| [0m[34m|[0m /* 12.303 */        let testMockRunParseErrorTestFunc = { => testMockRunParseError();() }[0m
+    [36m| [0m[34m|[0m /* 12.304 */        suiteBuilder.add([0m
+    [36m| [0m[34m|[0m /* 12.305 */        UnitTestCase.create([0m
+    [36m| [0m[34m|[0m /* 12.306 */        "testMockRunParseError",[0m
+    [36m| [0m[34m|[0m /* 12.307 */        configuration: caseConfig,[0m
+    [36m| [0m[34m|[0m /* 12.308 */        body: testMockRunParseErrorTestFunc[0m
+    [36m| [0m[34m|[0m /* 12.309 */        )[0m
+    [36m| [0m[34m|[0m /* 12.310 */        )[0m
+    [36m| [0m[34m|[0m /* 12.311 */        [0m
+    [36m| [0m[34m|[0m /* 12.312 */    }()[0m
+    [36m| [0m[34m|[0m /* 12.313 */    [0m
+    [36m| [0m[34m|[0m /* 12.314 */    [0m
+    [36m| [0m[34m|[0m /* 12.315 */    { => let caseConfig = Configuration()[0m
+    [36m| [0m[34m|[0m /* 12.316 */        [0m
+    [36m| [0m[34m|[0m /* 12.317 */        let testMockRunRequiredFlagErrorTestFunc = { => testMockRunRequiredFlagError();() }[0m
+    [36m| [0m[34m|[0m /* 12.318 */        suiteBuilder.add([0m
+    [36m| [0m[34m|[0m /* 12.319 */        UnitTestCase.create([0m
+    [36m| [0m[34m|[0m /* 12.320 */        "testMockRunRequiredFlagError",[0m
+    [36m| [0m[34m|[0m /* 12.321 */        configuration: caseConfig,[0m
+    [36m| [0m[34m|[0m /* 12.322 */        body: testMockRunRequiredFlagErrorTestFunc[0m
+    [36m| [0m[34m|[0m /* 12.323 */        )[0m
+    [36m| [0m[34m|[0m /* 12.324 */        )[0m
+    [36m| [0m[34m|[0m /* 12.325 */        [0m
+    [36m| [0m[34m|[0m /* 12.326 */    }()[0m
+    [36m| [0m[34m|[0m /* 12.327 */    [0m
+    [36m| [0m[34m|[0m /* 12.328 */    [0m
+    [36m| [0m[34m|[0m /* 12.329 */    { => let caseConfig = Configuration()[0m
+    [36m| [0m[34m|[0m /* 12.330 */        [0m
+    [36m| [0m[34m|[0m /* 12.331 */        let testMockRunTypedFlagErrorTestFunc = { => testMockRunTypedFlagError();() }[0m
+    [36m| [0m[34m|[0m /* 12.332 */        suiteBuilder.add([0m
+    [36m| [0m[34m|[0m /* 12.333 */        UnitTestCase.create([0m
+    [36m| [0m[34m|[0m /* 12.334 */        "testMockRunTypedFlagError",[0m
+    [36m| [0m[34m|[0m /* 12.335 */        configuration: caseConfig,[0m
+    [36m| [0m[34m|[0m /* 12.336 */        body: testMockRunTypedFlagErrorTestFunc[0m
+    [36m| [0m[34m|[0m /* 12.337 */        )[0m
+    [36m| [0m[34m|[0m /* 12.338 */        )[0m
+    [36m| [0m[34m|[0m /* 12.339 */        [0m
+    [36m| [0m[34m|[0m /* 12.340 */    }()[0m
+    [36m| [0m[34m|[0m /* 12.341 */    [0m
+    [36m| [0m[34m|[0m /* 12.342 */    [0m
+    [36m| [0m[34m|[0m /* 12.343 */    { => let caseConfig = Configuration()[0m
+    [36m| [0m[34m|[0m /* 12.344 */        [0m
+    [36m| [0m[34m|[0m /* 12.345 */        let testMockRunComplexScenarioTestFunc = { => testMockRunComplexScenario();() }[0m
+    [36m| [0m[34m|[0m /* 12.346 */        suiteBuilder.add([0m
+    [36m| [0m[34m|[0m /* 12.347 */        UnitTestCase.create([0m
+    [36m| [0m[34m|[0m /* 12.348 */        "testMockRunComplexScenario",[0m
+    [36m| [0m[34m|[0m /* 12.349 */        configuration: caseConfig,[0m
+    [36m| [0m[34m|[0m /* 12.350 */        body: testMockRunComplexScenarioTestFunc[0m
+    [36m| [0m[34m|[0m /* 12.351 */        )[0m
+    [36m| [0m[34m|[0m /* 12.352 */        )[0m
+    [36m| [0m[34m|[0m /* 12.353 */        [0m
+    [36m| [0m[34m|[0m /* 12.354 */    }()[0m
+    [36m| [0m[34m|[0m /* 12.355 */    [0m
+    [36m| [0m[34m|[0m /* 12.356 */    [0m
+    [36m| [0m[34m|[0m /* 12.357 */    { => let caseConfig = Configuration()[0m
+    [36m| [0m[34m|[0m /* 12.358 */        [0m
+    [36m| [0m[34m|[0m /* 12.359 */        let testMockRunSubcommandByAliasTestFunc = { => testMockRunSubcommandByAlias();() }[0m
+    [36m| [0m[34m|[0m /* 12.360 */        suiteBuilder.add([0m
+    [36m| [0m[34m|[0m /* 12.361 */        UnitTestCase.create([0m
+    [36m| [0m[34m|[0m /* 12.362 */        "testMockRunSubcommandByAlias",[0m
+    [36m| [0m[34m|[0m /* 12.363 */        configuration: caseConfig,[0m
+    [36m| [0m[34m|[0m /* 12.364 */        body: testMockRunSubcommandByAliasTestFunc[0m
+    [36m| [0m[34m|[0m /* 12.365 */        )[0m
+    [36m| [0m[34m|[0m /* 12.366 */        )[0m
+    [36m| [0m[34m|[0m /* 12.367 */        [0m
+    [36m| [0m[34m|[0m /* 12.368 */    }()[0m
+    [36m| [0m[34m|[0m /* 12.369 */    [0m
+    [36m| [0m[34m|[0m /* 12.370 */    [0m
+    [36m| [0m[34m|[0m /* 12.371 */    { => let caseConfig = Configuration()[0m
+    [36m| [0m[34m|[0m /* 12.372 */        [0m
+    [36m| [0m[34m|[0m /* 12.373 */        let testHelpContainsOptionsTestFunc = { => testHelpContainsOptions();() }[0m
+    [36m| [0m[34m|[0m /* 12.374 */        suiteBuilder.add([0m
+    [36m| [0m[34m|[0m /* 12.375 */        UnitTestCase.create([0m
+    [36m| [0m[34m|[0m /* 12.376 */        "testHelpContainsOptions",[0m
+    [36m| [0m[34m|[0m /* 12.377 */        configuration: caseConfig,[0m
+    [36m| [0m[34m|[0m /* 12.378 */        body: testHelpContainsOptionsTestFunc[0m
+    [36m| [0m[34m|[0m /* 12.379 */        )[0m
+    [36m| [0m[34m|[0m /* 12.380 */        )[0m
+    [36m| [0m[34m|[0m /* 12.381 */        [0m
+    [36m| [0m[34m|[0m /* 12.382 */    }()[0m
+    [36m| [0m[34m|[0m /* 12.383 */    [0m
+    [36m| [0m[34m|[0m /* 12.384 */    [0m
+    [36m| [0m[34m|[0m /* 12.385 */    { => let caseConfig = Configuration()[0m
+    [36m| [0m[34m|[0m /* 12.386 */        [0m
+    [36m| [0m[34m|[0m /* 12.387 */        let testHelpContainsArgumentsTestFunc = { => testHelpContainsArguments();() }[0m
+    [36m| [0m[34m|[0m /* 12.388 */        suiteBuilder.add([0m
+    [36m| [0m[34m|[0m /* 12.389 */        UnitTestCase.create([0m
+    [36m| [0m[34m|[0m /* 12.390 */        "testHelpContainsArguments",[0m
+    [36m| [0m[34m|[0m /* 12.391 */        configuration: caseConfig,[0m
+    [36m| [0m[34m|[0m /* 12.392 */        body: testHelpContainsArgumentsTestFunc[0m
+    [36m| [0m[34m|[0m /* 12.393 */        )[0m
+    [36m| [0m[34m|[0m /* 12.394 */        )[0m
+    [36m| [0m[34m|[0m /* 12.395 */        [0m
+    [36m| [0m[34m|[0m /* 12.396 */    }()[0m
+    [36m| [0m[34m|[0m /* 12.397 */    [0m
+    [36m| [0m[34m|[0m /* 12.398 */    [0m
+    [36m| [0m[34m|[0m /* 12.399 */    { => let caseConfig = Configuration()[0m
+    [36m| [0m[34m|[0m /* 12.400 */        [0m
+    [36m| [0m[34m|[0m /* 12.401 */        let testNoActionShowsHelpTestFunc = { => testNoActionShowsHelp();() }[0m
+    [36m| [0m[34m|[0m /* 12.402 */        suiteBuilder.add([0m
+    [36m| [0m[34m|[0m /* 12.403 */        UnitTestCase.create([0m
+    [36m| [0m[34m|[0m /* 12.404 */        "testNoActionShowsHelp",[0m
+    [36m| [0m[34m|[0m /* 12.405 */        configuration: caseConfig,[0m
+    [36m| [0m[34m|[0m /* 12.406 */        body: testNoActionShowsHelpTestFunc[0m
+    [36m| [0m[34m|[0m /* 12.407 */        )[0m
+    [36m| [0m[34m|[0m /* 12.408 */        )[0m
+    [36m| [0m[34m|[0m /* 12.409 */        [0m
+    [36m| [0m[34m|[0m /* 12.410 */    }()[0m
+    [36m| [0m[34m|[0m /* 12.411 */    [0m
+    [36m| [0m[34m|[0m /* 12.412 */    [0m
+    [36m| [0m[34m|[0m /* 12.413 */    { => let caseConfig = Configuration()[0m
+    [36m| [0m[34m|[0m /* 12.414 */        [0m
+    [36m| [0m[34m|[0m /* 12.415 */        let testDoubleDashInMockRunTestFunc = { => testDoubleDashInMockRun();() }[0m
+    [36m| [0m[34m|[0m /* 12.416 */        suiteBuilder.add([0m
+    [36m| [0m[34m|[0m /* 12.417 */        UnitTestCase.create([0m
+    [36m| [0m[34m|[0m /* 12.418 */        "testDoubleDashInMockRun",[0m
+    [36m| [0m[34m|[0m /* 12.419 */        configuration: caseConfig,[0m
+    [36m| [0m[34m|[0m /* 12.420 */        body: testDoubleDashInMockRunTestFunc[0m
+    [36m| [0m[34m|[0m /* 12.421 */        )[0m
+    [36m| [0m[34m|[0m /* 12.422 */        )[0m
+    [36m| [0m[34m|[0m /* 12.423 */        [0m
+    [36m| [0m[34m|[0m /* 12.424 */    }()[0m
+    [36m| [0m[34m|[0m /* 12.425 */    [0m
+    [36m| [0m[34m|[0m /* 12.426 */    [0m
+    [36m| [0m[34m|[0m /* 12.427 */    { => let caseConfig = Configuration()[0m
+    [36m| [0m[34m|[0m /* 12.428 */        [0m
+    [36m| [0m[34m|[0m /* 12.429 */        let testMockRunBatchCommandsTestFunc = { => testMockRunBatchCommands();() }[0m
+    [36m| [0m[34m|[0m /* 12.430 */        suiteBuilder.add([0m
+    [36m| [0m[34m|[0m /* 12.431 */        UnitTestCase.create([0m
+    [36m| [0m[34m|[0m /* 12.432 */        "testMockRunBatchCommands",[0m
+    [36m| [0m[34m|[0m /* 12.433 */        configuration: caseConfig,[0m
+    [36m| [0m[34m|[0m /* 12.434 */        body: testMockRunBatchCommandsTestFunc[0m
+    [36m| [0m[34m|[0m /* 12.435 */        )[0m
+    [36m| [0m[34m|[0m /* 12.436 */        )[0m
+    [36m| [0m[34m|[0m /* 12.437 */        [0m
+    [36m| [0m[34m|[0m /* 12.438 */    }()[0m
+    [36m| [0m[34m|[0m /* 12.439 */    [0m
+    [36m| [0m[34m|[0m /* 12.440 */    [0m
+    [36m| [0m[34m|[0m /* 12.441 */    { => let caseConfig = Configuration()[0m
+    [36m| [0m[34m|[0m /* 12.442 */        [0m
+    [36m| [0m[34m|[0m /* 12.443 */        let testMockRunAppendActionTestFunc = { => testMockRunAppendAction();() }[0m
+    [36m| [0m[34m|[0m /* 12.444 */        suiteBuilder.add([0m
+    [36m| [0m[34m|[0m /* 12.445 */        UnitTestCase.create([0m
+    [36m| [0m[34m|[0m /* 12.446 */        "testMockRunAppendAction",[0m
+    [36m| [0m[34m|[0m /* 12.447 */        configuration: caseConfig,[0m
+    [36m| [0m[34m|[0m /* 12.448 */        body: testMockRunAppendActionTestFunc[0m
+    [36m| [0m[34m|[0m /* 12.449 */        )[0m
+    [36m| [0m[34m|[0m /* 12.450 */        )[0m
+    [36m| [0m[34m|[0m /* 12.451 */        [0m
+    [36m| [0m[34m|[0m /* 12.452 */    }()[0m
+    [36m| [0m[34m|[0m /* 12.453 */    [0m
+    [36m| [0m[34m|[0m /* 12.454 */    return suiteBuilder.build()[0m
+    [36m| [0m[34m|[0m /* 12.455 */}[0m
+    [36m| [0m[34m|[0m /* 12.456 */private func inheritedFromClassAnnotatedByTestTemplate < T >(): TestSuite where T <: TestClass {[0m
+    [36m| [0m[34m|[0m /* 12.457 */    throw Exception("Unreachable code")[0m
+    [36m| [0m[34m|[0m /* 12.458 */}[0m
+    [36m| [0m[34m|[0m /* 12.459 */}[0m
+    [36m| [0m[34m|[0m /* 12.460 */[0m
+    [36m| [0m[34m|[0m /* 12.461 */[0m
+    [36m| [0m[34m|[0m /* 12.462 */interface TestPackageExtension_AppIntegrationTest {[0m
+    [36m| [0m[34m|[0m /* 12.463 */func registerAppIntegrationTest(): Unit[0m
+    [36m| [0m[34m|[0m /* 12.464 */}[0m
+    [36m| [0m[34m|[0m /* 12.465 */extend TestPackage <: TestPackageExtension_AppIntegrationTest {[0m
+    [36m| [0m[34m|[0m /* 12.466 */@Attribute[TEST_REGISTER][0m
+    [36m| [0m[34m|[0m /* 12.467 */public func registerAppIntegrationTest() {[0m
+    [36m| [0m[34m|[0m /* 12.468 */    registerSuite({ => AppIntegrationTest().asTestSuite() })[0m
+    [36m| [0m[34m|[0m /* 12.469 */}[0m
+    [36m| [0m[34m|[0m /* 12.470 */}[0m
+    [36m| [0m[34m|[0m /* 12.471 */[0m
     [36m| [0m[34m|[0m[34m_[0m[34m___________^[0m
     [36m| [0m
 [34mnote[0m: which is expanded as follows
    [36m| [0m
-   [36m| [0m/* 12.58 */        let app = App("tool").command(Command("greet").flag(Flag("name", "n").defaultValue("World")).action({ ctx => 0 }))[0m
-   [36m| [0m                                                                                                                         [34m^^^ [0m
+   [36m| [0m/* 12.58 */        let app = App("tool").command(Command("greet").flag(Flag("name").short(r'n').defaultValue("World")).action({ ctx => 0 }))[0m
+   [36m| [0m                                                                                                                                [34m^^^ [0m
    [36m| [0m
 
 [33mwarning[0m: unused variable:'ctx'
@@ -1085,13 +1247,82 @@
     [36m| [0m [34m_[0m[34m^[0m
 [36m13[0m  [36m| [0m[34m|[0m class AppIntegrationTest {[0m
     [36m| [0m[34m|[0m ...[0m
-[36m249[0m [36m| [0m[34m|[0m }[0m
+[36m288[0m [36m| [0m[34m|[0m }[0m
     [36m| [0m[34m|[0m[34m_[0m[34m^[0m
     [36m| [0m
 [34mnote[0m: which is expanded as follows
     [36m| [0m
     [36m| [0m/* 12.112 */        let app = App("tool").command(Command("install").alias("i").action({ ctx => 0 }))[0m
     [36m| [0m                                                                                         [34m^^^ [0m
+    [36m| [0m
+
+[33mwarning[0m: unused variable:'ctx'
+   [36m==>[0m /home/otto/文档/Project/cli/src/test/integration_test.cj:253:63:
+    [36m| [0m
+[36m253[0m [36m| [0m            Command("lint").description("Lint code").action({ ctx => 0 }),[0m
+    [36m| [0m                                                              [33m^ unused variable[0m
+    [36m| [0m
+    [36m#[0m [0mnote[0m: this warning can be suppressed by setting the compiler option `-Woff unused`
+[34mnote[0m: the warning occurs after the macro is expanded
+   [36m==>[0m /home/otto/文档/Project/cli/src/test/integration_test.cj:12:1:
+    [36m| [0m
+[36m12[0m  [36m| [0m  @Test[0m
+    [36m| [0m [34m_[0m[34m^[0m
+[36m13[0m  [36m| [0m[34m|[0m class AppIntegrationTest {[0m
+    [36m| [0m[34m|[0m ...[0m
+[36m288[0m [36m| [0m[34m|[0m }[0m
+    [36m| [0m[34m|[0m[34m_[0m[34m^[0m
+    [36m| [0m
+[34mnote[0m: which is expanded as follows
+    [36m| [0m
+    [36m| [0m/* 12.166 */        let app = App("tool").commands([Command("lint").description("Lint code").action({ ctx => 0 }), Command("fmt").description("Format code").action({ ctx => 0 }), Command("test").description("Run tests").action({ ctx => 0 })])[0m
+    [36m| [0m                                                                                                      [34m^^^ [0m
+    [36m| [0m
+
+[33mwarning[0m: unused variable:'ctx'
+   [36m==>[0m /home/otto/文档/Project/cli/src/test/integration_test.cj:254:64:
+    [36m| [0m
+[36m254[0m [36m| [0m            Command("fmt").description("Format code").action({ ctx => 0 }),[0m
+    [36m| [0m                                                               [33m^ unused variable[0m
+    [36m| [0m
+    [36m#[0m [0mnote[0m: this warning can be suppressed by setting the compiler option `-Woff unused`
+[34mnote[0m: the warning occurs after the macro is expanded
+   [36m==>[0m /home/otto/文档/Project/cli/src/test/integration_test.cj:12:1:
+    [36m| [0m
+[36m12[0m  [36m| [0m  @Test[0m
+    [36m| [0m [34m_[0m[34m^[0m
+[36m13[0m  [36m| [0m[34m|[0m class AppIntegrationTest {[0m
+    [36m| [0m[34m|[0m ...[0m
+[36m288[0m [36m| [0m[34m|[0m }[0m
+    [36m| [0m[34m|[0m[34m_[0m[34m^[0m
+    [36m| [0m
+[34mnote[0m: which is expanded as follows
+    [36m| [0m
+    [36m| [0m/* 12.166 */        let app = App("tool").commands([Command("lint").description("Lint code").action({ ctx => 0 }), Command("fmt").description("Format code").action({ ctx => 0 }), Command("test").description("Run tests").action({ ctx => 0 })])[0m
+    [36m| [0m                                                                                                                                                                      [34m^^^ [0m
+    [36m| [0m
+
+[33mwarning[0m: unused variable:'ctx'
+   [36m==>[0m /home/otto/文档/Project/cli/src/test/integration_test.cj:255:63:
+    [36m| [0m
+[36m255[0m [36m| [0m            Command("test").description("Run tests").action({ ctx => 0 })[0m
+    [36m| [0m                                                              [33m^ unused variable[0m
+    [36m| [0m
+    [36m#[0m [0mnote[0m: this warning can be suppressed by setting the compiler option `-Woff unused`
+[34mnote[0m: the warning occurs after the macro is expanded
+   [36m==>[0m /home/otto/文档/Project/cli/src/test/integration_test.cj:12:1:
+    [36m| [0m
+[36m12[0m  [36m| [0m  @Test[0m
+    [36m| [0m [34m_[0m[34m^[0m
+[36m13[0m  [36m| [0m[34m|[0m class AppIntegrationTest {[0m
+    [36m| [0m[34m|[0m ...[0m
+[36m288[0m [36m| [0m[34m|[0m }[0m
+    [36m| [0m[34m|[0m[34m_[0m[34m^[0m
+    [36m| [0m
+[34mnote[0m: which is expanded as follows
+    [36m| [0m
+    [36m| [0m/* 12.166 */        let app = App("tool").commands([Command("lint").description("Lint code").action({ ctx => 0 }), Command("fmt").description("Format code").action({ ctx => 0 }), Command("test").description("Run tests").action({ ctx => 0 })])[0m
+    [36m| [0m                                                                                                                                                                                                                                     [34m^^^ [0m
     [36m| [0m
 
 [33mwarning[0m: unused variable:'ctx'
@@ -1108,7 +1339,7 @@
     [36m| [0m [34m_[0m[34m^[0m
 [36m13[0m  [36m| [0m[34m|[0m class ParserTest {[0m
     [36m| [0m[34m|[0m ...[0m
-[36m311[0m [36m| [0m[34m|[0m }[0m
+[36m382[0m [36m| [0m[34m|[0m }[0m
     [36m| [0m[34m|[0m[34m_[0m[34m^[0m
     [36m| [0m
 [34mnote[0m: which is expanded as follows
@@ -1117,4 +1348,4 @@
     [36m| [0m                                                                                              [34m^^^ [0m
     [36m| [0m
 
-10 warnings generated, 10 warnings printed.
+11 warnings generated, 11 warnings printed.

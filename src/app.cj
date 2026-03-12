@@ -17,94 +17,73 @@ public class TestResult {
 
 // CLI 应用入口
 public class App {
-    private let _rootCommand: Command
-    private let _parser: Parser = Parser()
+    let _rootCommand: Command
+    let _parser: Parser = Parser()
 
     public init(name: String) {
-        this._rootCommand = Command(name)
+        _rootCommand = Command(name)
     }
 
-    // Builder 方法（代理到 rootCommand）
+    // Builder 方法：统一返回 This
 
-    public func description(desc: String): App {
-        this._rootCommand.description(desc)
-        return this
+    public func description(desc: String): This {
+        _rootCommand.description(desc)
+        this
     }
 
-    public func version(ver: String): App {
-        this._rootCommand.version(ver)
-        return this
+    public func version(ver: String): This {
+        _rootCommand.version(ver)
+        this
     }
 
-    public func author(auth: String): App {
-        this._rootCommand.author(auth)
-        return this
+    public func author(auth: String): This {
+        _rootCommand.author(auth)
+        this
     }
 
-    public func command(subCmd: Command): App {
-        this._rootCommand.command(subCmd)
-        return this
+    public func command(subCmd: Command): This {
+        _rootCommand.command(subCmd)
+        this
     }
 
-    public func flag(f: Flag): App {
-        this._rootCommand.flag(f)
-        return this
+    public func commands(subs: Array<Command>): This {
+        _rootCommand.commands(subs)
+        this
     }
 
-    public func argument(arg: Argument): App {
-        this._rootCommand.argument(arg)
-        return this
+    public func flag(f: Flag): This {
+        _rootCommand.flag(f)
+        this
     }
 
-    public func action(handler: ActionHandler): App {
-        this._rootCommand.action(handler)
-        return this
+    public func flags(fs: Array<Flag>): This {
+        _rootCommand.flags(fs)
+        this
+    }
+
+    public func argument(arg: Argument): This {
+        _rootCommand.argument(arg)
+        this
+    }
+
+    public func arguments(args: Array<Argument>): This {
+        _rootCommand.arguments(args)
+        this
+    }
+
+    public func action(handler: ActionHandler): This {
+        _rootCommand.action(handler)
+        this
     }
 
     public func getRootCommand(): Command {
-        return this._rootCommand
+        _rootCommand
     }
 
-    // 内存级沙箱执行接口：模拟运行 CLI 命令
+    // 内存级沙箱执行接口：在解析前自动注入 --help / --version 的 Terminate Flag
     public func mockRun(args: Array<String>): TestResult {
-        var stdoutBuf = ""
-        var stderrBuf = ""
-
-        // 特殊内置命令处理
-        if (args.size > 0) {
-            // --help / -h
-            if (args[0] == "--help" || args[0] == "-h") {
-                let helpText = generateHelp(_rootCommand)
-                return TestResult(0, "", helpText)
-            }
-            // --version / -V
-            if (args[0] == "--version" || args[0] == "-V") {
-                let versionText = generateVersion(_rootCommand)
-                return TestResult(0, versionText, "")
-            }
-        }
-
-        // 检查子命令的 --help
-        // 先尝试路由子命令，再检查是否有 --help
-        var tempCmd = _rootCommand
-        var helpIdx: Int64 = -1
-        var i: Int64 = 0
-        while (i < args.size) {
-            if (args[i] == "--help" || args[i] == "-h") {
-                helpIdx = i
-                break
-            }
-            match (tempCmd.findSubcommand(args[i])) {
-                case Some(sub) =>
-                    tempCmd = sub
-                case None => break
-            }
-            i++
-        }
-        if (helpIdx >= 0) {
-            let helpText = generateHelp(tempCmd)
-            return TestResult(0, "", helpText)
-        }
+        // 自动注入 --help / --version 为 Terminate Flag
+        injectBuiltinFlags(_rootCommand)
 
         // 正式解析
         try {
@@ -114,29 +93,68 @@ public class App {
             match (matchedCmd.getAction()) {
                 case Some(handler) =>
                     let exitCode = handler(ctx)
-                    return TestResult(exitCode, stdoutBuf, stderrBuf)
+                    TestResult(exitCode, "", "")
                 case None =>
                     // 无动作处理器：显示帮助
                     let helpText = generateHelp(matchedCmd)
-                    return TestResult(0, "", helpText)
+                    TestResult(0, "", helpText)
+            }
+        } catch (e: TerminateException) {
+            // Terminate 动作：执行回调获取输出内容
+            let output = e.execute()
+            // 帮助 => stderr；版本 => stdout
+            if (output.contains("Usage:")) {
+                TestResult(0, "", output)
+            } else {
+                TestResult(0, output, "")
             }
         } catch (e: CliException) {
-            // 框架层异常：格式化错误输出，退出码 2
-            stderrBuf = formatError(e, args)
-            return TestResult(2, "", stderrBuf)
+            let stderrBuf = formatError(e, args)
+            TestResult(2, "", stderrBuf)
         } catch (e: Exception) {
-            // 业务层通用异常：退出码 1
-            stderrBuf = "error: ${e.message}\n"
-            return TestResult(1, "", stderrBuf)
+            let stderrBuf = "error: ${e.message}\n"
+            TestResult(1, "", stderrBuf)
         }
     }
 
-    // 生成帮助文档
-    func generateHelp(cmd: Command): String {
+    // 递归注入内置 --help / --version flags
+    func injectBuiltinFlags(cmd: Command): Unit {
+        // 检查是否已注入（避免重复注入）
+        let hasHelp = cmd.findFlag("help").isSome()
+        if (!hasHelp) {
+            let helpCmd = cmd  // 捕获当前命令用于闭包
+            cmd.flag(
+                Flag("help").short(r'h')
+                    .description("Print help")
+                    .action(Terminate({ => generateHelp(helpCmd) }))
+            )
+        }
+
+        let hasVersion = cmd.findFlag("version").isSome()
+        if (!hasVersion && cmd.getVersion().isSome()) {
+            let verCmd = cmd
+            cmd.flag(
+                Flag("version").short(r'V')
+                    .description("Print version")
+                    .action(Terminate({ => generateVersion(verCmd) }))
+            )
+        }
+
+        // 递归注入子命令
+        for (sub in cmd.getSubcommands()) {
+            // 子命令继承根命令的 version（如果子命令没有自己的 version）
+            injectBuiltinFlags(sub)
+        }
+    }
+
+    // 生成帮助文档（支持分组和动态对齐）
+    public func generateHelp(cmd: Command): String {
         var help = ""
-        // 标题
-        if (cmd.getDescription().size > 0) {
-            help = help + cmd.getDescription() + "\n\n"
+        // 标题（about）
+        match (cmd.getDescription()) {
+            case Some(desc) =>
+                help = help + desc + "\n\n"
+            case None => ()
         }
 
         // Usage 行
@@ -149,113 +167,187 @@ public class App {
             help = help + " [OPTIONS]"
         }
         for (arg in cmd.getArguments()) {
-            if (arg.isVariadic()) {
-                help = help + " [${arg.getName()}...]"
-            } else if (arg.isRequired()) {
-                help = help + " <${arg.getName()}>"
-            } else {
-                help = help + " [${arg.getName()}]"
+            match (arg.getDescription()) {
+                case _ =>
+                    if (arg.isVariadic()) {
+                        help = help + " [${arg.getName()}...]"
+                    } else if (arg.isRequired()) {
+                        help = help + " <${arg.getName()}>"
+                    } else {
+                        help = help + " [${arg.getName()}]"
+                    }
             }
         }
         help = help + "\n"
 
-        // 子命令列表
-        if (cmd.getSubcommands().size > 0) {
-            help = help + "\nCommands:\n"
-            for (sub in cmd.getSubcommands()) {
-                var line = "  ${sub.getName()}"
+        // 子命令列表（支持分组）
+        let subcommands = cmd.getSubcommands()
+        if (subcommands.size > 0) {
+            // 计算动态对齐宽度
+            var maxWidth: Int64 = 0
+            for (sub in subcommands) {
+                var w = sub.getName().size
                 if (sub.getAliases().size > 0) {
-                    line = line + " ("
+                    for (a in sub.getAliases()) {
+                        w = w + 2 + a.size  // ", alias"
+                    }
+                }
+                if (w > maxWidth) {
+                    maxWidth = w
+                }
+            }
+
+            help = help + "\nCommands:\n"
+            for (sub in subcommands) {
+                var nameStr = sub.getName()
+                if (sub.getAliases().size > 0) {
+                    nameStr = nameStr + " ("
                     var first = true
                     for (a in sub.getAliases()) {
                         if (!first) {
-                            line = line + ", "
+                            nameStr = nameStr + ", "
                         }
-                        line = line + a
+                        nameStr = nameStr + a
                         first = false
                     }
-                    line = line + ")"
+                    nameStr = nameStr + ")"
                 }
-                if (sub.getDescription().size > 0) {
-                    // 填充到对齐位置
-                    while (line.size < 24) {
-                        line = line + " "
-                    }
-                    line = line + sub.getDescription()
+
+                var line = "  " + nameStr
+                match (sub.getDescription()) {
+                    case Some(desc) =>
+                        let padTo = maxWidth + 6  // 2(indent) + 4(gap)
+                        while (line.size < padTo) {
+                            line = line + " "
+                        }
+                        line = line + desc
+                    case None => ()
                 }
                 help = help + line + "\n"
             }
         }
 
-        // 选项列表
-        if (cmd.getFlags().size > 0) {
-            help = help + "\nOptions:\n"
-            for (f in cmd.getFlags()) {
-                var line = "  "
-                if (f.getShortName().size > 0) {
-                    line = line + "-${f.getShortName()}, "
-                } else {
-                    line = line + "    "
+        // 选项列表（支持分组）
+        let flags = cmd.getFlags()
+        if (flags.size > 0) {
+            // 按 group 分组
+            let groups = HashMap<String, ArrayList<Flag>>()
+            let groupOrder = ArrayList<String>()
+            for (f in flags) {
+                let g = f.getGroup()
+                if (!groups.contains(g)) {
+                    groups[g] = ArrayList<Flag>()
+                    groupOrder.add(g)
                 }
-                line = line + "--${f.getLongName()}"
-                if (!f.isBoolFlag()) {
-                    line = line + " <VALUE>"
+                groups[g].add(f)
+            }
+
+            for (groupName in groupOrder) {
+                help = help + "\n${groupName}:\n"
+                match (groups.get(groupName)) {
+                    case Some(groupFlags) =>
+                        // 计算动态对齐宽度
+                        var maxFlagWidth: Int64 = 0
+                        for (f in groupFlags) {
+                            var w: Int64 = 0
+                            match (f.getShortName()) {
+                                case Some(_) => w = 4  // "-x, "
+                                case None => w = 4     // "    "
+                            }
+                            w = w + 2 + f.getLongName().size  // "--name"
+                            if (!f.isBoolFlag() && !f.isTerminate()) {
+                                w = w + 8  // " <VALUE>"
+                            }
+                            if (w > maxFlagWidth) {
+                                maxFlagWidth = w
+                            }
+                        }
+
+                        for (f in groupFlags) {
+                            var line = "  "
+                            match (f.getShortName()) {
+                                case Some(s) =>
+                                    line = line + "-${s}, "
+                                case None =>
+                                    line = line + "    "
+                            }
+                            line = line + "--${f.getLongName()}"
+                            if (!f.isBoolFlag() && !f.isTerminate()) {
+                                line = line + " <VALUE>"
+                            }
+                            match (f.getDescription()) {
+                                case Some(desc) =>
+                                    let padTo = maxFlagWidth + 6  // 2(indent) + 4(gap)
+                                    while (line.size < padTo) {
+                                        line = line + " "
+                                    }
+                                    line = line + desc
+                                case None => ()
+                            }
+                            match (f.getDefaultValue()) {
+                                case Some(dv) where !f.isBoolFlag() && !f.isTerminate() =>
+                                    line = line + " [default: ${dv}]"
+                                case _ => ()
+                            }
+                            help = help + line + "\n"
+                        }
+                    case None => ()
                 }
-                if (f.getDescription().size > 0) {
-                    while (line.size < 28) {
-                        line = line + " "
-                    }
-                    line = line + f.getDescription()
-                }
-                if (f.getDefaultValue().size > 0 && !f.isBoolFlag()) {
-                    line = line + " [default: ${f.getDefaultValue()}]"
-                }
-                help = help + line + "\n"
             }
         }
 
         // 参数列表
-        if (cmd.getArguments().size > 0) {
+        let args = cmd.getArguments()
+        if (args.size > 0) {
             help = help + "\nArguments:\n"
-            for (arg in cmd.getArguments()) {
-                var line = "  "
+
+            var maxArgWidth: Int64 = 0
+            for (arg in args) {
+                var w = arg.getName().size
                 if (arg.isVariadic()) {
-                    line = line + "${arg.getName()}..."
-                } else {
-                    line = line + arg.getName()
+                    w = w + 3  // "..."
                 }
-                if (arg.getDescription().size > 0) {
-                    while (line.size < 24) {
-                        line = line + " "
-                    }
-                    line = line + arg.getDescription()
+                if (w > maxArgWidth) {
+                    maxArgWidth = w
+                }
+            }
+
+            for (arg in args) {
+                var nameStr = arg.getName()
+                if (arg.isVariadic()) {
+                    nameStr = nameStr + "..."
+                }
+                var line = "  " + nameStr
+                match (arg.getDescription()) {
+                    case Some(desc) =>
+                        let padTo = maxArgWidth + 6
+                        while (line.size < padTo) {
+                            line = line + " "
+                        }
+                        line = line + desc
+                    case None => ()
                 }
                 help = help + line + "\n"
             }
         }
 
-        // 内置帮助选项提示
-        help = help + "\n  -h, --help                Print help\n"
-        if (cmd.getVersion().size > 0) {
-            help = help + "  -V, --version             Print version\n"
-        }
-
-        return help
+        help
     }
 
     // 生成版本信息
     func generateVersion(cmd: Command): String {
         var ver = cmd.getName()
-        if (cmd.getVersion().size > 0) {
-            ver = ver + " ${cmd.getVersion()}"
+        match (cmd.getVersion()) {
+            case Some(v) =>
+                ver = ver + " ${v}"
+            case None => ()
         }
-        return ver + "\n"
+        ver + "\n"
     }
 
     // 格式化框架层错误输出
     func formatError(e: CliException, args: Array<String>): String {
         var msg = "error: ${e.message}\n"
-        // 显示用户输入上下文
         var inputStr = ""
         for (a in args) {
             if (inputStr.size > 0) {
@@ -267,6 +359,6 @@ public class App {
             msg = msg + "\n  Input: ${inputStr}\n"
         }
         msg = msg + "\nFor more information, try '--help'.\n"
-        return msg
+        msg
     }
 }

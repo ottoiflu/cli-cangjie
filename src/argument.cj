@@ -2,67 +2,61 @@ package cli
 
 // CLI 位置参数定义
 public class Argument {
-    var _name: String           // 参数名称
-    var _description: String    // 描述
-    var _required: Bool         // 是否必填
-    var _defaultValue: String   // 默认值
-    var _valueType: ValueType   // 值类型
-    var _variadic: Bool         // 是否为变长参数（接收多个值）
-    var _minCount: Int64        // 最少数量（变长时有效）
-    var _maxCount: Int64        // 最多数量（-1 表示无限）
+    var _name: String
+    var _description: Option<String> = None
+    var _required: Bool = false
+    var _defaultValue: Option<String> = None
+    var _valueType: ValueType = StringType
+    var _variadic: Bool = false
+    var _minCount: Int64 = 0
+    var _maxCount: Int64 = -1  // -1 表示无限
 
     public init(name: String) {
         _name = name
-        _description = ""
-        _required = false
-        _defaultValue = ""
-        _valueType = StringType
-        _variadic = false
-        _minCount = 0
-        _maxCount = -1
     }
 
-    // Builder 方法
-    public func description(d: String): Argument {
-        _description = d
-        return this
+    // Builder 方法：统一返回 This
+
+    public func description(d: String): This {
+        _description = Some(d)
+        this
     }
 
-    public func required(r: Bool): Argument {
+    public func required(r: Bool): This {
         _required = r
-        return this
+        this
     }
 
-    public func defaultValue(v: String): Argument {
-        _defaultValue = v
-        return this
+    public func defaultValue(v: String): This {
+        _defaultValue = Some(v)
+        this
     }
 
-    public func valueType(t: ValueType): Argument {
+    public func valueType(t: ValueType): This {
         _valueType = t
-        return this
+        this
     }
 
-    public func variadic(v: Bool): Argument {
+    public func variadic(v: Bool): This {
         _variadic = v
-        return this
+        this
     }
 
-    public func minCount(n: Int64): Argument {
+    public func minCount(n: Int64): This {
         _minCount = n
-        return this
+        this
     }
 
-    public func maxCount(n: Int64): Argument {
+    public func maxCount(n: Int64): This {
         _maxCount = n
-        return this
+        this
     }
 
     // Getter 方法
     public func getName(): String { _name }
-    public func getDescription(): String { _description }
+    public func getDescription(): Option<String> { _description }
     public func isRequired(): Bool { _required }
-    public func getDefaultValue(): String { _defaultValue }
+    public func getDefaultValue(): Option<String> { _defaultValue }
     public func getValueType(): ValueType { _valueType }
     public func isVariadic(): Bool { _variadic }
     public func getMinCount(): Int64 { _minCount }
