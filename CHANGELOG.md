@@ -2,6 +2,26 @@
 
 本文件记录版本变更历史，遵循 [语义化版本 2.0.0](https://semver.org/lang/zh-CN/) 规范。
 
+## [0.4.0] - 2026-03-12
+
+### 新增
+- **Golden Files 快照测试引擎** (`snapshot.cj`)：对标 Rust Clippy 的 `.stderr` 比对方案
+  - `Snapshot.compare(name, actual)` — 与磁盘 `.golden` 文件比对
+  - `Snapshot.update(name, actual)` — bless 模式更新快照
+  - 首次运行自动创建 golden 文件
+  - 不匹配时生成 `.golden.new` 文件和行级 diff 描述
+  - 支持自定义快照目录
+- **交互式输入模拟** (`input.cj`)：预设 stdin 输入流用于测试 Prompt 交互
+  - `InputMock` — 输入队列管理：`addLine()`、`addLines()`、`readLine()`、`reset()`
+  - `Prompt` — 交互式输入辅助：`ask()`、`askOrDefault()`、`confirm()`、`select()`
+  - 支持在 `mockRun` action 中使用 Prompt 进行自动化交互测试
+
+### 测试
+- 新增 `SnapshotTest` (9 用例)：创建/比对/更新/diff/Help 稳定性/错误稳定性/UI 回退检测
+- 新增 `InputMockTest` (5 用例)：读取/EOF/状态/重置/批量
+- 新增 `PromptTest` (9 用例)：文本/默认值/确认/选择/Action 集成
+- 测试总数：146 → 169 (新增 23 用例，通过率 100%)
+
 ## [0.3.0] - 2026-03-12
 
 ### 新增

@@ -2003,6 +2003,350 @@
     [36m| [0m
 
 [33mwarning[0m: unused variable:'ctx'
+   [36m==>[0m /home/otto/文档/Project/cli/src/test/snapshot_test.cj:168:46:
+    [36m| [0m
+[36m168[0m [36m| [0m            .command(Command("run").action({ ctx => 0 }))[0m
+    [36m| [0m                                             [33m^ unused variable[0m
+    [36m| [0m
+    [36m#[0m [0mnote[0m: this warning can be suppressed by setting the compiler option `-Woff unused`
+[34mnote[0m: the warning occurs after the macro is expanded
+   [36m==>[0m /home/otto/文档/Project/cli/src/test/snapshot_test.cj:13:1:
+    [36m| [0m
+[36m13[0m  [36m| [0m  @Test[0m
+    [36m| [0m [34m_[0m[34m^[0m
+[36m14[0m  [36m| [0m[34m|[0m class SnapshotTest {[0m
+    [36m| [0m[34m|[0m ...[0m
+[36m250[0m [36m| [0m[34m|[0m }[0m
+    [36m| [0m[34m|[0m[34m_[0m[34m^[0m
+    [36m| [0m
+[34mnote[0m: the code after the macro is expanded as follows
+    [36m| [0m
+    [36m| [0m  /* 13.1 */@Attribute[TEST_GENERATED] class SnapshotTest <: TestClass {[0m
+    [36m| [0m [34m_[0m[34m^[0m
+    [36m| [0m[34m|[0m /* 13.2 */    let testDir = "src/test/snapshots"[0m
+    [36m| [0m[34m|[0m /* 13.3 */    [0m
+    [36m| [0m[34m|[0m /* 13.4 */    @Attribute[TestCase_124][0m
+    [36m| [0m[34m|[0m /* 13.5 */    func testFirstRunCreatesGoldenFile() {[0m
+    [36m| [0m[34m|[0m /* 13.6 */        let snap = Snapshot(snapshotDir: testDir)[0m
+    [36m| [0m[34m|[0m /* 13.7 */        let name = "test_create_golden"[0m
+    [36m| [0m[34m|[0m /* 13.8 */        let goldenPath = "${testDir}/${name}.golden"[0m
+    [36m| [0m[34m|[0m /* 13.9 */        if(exists(Path(goldenPath))) {[0m
+    [36m| [0m[34m|[0m /* 13.10 */            remove(Path(goldenPath))[0m
+    [36m| [0m[34m|[0m /* 13.11 */        }[0m
+    [36m| [0m[34m|[0m /* 13.12 */        let result = snap.compare(name, "Hello, World!\n")[0m
+    [36m| [0m[34m|[0m /* 13.13 */        assertEqual("result.matched", "true", result.matched, true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 13.14 */        assertEqual("exists(Path(goldenPath))", "true", exists(Path(goldenPath)), true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 13.15 */        remove(Path(goldenPath))[0m
+    [36m| [0m[34m|[0m /* 13.16 */    }[0m
+    [36m| [0m[34m|[0m /* 13.17 */    [0m
+    [36m| [0m[34m|[0m /* 13.18 */    @Attribute[TestCase_125][0m
+    [36m| [0m[34m|[0m /* 13.19 */    func testMatchingSnapshot() {[0m
+    [36m| [0m[34m|[0m /* 13.20 */        let snap = Snapshot(snapshotDir: testDir)[0m
+    [36m| [0m[34m|[0m /* 13.21 */        let name = "test_matching"[0m
+    [36m| [0m[34m|[0m /* 13.22 */        let goldenPath = "${testDir}/${name}.golden"[0m
+    [36m| [0m[34m|[0m /* 13.23 */        snap.update(name, "expected output\n")[0m
+    [36m| [0m[34m|[0m /* 13.24 */        let result = snap.compare(name, "expected output\n")[0m
+    [36m| [0m[34m|[0m /* 13.25 */        assertEqual("result.matched", "true", result.matched, true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 13.26 */        assertEqual("result.diff.size == 0", "true", result.diff.size == 0, true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 13.27 */        remove(Path(goldenPath))[0m
+    [36m| [0m[34m|[0m /* 13.28 */    }[0m
+    [36m| [0m[34m|[0m /* 13.29 */    [0m
+    [36m| [0m[34m|[0m /* 13.30 */    @Attribute[TestCase_126][0m
+    [36m| [0m[34m|[0m /* 13.31 */    func testMismatchGeneratesNewFile() {[0m
+    [36m| [0m[34m|[0m /* 13.32 */        let snap = Snapshot(snapshotDir: testDir)[0m
+    [36m| [0m[34m|[0m /* 13.33 */        let name = "test_mismatch"[0m
+    [36m| [0m[34m|[0m /* 13.34 */        let goldenPath = "${testDir}/${name}.golden"[0m
+    [36m| [0m[34m|[0m /* 13.35 */        let newPath = "${testDir}/${name}.golden.new"[0m
+    [36m| [0m[34m|[0m /* 13.36 */        snap.update(name, "original output\n")[0m
+    [36m| [0m[34m|[0m /* 13.37 */        let result = snap.compare(name, "changed output\n")[0m
+    [36m| [0m[34m|[0m /* 13.38 */        assertEqual("! result.matched", "true", ! result.matched, true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 13.39 */        assertEqual("result.expected == \"original output\\n\"", "true", result.expected == "original output\n", true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 13.40 */        assertEqual("result.actual == \"changed output\\n\"", "true", result.actual == "changed output\n", true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 13.41 */        assertEqual("result.diff.contains(\"Snapshot mismatch\")", "true", result.diff.contains("Snapshot mismatch"), true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 13.42 */        assertEqual("exists(Path(newPath))", "true", exists(Path(newPath)), true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 13.43 */        remove(Path(goldenPath))[0m
+    [36m| [0m[34m|[0m /* 13.44 */        if(exists(Path(newPath))) {[0m
+    [36m| [0m[34m|[0m /* 13.45 */            remove(Path(newPath))[0m
+    [36m| [0m[34m|[0m /* 13.46 */        }[0m
+    [36m| [0m[34m|[0m /* 13.47 */    }[0m
+    [36m| [0m[34m|[0m /* 13.48 */    [0m
+    [36m| [0m[34m|[0m /* 13.49 */    @Attribute[TestCase_127][0m
+    [36m| [0m[34m|[0m /* 13.50 */    func testUpdateOverwritesGolden() {[0m
+    [36m| [0m[34m|[0m /* 13.51 */        let snap = Snapshot(snapshotDir: testDir)[0m
+    [36m| [0m[34m|[0m /* 13.52 */        let name = "test_update"[0m
+    [36m| [0m[34m|[0m /* 13.53 */        let goldenPath = "${testDir}/${name}.golden"[0m
+    [36m| [0m[34m|[0m /* 13.54 */        snap.update(name, "v1\n")[0m
+    [36m| [0m[34m|[0m /* 13.55 */        let r1 = snap.compare(name, "v1\n")[0m
+    [36m| [0m[34m|[0m /* 13.56 */        assertEqual("r1.matched", "true", r1.matched, true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 13.57 */        snap.update(name, "v2\n")[0m
+    [36m| [0m[34m|[0m /* 13.58 */        let r2 = snap.compare(name, "v2\n")[0m
+    [36m| [0m[34m|[0m /* 13.59 */        assertEqual("r2.matched", "true", r2.matched, true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 13.60 */        let r3 = snap.compare(name, "v1\n")[0m
+    [36m| [0m[34m|[0m /* 13.61 */        assertEqual("! r3.matched", "true", ! r3.matched, true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 13.62 */        remove(Path(goldenPath))[0m
+    [36m| [0m[34m|[0m /* 13.63 */        let newPath = "${testDir}/${name}.golden.new"[0m
+    [36m| [0m[34m|[0m /* 13.64 */        if(exists(Path(newPath))) {[0m
+    [36m| [0m[34m|[0m /* 13.65 */            remove(Path(newPath))[0m
+    [36m| [0m[34m|[0m /* 13.66 */        }[0m
+    [36m| [0m[34m|[0m /* 13.67 */    }[0m
+    [36m| [0m[34m|[0m /* 13.68 */    [0m
+    [36m| [0m[34m|[0m /* 13.69 */    @Attribute[TestCase_128][0m
+    [36m| [0m[34m|[0m /* 13.70 */    func testDiffShowsLineChanges() {[0m
+    [36m| [0m[34m|[0m /* 13.71 */        let snap = Snapshot(snapshotDir: testDir)[0m
+    [36m| [0m[34m|[0m /* 13.72 */        let name = "test_diff"[0m
+    [36m| [0m[34m|[0m /* 13.73 */        let goldenPath = "${testDir}/${name}.golden"[0m
+    [36m| [0m[34m|[0m /* 13.74 */        snap.update(name, "line1\nline2\nline3\n")[0m
+    [36m| [0m[34m|[0m /* 13.75 */        let result = snap.compare(name, "line1\nLINE2\nline3\n")[0m
+    [36m| [0m[34m|[0m /* 13.76 */        assertEqual("! result.matched", "true", ! result.matched, true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 13.77 */        assertEqual("result.diff.contains(\"--- expected\")", "true", result.diff.contains("--- expected"), true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 13.78 */        assertEqual("result.diff.contains(\"+++ actual\")", "true", result.diff.contains("+++ actual"), true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 13.79 */        assertEqual("result.diff.contains(\"LINE2\")", "true", result.diff.contains("LINE2"), true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 13.80 */        remove(Path(goldenPath))[0m
+    [36m| [0m[34m|[0m /* 13.81 */        let newPath = "${testDir}/${name}.golden.new"[0m
+    [36m| [0m[34m|[0m /* 13.82 */        if(exists(Path(newPath))) {[0m
+    [36m| [0m[34m|[0m /* 13.83 */            remove(Path(newPath))[0m
+    [36m| [0m[34m|[0m /* 13.84 */        }[0m
+    [36m| [0m[34m|[0m /* 13.85 */    }[0m
+    [36m| [0m[34m|[0m /* 13.86 */    [0m
+    [36m| [0m[34m|[0m /* 13.87 */    @Attribute[TestCase_129][0m
+    [36m| [0m[34m|[0m /* 13.88 */    func testHelpSnapshotRoundtrip() {[0m
+    [36m| [0m[34m|[0m /* 13.89 */        let app = App("mytool").description("A great CLI tool").version("1.0.0").command(Command("lint").description("Run linter")).command(Command("fmt").description("Format code")).flag(Flag("verbose").short(r'v').asBool().description("Enable verbose output"))[0m
+    [36m| [0m[34m|[0m /* 13.90 */        let result = app.mockRun(["--help"])[0m
+    [36m| [0m[34m|[0m /* 13.91 */        let helpOutput = result.stderr[0m
+    [36m| [0m[34m|[0m /* 13.92 */        let snap = Snapshot(snapshotDir: testDir)[0m
+    [36m| [0m[34m|[0m /* 13.93 */        let name = "test_help_roundtrip"[0m
+    [36m| [0m[34m|[0m /* 13.94 */        let goldenPath = "${testDir}/${name}.golden"[0m
+    [36m| [0m[34m|[0m /* 13.95 */        if(exists(Path(goldenPath))) {[0m
+    [36m| [0m[34m|[0m /* 13.96 */            remove(Path(goldenPath))[0m
+    [36m| [0m[34m|[0m /* 13.97 */        }[0m
+    [36m| [0m[34m|[0m /* 13.98 */        let r1 = snap.compare(name, helpOutput)[0m
+    [36m| [0m[34m|[0m /* 13.99 */        assertEqual("r1.matched", "true", r1.matched, true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 13.100 */        let result2 = app.mockRun(["--help"])[0m
+    [36m| [0m[34m|[0m /* 13.101 */        let r2 = snap.compare(name, result2.stderr)[0m
+    [36m| [0m[34m|[0m /* 13.102 */        assertEqual("r2.matched", "true", r2.matched, true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 13.103 */        remove(Path(goldenPath))[0m
+    [36m| [0m[34m|[0m /* 13.104 */    }[0m
+    [36m| [0m[34m|[0m /* 13.105 */    [0m
+    [36m| [0m[34m|[0m /* 13.106 */    @Attribute[TestCase_130][0m
+    [36m| [0m[34m|[0m /* 13.107 */    func testErrorSnapshotRoundtrip() {[0m
+    [36m| [0m[34m|[0m /* 13.108 */        let app = App("tool").command(Command("run").action({ ctx => 0 }))[0m
+    [36m| [0m[34m|[0m /* 13.109 */        let result = app.mockRun(["--unknown-flag"])[0m
+    [36m| [0m[34m|[0m /* 13.110 */        let errorOutput = result.stderr[0m
+    [36m| [0m[34m|[0m /* 13.111 */        let snap = Snapshot(snapshotDir: testDir)[0m
+    [36m| [0m[34m|[0m /* 13.112 */        let name = "test_error_roundtrip"[0m
+    [36m| [0m[34m|[0m /* 13.113 */        let goldenPath = "${testDir}/${name}.golden"[0m
+    [36m| [0m[34m|[0m /* 13.114 */        if(exists(Path(goldenPath))) {[0m
+    [36m| [0m[34m|[0m /* 13.115 */            remove(Path(goldenPath))[0m
+    [36m| [0m[34m|[0m /* 13.116 */        }[0m
+    [36m| [0m[34m|[0m /* 13.117 */        let r1 = snap.compare(name, errorOutput)[0m
+    [36m| [0m[34m|[0m /* 13.118 */        assertEqual("r1.matched", "true", r1.matched, true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 13.119 */        let result2 = app.mockRun(["--unknown-flag"])[0m
+    [36m| [0m[34m|[0m /* 13.120 */        let r2 = snap.compare(name, result2.stderr)[0m
+    [36m| [0m[34m|[0m /* 13.121 */        assertEqual("r2.matched", "true", r2.matched, true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 13.122 */        remove(Path(goldenPath))[0m
+    [36m| [0m[34m|[0m /* 13.123 */    }[0m
+    [36m| [0m[34m|[0m /* 13.124 */    [0m
+    [36m| [0m[34m|[0m /* 13.125 */    @Attribute[TestCase_131][0m
+    [36m| [0m[34m|[0m /* 13.126 */    func testSubcommandHelpSnapshot() {[0m
+    [36m| [0m[34m|[0m /* 13.127 */        let app = App("tool").command(Command("deploy").description("Deploy application").flag(Flag("env").short(r'e').description("Target environment")).flag(Flag("force").short(r'f').asBool().description("Force deploy")).argument(Argument("target").description("Deploy target")))[0m
+    [36m| [0m[34m|[0m /* 13.128 */        let result = app.mockRun(["deploy", "--help"])[0m
+    [36m| [0m[34m|[0m /* 13.129 */        let helpOutput = result.stderr[0m
+    [36m| [0m[34m|[0m /* 13.130 */        let snap = Snapshot(snapshotDir: testDir)[0m
+    [36m| [0m[34m|[0m /* 13.131 */        let name = "test_sub_help_snapshot"[0m
+    [36m| [0m[34m|[0m /* 13.132 */        let goldenPath = "${testDir}/${name}.golden"[0m
+    [36m| [0m[34m|[0m /* 13.133 */        if(exists(Path(goldenPath))) {[0m
+    [36m| [0m[34m|[0m /* 13.134 */            remove(Path(goldenPath))[0m
+    [36m| [0m[34m|[0m /* 13.135 */        }[0m
+    [36m| [0m[34m|[0m /* 13.136 */        let r1 = snap.compare(name, helpOutput)[0m
+    [36m| [0m[34m|[0m /* 13.137 */        assertEqual("r1.matched", "true", r1.matched, true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 13.138 */        let result2 = app.mockRun(["deploy", "--help"])[0m
+    [36m| [0m[34m|[0m /* 13.139 */        let r2 = snap.compare(name, result2.stderr)[0m
+    [36m| [0m[34m|[0m /* 13.140 */        assertEqual("r2.matched", "true", r2.matched, true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 13.141 */        remove(Path(goldenPath))[0m
+    [36m| [0m[34m|[0m /* 13.142 */    }[0m
+    [36m| [0m[34m|[0m /* 13.143 */    [0m
+    [36m| [0m[34m|[0m /* 13.144 */    @Attribute[TestCase_132][0m
+    [36m| [0m[34m|[0m /* 13.145 */    func testSnapshotDetectsUIRegression() {[0m
+    [36m| [0m[34m|[0m /* 13.146 */        let snap = Snapshot(snapshotDir: testDir)[0m
+    [36m| [0m[34m|[0m /* 13.147 */        let name = "test_ui_regression"[0m
+    [36m| [0m[34m|[0m /* 13.148 */        let goldenPath = "${testDir}/${name}.golden"[0m
+    [36m| [0m[34m|[0m /* 13.149 */        let newPath = "${testDir}/${name}.golden.new"[0m
+    [36m| [0m[34m|[0m /* 13.150 */        snap.update(name, "Usage: tool [OPTIONS]\n\nOptions:\n  -v, --verbose  Verbose\n")[0m
+    [36m| [0m[34m|[0m /* 13.151 */        let actualV2 = "Usage: tool [OPTIONS]\n\nOptions:\n  -v, --verbose  Enable verbose mode\n"[0m
+    [36m| [0m[34m|[0m /* 13.152 */        let result = snap.compare(name, actualV2)[0m
+    [36m| [0m[34m|[0m /* 13.153 */        assertEqual("! result.matched", "true", ! result.matched, true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 13.154 */        assertEqual("result.diff.contains(\"Verbose\")", "true", result.diff.contains("Verbose"), true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 13.155 */        assertEqual("result.diff.contains(\"Enable verbose mode\")", "true", result.diff.contains("Enable verbose mode"), true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 13.156 */        remove(Path(goldenPath))[0m
+    [36m| [0m[34m|[0m /* 13.157 */        if(exists(Path(newPath))) {[0m
+    [36m| [0m[34m|[0m /* 13.158 */            remove(Path(newPath))[0m
+    [36m| [0m[34m|[0m /* 13.159 */        }[0m
+    [36m| [0m[34m|[0m /* 13.160 */    }[0m
+    [36m| [0m[34m|[0m /* 13.161 */    [0m
+    [36m| [0m[34m|[0m /* 13.162 */    init() {[0m
+    [36m| [0m[34m|[0m /* 13.163 */    }[0m
+    [36m| [0m[34m|[0m /* 13.164 */    private func classConfiguration(): Configuration {[0m
+    [36m| [0m[34m|[0m /* 13.165 */        let configuration = Configuration()[0m
+    [36m| [0m[34m|[0m /* 13.166 */        [0m
+    [36m| [0m[34m|[0m /* 13.167 */        return configuration[0m
+    [36m| [0m[34m|[0m /* 13.168 */    }[0m
+    [36m| [0m[34m|[0m /* 13.169 */    public override func asTestSuite(): TestSuite {[0m
+    [36m| [0m[34m|[0m /* 13.170 */        [0m
+    [36m| [0m[34m|[0m /* 13.171 */        let suiteConfiguration = classConfiguration()[0m
+    [36m| [0m[34m|[0m /* 13.172 */        let suiteBuilder = TestSuite.builder("SnapshotTest").configure(suiteConfiguration)[0m
+    [36m| [0m[34m|[0m /* 13.173 */        [0m
+    [36m| [0m[34m|[0m /* 13.174 */        { => let caseConfig = Configuration()[0m
+    [36m| [0m[34m|[0m /* 13.175 */            [0m
+    [36m| [0m[34m|[0m /* 13.176 */            let testFirstRunCreatesGoldenFileTestFunc = { => testFirstRunCreatesGoldenFile();() }[0m
+    [36m| [0m[34m|[0m /* 13.177 */            suiteBuilder.add([0m
+    [36m| [0m[34m|[0m /* 13.178 */            UnitTestCase.create([0m
+    [36m| [0m[34m|[0m /* 13.179 */            "testFirstRunCreatesGoldenFile",[0m
+    [36m| [0m[34m|[0m /* 13.180 */            configuration: caseConfig,[0m
+    [36m| [0m[34m|[0m /* 13.181 */            body: testFirstRunCreatesGoldenFileTestFunc[0m
+    [36m| [0m[34m|[0m /* 13.182 */            )[0m
+    [36m| [0m[34m|[0m /* 13.183 */            )[0m
+    [36m| [0m[34m|[0m /* 13.184 */            [0m
+    [36m| [0m[34m|[0m /* 13.185 */        }()[0m
+    [36m| [0m[34m|[0m /* 13.186 */        [0m
+    [36m| [0m[34m|[0m /* 13.187 */        [0m
+    [36m| [0m[34m|[0m /* 13.188 */        { => let caseConfig = Configuration()[0m
+    [36m| [0m[34m|[0m /* 13.189 */            [0m
+    [36m| [0m[34m|[0m /* 13.190 */            let testMatchingSnapshotTestFunc = { => testMatchingSnapshot();() }[0m
+    [36m| [0m[34m|[0m /* 13.191 */            suiteBuilder.add([0m
+    [36m| [0m[34m|[0m /* 13.192 */            UnitTestCase.create([0m
+    [36m| [0m[34m|[0m /* 13.193 */            "testMatchingSnapshot",[0m
+    [36m| [0m[34m|[0m /* 13.194 */            configuration: caseConfig,[0m
+    [36m| [0m[34m|[0m /* 13.195 */            body: testMatchingSnapshotTestFunc[0m
+    [36m| [0m[34m|[0m /* 13.196 */            )[0m
+    [36m| [0m[34m|[0m /* 13.197 */            )[0m
+    [36m| [0m[34m|[0m /* 13.198 */            [0m
+    [36m| [0m[34m|[0m /* 13.199 */        }()[0m
+    [36m| [0m[34m|[0m /* 13.200 */        [0m
+    [36m| [0m[34m|[0m /* 13.201 */        [0m
+    [36m| [0m[34m|[0m /* 13.202 */        { => let caseConfig = Configuration()[0m
+    [36m| [0m[34m|[0m /* 13.203 */            [0m
+    [36m| [0m[34m|[0m /* 13.204 */            let testMismatchGeneratesNewFileTestFunc = { => testMismatchGeneratesNewFile();() }[0m
+    [36m| [0m[34m|[0m /* 13.205 */            suiteBuilder.add([0m
+    [36m| [0m[34m|[0m /* 13.206 */            UnitTestCase.create([0m
+    [36m| [0m[34m|[0m /* 13.207 */            "testMismatchGeneratesNewFile",[0m
+    [36m| [0m[34m|[0m /* 13.208 */            configuration: caseConfig,[0m
+    [36m| [0m[34m|[0m /* 13.209 */            body: testMismatchGeneratesNewFileTestFunc[0m
+    [36m| [0m[34m|[0m /* 13.210 */            )[0m
+    [36m| [0m[34m|[0m /* 13.211 */            )[0m
+    [36m| [0m[34m|[0m /* 13.212 */            [0m
+    [36m| [0m[34m|[0m /* 13.213 */        }()[0m
+    [36m| [0m[34m|[0m /* 13.214 */        [0m
+    [36m| [0m[34m|[0m /* 13.215 */        [0m
+    [36m| [0m[34m|[0m /* 13.216 */        { => let caseConfig = Configuration()[0m
+    [36m| [0m[34m|[0m /* 13.217 */            [0m
+    [36m| [0m[34m|[0m /* 13.218 */            let testUpdateOverwritesGoldenTestFunc = { => testUpdateOverwritesGolden();() }[0m
+    [36m| [0m[34m|[0m /* 13.219 */            suiteBuilder.add([0m
+    [36m| [0m[34m|[0m /* 13.220 */            UnitTestCase.create([0m
+    [36m| [0m[34m|[0m /* 13.221 */            "testUpdateOverwritesGolden",[0m
+    [36m| [0m[34m|[0m /* 13.222 */            configuration: caseConfig,[0m
+    [36m| [0m[34m|[0m /* 13.223 */            body: testUpdateOverwritesGoldenTestFunc[0m
+    [36m| [0m[34m|[0m /* 13.224 */            )[0m
+    [36m| [0m[34m|[0m /* 13.225 */            )[0m
+    [36m| [0m[34m|[0m /* 13.226 */            [0m
+    [36m| [0m[34m|[0m /* 13.227 */        }()[0m
+    [36m| [0m[34m|[0m /* 13.228 */        [0m
+    [36m| [0m[34m|[0m /* 13.229 */        [0m
+    [36m| [0m[34m|[0m /* 13.230 */        { => let caseConfig = Configuration()[0m
+    [36m| [0m[34m|[0m /* 13.231 */            [0m
+    [36m| [0m[34m|[0m /* 13.232 */            let testDiffShowsLineChangesTestFunc = { => testDiffShowsLineChanges();() }[0m
+    [36m| [0m[34m|[0m /* 13.233 */            suiteBuilder.add([0m
+    [36m| [0m[34m|[0m /* 13.234 */            UnitTestCase.create([0m
+    [36m| [0m[34m|[0m /* 13.235 */            "testDiffShowsLineChanges",[0m
+    [36m| [0m[34m|[0m /* 13.236 */            configuration: caseConfig,[0m
+    [36m| [0m[34m|[0m /* 13.237 */            body: testDiffShowsLineChangesTestFunc[0m
+    [36m| [0m[34m|[0m /* 13.238 */            )[0m
+    [36m| [0m[34m|[0m /* 13.239 */            )[0m
+    [36m| [0m[34m|[0m /* 13.240 */            [0m
+    [36m| [0m[34m|[0m /* 13.241 */        }()[0m
+    [36m| [0m[34m|[0m /* 13.242 */        [0m
+    [36m| [0m[34m|[0m /* 13.243 */        [0m
+    [36m| [0m[34m|[0m /* 13.244 */        { => let caseConfig = Configuration()[0m
+    [36m| [0m[34m|[0m /* 13.245 */            [0m
+    [36m| [0m[34m|[0m /* 13.246 */            let testHelpSnapshotRoundtripTestFunc = { => testHelpSnapshotRoundtrip();() }[0m
+    [36m| [0m[34m|[0m /* 13.247 */            suiteBuilder.add([0m
+    [36m| [0m[34m|[0m /* 13.248 */            UnitTestCase.create([0m
+    [36m| [0m[34m|[0m /* 13.249 */            "testHelpSnapshotRoundtrip",[0m
+    [36m| [0m[34m|[0m /* 13.250 */            configuration: caseConfig,[0m
+    [36m| [0m[34m|[0m /* 13.251 */            body: testHelpSnapshotRoundtripTestFunc[0m
+    [36m| [0m[34m|[0m /* 13.252 */            )[0m
+    [36m| [0m[34m|[0m /* 13.253 */            )[0m
+    [36m| [0m[34m|[0m /* 13.254 */            [0m
+    [36m| [0m[34m|[0m /* 13.255 */        }()[0m
+    [36m| [0m[34m|[0m /* 13.256 */        [0m
+    [36m| [0m[34m|[0m /* 13.257 */        [0m
+    [36m| [0m[34m|[0m /* 13.258 */        { => let caseConfig = Configuration()[0m
+    [36m| [0m[34m|[0m /* 13.259 */            [0m
+    [36m| [0m[34m|[0m /* 13.260 */            let testErrorSnapshotRoundtripTestFunc = { => testErrorSnapshotRoundtrip();() }[0m
+    [36m| [0m[34m|[0m /* 13.261 */            suiteBuilder.add([0m
+    [36m| [0m[34m|[0m /* 13.262 */            UnitTestCase.create([0m
+    [36m| [0m[34m|[0m /* 13.263 */            "testErrorSnapshotRoundtrip",[0m
+    [36m| [0m[34m|[0m /* 13.264 */            configuration: caseConfig,[0m
+    [36m| [0m[34m|[0m /* 13.265 */            body: testErrorSnapshotRoundtripTestFunc[0m
+    [36m| [0m[34m|[0m /* 13.266 */            )[0m
+    [36m| [0m[34m|[0m /* 13.267 */            )[0m
+    [36m| [0m[34m|[0m /* 13.268 */            [0m
+    [36m| [0m[34m|[0m /* 13.269 */        }()[0m
+    [36m| [0m[34m|[0m /* 13.270 */        [0m
+    [36m| [0m[34m|[0m /* 13.271 */        [0m
+    [36m| [0m[34m|[0m /* 13.272 */        { => let caseConfig = Configuration()[0m
+    [36m| [0m[34m|[0m /* 13.273 */            [0m
+    [36m| [0m[34m|[0m /* 13.274 */            let testSubcommandHelpSnapshotTestFunc = { => testSubcommandHelpSnapshot();() }[0m
+    [36m| [0m[34m|[0m /* 13.275 */            suiteBuilder.add([0m
+    [36m| [0m[34m|[0m /* 13.276 */            UnitTestCase.create([0m
+    [36m| [0m[34m|[0m /* 13.277 */            "testSubcommandHelpSnapshot",[0m
+    [36m| [0m[34m|[0m /* 13.278 */            configuration: caseConfig,[0m
+    [36m| [0m[34m|[0m /* 13.279 */            body: testSubcommandHelpSnapshotTestFunc[0m
+    [36m| [0m[34m|[0m /* 13.280 */            )[0m
+    [36m| [0m[34m|[0m /* 13.281 */            )[0m
+    [36m| [0m[34m|[0m /* 13.282 */            [0m
+    [36m| [0m[34m|[0m /* 13.283 */        }()[0m
+    [36m| [0m[34m|[0m /* 13.284 */        [0m
+    [36m| [0m[34m|[0m /* 13.285 */        [0m
+    [36m| [0m[34m|[0m /* 13.286 */        { => let caseConfig = Configuration()[0m
+    [36m| [0m[34m|[0m /* 13.287 */            [0m
+    [36m| [0m[34m|[0m /* 13.288 */            let testSnapshotDetectsUIRegressionTestFunc = { => testSnapshotDetectsUIRegression();() }[0m
+    [36m| [0m[34m|[0m /* 13.289 */            suiteBuilder.add([0m
+    [36m| [0m[34m|[0m /* 13.290 */            UnitTestCase.create([0m
+    [36m| [0m[34m|[0m /* 13.291 */            "testSnapshotDetectsUIRegression",[0m
+    [36m| [0m[34m|[0m /* 13.292 */            configuration: caseConfig,[0m
+    [36m| [0m[34m|[0m /* 13.293 */            body: testSnapshotDetectsUIRegressionTestFunc[0m
+    [36m| [0m[34m|[0m /* 13.294 */            )[0m
+    [36m| [0m[34m|[0m /* 13.295 */            )[0m
+    [36m| [0m[34m|[0m /* 13.296 */            [0m
+    [36m| [0m[34m|[0m /* 13.297 */        }()[0m
+    [36m| [0m[34m|[0m /* 13.298 */        [0m
+    [36m| [0m[34m|[0m /* 13.299 */        return suiteBuilder.build()[0m
+    [36m| [0m[34m|[0m /* 13.300 */    }[0m
+    [36m| [0m[34m|[0m /* 13.301 */    private func inheritedFromClassAnnotatedByTestTemplate < T >(): TestSuite where T <: TestClass {[0m
+    [36m| [0m[34m|[0m /* 13.302 */        throw Exception("Unreachable code")[0m
+    [36m| [0m[34m|[0m /* 13.303 */    }[0m
+    [36m| [0m[34m|[0m /* 13.304 */}[0m
+    [36m| [0m[34m|[0m /* 13.305 */[0m
+    [36m| [0m[34m|[0m /* 13.306 */[0m
+    [36m| [0m[34m|[0m /* 13.307 */interface TestPackageExtension_SnapshotTest {[0m
+    [36m| [0m[34m|[0m /* 13.308 */    func registerSnapshotTest(): Unit[0m
+    [36m| [0m[34m|[0m /* 13.309 */}[0m
+    [36m| [0m[34m|[0m /* 13.310 */extend TestPackage <: TestPackageExtension_SnapshotTest {[0m
+    [36m| [0m[34m|[0m /* 13.311 */    @Attribute[TEST_REGISTER][0m
+    [36m| [0m[34m|[0m /* 13.312 */    public func registerSnapshotTest() {[0m
+    [36m| [0m[34m|[0m /* 13.313 */        registerSuite({ => SnapshotTest().asTestSuite() })[0m
+    [36m| [0m[34m|[0m /* 13.314 */    }[0m
+    [36m| [0m[34m|[0m /* 13.315 */}[0m
+    [36m| [0m[34m|[0m /* 13.316 */[0m
+    [36m| [0m[34m|[0m[34m_[0m[34m___________^[0m
+    [36m| [0m
+[34mnote[0m: which is expanded as follows
+    [36m| [0m
+    [36m| [0m/* 13.108 */        let app = App("tool").command(Command("run").action({ ctx => 0 }))[0m
+    [36m| [0m                                                                          [34m^^^ [0m
+    [36m| [0m
+
+[33mwarning[0m: unused variable:'ctx'
    [36m==>[0m /home/otto/文档/Project/cli/src/test/lifecycle_test.cj:175:31:
     [36m| [0m
 [36m175[0m [36m| [0m                    .action({ ctx =>[0m
@@ -2439,4 +2783,276 @@
     [36m| [0m                                                                                                                           [34m^^^ [0m
     [36m| [0m
 
-43 warnings generated, 43 warnings printed.
+[33mwarning[0m: unused variable:'ctx'
+   [36m==>[0m /home/otto/文档/Project/cli/src/test/snapshot_test.cj:413:31:
+    [36m| [0m
+[36m413[0m [36m| [0m                    .action({ ctx =>[0m
+    [36m| [0m                              [33m^ unused variable[0m
+    [36m| [0m
+    [36m#[0m [0mnote[0m: this warning can be suppressed by setting the compiler option `-Woff unused`
+[34mnote[0m: the warning occurs after the macro is expanded
+   [36m==>[0m /home/otto/文档/Project/cli/src/test/snapshot_test.cj:315:1:
+    [36m| [0m
+[36m315[0m [36m| [0m  @Test[0m
+    [36m| [0m [34m_[0m[34m^[0m
+[36m316[0m [36m| [0m[34m|[0m class PromptTest {[0m
+    [36m| [0m[34m|[0m ...[0m
+[36m428[0m [36m| [0m[34m|[0m }[0m
+    [36m| [0m[34m|[0m[34m_[0m[34m^[0m
+    [36m| [0m
+[34mnote[0m: the code after the macro is expanded as follows
+    [36m| [0m
+    [36m| [0m  /* 315.1 */@Attribute[TEST_GENERATED] class PromptTest <: TestClass {[0m
+    [36m| [0m [34m_[0m[34m^[0m
+    [36m| [0m[34m|[0m /* 315.2 */    @Attribute[TestCase_140][0m
+    [36m| [0m[34m|[0m /* 315.3 */    func testAsk() {[0m
+    [36m| [0m[34m|[0m /* 315.4 */        let mock = InputMock().addLine("otto")[0m
+    [36m| [0m[34m|[0m /* 315.5 */        let prompt = Prompt(mock)[0m
+    [36m| [0m[34m|[0m /* 315.6 */        match(prompt.ask("Name?")) {[0m
+    [36m| [0m[34m|[0m /* 315.7 */            case Some(v) => assertEqual("v == \"otto\"", "true", v == "otto", true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 315.8 */            case None => assertEqual("false", "true", false, true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 315.9 */        }[0m
+    [36m| [0m[34m|[0m /* 315.10 */    }[0m
+    [36m| [0m[34m|[0m /* 315.11 */    [0m
+    [36m| [0m[34m|[0m /* 315.12 */    @Attribute[TestCase_141][0m
+    [36m| [0m[34m|[0m /* 315.13 */    func testAskOrDefault() {[0m
+    [36m| [0m[34m|[0m /* 315.14 */        let mock = InputMock().addLine("").addLine("custom")[0m
+    [36m| [0m[34m|[0m /* 315.15 */        let prompt = Prompt(mock)[0m
+    [36m| [0m[34m|[0m /* 315.16 */        assertEqual("prompt.askOrDefault(\"Q?\", \"default\") == \"default\"", "true", prompt.askOrDefault("Q?", "default") == "default", true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 315.17 */        assertEqual("prompt.askOrDefault(\"Q?\", \"default\") == \"custom\"", "true", prompt.askOrDefault("Q?", "default") == "custom", true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 315.18 */    }[0m
+    [36m| [0m[34m|[0m /* 315.19 */    [0m
+    [36m| [0m[34m|[0m /* 315.20 */    @Attribute[TestCase_142][0m
+    [36m| [0m[34m|[0m /* 315.21 */    func testConfirmYes() {[0m
+    [36m| [0m[34m|[0m /* 315.22 */        let mock = InputMock().addLine("y").addLine("yes").addLine("YES").addLine("Y")[0m
+    [36m| [0m[34m|[0m /* 315.23 */        let prompt = Prompt(mock)[0m
+    [36m| [0m[34m|[0m /* 315.24 */        assertEqual("prompt.confirm(\"Sure?\")", "true", prompt.confirm("Sure?"), true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 315.25 */        assertEqual("prompt.confirm(\"Sure?\")", "true", prompt.confirm("Sure?"), true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 315.26 */        assertEqual("prompt.confirm(\"Sure?\")", "true", prompt.confirm("Sure?"), true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 315.27 */        assertEqual("prompt.confirm(\"Sure?\")", "true", prompt.confirm("Sure?"), true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 315.28 */    }[0m
+    [36m| [0m[34m|[0m /* 315.29 */    [0m
+    [36m| [0m[34m|[0m /* 315.30 */    @Attribute[TestCase_143][0m
+    [36m| [0m[34m|[0m /* 315.31 */    func testConfirmNo() {[0m
+    [36m| [0m[34m|[0m /* 315.32 */        let mock = InputMock().addLine("n").addLine("no").addLine("")[0m
+    [36m| [0m[34m|[0m /* 315.33 */        let prompt = Prompt(mock)[0m
+    [36m| [0m[34m|[0m /* 315.34 */        assertEqual("! prompt.confirm(\"Sure?\")", "true", ! prompt.confirm("Sure?"), true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 315.35 */        assertEqual("! prompt.confirm(\"Sure?\")", "true", ! prompt.confirm("Sure?"), true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 315.36 */        assertEqual("! prompt.confirm(\"Sure?\")", "true", ! prompt.confirm("Sure?"), true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 315.37 */    }[0m
+    [36m| [0m[34m|[0m /* 315.38 */    [0m
+    [36m| [0m[34m|[0m /* 315.39 */    @Attribute[TestCase_144][0m
+    [36m| [0m[34m|[0m /* 315.40 */    func testConfirmEOF() {[0m
+    [36m| [0m[34m|[0m /* 315.41 */        let mock = InputMock()[0m
+    [36m| [0m[34m|[0m /* 315.42 */        let prompt = Prompt(mock)[0m
+    [36m| [0m[34m|[0m /* 315.43 */        assertEqual("! prompt.confirm(\"Sure?\")", "true", ! prompt.confirm("Sure?"), true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 315.44 */    }[0m
+    [36m| [0m[34m|[0m /* 315.45 */    [0m
+    [36m| [0m[34m|[0m /* 315.46 */    @Attribute[TestCase_145][0m
+    [36m| [0m[34m|[0m /* 315.47 */    func testSelect() {[0m
+    [36m| [0m[34m|[0m /* 315.48 */        let options =["apple", "banana", "cherry"][0m
+    [36m| [0m[34m|[0m /* 315.49 */        let mock = InputMock().addLine("2")[0m
+    [36m| [0m[34m|[0m /* 315.50 */        let prompt = Prompt(mock)[0m
+    [36m| [0m[34m|[0m /* 315.51 */        match(prompt.select("Choose fruit:", options)) {[0m
+    [36m| [0m[34m|[0m /* 315.52 */            case Some(v) => assertEqual("v == \"banana\"", "true", v == "banana", true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 315.53 */            case None => assertEqual("false", "true", false, true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 315.54 */        }[0m
+    [36m| [0m[34m|[0m /* 315.55 */    }[0m
+    [36m| [0m[34m|[0m /* 315.56 */    [0m
+    [36m| [0m[34m|[0m /* 315.57 */    @Attribute[TestCase_146][0m
+    [36m| [0m[34m|[0m /* 315.58 */    func testSelectInvalid() {[0m
+    [36m| [0m[34m|[0m /* 315.59 */        let options =["a", "b"][0m
+    [36m| [0m[34m|[0m /* 315.60 */        let mock = InputMock().addLine("5")[0m
+    [36m| [0m[34m|[0m /* 315.61 */        let prompt = Prompt(mock)[0m
+    [36m| [0m[34m|[0m /* 315.62 */        assertEqual("prompt.select(\"Choose:\", options).isNone()", "true", prompt.select("Choose:", options).isNone(), true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 315.63 */    }[0m
+    [36m| [0m[34m|[0m /* 315.64 */    [0m
+    [36m| [0m[34m|[0m /* 315.65 */    @Attribute[TestCase_147][0m
+    [36m| [0m[34m|[0m /* 315.66 */    func testSelectZero() {[0m
+    [36m| [0m[34m|[0m /* 315.67 */        let options =["a", "b"][0m
+    [36m| [0m[34m|[0m /* 315.68 */        let mock = InputMock().addLine("0")[0m
+    [36m| [0m[34m|[0m /* 315.69 */        let prompt = Prompt(mock)[0m
+    [36m| [0m[34m|[0m /* 315.70 */        assertEqual("prompt.select(\"Choose:\", options).isNone()", "true", prompt.select("Choose:", options).isNone(), true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 315.71 */    }[0m
+    [36m| [0m[34m|[0m /* 315.72 */    [0m
+    [36m| [0m[34m|[0m /* 315.73 */    @Attribute[TestCase_148][0m
+    [36m| [0m[34m|[0m /* 315.74 */    func testPromptInAction() {[0m
+    [36m| [0m[34m|[0m /* 315.75 */        let log = ArrayList < String >()[0m
+    [36m| [0m[34m|[0m /* 315.76 */        let mock = InputMock().addLine("production")[0m
+    [36m| [0m[34m|[0m /* 315.77 */        let app = App("tool").command(Command("deploy").action({ ctx => let prompt = Prompt(mock)[0m
+    [36m| [0m[34m|[0m /* 315.78 */            [0m
+    [36m| [0m[34m|[0m /* 315.79 */            match(prompt.ask("Environment?")) {[0m
+    [36m| [0m[34m|[0m /* 315.80 */                case Some(env) => log.add(env)[0m
+    [36m| [0m[34m|[0m /* 315.81 */                case None =>()[0m
+    [36m| [0m[34m|[0m /* 315.82 */            }[0m
+    [36m| [0m[34m|[0m /* 315.83 */        0 }))[0m
+    [36m| [0m[34m|[0m /* 315.84 */        let result = app.mockRun(["deploy"])[0m
+    [36m| [0m[34m|[0m /* 315.85 */        assertEqual("result.exitCode == 0", "true", result.exitCode == 0, true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 315.86 */        assertEqual("log.size == 1", "true", log.size == 1, true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 315.87 */        assertEqual("log[0] == \"production\"", "true", log[0] == "production", true, isDelta: false)[0m
+    [36m| [0m[34m|[0m /* 315.88 */    }[0m
+    [36m| [0m[34m|[0m /* 315.89 */    [0m
+    [36m| [0m[34m|[0m /* 315.90 */    init() {[0m
+    [36m| [0m[34m|[0m /* 315.91 */    }[0m
+    [36m| [0m[34m|[0m /* 315.92 */    private func classConfiguration(): Configuration {[0m
+    [36m| [0m[34m|[0m /* 315.93 */        let configuration = Configuration()[0m
+    [36m| [0m[34m|[0m /* 315.94 */        [0m
+    [36m| [0m[34m|[0m /* 315.95 */        return configuration[0m
+    [36m| [0m[34m|[0m /* 315.96 */    }[0m
+    [36m| [0m[34m|[0m /* 315.97 */    public override func asTestSuite(): TestSuite {[0m
+    [36m| [0m[34m|[0m /* 315.98 */        [0m
+    [36m| [0m[34m|[0m /* 315.99 */        let suiteConfiguration = classConfiguration()[0m
+    [36m| [0m[34m|[0m /* 315.100 */        let suiteBuilder = TestSuite.builder("PromptTest").configure(suiteConfiguration)[0m
+    [36m| [0m[34m|[0m /* 315.101 */        [0m
+    [36m| [0m[34m|[0m /* 315.102 */        { => let caseConfig = Configuration()[0m
+    [36m| [0m[34m|[0m /* 315.103 */            [0m
+    [36m| [0m[34m|[0m /* 315.104 */            let testAskTestFunc = { => testAsk();() }[0m
+    [36m| [0m[34m|[0m /* 315.105 */            suiteBuilder.add([0m
+    [36m| [0m[34m|[0m /* 315.106 */            UnitTestCase.create([0m
+    [36m| [0m[34m|[0m /* 315.107 */            "testAsk",[0m
+    [36m| [0m[34m|[0m /* 315.108 */            configuration: caseConfig,[0m
+    [36m| [0m[34m|[0m /* 315.109 */            body: testAskTestFunc[0m
+    [36m| [0m[34m|[0m /* 315.110 */            )[0m
+    [36m| [0m[34m|[0m /* 315.111 */            )[0m
+    [36m| [0m[34m|[0m /* 315.112 */            [0m
+    [36m| [0m[34m|[0m /* 315.113 */        }()[0m
+    [36m| [0m[34m|[0m /* 315.114 */        [0m
+    [36m| [0m[34m|[0m /* 315.115 */        [0m
+    [36m| [0m[34m|[0m /* 315.116 */        { => let caseConfig = Configuration()[0m
+    [36m| [0m[34m|[0m /* 315.117 */            [0m
+    [36m| [0m[34m|[0m /* 315.118 */            let testAskOrDefaultTestFunc = { => testAskOrDefault();() }[0m
+    [36m| [0m[34m|[0m /* 315.119 */            suiteBuilder.add([0m
+    [36m| [0m[34m|[0m /* 315.120 */            UnitTestCase.create([0m
+    [36m| [0m[34m|[0m /* 315.121 */            "testAskOrDefault",[0m
+    [36m| [0m[34m|[0m /* 315.122 */            configuration: caseConfig,[0m
+    [36m| [0m[34m|[0m /* 315.123 */            body: testAskOrDefaultTestFunc[0m
+    [36m| [0m[34m|[0m /* 315.124 */            )[0m
+    [36m| [0m[34m|[0m /* 315.125 */            )[0m
+    [36m| [0m[34m|[0m /* 315.126 */            [0m
+    [36m| [0m[34m|[0m /* 315.127 */        }()[0m
+    [36m| [0m[34m|[0m /* 315.128 */        [0m
+    [36m| [0m[34m|[0m /* 315.129 */        [0m
+    [36m| [0m[34m|[0m /* 315.130 */        { => let caseConfig = Configuration()[0m
+    [36m| [0m[34m|[0m /* 315.131 */            [0m
+    [36m| [0m[34m|[0m /* 315.132 */            let testConfirmYesTestFunc = { => testConfirmYes();() }[0m
+    [36m| [0m[34m|[0m /* 315.133 */            suiteBuilder.add([0m
+    [36m| [0m[34m|[0m /* 315.134 */            UnitTestCase.create([0m
+    [36m| [0m[34m|[0m /* 315.135 */            "testConfirmYes",[0m
+    [36m| [0m[34m|[0m /* 315.136 */            configuration: caseConfig,[0m
+    [36m| [0m[34m|[0m /* 315.137 */            body: testConfirmYesTestFunc[0m
+    [36m| [0m[34m|[0m /* 315.138 */            )[0m
+    [36m| [0m[34m|[0m /* 315.139 */            )[0m
+    [36m| [0m[34m|[0m /* 315.140 */            [0m
+    [36m| [0m[34m|[0m /* 315.141 */        }()[0m
+    [36m| [0m[34m|[0m /* 315.142 */        [0m
+    [36m| [0m[34m|[0m /* 315.143 */        [0m
+    [36m| [0m[34m|[0m /* 315.144 */        { => let caseConfig = Configuration()[0m
+    [36m| [0m[34m|[0m /* 315.145 */            [0m
+    [36m| [0m[34m|[0m /* 315.146 */            let testConfirmNoTestFunc = { => testConfirmNo();() }[0m
+    [36m| [0m[34m|[0m /* 315.147 */            suiteBuilder.add([0m
+    [36m| [0m[34m|[0m /* 315.148 */            UnitTestCase.create([0m
+    [36m| [0m[34m|[0m /* 315.149 */            "testConfirmNo",[0m
+    [36m| [0m[34m|[0m /* 315.150 */            configuration: caseConfig,[0m
+    [36m| [0m[34m|[0m /* 315.151 */            body: testConfirmNoTestFunc[0m
+    [36m| [0m[34m|[0m /* 315.152 */            )[0m
+    [36m| [0m[34m|[0m /* 315.153 */            )[0m
+    [36m| [0m[34m|[0m /* 315.154 */            [0m
+    [36m| [0m[34m|[0m /* 315.155 */        }()[0m
+    [36m| [0m[34m|[0m /* 315.156 */        [0m
+    [36m| [0m[34m|[0m /* 315.157 */        [0m
+    [36m| [0m[34m|[0m /* 315.158 */        { => let caseConfig = Configuration()[0m
+    [36m| [0m[34m|[0m /* 315.159 */            [0m
+    [36m| [0m[34m|[0m /* 315.160 */            let testConfirmEOFTestFunc = { => testConfirmEOF();() }[0m
+    [36m| [0m[34m|[0m /* 315.161 */            suiteBuilder.add([0m
+    [36m| [0m[34m|[0m /* 315.162 */            UnitTestCase.create([0m
+    [36m| [0m[34m|[0m /* 315.163 */            "testConfirmEOF",[0m
+    [36m| [0m[34m|[0m /* 315.164 */            configuration: caseConfig,[0m
+    [36m| [0m[34m|[0m /* 315.165 */            body: testConfirmEOFTestFunc[0m
+    [36m| [0m[34m|[0m /* 315.166 */            )[0m
+    [36m| [0m[34m|[0m /* 315.167 */            )[0m
+    [36m| [0m[34m|[0m /* 315.168 */            [0m
+    [36m| [0m[34m|[0m /* 315.169 */        }()[0m
+    [36m| [0m[34m|[0m /* 315.170 */        [0m
+    [36m| [0m[34m|[0m /* 315.171 */        [0m
+    [36m| [0m[34m|[0m /* 315.172 */        { => let caseConfig = Configuration()[0m
+    [36m| [0m[34m|[0m /* 315.173 */            [0m
+    [36m| [0m[34m|[0m /* 315.174 */            let testSelectTestFunc = { => testSelect();() }[0m
+    [36m| [0m[34m|[0m /* 315.175 */            suiteBuilder.add([0m
+    [36m| [0m[34m|[0m /* 315.176 */            UnitTestCase.create([0m
+    [36m| [0m[34m|[0m /* 315.177 */            "testSelect",[0m
+    [36m| [0m[34m|[0m /* 315.178 */            configuration: caseConfig,[0m
+    [36m| [0m[34m|[0m /* 315.179 */            body: testSelectTestFunc[0m
+    [36m| [0m[34m|[0m /* 315.180 */            )[0m
+    [36m| [0m[34m|[0m /* 315.181 */            )[0m
+    [36m| [0m[34m|[0m /* 315.182 */            [0m
+    [36m| [0m[34m|[0m /* 315.183 */        }()[0m
+    [36m| [0m[34m|[0m /* 315.184 */        [0m
+    [36m| [0m[34m|[0m /* 315.185 */        [0m
+    [36m| [0m[34m|[0m /* 315.186 */        { => let caseConfig = Configuration()[0m
+    [36m| [0m[34m|[0m /* 315.187 */            [0m
+    [36m| [0m[34m|[0m /* 315.188 */            let testSelectInvalidTestFunc = { => testSelectInvalid();() }[0m
+    [36m| [0m[34m|[0m /* 315.189 */            suiteBuilder.add([0m
+    [36m| [0m[34m|[0m /* 315.190 */            UnitTestCase.create([0m
+    [36m| [0m[34m|[0m /* 315.191 */            "testSelectInvalid",[0m
+    [36m| [0m[34m|[0m /* 315.192 */            configuration: caseConfig,[0m
+    [36m| [0m[34m|[0m /* 315.193 */            body: testSelectInvalidTestFunc[0m
+    [36m| [0m[34m|[0m /* 315.194 */            )[0m
+    [36m| [0m[34m|[0m /* 315.195 */            )[0m
+    [36m| [0m[34m|[0m /* 315.196 */            [0m
+    [36m| [0m[34m|[0m /* 315.197 */        }()[0m
+    [36m| [0m[34m|[0m /* 315.198 */        [0m
+    [36m| [0m[34m|[0m /* 315.199 */        [0m
+    [36m| [0m[34m|[0m /* 315.200 */        { => let caseConfig = Configuration()[0m
+    [36m| [0m[34m|[0m /* 315.201 */            [0m
+    [36m| [0m[34m|[0m /* 315.202 */            let testSelectZeroTestFunc = { => testSelectZero();() }[0m
+    [36m| [0m[34m|[0m /* 315.203 */            suiteBuilder.add([0m
+    [36m| [0m[34m|[0m /* 315.204 */            UnitTestCase.create([0m
+    [36m| [0m[34m|[0m /* 315.205 */            "testSelectZero",[0m
+    [36m| [0m[34m|[0m /* 315.206 */            configuration: caseConfig,[0m
+    [36m| [0m[34m|[0m /* 315.207 */            body: testSelectZeroTestFunc[0m
+    [36m| [0m[34m|[0m /* 315.208 */            )[0m
+    [36m| [0m[34m|[0m /* 315.209 */            )[0m
+    [36m| [0m[34m|[0m /* 315.210 */            [0m
+    [36m| [0m[34m|[0m /* 315.211 */        }()[0m
+    [36m| [0m[34m|[0m /* 315.212 */        [0m
+    [36m| [0m[34m|[0m /* 315.213 */        [0m
+    [36m| [0m[34m|[0m /* 315.214 */        { => let caseConfig = Configuration()[0m
+    [36m| [0m[34m|[0m /* 315.215 */            [0m
+    [36m| [0m[34m|[0m /* 315.216 */            let testPromptInActionTestFunc = { => testPromptInAction();() }[0m
+    [36m| [0m[34m|[0m /* 315.217 */            suiteBuilder.add([0m
+    [36m| [0m[34m|[0m /* 315.218 */            UnitTestCase.create([0m
+    [36m| [0m[34m|[0m /* 315.219 */            "testPromptInAction",[0m
+    [36m| [0m[34m|[0m /* 315.220 */            configuration: caseConfig,[0m
+    [36m| [0m[34m|[0m /* 315.221 */            body: testPromptInActionTestFunc[0m
+    [36m| [0m[34m|[0m /* 315.222 */            )[0m
+    [36m| [0m[34m|[0m /* 315.223 */            )[0m
+    [36m| [0m[34m|[0m /* 315.224 */            [0m
+    [36m| [0m[34m|[0m /* 315.225 */        }()[0m
+    [36m| [0m[34m|[0m /* 315.226 */        [0m
+    [36m| [0m[34m|[0m /* 315.227 */        return suiteBuilder.build()[0m
+    [36m| [0m[34m|[0m /* 315.228 */    }[0m
+    [36m| [0m[34m|[0m /* 315.229 */    private func inheritedFromClassAnnotatedByTestTemplate < T >(): TestSuite where T <: TestClass {[0m
+    [36m| [0m[34m|[0m /* 315.230 */        throw Exception("Unreachable code")[0m
+    [36m| [0m[34m|[0m /* 315.231 */    }[0m
+    [36m| [0m[34m|[0m /* 315.232 */}[0m
+    [36m| [0m[34m|[0m /* 315.233 */[0m
+    [36m| [0m[34m|[0m /* 315.234 */[0m
+    [36m| [0m[34m|[0m /* 315.235 */interface TestPackageExtension_PromptTest {[0m
+    [36m| [0m[34m|[0m /* 315.236 */    func registerPromptTest(): Unit[0m
+    [36m| [0m[34m|[0m /* 315.237 */}[0m
+    [36m| [0m[34m|[0m /* 315.238 */extend TestPackage <: TestPackageExtension_PromptTest {[0m
+    [36m| [0m[34m|[0m /* 315.239 */    @Attribute[TEST_REGISTER][0m
+    [36m| [0m[34m|[0m /* 315.240 */    public func registerPromptTest() {[0m
+    [36m| [0m[34m|[0m /* 315.241 */        registerSuite({ => PromptTest().asTestSuite() })[0m
+    [36m| [0m[34m|[0m /* 315.242 */    }[0m
+    [36m| [0m[34m|[0m /* 315.243 */}[0m
+    [36m| [0m[34m|[0m /* 315.244 */[0m
+    [36m| [0m[34m|[0m[34m_[0m[34m____________^[0m
+    [36m| [0m
+[34mnote[0m: which is expanded as follows
+    [36m| [0m
+    [36m| [0m/* 315.77 */        let app = App("tool").command(Command("deploy").action({ ctx => let prompt = Prompt(mock)[0m
+    [36m| [0m                                                                             [34m^^^ [0m
+    [36m| [0m
+
+45 warnings generated, 45 warnings printed.

@@ -125,9 +125,10 @@ func testDidYouMean() {
     - [x] **Context 依赖注入**：Context 对象支持在生命周期中安全存储和传递请求维度状态。
     - **测试**: 146 用例全部通过（新增 20 用例），覆盖生命周期钩子顺序、中间件链式调用与短路、环境变量三级优先级、Context DI 存取传递。
 
-4. **Phase 4: 测试套件增强与快照测试 (Testing Infra)** — `v0.4.0`
-    - [ ] **Golden Files (快照测试)**：对比生成的 Help 树、错误输出等文本快照，检测 UI 回退。
-    - [ ] **交互式模拟 (Input Mock)**：支持预设 stdin 输入流数据，自动化测试 Prompt 交互。
+4. **Phase 4: 测试套件增强与快照测试 (Testing Infra)** — `v0.4.0` ✅ 已完成
+    - [x] **Golden Files (快照测试)**：对比生成的 Help 树、错误输出等文本快照，检测 UI 回退。
+    - [x] **交互式模拟 (Input Mock)**：支持预设 stdin 输入流数据，自动化测试 Prompt 交互。
+    - **测试**: 169 用例全部通过（新增 23 用例），覆盖快照引擎创建/比对/更新/diff、InputMock 队列、Prompt 文本/确认/选择/Action 集成。
 
 5. **Phase 5: 交互式组件集支持补充** — `v0.5.0`
     - [ ] **交互式终端组件**：Spinner、Progress Bar、Confirm / Select 组件。

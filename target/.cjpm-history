@@ -24,7 +24,9 @@
       "std-requires": [
         "std.collection",
         "std.convert",
-        "std.env"
+        "std.env",
+        "std.fs",
+        "std.io"
       ],
       "c_libs": {},
       "hasTestFiles": false,
@@ -58,6 +60,7 @@
       "std-requires": [
         "std.collection",
         "std.env",
+        "std.fs",
         "std.unittest",
         "std.unittest.testmacro"
       ],
