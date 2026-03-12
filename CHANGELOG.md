@@ -2,6 +2,26 @@
 
 本文件记录版本变更历史，遵循 [语义化版本 2.0.0](https://semver.org/lang/zh-CN/) 规范。
 
+## [1.0.0] - 2026-03-13
+
+### 新增
+- **README.md**：完整项目文档，包含特性概览、快速开始、核心 API、配置管道、诊断输出示例，对标 rust-clippy README 结构
+- **LICENSE**：Apache-2.0 许可证
+- **CONTRIBUTING.md**：贡献指南，包含开发环境、项目结构、提交规范、测试要求、PR 流程
+- **完整示例应用 (cj-devtool)**：端到端 DevOps CLI 工具，演示框架全部核心特性
+  - 6 个子命令（serve/deploy/cloud/lint/config/completion），含嵌套子命令（cloud list/start）
+  - 全局标志传播（verbose/color/format）、别名系统、子命令分组显示
+  - Flag 约束：互斥（force↔dry-run）、依赖（cert→tls）、自定义验证器（replicas 1-100）
+  - Choices 枚举约束、值分隔符（--notify a,b,c）、Pass-Through 参数
+  - 配置文件集成、环境变量前缀映射、生命周期钩子、中间件
+  - 弃用命令（config init）、隐藏命令（config debug）
+  - 帮助增强：Examples 段落、afterHelp/beforeHelp、终端宽度自适应
+  - VersionInfo 丰富版本信息、信号处理
+
+### 测试
+- 新增 `ExampleHelpTest` (8)、`ExampleServeTest` (6)、`ExampleDeployTest` (8)、`ExampleCloudTest` (6)、`ExampleLintTest` (7)、`ExampleConfigTest` (4)、`ExampleDiagnosticTest` (4)、`ExampleGlobalFlagTest` (5)、`ExampleSignalTest` (2)、`ExampleE2ETest` (5)
+- 测试总数：378 → 433 (新增 55 用例，通过率 100%)
+
 ## [0.10.0] - 2026-03-12
 
 ### 新增

@@ -2,7 +2,7 @@
   cjc-version = "1.0.5"
   name = "cli"
   description = "nothing here"
-  version = "0.10.0"
+  version = "1.0.0"
   target-dir = ""
   output-type = "static"
   compile-option = ""

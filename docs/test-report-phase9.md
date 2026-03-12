@@ -2,26 +2,26 @@
 
 ## 测试概览
 
-| 指标                 | 值              |
-| -------------------- | --------------- |
-| 新增测试用例         | 32              |
-| 累计测试用例         | 352             |
-| 通过率               | 100% (352/352)  |
-| 新增测试类           | 8               |
-| 累计测试类           | ~30             |
+| 指标         | 值             |
+| ------------ | -------------- |
+| 新增测试用例 | 32             |
+| 累计测试用例 | 352            |
+| 通过率       | 100% (352/352) |
+| 新增测试类   | 8              |
+| 累计测试类   | ~30            |
 
 ## 新增测试类明细
 
-| 测试类                  | 用例数 | 覆盖范围                                       |
-| ----------------------- | ------ | ---------------------------------------------- |
-| ChoicesValidationTest   | 5      | choices 合法/非法值、Did-You-Mean、等号、Help   |
-| ValueDelimiterTest      | 5      | 逗号分隔、等号分隔、choices 交叉、Append 模式   |
-| PassThroughArgsTest     | 4      | `--` 透传、空透传、Flag+透传、单独 `--`        |
-| HelpExamplesTest        | 4      | Examples 段落、afterHelp、beforeHelp、顺序       |
-| TerminalWidthTest       | 2      | 窄宽度折行、默认宽度                            |
-| SubcommandGroupTest     | 3      | 子命令分组、默认组名、混合分组                   |
-| NBestSuggestionTest     | 4      | 单候选、多候选、Flag 多候选、choices 建议        |
-| Phase9IntegrationTest   | 5      | Clippy 穿透、分隔+choices、Help+default、分组、全管道 |
+| 测试类                | 用例数 | 覆盖范围                                              |
+| --------------------- | ------ | ----------------------------------------------------- |
+| ChoicesValidationTest | 5      | choices 合法/非法值、Did-You-Mean、等号、Help         |
+| ValueDelimiterTest    | 5      | 逗号分隔、等号分隔、choices 交叉、Append 模式         |
+| PassThroughArgsTest   | 4      | `--` 透传、空透传、Flag+透传、单独 `--`               |
+| HelpExamplesTest      | 4      | Examples 段落、afterHelp、beforeHelp、顺序            |
+| TerminalWidthTest     | 2      | 窄宽度折行、默认宽度                                  |
+| SubcommandGroupTest   | 3      | 子命令分组、默认组名、混合分组                        |
+| NBestSuggestionTest   | 4      | 单候选、多候选、Flag 多候选、choices 建议             |
+| Phase9IntegrationTest | 5      | Clippy 穿透、分隔+choices、Help+default、分组、全管道 |
 
 ## 功能覆盖
 

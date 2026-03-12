@@ -175,7 +175,8 @@ func testDidYouMean() {
     - [x] **Env 类型自动协变**：环境变量值根据 Flag 的 `valueType` 自动执行类型转换（如 `TIMEOUT=30` 自动转 Int64），转换失败时生成友好诊断。
     - **测试**: 378 用例全部通过（新增 26 用例），覆盖信号处理退出码、多错误聚合、子命令分组渲染、自动环境映射、Env 类型协变。
 
-11. **Phase 11: 项目结构优化与 Example 示例 (Project & Examples)** — `v1.0.0`
-    - [ ] **项目结构重组**：参照 rust-clippy 项目管理模式重组目录结构（README.md、LICENSE、CONTRIBUTING.md），完善 API 文档。
-    - [ ] **完整示例应用 (Example)**：创建端到端示例 CLI 工具，演示框架全部核心特性（子命令树、Flag 约束、配置文件、帮助生成、交互组件、Shell 补全等）。
-    - [ ] **综合集成测试**：确保示例应用通过完整的 mockRun 测试套件，作为框架的功能验收基准。
+11. **Phase 11: 项目结构优化与 Example 示例 (Project & Examples)** — `v1.0.0` ✅ 已完成
+    - [x] **项目结构重组**：参照 rust-clippy 项目管理模式重组目录结构（README.md、LICENSE、CONTRIBUTING.md），完善 API 文档。
+    - [x] **完整示例应用 (Example)**：创建端到端示例 CLI 工具，演示框架全部核心特性（子命令树、Flag 约束、配置文件、帮助生成、交互组件、Shell 补全等）。
+    - [x] **综合集成测试**：确保示例应用通过完整的 mockRun 测试套件，作为框架的功能验收基准。
+    - **测试**: 433 用例全部通过（新增 55 用例），覆盖示例应用全部子命令、Flag 约束、诊断建议、全局标志、信号处理、端到端场景。
