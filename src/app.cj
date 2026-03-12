@@ -237,6 +237,23 @@ public class App {
         return mockRunWithConfig(args, configContent: None)
     }
 
+    // 真实执行入口：解析命令行参数并输出到真实 stdout/stderr
+    public func run(args: Array<String>): Int64 {
+        let result = mockRun(args)
+        if (!result.stdout.isEmpty()) {
+            getStdOut().write(result.stdout)
+        }
+        if (!result.stderr.isEmpty()) {
+            getStdErr().write(result.stderr)
+        }
+        return result.exitCode
+    }
+
+    // 便捷方法：自动从命令行获取参数
+    public func run(): Int64 {
+        return run(getCommandLine()[1..])
+    }
+
     // 带配置内容的沙箱执行（用于测试时注入配置文件内容，不依赖磁盘文件）
     public func mockRunWithConfig(args: Array<String>, configContent!: Option<String> = None): TestResult {
         // 自动注入 --help / --version 为 Terminate Flag

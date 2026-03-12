@@ -1,0 +1,9 @@
+[package]
+  name = "cj_devtool"
+  cjc-version = "1.0.5"
+  description = "Example CLI tool built with Cangjie CLI Framework"
+  version = "1.0.0"
+  output-type = "executable"
+
+[dependencies]
+  cli = { path = ".." }

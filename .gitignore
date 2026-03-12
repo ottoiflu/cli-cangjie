@@ -6,5 +6,6 @@
 /.cache
 *.macrocall
 /target
+/example/target
 *.log
 *.tmp
