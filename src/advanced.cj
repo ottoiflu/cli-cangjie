@@ -249,14 +249,15 @@ public class DeprecationInfo {
 
     // 生成弃用警告消息
     public func formatWarning(itemType: String, itemName: String): String {
-        var msg = "warning: ${itemType} '${itemName}' is deprecated"
+        let l = Messages.locale()
+        var msg = l.deprecatedWarning(itemType, itemName)
         match (_since) {
-            case Some(s) => msg = msg + " since ${s}"
+            case Some(s) => msg = msg + l.deprecatedSince(s)
             case None => ()
         }
-        msg = msg + ". ${_reason}"
+        msg = msg + l.deprecatedReason(_reason)
         match (_replacement) {
-            case Some(r) => msg = msg + " Use '${r}' instead."
+            case Some(r) => msg = msg + l.deprecatedReplacement(r)
             case None => ()
         }
         msg

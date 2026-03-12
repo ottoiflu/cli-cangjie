@@ -58,13 +58,14 @@ public class Spinner {
     // 渲染当前状态为字符串
     public func render(): String {
         if (_finished) {
+            let done = Messages.locale().widgetSpinnerDone()
             match (_finishMessage) {
-                case Some(msg) => return "✓ ${msg}"
+                case Some(msg) => return done + msg
                 case None =>
                     if (_message.size > 0) {
-                        return "✓ ${_message}"
+                        return done + _message
                     }
-                    return "✓"
+                    return done.trimAscii()
             }
         }
         let frame = currentFrame()
@@ -259,7 +260,7 @@ public class Confirm {
 
     // 渲染提示文本
     public func render(): String {
-        let hint = if (_default) { "[Y/n]" } else { "[y/N]" }
+        let hint = if (_default) { Messages.locale().widgetConfirmYes() } else { Messages.locale().widgetConfirmNo() }
         "${_message} ${hint}"
     }
 }
@@ -416,7 +417,7 @@ public class MultiSelect {
 
     // 渲染多选菜单
     public func render(): String {
-        var r = _message + " (comma-separated numbers)\n"
+        var r = _message + Messages.locale().widgetMultiSelectHint() + "\n"
         var i: Int64 = 0
         while (i < _options.size) {
             r = r + "  ${i + 1}. ${_options[i]}\n"

@@ -12,11 +12,12 @@ public enum DiagnosticLevel {
 
 // 获取诊断级别的显示标签
 func levelLabel(level: DiagnosticLevel): String {
+    let l = Messages.locale()
     match (level) {
-        case Note => "note"
-        case Help => "help"
-        case Warning => "warning"
-        case Error => "error"
+        case Note => l.labelNote()
+        case Help => l.labelHelp()
+        case Warning => l.labelWarning()
+        case Error => l.labelError()
     }
 }
 

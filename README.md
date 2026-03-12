@@ -18,6 +18,7 @@
 | **生命周期**   | PersistentPreRun → PreRun → Middleware → Action → PostRun → PersistentPostRun       |
 | **交互组件**   | Spinner、ProgressBar、Confirm、Select、MultiSelect                                  |
 | **测试套件**   | mockRun 沙箱、IO 独立捕获、InputMock 交互模拟、Golden Files 快照测试                |
+| **本地化**     | Locale 接口、Messages 单例、App.locale() 构建器、全部用户可见文本可覆盖              |
 | **工程化**     | Shell 补全 (Bash/Zsh/Fish)、弃用系统、信号处理、错误聚合                            |
 
 ## 快速开始
@@ -163,6 +164,45 @@ error: Found 2 errors
 For more information, try '--help'.
 ```
 
+## 本地化 (i18n)
+
+框架所有用户可见字符串均通过 `Locale` 接口获取，支持自定义翻译：
+
+```cangjie
+// 实现 Locale 接口，只需覆盖需要修改的方法
+class ChineseLocale <: Locale {
+    public func labelError(): String { "错误" }
+    public func labelWarning(): String { "警告" }
+    public func helpUsagePrefix(): String { "用法: " }
+    public func helpPrintHelp(): String { "打印帮助" }
+    public func errUnknownCommand(name: String): String {
+        "未知命令 '${name}'。"
+    }
+    // ... 其余方法使用接口默认英文实现
+}
+
+// 通过 App.locale() 注入
+let app = App("my-tool")
+    .locale(ChineseLocale())
+    .command(Command("lint"))
+```
+
+`Locale` 接口覆盖范围：
+
+| 类别         | 方法数 | 示例                                          |
+| ------------ | ------ | --------------------------------------------- |
+| 诊断标签     | 4      | `labelError()`、`labelWarning()` 等           |
+| 帮助文档     | 11     | `helpUsagePrefix()`、`helpPrintHelp()` 等     |
+| 命令/选项错误 | 9      | `errUnknownCommand()`、`errUnknownOption()` 等 |
+| 值校验       | 4      | `errInvalidChoiceValue()` 等                  |
+| 约束错误     | 4      | `errFlagConflict()`、`errFlagRequires()` 等   |
+| 位置参数     | 3      | `errArgTooFew()`、`errArgRequired()` 等       |
+| 类型转换     | 3      | `errTypeBool()`、`errTypeInt64()` 等          |
+| 错误聚合     | 4      | `summaryFound()`、`summaryErrors()` 等        |
+| 配置文件     | 5      | `cfgUnknownKey()`、`cfgDidYouMean()` 等       |
+| 弃用/信号    | 5      | `deprecatedWarning()`、`signalTerminated()` 等 |
+| 交互组件     | 4      | `widgetConfirmYes()`、`widgetSpinnerDone()` 等 |
+
 ## 项目结构
 
 ```
@@ -176,14 +216,15 @@ src/
   types.cj         # 值类型枚举与转换器
   errors.cj        # 异常体系（含 AggregateException）
   diagnostic.cj    # 诊断系统（Error/Warning/Help/Note）
-  suggest.cj       # Levenshtein 编辑距离、Did-You-Mean
+  suggest.cj       # Damerau-Levenshtein 编辑距离、Did-You-Mean
   style.cj         # ANSI 终端样式引擎
+  locale.cj        # 本地化接口（Locale/Messages）
   config.cj        # 配置文件加载与解析
   input.cj         # InputMock、Prompt 交互
   widget.cj        # 交互组件（Spinner/ProgressBar/Confirm/Select）
   snapshot.cj      # Golden Files 快照测试引擎
   advanced.cj      # 高级特性（补全、弃用、版本信息、输出格式）
-  test/            # 测试套件（378+ 用例）
+  test/            # 测试套件（452 用例）
 example/           # 示例应用
 docs/              # 测试报告与文档
 ```
@@ -198,7 +239,7 @@ cjpm build
 cjpm test
 
 # 当前测试覆盖
-# TOTAL: 378, PASSED: 378, SKIPPED: 0, ERROR: 0, FAILED: 0
+# TOTAL: 452, PASSED: 452, SKIPPED: 0, ERROR: 0, FAILED: 0
 ```
 
 ## 版本历史
@@ -218,6 +259,7 @@ cjpm test
 | v0.9.0  | 增强型 Flag 值域与帮助系统     |
 | v0.10.0 | 健壮性与工程化增强             |
 | v1.0.0  | 项目结构优化与示例应用         |
+| v1.1.0  | 本地化接口（Locale / i18n）     |
 
 ## 许可证
 

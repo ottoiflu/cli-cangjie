@@ -28,7 +28,7 @@ public class Parser {
                         let cmdNames = currentCmd.allCommandNames()
                         let suggestions = findAllSuggestions(arg, cmdNames, 0.7)
                         if (suggestions.size == 1) {
-                            throw ParseException("Unknown command '${arg}'. Did you mean '${suggestions[0][0]}'?")
+                            throw ParseException(Messages.locale().errUnknownCommandSuggestion(arg, suggestions[0][0]))
                         } else if (suggestions.size > 1) {
                             var hint = ""
                             var cnt: Int64 = 0
@@ -38,9 +38,9 @@ public class Parser {
                                 hint = hint + "'${s[0]}'"
                                 cnt++
                             }
-                            throw ParseException("Unknown command '${arg}'. Did you mean one of: ${hint}?")
+                            throw ParseException(Messages.locale().errUnknownCommandSuggestions(arg, hint))
                         }
-                        throw ParseException("Unknown command '${arg}'.")
+                        throw ParseException(Messages.locale().errUnknownCommand(arg))
                     }
                     break
             }
@@ -156,7 +156,7 @@ public class Parser {
                         let cmdNames = currentCmd.allCommandNames()
                         let suggestions2 = findAllSuggestions(arg, cmdNames, 0.7)
                         if (suggestions2.size == 1) {
-                            throw ParseException("Unknown command '${arg}'. Did you mean '${suggestions2[0][0]}'?")
+                            throw ParseException(Messages.locale().errUnknownCommandSuggestion(arg, suggestions2[0][0]))
                         } else if (suggestions2.size > 1) {
                             var hint2 = ""
                             var cnt2: Int64 = 0
@@ -166,9 +166,9 @@ public class Parser {
                                 hint2 = hint2 + "'${s[0]}'"
                                 cnt2++
                             }
-                            throw ParseException("Unknown command '${arg}'. Did you mean one of: ${hint2}?")
+                            throw ParseException(Messages.locale().errUnknownCommandSuggestions(arg, hint2))
                         }
-                        throw ParseException("Unknown command '${arg}'.")
+                        throw ParseException(Messages.locale().errUnknownCommand(arg))
                     }
                     break
             }
@@ -314,7 +314,7 @@ public class Parser {
             case _ =>
                 let nextIdx = argIndex + 1
                 if (nextIdx >= rawArgs.size) {
-                    throw ParseException("Flag '--${flagName}' requires a value.")
+                    throw ParseException(Messages.locale().errFlagRequiresValue("--${flagName}"))
                 }
                 let nextVal = rawArgs[nextIdx]
                 // Phase 9: 分隔符支持
@@ -353,7 +353,7 @@ public class Parser {
             case _ =>
                 let nextIdx = argIndex + 1
                 if (nextIdx >= rawArgs.size) {
-                    throw ParseException("Flag '-${shortChar}' requires a value.")
+                    throw ParseException(Messages.locale().errFlagRequiresValue("-${shortChar}"))
                 }
                 let nextVal = rawArgs[nextIdx]
                 match (flag.getDelimiter()) {
@@ -410,7 +410,7 @@ public class Parser {
                         return  // 剩余被消费完毕
                     } else {
                         // 尝试从后续 args 中取值— 但 argIndex 已在外层管理，这里只能抛异常
-                        throw ParseException("Flag '-${c}' requires a value.")
+                        throw ParseException(Messages.locale().errFlagRequiresValue("-${c}"))
                     }
             }
             charIdx++
@@ -439,7 +439,7 @@ public class Parser {
         let suggestions = findAllSuggestions(name, candidates, 0.7)
         if (suggestions.size > 0) {
             if (suggestions.size == 1) {
-                throw ParseException("Unknown option '--${name}'. Did you mean '--${suggestions[0][0]}'?")
+                throw ParseException(Messages.locale().errUnknownOptionSuggestion(name, suggestions[0][0]))
             }
             var hint = ""
             var count: Int64 = 0
@@ -449,9 +449,9 @@ public class Parser {
                 hint = hint + "'--${s[0]}'"
                 count++
             }
-            throw ParseException("Unknown option '--${name}'. Did you mean one of: ${hint}?")
+            throw ParseException(Messages.locale().errUnknownOptionSuggestions(name, hint))
         }
-        throw ParseException("Unknown option '--${name}'.")
+        throw ParseException(Messages.locale().errUnknownOption(name))
     }
 
     // 在当前命令和根命令中查找短名称匹配的 flag
@@ -466,7 +466,7 @@ public class Parser {
                 case None => ()
             }
         }
-        throw ParseException("Unknown option '-${shortChar}'.")
+        throw ParseException(Messages.locale().errUnknownShortOption(shortChar.toString()))
     }
 
     // 给未设置的 flag 应用默认值
@@ -485,7 +485,7 @@ public class Parser {
     func validateRequiredFlags(cmd: Command, ctx: Context): Unit {
         for (f in cmd.getFlags()) {
             if (f.isRequired() && !ctx.hasFlag(f.getLongName())) {
-                throw ValidationException("Required flag '--${f.getLongName()}' was not provided.")
+                throw ValidationException(Messages.locale().errRequiredFlagMissing(f.getLongName()))
             }
         }
     }
@@ -506,12 +506,12 @@ public class Parser {
                 }
                 if (count < argDef.getMinCount()) {
                     throw ValidationException(
-                        "Argument '${argDef.getName()}' requires at least ${argDef.getMinCount()} values, but got ${count}."
+                        Messages.locale().errArgTooFew(argDef.getName(), argDef.getMinCount(), count)
                     )
                 }
                 if (argDef.getMaxCount() >= 0 && count > argDef.getMaxCount()) {
                     throw ValidationException(
-                        "Argument '${argDef.getName()}' accepts at most ${argDef.getMaxCount()} values, but got ${count}."
+                        Messages.locale().errArgTooMany(argDef.getName(), argDef.getMaxCount(), count)
                     )
                 }
             } else {
@@ -520,7 +520,7 @@ public class Parser {
                     ctx.addArgument(validated)
                     posIdx++
                 } else if (argDef.isRequired()) {
-                    throw ValidationException("Required argument '${argDef.getName()}' was not provided.")
+                    throw ValidationException(Messages.locale().errArgRequired(argDef.getName()))
                 } else {
                     match (argDef.getDefaultValue()) {
                         case Some(dv) => ctx.addArgument(dv)
@@ -550,7 +550,7 @@ public class Parser {
             for (conflict in f.getConflicts()) {
                 if (ctx.isExplicit(conflict)) {
                     throw ValidationException(
-                        "Flag '--${flagName}' cannot be used together with '--${conflict}'."
+                        Messages.locale().errFlagConflict(flagName, conflict)
                     )
                 }
             }
@@ -558,7 +558,7 @@ public class Parser {
             for (req in f.getRequires()) {
                 if (!ctx.hasFlag(req)) {
                     throw ValidationException(
-                        "Flag '--${flagName}' requires '--${req}' to be set."
+                        Messages.locale().errFlagRequires(flagName, req)
                     )
                 }
             }
@@ -571,11 +571,11 @@ public class Parser {
                                 let msg = f.getValidatorMessage()
                                 if (msg.size > 0) {
                                     throw ValidationException(
-                                        "Invalid value for '--${flagName}': ${msg}"
+                                        Messages.locale().errInvalidValueWithMessage(flagName, msg)
                                     )
                                 } else {
                                     throw ValidationException(
-                                        "Invalid value for '--${flagName}'."
+                                        Messages.locale().errInvalidValue(flagName)
                                     )
                                 }
                             }
@@ -610,7 +610,7 @@ public class Parser {
                             first = false
                         }
                         throw ValidationException(
-                            "At least one flag from group '${groupName}' is required: ${memberStr}."
+                            Messages.locale().errFlagGroupRequired(groupName, memberStr)
                         )
                     }
                 case None => ()
@@ -628,7 +628,7 @@ public class Parser {
                     }
                     if (setMembers.size > 1) {
                         throw ValidationException(
-                            "Flags '--${setMembers[0]}' and '--${setMembers[1]}' are mutually exclusive (group '${groupName}')."
+                            Messages.locale().errFlagGroupExclusive(setMembers[0], setMembers[1], groupName)
                         )
                     }
                 case None => ()
@@ -641,7 +641,7 @@ public class Parser {
     func collectRequiredFlagErrors(cmd: Command, ctx: Context, errors: ArrayList<String>): Unit {
         for (f in cmd.getFlags()) {
             if (f.isRequired() && !ctx.hasFlag(f.getLongName())) {
-                errors.add("Required flag '--${f.getLongName()}' was not provided.")
+                errors.add(Messages.locale().errRequiredFlagMissing(f.getLongName()))
             }
         }
     }
@@ -655,13 +655,13 @@ public class Parser {
             // 互斥检查
             for (conflict in f.getConflicts()) {
                 if (ctx.isExplicit(conflict)) {
-                    errors.add("Flag '--${flagName}' cannot be used together with '--${conflict}'.")
+                    errors.add(Messages.locale().errFlagConflict(flagName, conflict))
                 }
             }
             // 依赖检查
             for (req in f.getRequires()) {
                 if (!ctx.hasFlag(req)) {
-                    errors.add("Flag '--${flagName}' requires '--${req}' to be set.")
+                    errors.add(Messages.locale().errFlagRequires(flagName, req))
                 }
             }
             // 自定义验证器
@@ -672,9 +672,9 @@ public class Parser {
                             if (!validatorFn(value)) {
                                 let msg = f.getValidatorMessage()
                                 if (msg.size > 0) {
-                                    errors.add("Invalid value for '--${flagName}': ${msg}")
+                                    errors.add(Messages.locale().errInvalidValueWithMessage(flagName, msg))
                                 } else {
-                                    errors.add("Invalid value for '--${flagName}'.")
+                                    errors.add(Messages.locale().errInvalidValue(flagName))
                                 }
                             }
                         case None => ()
@@ -704,7 +704,7 @@ public class Parser {
                             memberStr = memberStr + "--" + m
                             first = false
                         }
-                        errors.add("At least one flag from group '${groupName}' is required: ${memberStr}.")
+                        errors.add(Messages.locale().errFlagGroupRequired(groupName, memberStr))
                     }
                 case None => ()
             }
@@ -720,7 +720,7 @@ public class Parser {
                         }
                     }
                     if (setMembers.size > 1) {
-                        errors.add("Flags '--${setMembers[0]}' and '--${setMembers[1]}' are mutually exclusive (group '${groupName}').")
+                        errors.add(Messages.locale().errFlagGroupExclusive(setMembers[0], setMembers[1], groupName))
                     }
                 case None => ()
             }
@@ -776,11 +776,11 @@ func validateChoices(flag: Flag, value: String): Unit {
     let suggestions = findAllSuggestions(value, choices, 0.5)
     if (suggestions.size > 0) {
         throw ValidationException(
-            "Invalid value '${value}' for '--${flag.getLongName()}'. Valid options: ${choiceList}. Did you mean '${suggestions[0][0]}'?"
+            Messages.locale().errInvalidChoiceValueSuggestion(value, flag.getLongName(), choiceList, suggestions[0][0])
         )
     }
     throw ValidationException(
-        "Invalid value '${value}' for '--${flag.getLongName()}'. Valid options: ${choiceList}."
+        Messages.locale().errInvalidChoiceValue(value, flag.getLongName(), choiceList)
     )
 }
 

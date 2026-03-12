@@ -89,19 +89,20 @@ public class AggregateException <: CliException {
 
 // 格式化聚合错误摘要
 func formatSummary(errors: ArrayList<String>, warnings: ArrayList<String>): String {
+    let l = Messages.locale()
     var parts = ArrayList<String>()
     if (errors.size > 0) {
-        parts.add("${errors.size} error${if (errors.size > 1) { "s" } else { "" }}")
+        parts.add(l.summaryErrors(errors.size))
     }
     if (warnings.size > 0) {
-        parts.add("${warnings.size} warning${if (warnings.size > 1) { "s" } else { "" }}")
+        parts.add(l.summaryWarnings(warnings.size))
     }
-    var summary = "Found "
+    var summary = ""
     var first = true
     for (p in parts) {
-        if (!first) { summary = summary + " and " }
+        if (!first) { summary = summary + l.summaryAnd() }
         summary = summary + p
         first = false
     }
-    summary
+    l.summaryFound(summary)
 }

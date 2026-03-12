@@ -2,6 +2,22 @@
 
 本文件记录版本变更历史，遵循 [语义化版本 2.0.0](https://semver.org/lang/zh-CN/) 规范。
 
+## [1.1.0] - 2026-03-13
+
+### 新增
+- **本地化接口 (Locale / i18n)**：为框架所有用户可见字符串提供统一的本地化接入点
+  - `Locale` 接口：定义 ~45 个方法，覆盖诊断标签、帮助文档、命令/选项错误、值校验、约束、类型转换、错误聚合、配置文件、弃用警告、信号处理、交互组件等全部文本
+  - `DefaultLocale` 类：默认英文实现，使用接口默认方法
+  - `Messages` 单例：`Messages.locale()` 获取当前 Locale，`Messages.setLocale()` 注入自定义实现，`Messages.reset()` 重置为默认
+  - `App.locale(l)` 构建器方法：链式调用设置 Locale
+  - 用户只需实现 `Locale` 接口并覆盖所需方法，即可完成框架全部文本的本地化/翻译
+- **框架内部全面接入**：parser.cj、types.cj、errors.cj、diagnostic.cj、app.cj、config.cj、advanced.cj、widget.cj 全部通过 `Messages.locale()` 获取文本
+- **帮助输出路由兼容**：TerminateException 路由同时检测默认和自定义 locale 的 Usage 前缀，确保本地化帮助正确输出到 stderr
+
+### 测试
+- 新增 `LocaleDefaultTest` (4)、`LocaleCustomTest` (15)：覆盖默认英文验证、自定义中文 Locale 覆盖、mockRun 端到端集成、帮助生成、Flag 错误、约束冲突、信号处理、交互组件、弃用警告、配置错误、聚合错误、部分覆盖保持默认值
+- 测试总数：433 → 452 (新增 19 用例，通过率 100%)
+
 ## [1.0.1] - 2026-03-13
 
 ### 新增

@@ -80,7 +80,7 @@ public func normalizeBool(s: String): String {
     if (s == "false" || s == "0" || s == "no" || s == "FALSE" || s == "No" || s == "False") {
         return "false"
     }
-    throw TypeConversionException("Cannot convert '${s}' to Bool. Expected: true/false/yes/no/1/0")
+    throw TypeConversionException(Messages.locale().errTypeBool(s))
 }
 
 // 对原始值进行类型校验和转换
@@ -90,12 +90,12 @@ public func validateAndConvert(raw: String, targetType: ValueType): String {
         case BoolType => normalizeBool(raw)
         case Int64Type =>
             if (!isValidInt(raw)) {
-                throw TypeConversionException("Cannot convert '${raw}' to Int64. Expected an integer value.")
+                throw TypeConversionException(Messages.locale().errTypeInt64(raw))
             }
             raw
         case Float64Type =>
             if (!isValidFloat(raw)) {
-                throw TypeConversionException("Cannot convert '${raw}' to Float64. Expected a numeric value.")
+                throw TypeConversionException(Messages.locale().errTypeFloat64(raw))
             }
             raw
     }

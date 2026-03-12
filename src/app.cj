@@ -214,6 +214,12 @@ public class App {
         this
     }
 
+    // 设置本地化实例（替换默认英文文本）
+    public func locale(l: Locale): This {
+        Messages.setLocale(l)
+        this
+    }
+
     // Phase 10: 获取信号处理器（便于在 action 中检查信号）
     public func getSignalHandler(): Option<SignalHandler> { _signalHandler }
 
@@ -342,7 +348,9 @@ public class App {
             // Terminate 动作：执行回调获取输出内容
             let output = e.execute()
             // 帮助 => stderr；版本 => stdout
-            if (output.contains("Usage:")) {
+            // 使用 locale 的 helpUsagePrefix 进行检测，兼容本地化
+            let usagePrefix = Messages.locale().helpUsagePrefix()
+            if (output.contains(usagePrefix) || output.contains("Usage:")) {
                 TestResult(0, "", output)
             } else {
                 TestResult(0, output, "")
@@ -476,8 +484,8 @@ public class App {
                     case Some(SIGTERM) => "SIGTERM"
                     case None => "UNKNOWN"
                 }
-                TestResult(handler.getExitCode(), "", "Terminated by ${sigName}\n")
-            case None => TestResult(130, "", "Terminated\n")
+                TestResult(handler.getExitCode(), "", Messages.locale().signalTerminated(sigName) + "\n")
+            case None => TestResult(130, "", Messages.locale().signalTerminated("UNKNOWN") + "\n")
         }
     }
 
@@ -520,7 +528,7 @@ public class App {
             let helpCmd = cmd  // 捕获当前命令用于闭包
             cmd.flag(
                 Flag("help").short(r'h')
-                    .description("Print help")
+                    .description(Messages.locale().helpPrintHelp())
                     .action(Terminate({ => generateHelp(helpCmd) }))
             )
         }
@@ -530,7 +538,7 @@ public class App {
             let verCmd = cmd
             cmd.flag(
                 Flag("version").short(r'V')
-                    .description("Print version")
+                    .description(Messages.locale().helpPrintVersion())
                     .action(Terminate({ => generateVersion(verCmd) }))
             )
         }
@@ -562,13 +570,13 @@ public class App {
         }
 
         // Usage 行
-        help = help + "Usage: "
+        help = help + Messages.locale().helpUsagePrefix()
         help = help + cmd.getName()
         if (cmd.getSubcommands().size > 0) {
-            help = help + " <COMMAND>"
+            help = help + Messages.locale().helpCommandsPlaceholder()
         }
         if (cmd.getFlags().size > 0) {
-            help = help + " [OPTIONS]"
+            help = help + Messages.locale().helpOptionsPlaceholder()
         }
         for (arg in cmd.getArguments()) {
             match (arg.getDescription()) {
@@ -683,7 +691,7 @@ public class App {
                                     cStr = cStr + ">"
                                     w = w + cStr.size
                                 } else {
-                                    w = w + 8
+                                    w = w + 2 + Messages.locale().helpValuePlaceholder().size
                                 }
                             }
                             if (w > maxFlagWidth) { maxFlagWidth = w }
@@ -707,7 +715,7 @@ public class App {
                                     }
                                     line = line + ">"
                                 } else {
-                                    line = line + " <VALUE>"
+                                    line = line + " " + Messages.locale().helpValuePlaceholder()
                                 }
                             }
                             match (f.getDescription()) {
@@ -719,7 +727,7 @@ public class App {
                             }
                             match (f.getDefaultValue()) {
                                 case Some(dv) where !f.isBoolFlag() && !f.isTerminate() =>
-                                    line = line + " [default: ${dv}]"
+                                    line = line + " " + Messages.locale().helpDefaultLabel(dv)
                                 case _ => ()
                             }
                             help = help + wrapLine(line, maxWidth, maxFlagWidth + 6) + "\n"
@@ -732,7 +740,7 @@ public class App {
         // 参数列表
         let args = cmd.getArguments()
         if (args.size > 0) {
-            help = help + "\nArguments:\n"
+            help = help + "\n" + Messages.locale().helpArgumentsHeading() + ":\n"
 
             var maxArgWidth: Int64 = 0
             for (arg in args) {
@@ -759,7 +767,7 @@ public class App {
         // Phase 9: Examples 段落
         let examples = cmd.getExamples()
         if (examples.size > 0) {
-            help = help + "\nExamples:\n"
+            help = help + "\n" + Messages.locale().helpExamplesHeading() + ":\n"
             for (ex in examples) {
                 help = help + "  " + ex[0] + "\n"
                 help = help + "      " + ex[1] + "\n"
@@ -822,7 +830,7 @@ public class App {
             }
         }
 
-        diag.hint("For more information, try '--help'.")
+        diag.hint(Messages.locale().helpMoreInfo())
         renderer.render(diag)
     }
 
@@ -846,7 +854,7 @@ public class App {
 
         // 输出摘要行
         result = result + "error: ${e.message}\n"
-        result = result + "\nFor more information, try '--help'.\n"
+        result = result + "\n" + Messages.locale().helpMoreInfo() + "\n"
         result
     }
 

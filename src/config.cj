@@ -252,7 +252,7 @@ public class ConfigLoader {
             let eqIdx = findFirstEquals(trimmed)
             if (eqIdx < 0) {
                 errors.add(ConfigError(
-                    "expected 'key = value' format",
+                    Messages.locale().cfgExpectedFormat(),
                     filePath, lineNum, rawLine
                 ))
                 continue
@@ -263,7 +263,7 @@ public class ConfigLoader {
 
             if (key.size == 0) {
                 errors.add(ConfigError(
-                    "empty key name",
+                    Messages.locale().cfgEmptyKey(),
                     filePath, lineNum, rawLine
                 ))
                 continue
@@ -272,7 +272,7 @@ public class ConfigLoader {
             // 检查重复 key
             if (data.contains(key)) {
                 errors.add(ConfigError(
-                    "duplicate key '${key}'",
+                    Messages.locale().cfgDuplicateKey(key),
                     filePath, lineNum, rawLine
                 ))
                 continue
@@ -287,13 +287,13 @@ public class ConfigLoader {
                 match (suggestion) {
                     case Some(s) =>
                         errors.add(ConfigError(
-                            "unknown key '${key}'",
+                            Messages.locale().cfgUnknownKey(key),
                             filePath, lineNum, rawLine,
-                            suggestion: Some("did you mean '${s}'?")
+                            suggestion: Some(Messages.locale().cfgDidYouMean(s))
                         ))
                     case None =>
                         errors.add(ConfigError(
-                            "unknown key '${key}'",
+                            Messages.locale().cfgUnknownKey(key),
                             filePath, lineNum, rawLine
                         ))
                 }
