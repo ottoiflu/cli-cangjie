@@ -120,6 +120,115 @@ public class Parser {
         (currentCmd, ctx)
     }
 
+    // 仅解析命令行参数，不应用默认值和验证（供 App 实现四级优先级管道使用）
+    // 流程：路由子命令 → 解析 flags → 收集位置参数
+    // 返回: (matchedCmd, ctx, positionalArgs)
+    public func parseOnly(rootCmd: Command, rawArgs: Array<String>): (Command, Context, ArrayList<String>) {
+        let ctx = Context()
+        var currentCmd = rootCmd
+        ctx.pushCommandPath(rootCmd.getName())
+
+        // 步骤 1: 路由子命令
+        var argIndex: Int64 = 0
+        while (argIndex < rawArgs.size) {
+            let arg = rawArgs[argIndex]
+            if (arg.size > 0 && arg.startsWith("-")) {
+                break
+            }
+            match (currentCmd.findSubcommand(arg)) {
+                case Some(sub) =>
+                    currentCmd = sub
+                    ctx.pushCommandPath(sub.getName())
+                    argIndex++
+                case None =>
+                    if (currentCmd.getSubcommands().size > 0 && currentCmd.getArguments().size == 0) {
+                        let cmdNames = currentCmd.allCommandNames()
+                        match (findSuggestion(arg, cmdNames)) {
+                            case Some(suggestion) =>
+                                throw ParseException("Unknown command '${arg}'. Did you mean '${suggestion}'?")
+                            case None =>
+                                throw ParseException("Unknown command '${arg}'.")
+                        }
+                    }
+                    break
+            }
+        }
+
+        // 步骤 2: 解析 flags 和 positional arguments
+        var positionalOnly = false
+        let positionalArgs = ArrayList<String>()
+
+        while (argIndex < rawArgs.size) {
+            let arg = rawArgs[argIndex]
+            if (arg == "--") {
+                positionalOnly = true
+                argIndex++
+                continue
+            }
+            if (positionalOnly) {
+                positionalArgs.add(arg)
+                argIndex++
+                continue
+            }
+            if (arg.size > 2 && arg.startsWith("--")) {
+                let flagContent = arg[2..]
+                let (flagName, flagValue, hasEquals) = splitOnFirstEquals(flagContent)
+                if (hasEquals) {
+                    let resolvedFlag = resolveFlag(currentCmd, rootCmd, flagName)
+                    handleFlagValue(resolvedFlag, flagValue, ctx)
+                } else {
+                    let resolvedFlag = resolveFlag(currentCmd, rootCmd, flagName)
+                    handleFlagNoEquals(resolvedFlag, flagName, rawArgs, ctx, argIndex)
+                    if (!resolvedFlag.isBoolFlag() && !resolvedFlag.isTerminate()) {
+                        argIndex++
+                    }
+                }
+                argIndex++
+                continue
+            }
+            if (arg.size > 1 && arg.startsWith("-") && !arg.startsWith("--")) {
+                let runes = arg[1..].toRuneArray()
+                if (runes.size == 1) {
+                    let resolvedFlag = resolveFlagByShort(currentCmd, rootCmd, runes[0])
+                    handleShortFlagSingle(resolvedFlag, runes[0], rawArgs, ctx, argIndex)
+                    if (!resolvedFlag.isBoolFlag() && !resolvedFlag.isTerminate()) {
+                        argIndex++
+                    }
+                } else {
+                    parseCompositeShortFlags(runes, currentCmd, rootCmd, rawArgs, ctx, argIndex)
+                }
+                argIndex++
+                continue
+            }
+            positionalArgs.add(arg)
+            argIndex++
+        }
+
+        (currentCmd, ctx, positionalArgs)
+    }
+
+    // 完成解析：应用默认值、验证、处理位置参数（配合 parseOnly 使用）
+    public func finalize(rootCmd: Command, matchedCmd: Command, ctx: Context, positionalArgs: ArrayList<String>): Unit {
+        // 应用默认值
+        applyDefaultFlags(matchedCmd, ctx)
+        if (matchedCmd.getName() != rootCmd.getName()) {
+            applyDefaultFlags(rootCmd, ctx)
+        }
+
+        // 验证必填 flag
+        validateRequiredFlags(matchedCmd, ctx)
+
+        // 验证 Flag 约束
+        validateFlagConstraints(matchedCmd, ctx)
+        if (matchedCmd.getName() != rootCmd.getName()) {
+            validateFlagConstraints(rootCmd, ctx)
+        }
+        validateFlagGroups(matchedCmd, ctx)
+
+        // 处理位置参数
+        processPositionalArgs(matchedCmd, positionalArgs, ctx)
+    }
+
     // 处理长选项的值（带等号）
     func handleFlagValue(flag: Flag, rawValue: String, ctx: Context): Unit {
         match (flag.getAction()) {

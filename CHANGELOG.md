@@ -2,6 +2,20 @@
 
 本文件记录版本变更历史，遵循 [语义化版本 2.0.0](https://semver.org/lang/zh-CN/) 规范。
 
+## [0.7.0] - 2026-03-12
+
+### 新增
+- **配置文件加载** (`ConfigLoader`)：支持 `key = value` 格式配置文件解析（兼容 TOML 子集），支持注释、引号字符串、布尔值、Section 头部
+- **配置文件发现**：支持从 CWD 向上遍历查找配置文件，支持 `CONFIG_PATH` 环境变量覆盖。对标 Clippy 的 `clippy.toml` 查找逻辑
+- **四级优先级管道**：CLI 显式参数 > 环境变量 > 配置文件 > 代码默认值。新增 `parseOnly`/`finalize` 分离流程确保优先级正确
+- **配置错误报告**：解析失败时提供行号定位与 Did-You-Mean 建议。对标 Clippy 的 `ConfError` + `edit_distance` 字段纠错
+- **Key 归一化**：连字符/下划线自动互换匹配（如 `db_host` 匹配 `db-host`）
+- **`mockRunWithConfig`**：新增带配置文件内容注入的测试沙箱 API。无需磁盘文件即可端到端测试配置流
+
+### 测试
+- 新增 `ConfigParserTest` (8)、`ConfigErrorTest` (6)、`ConfigDiscoveryTest` (2)、`ConfigKeyNormalizationTest` (1)、`ConfigPriorityPipelineTest` (6)、`ConfigErrorIntegrationTest` (3)、`ParentDirTest` (4)
+- 测试总数：239 → 269 (新增 30 用例，通过率 100%)
+
 ## [0.6.0] - 2026-03-12
 
 ### 新增

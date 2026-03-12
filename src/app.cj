@@ -21,6 +21,7 @@ public class App {
     let _rootCommand: Command
     let _parser: Parser = Parser()
     var _envPrefix: Option<String> = None
+    var _configLoader: Option<ConfigLoader> = None
 
     public init(name: String) {
         _rootCommand = Command(name)
@@ -90,6 +91,36 @@ public class App {
         this
     }
 
+    // 配置加载器设定
+    public func configLoader(loader: ConfigLoader): This {
+        _configLoader = Some(loader)
+        this
+    }
+
+    // 便捷方法：设置配置文件名（自动创建 ConfigLoader）
+    public func configFile(name: String): This {
+        if (_configLoader.isNone()) {
+            _configLoader = Some(ConfigLoader())
+        }
+        match (_configLoader) {
+            case Some(cl) => cl.configFileName(name)
+            case None => ()
+        }
+        this
+    }
+
+    // 便捷方法：设置配置路径环境变量
+    public func configPathEnvVar(envVarName: String): This {
+        if (_configLoader.isNone()) {
+            _configLoader = Some(ConfigLoader())
+        }
+        match (_configLoader) {
+            case Some(cl) => cl.configPathEnvVar(envVarName)
+            case None => ()
+        }
+        this
+    }
+
     // 全局生命周期钩子
     public func persistentPreRun(hook: HookHandler): This {
         _rootCommand.persistentPreRun(hook)
@@ -107,18 +138,30 @@ public class App {
 
     // 内存级沙箱执行接口
     public func mockRun(args: Array<String>): TestResult {
+        return mockRunWithConfig(args, configContent: None)
+    }
+
+    // 带配置内容的沙箱执行（用于测试时注入配置文件内容，不依赖磁盘文件）
+    public func mockRunWithConfig(args: Array<String>, configContent!: Option<String> = None): TestResult {
         // 自动注入 --help / --version 为 Terminate Flag
         injectBuiltinFlags(_rootCommand)
 
         // 正式解析
         try {
-            let (matchedCmd, ctx) = _parser.parse(_rootCommand, args)
+            // 使用四级优先级管道: CLI > ENV > Config File > Defaults
+            let (matchedCmd, ctx, positionalArgs) = _parser.parseOnly(_rootCommand, args)
 
-            // 解析后应用环境变量合并
+            // 第二级：应用环境变量合并
             applyEnvVars(_rootCommand, ctx)
             if (matchedCmd.getName() != _rootCommand.getName()) {
                 applyEnvVars(matchedCmd, ctx)
             }
+
+            // 第三级：应用配置文件合并
+            applyConfigValues(matchedCmd, ctx, configContent)
+
+            // 第四级：应用默认值 + 验证 + 位置参数处理
+            _parser.finalize(_rootCommand, matchedCmd, ctx, positionalArgs)
 
             // 无动作处理器：显示帮助（跳过生命周期和中间件）
             if (matchedCmd.getAction().isNone()) {
@@ -164,6 +207,10 @@ public class App {
             } else {
                 TestResult(0, output, "")
             }
+        } catch (e: ConfigException) {
+            // 配置文件错误：使用专用格式化
+            let stderrBuf = e.formatAll()
+            TestResult(2, "", stderrBuf)
         } catch (e: CliException) {
             let stderrBuf = formatError(e, args)
             TestResult(2, "", stderrBuf)
@@ -244,6 +291,37 @@ public class App {
     // 将 flag 名转换为环境变量名格式: "db-host" → "DB_HOST"
     func flagNameToEnvKey(name: String): String {
         name.replace("-", "_").toAsciiUpper()
+    }
+
+    // 应用配置文件值: 四级优先级中的第三级（CLI > ENV > Config > Defaults）
+    func applyConfigValues(matchedCmd: Command, ctx: Context, configContent: Option<String>): Unit {
+        match (_configLoader) {
+            case Some(loader) =>
+                // 自动注册已知 key（从 Flag 列表提取）
+                loader.knownKeysFromFlags(_rootCommand.getFlags())
+                if (matchedCmd.getName() != _rootCommand.getName()) {
+                    loader.knownKeysFromFlags(matchedCmd.getFlags())
+                }
+
+                let (data, errors) = match (configContent) {
+                    case Some(content) =>
+                        // 测试模式：直接解析提供的内容
+                        loader.parse(content, filePath: "<test-config>")
+                    case None =>
+                        // 正常模式：发现并加载配置文件
+                        let (d, e, _) = loader.load()
+                        (d, e)
+                }
+
+                // 配置错误处理
+                if (errors.size > 0) {
+                    throw ConfigException(errors)
+                }
+
+                // 应用配置值: 只填充未被 CLI 或 ENV 设置的 Flag
+                loader.applyToContext(data, ctx)
+            case None => ()
+        }
     }
 
     // 递归注入内置 --help / --version flags

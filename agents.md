@@ -143,11 +143,12 @@ func testDidYouMean() {
     - [x] **标志组验证 (Group Validation)**：支持声明式标志组约束：`requireGroup(name, members)` (至少选一)、`mutuallyExclusiveGroup(name, members)` (最多选一)。
     - **测试**: 239 用例全部通过（新增 25 用例），覆盖互斥检测、依赖检查、自定义验证器、隐藏标志/命令、标志组约束、Clippy lintcheck 模式集成。
 
-7. **Phase 7: 配置文件管道 (Configuration Files)** — `v0.7.0`
-    - [ ] **配置文件加载**：支持简洁的 `key = value` 格式配置文件（兼容 TOML 子集），提供 `ConfigLoader` 模块。
-    - [ ] **配置文件发现**：支持目录向上遍历查找配置文件（如从 CWD 向上查找 `app.toml`），支持 `CONFIG_PATH` 环境变量覆盖。对标 Clippy 的 `clippy.toml` 查找逻辑。
-    - [ ] **四级优先级管道**：完善配置合并流为：CLI 显式参数 > 环境变量 > 配置文件 > 代码默认值。
-    - [ ] **配置错误报告**：解析配置文件失败时提供行号定位与 Did-You-Mean 建议（对标 Clippy 的 `ConfError` + `edit_distance` 字段纠错）。
+7. **Phase 7: 配置文件管道 (Configuration Files)** — `v0.7.0` ✅ 已完成
+    - [x] **配置文件加载**：支持简洁的 `key = value` 格式配置文件（兼容 TOML 子集），提供 `ConfigLoader` 模块。
+    - [x] **配置文件发现**：支持目录向上遍历查找配置文件（如从 CWD 向上查找 `app.toml`），支持 `CONFIG_PATH` 环境变量覆盖。对标 Clippy 的 `clippy.toml` 查找逻辑。
+    - [x] **四级优先级管道**：完善配置合并流为：CLI 显式参数 > 环境变量 > 配置文件 > 代码默认值。
+    - [x] **配置错误报告**：解析配置文件失败时提供行号定位与 Did-You-Mean 建议（对标 Clippy 的 `ConfError` + `edit_distance` 字段纠错）。
+    - **测试**: 269 用例全部通过（新增 30 用例），覆盖配置解析、错误检测、目录发现、Key 归一化、四级优先级管道、配置错误 mockRun 集成。
 
 8. **Phase 8: Shell 补全与高级特性 (Completion & Advanced)** — `v0.8.0`
     - [ ] **Shell 补全脚本生成**：支持生成 Bash/Zsh/Fish 三种 Shell 的自动补全脚本。对标 clap_complete 的补全生成能力。

@@ -5,7 +5,7 @@
       "package": "cli",
       "isMacro": false,
       "accessLevel": "public",
-      "timeStamp": 1773315505,
+      "timeStamp": 1773317877,
       "dependencies": [],
       "std-dependencies": [
         {
@@ -18,6 +18,9 @@
             },
             {
               "file": "/home/otto/文档/Project/cli/src/command.cj"
+            },
+            {
+              "file": "/home/otto/文档/Project/cli/src/config.cj"
             },
             {
               "file": "/home/otto/文档/Project/cli/src/context.cj"
@@ -61,6 +64,9 @@
               "file": "/home/otto/文档/Project/cli/src/app.cj"
             },
             {
+              "file": "/home/otto/文档/Project/cli/src/config.cj"
+            },
+            {
               "file": "/home/otto/文档/Project/cli/src/style.cj"
             }
           ]
@@ -71,6 +77,9 @@
           "isStd": true,
           "imports": [
             {
+              "file": "/home/otto/文档/Project/cli/src/config.cj"
+            },
+            {
               "file": "/home/otto/文档/Project/cli/src/snapshot.cj"
             }
           ]
@@ -80,6 +89,9 @@
           "package": "std.io",
           "isStd": true,
           "imports": [
+            {
+              "file": "/home/otto/文档/Project/cli/src/config.cj"
+            },
             {
               "file": "/home/otto/文档/Project/cli/src/snapshot.cj"
             }
@@ -95,7 +107,7 @@
       "package": "cli",
       "isMacro": false,
       "accessLevel": "public",
-      "timeStamp": 1773315505,
+      "timeStamp": 1773317877,
       "dependencies": [],
       "std-dependencies": [
         {
@@ -108,6 +120,9 @@
             },
             {
               "file": "/home/otto/文档/Project/cli/src/command.cj"
+            },
+            {
+              "file": "/home/otto/文档/Project/cli/src/config.cj"
             },
             {
               "file": "/home/otto/文档/Project/cli/src/context.cj"
@@ -151,6 +166,9 @@
               "file": "/home/otto/文档/Project/cli/src/app.cj"
             },
             {
+              "file": "/home/otto/文档/Project/cli/src/config.cj"
+            },
+            {
               "file": "/home/otto/文档/Project/cli/src/style.cj"
             }
           ]
@@ -160,6 +178,9 @@
           "package": "std.fs",
           "isStd": true,
           "imports": [
+            {
+              "file": "/home/otto/文档/Project/cli/src/config.cj"
+            },
             {
               "file": "/home/otto/文档/Project/cli/src/snapshot.cj"
             }
@@ -183,7 +204,7 @@
       "package": "cli.test",
       "isMacro": false,
       "accessLevel": "internal",
-      "timeStamp": 1773317115,
+      "timeStamp": 1773318295,
       "dependencies": [
         {
           "orPackage": "",
@@ -195,6 +216,9 @@
             },
             {
               "file": "/home/otto/文档/Project/cli/src/test/command_test.cj"
+            },
+            {
+              "file": "/home/otto/文档/Project/cli/src/test/config_test.cj"
             },
             {
               "file": "/home/otto/文档/Project/cli/src/test/constraint_test.cj"
@@ -248,6 +272,9 @@
               "file": "/home/otto/文档/Project/cli/src/test/command_test.cj"
             },
             {
+              "file": "/home/otto/文档/Project/cli/src/test/config_test.cj"
+            },
+            {
               "file": "/home/otto/文档/Project/cli/src/test/constraint_test.cj"
             },
             {
@@ -291,6 +318,9 @@
           "isStd": true,
           "imports": [
             {
+              "file": "/home/otto/文档/Project/cli/src/test/config_test.cj"
+            },
+            {
               "file": "/home/otto/文档/Project/cli/src/test/lifecycle_test.cj"
             }
           ]
@@ -300,6 +330,9 @@
           "package": "std.fs",
           "isStd": true,
           "imports": [
+            {
+              "file": "/home/otto/文档/Project/cli/src/test/config_test.cj"
+            },
             {
               "file": "/home/otto/文档/Project/cli/src/test/snapshot_test.cj"
             }
@@ -315,6 +348,9 @@
             },
             {
               "file": "/home/otto/文档/Project/cli/src/test/command_test.cj"
+            },
+            {
+              "file": "/home/otto/文档/Project/cli/src/test/config_test.cj"
             },
             {
               "file": "/home/otto/文档/Project/cli/src/test/constraint_test.cj"
@@ -364,6 +400,9 @@
             },
             {
               "file": "/home/otto/文档/Project/cli/src/test/command_test.cj"
+            },
+            {
+              "file": "/home/otto/文档/Project/cli/src/test/config_test.cj"
             },
             {
               "file": "/home/otto/文档/Project/cli/src/test/constraint_test.cj"
