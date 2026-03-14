@@ -8,30 +8,30 @@
 
 ## 目录
 
-1. [类型别名](#1-类型别名)
-2. [App — 应用入口](#2-app--应用入口)
-3. [Command — 命令定义](#3-command--命令定义)
-4. [Flag — 选项定义](#4-flag--选项定义)
-5. [Argument — 位置参数](#5-argument--位置参数)
-6. [Context — 运行时上下文](#6-context--运行时上下文)
-7. [Parser — 解析引擎](#7-parser--解析引擎)
-8. [类型与枚举](#8-类型与枚举)
-9. [异常体系](#9-异常体系)
-10. [诊断系统](#10-诊断系统)
-11. [终端样式](#11-终端样式)
-12. [拼写建议](#12-拼写建议)
-13. [本地化](#13-本地化)
-14. [配置管道](#14-配置管道)
-15. [输入与交互](#15-输入与交互)
-16. [交互组件](#16-交互组件)
-17. [高级功能](#17-高级功能)
-18. [Shell 补全](#18-shell-补全)
-19. [快照测试](#19-快照测试)
-20. [示例构建器](#20-示例构建器)
+- [类型别名](#类型别名)
+- [App — 应用入口](#app--应用入口)
+- [Command — 命令定义](#command--命令定义)
+- [Flag — 选项定义](#flag--选项定义)
+- [Argument — 位置参数](#argument--位置参数)
+- [Context — 运行时上下文](#context--运行时上下文)
+- [Parser — 解析引擎](#parser--解析引擎)
+- [类型与枚举](#类型与枚举)
+- [异常体系](#异常体系)
+- [诊断系统](#诊断系统)
+- [终端样式](#终端样式)
+- [拼写建议](#拼写建议)
+- [本地化](#本地化)
+- [配置管道](#配置管道)
+- [输入与交互](#输入与交互)
+- [交互组件](#交互组件)
+- [高级功能](#高级功能)
+- [Shell 补全](#shell-补全)
+- [快照测试](#快照测试)
+- [示例构建器](#示例构建器)
 
 ---
 
-## 1. 类型别名
+## 类型别名
 
 ```cangjie
 public type ActionHandler  = (Context) -> Int64
@@ -47,17 +47,17 @@ public type Middleware      = (Context, () -> Int64) -> Int64
 
 ---
 
-## 2. App — 应用入口
+## App — 应用入口
 
 > 源码：`src/app.cj`
 
-### 2.1 构造
+### 构造
 
 ```cangjie
 public init(name: String)
 ```
 
-### 2.2 构建器方法（返回 `This`）
+### 构建器方法（返回 `This`）
 
 | 方法                            | 说明                                           |
 | ------------------------------- | ---------------------------------------------- |
@@ -87,7 +87,7 @@ public init(name: String)
 | `persistentPreRun(hook)`        | 全局前置钩子                                   |
 | `persistentPostRun(hook)`       | 全局后置钩子                                   |
 
-### 2.3 执行方法
+### 执行方法
 
 | 方法                                      | 签名                            | 说明                                  |
 | ----------------------------------------- | ------------------------------- | ------------------------------------- |
@@ -96,7 +96,7 @@ public init(name: String)
 | `mockRun(args)`                           | `(Array<String>) -> TestResult` | 沙箱执行，捕获 stdout/stderr/exitCode |
 | `mockRunWithConfig(args, configContent!)` | 见签名                          | 沙箱执行，注入配置文件内容            |
 
-### 2.4 辅助方法
+### 辅助方法
 
 | 方法                        | 说明                   |
 | --------------------------- | ---------------------- |
@@ -105,7 +105,7 @@ public init(name: String)
 | `generateHelp(cmd)`         | 为指定命令生成帮助文本 |
 | `generateCompletion(shell)` | 生成 Shell 补全脚本    |
 
-### 2.5 关联类型
+### 关联类型
 
 #### SignalType
 
@@ -139,17 +139,17 @@ public class TestResult {
 
 ---
 
-## 3. Command — 命令定义
+## Command — 命令定义
 
 > 源码：`src/command.cj`
 
-### 3.1 构造
+### 构造
 
 ```cangjie
 public init(name: String)
 ```
 
-### 3.2 构建器方法（返回 `This`）
+### 构建器方法（返回 `This`）
 
 | 方法                                          | 说明                   |
 | --------------------------------------------- | ---------------------- |
@@ -178,7 +178,7 @@ public init(name: String)
 | `requireGroup(name, members)`                 | 至少使用一个 Flag 的组 |
 | `mutuallyExclusiveGroup(name, members)`       | 互斥 Flag 组           |
 
-### 3.3 查询方法
+### 查询方法
 
 | 方法                      | 返回                          | 说明                   |
 | ------------------------- | ----------------------------- | ---------------------- |
@@ -203,17 +203,17 @@ public init(name: String)
 
 ---
 
-## 4. Flag — 选项定义
+## Flag — 选项定义
 
 > 源码：`src/flag.cj`
 
-### 4.1 构造
+### 构造
 
 ```cangjie
 public init(longName: String)
 ```
 
-### 4.2 构建器方法（返回 `This`）
+### 构建器方法（返回 `This`）
 
 | 方法                                          | 说明                                                                |
 | --------------------------------------------- | ------------------------------------------------------------------- |
@@ -240,7 +240,7 @@ public init(longName: String)
 | `valueHint(hint: ValueHint)`                  | 值类型提示（Shell 补全用）                                          |
 | `allowHyphenValues(allow!)`                   | 允许以 `-` 开头的值                                                 |
 
-### 4.3 查询方法
+### 查询方法
 
 | 方法                     | 返回                | 说明                 |
 | ------------------------ | ------------------- | -------------------- |
@@ -273,17 +273,17 @@ public init(longName: String)
 
 ---
 
-## 5. Argument — 位置参数
+## Argument — 位置参数
 
 > 源码：`src/argument.cj`
 
-### 5.1 构造
+### 构造
 
 ```cangjie
 public init(name: String)
 ```
 
-### 5.2 构建器方法（返回 `This`）
+### 构建器方法（返回 `This`）
 
 | 方法                          | 说明     |
 | ----------------------------- | -------- |
@@ -294,7 +294,7 @@ public init(name: String)
 | `variadic(v)`                 | 变长参数 |
 | `minCount(n)` / `maxCount(n)` | 数量约束 |
 
-### 5.3 查询方法
+### 查询方法
 
 | 方法                              | 返回             |
 | --------------------------------- | ---------------- |
@@ -308,11 +308,11 @@ public init(name: String)
 
 ---
 
-## 6. Context — 运行时上下文
+## Context — 运行时上下文
 
 > 源码：`src/context.cj`
 
-### 6.1 Flag 操作
+### Flag 操作
 
 | 方法                                 | 说明                                   |
 | ------------------------------------ | -------------------------------------- |
@@ -328,7 +328,7 @@ public init(name: String)
 | `getInt64Flag(name)`                 | 获取 Int64                             |
 | `hasFlag(name)`                      | 是否存在                               |
 
-### 6.2 位置参数
+### 位置参数
 
 | 方法                 | 说明                         |
 | -------------------- | ---------------------------- |
@@ -337,14 +337,14 @@ public init(name: String)
 | `getArguments()`     | 获取全部 `ArrayList<String>` |
 | `argumentCount()`    | 数量                         |
 
-### 6.3 命令路径
+### 命令路径
 
 | 方法                    | 说明                                     |
 | ----------------------- | ---------------------------------------- |
 | `pushCommandPath(name)` | 推入命令路径                             |
 | `getCommandPathStr()`   | 获取路径字符串（如 `"app cloud start"`） |
 
-### 6.4 自定义值存储（DI）
+### 自定义值存储（DI）
 
 | 方法                   | 说明                  |
 | ---------------------- | --------------------- |
@@ -352,7 +352,7 @@ public init(name: String)
 | `getValue(key)`        | 读取 `Option<String>` |
 | `hasValue(key)`        | 是否存在              |
 
-### 6.5 显式标记
+### 显式标记
 
 | 方法                 | 说明                 |
 | -------------------- | -------------------- |
@@ -360,7 +360,7 @@ public init(name: String)
 | `isExplicit(name)`   | 是否为显式设置       |
 | `hasAnyExplicit()`   | 是否有任何显式 Flag  |
 
-### 6.6 Pass-Through 参数
+### Pass-Through 参数
 
 | 方法                     | 说明               |
 | ------------------------ | ------------------ |
@@ -368,7 +368,7 @@ public init(name: String)
 | `getPassthroughArgs()`   | 获取全部           |
 | `hasPassthroughArgs()`   | 是否存在           |
 
-### 6.7 工具函数
+### 工具函数
 
 ```cangjie
 public func parseSimpleInt(s: String): Int64
@@ -376,7 +376,7 @@ public func parseSimpleInt(s: String): Int64
 
 ---
 
-## 7. Parser — 解析引擎
+## Parser — 解析引擎
 
 > 源码：`src/parser.cj`
 
@@ -388,7 +388,7 @@ public func parseSimpleInt(s: String): Int64
 
 ---
 
-## 8. 类型与枚举
+## 类型与枚举
 
 > 源码：`src/types.cj`
 
@@ -440,7 +440,7 @@ public enum ValueHint {
 
 ---
 
-## 9. 异常体系
+## 异常体系
 
 > 源码：`src/errors.cj`
 
@@ -464,7 +464,7 @@ Exception
 
 ---
 
-## 10. 诊断系统
+## 诊断系统
 
 > 源码：`src/diagnostic.cj`
 
@@ -502,7 +502,7 @@ let output = renderer.renderAll(diags)    // 批量渲染
 
 ---
 
-## 11. 终端样式
+## 终端样式
 
 > 源码：`src/style.cj`
 
@@ -529,7 +529,7 @@ BrightRed | BrightGreen | BrightYellow | BrightBlue | BrightMagenta | BrightCyan
 
 ---
 
-## 12. 拼写建议
+## 拼写建议
 
 > 源码：`src/suggest.cj`
 
@@ -543,7 +543,7 @@ BrightRed | BrightGreen | BrightYellow | BrightBlue | BrightMagenta | BrightCyan
 
 ---
 
-## 13. 本地化
+## 本地化
 
 > 源码：`src/locale.cj`
 
@@ -576,7 +576,7 @@ Messages.reset()                       // 恢复默认
 
 ---
 
-## 14. 配置管道
+## 配置管道
 
 > 源码：`src/config.cj`
 
@@ -605,7 +605,7 @@ CLI 显式参数 > 环境变量 > 配置文件 > 代码默认值
 
 ---
 
-## 15. 输入与交互
+## 输入与交互
 
 > 源码：`src/input.cj`
 
@@ -632,7 +632,7 @@ prompt.select("Choose:", ["A", "B", "C"])
 
 ---
 
-## 16. 交互组件
+## 交互组件
 
 > 源码：`src/widget.cj`
 
@@ -665,7 +665,7 @@ MultiSelect("Pick:").options(["X", "Y", "Z"]).run(mock)
 
 ---
 
-## 17. 高级功能
+## 高级功能
 
 > 源码：`src/advanced.cj`
 
@@ -697,7 +697,7 @@ DeprecationInfo("Removed in v2", "use-other", "v1.5.0")
 
 ---
 
-## 18. Shell 补全
+## Shell 补全
 
 > 源码：`src/completion.cj`
 
@@ -723,7 +723,7 @@ let script = CompletionGenerator.generate(app.getRootCommand(), Zsh)
 
 ---
 
-## 19. 快照测试
+## 快照测试
 
 > 源码：`src/snapshot.cj`
 
@@ -736,7 +736,7 @@ snap.update("test-name", newBaseline)
 
 ---
 
-## 20. 示例构建器
+## 示例构建器
 
 > 源码：`src/example.cj`
 

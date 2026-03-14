@@ -6,23 +6,23 @@
 
 ## 目录
 
-1. [安装](#1-安装)
-2. [创建第一个 CLI 应用](#2-创建第一个-cli-应用)
-3. [子命令](#3-子命令)
-4. [Flag 与选项](#4-flag-与选项)
-5. [位置参数](#5-位置参数)
-6. [生命周期与中间件](#6-生命周期与中间件)
-7. [配置文件集成](#7-配置文件集成)
-8. [约束与验证](#8-约束与验证)
-9. [交互组件](#9-交互组件)
-10. [Shell 补全](#10-shell-补全)
-11. [测试](#11-测试)
-12. [国际化](#12-国际化)
-13. [完整示例](#13-完整示例)
+- [安装](#安装)
+- [创建第一个 CLI 应用](#创建第一个-cli-应用)
+- [子命令](#子命令)
+- [Flag 与选项](#flag-与选项)
+- [位置参数](#位置参数)
+- [生命周期与中间件](#生命周期与中间件)
+- [配置文件集成](#配置文件集成)
+- [约束与验证](#约束与验证)
+- [交互组件](#交互组件)
+- [Shell 补全](#shell-补全)
+- [测试](#测试)
+- [国际化](#国际化)
+- [完整示例](#完整示例)
 
 ---
 
-## 1. 安装
+## 安装
 
 ### 前置条件
 
@@ -46,7 +46,7 @@ import cli.*
 
 ---
 
-## 2. 创建第一个 CLI 应用
+## 创建第一个 CLI 应用
 
 ```cangjie
 import cli.*
@@ -100,7 +100,7 @@ hello 1.0.0
 
 ---
 
-## 3. 子命令
+## 子命令
 
 ```cangjie
 let app = App("tool")
@@ -147,9 +147,9 @@ error: 'deploy' requires a subcommand.
 
 ---
 
-## 4. Flag 与选项
+## Flag 与选项
 
-### 4.1 基本类型
+### 基本类型
 
 ```cangjie
 Flag("port").valueType(Int64Type)           // 整数
@@ -158,7 +158,7 @@ Flag("verbose").asBool()                     // 布尔开关
 Flag("name")                                 // 字符串（默认）
 ```
 
-### 4.2 动作类型
+### 动作类型
 
 ```cangjie
 // 默认赋值（Set），接受一个值
@@ -174,21 +174,21 @@ Flag("filter").action(Append)                // --filter a --filter b → ["a", 
 Flag("verbose").short(r'v').action(Count)   // -vvv → 3
 ```
 
-### 4.3 枚举值约束
+### 枚举值约束
 
 ```cangjie
 Flag("format").choices(["text", "json", "yaml"])
 // --format xml → error: Invalid value 'xml' for '--format'. Valid choices: text, json, yaml
 ```
 
-### 4.4 值分隔符
+### 值分隔符
 
 ```cangjie
 Flag("tags").delimiter(r',')
 // --tags a,b,c → ["a", "b", "c"]
 ```
 
-### 4.5 环境变量绑定
+### 环境变量绑定
 
 ```cangjie
 Flag("host").envVar("BIND_HOST").defaultValue("localhost")
@@ -201,7 +201,7 @@ Flag("host").envVar("BIND_HOST").defaultValue("localhost")
 --host <VALUE>  Bind address [env: BIND_HOST] [default: localhost]
 ```
 
-### 4.6 自定义值占位名与补全提示
+### 自定义值占位名与补全提示
 
 ```cangjie
 Flag("config")
@@ -209,7 +209,7 @@ Flag("config")
     .valueHint(FilePath)              // Shell 补全时提供文件补全
 ```
 
-### 4.7 Count 计数（分级日志示例）
+### Count 计数（分级日志示例）
 
 ```cangjie
 let app = App("tool")
@@ -239,7 +239,7 @@ $ tool -v -v -v     # 等价于 -vvv
 
 ---
 
-## 5. 位置参数
+## 位置参数
 
 ```cangjie
 Command("greet")
@@ -273,7 +273,7 @@ let extraArgs = ctx.getPassthroughArgs()   // ["--strict", "--max-warnings", "10
 
 ---
 
-## 6. 生命周期与中间件
+## 生命周期与中间件
 
 ### 生命周期钩子
 
@@ -314,7 +314,7 @@ app.use({ ctx, next =>
 
 ---
 
-## 7. 配置文件集成
+## 配置文件集成
 
 ```cangjie
 let app = App("tool")
@@ -346,7 +346,7 @@ $ MYAPP_PORT=4000 tool --host 127.0.0.1
 
 ---
 
-## 8. 约束与验证
+## 约束与验证
 
 ### 互斥
 
@@ -394,7 +394,7 @@ Flag("old-flag")
 
 ---
 
-## 9. 交互组件
+## 交互组件
 
 ```cangjie
 import cli.*
@@ -428,7 +428,7 @@ println(spinner.render())
 
 ---
 
-## 10. Shell 补全
+## Shell 补全
 
 ```cangjie
 let completionCmd = Command("completion")
@@ -466,7 +466,7 @@ Flag("remote").valueHint(Hostname)     // 主机名补全
 
 ---
 
-## 11. 测试
+## 测试
 
 ### mockRun 沙箱测试
 
@@ -537,7 +537,7 @@ func testConfigMerge() {
 
 ---
 
-## 12. 国际化
+## 国际化
 
 ```cangjie
 class ChineseLocale <: Locale {
@@ -558,7 +558,7 @@ let app = App("tool")
 
 ---
 
-## 13. 完整示例
+## 完整示例
 
 以下是一个包含多数框架特性的完整 CLI 工具：
 
