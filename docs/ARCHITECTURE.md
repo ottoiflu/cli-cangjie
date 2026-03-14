@@ -68,27 +68,27 @@
 
 ### 模块职责一览
 
-| 模块 | 职责 |
-|------|------|
-| `app.cj` | 应用生命周期编排、mockRun 沙箱、帮助/版本生成、配置管道协调 |
-| `command.cj` | 命令树结构、子命令路由、生命周期钩子注册、约束组声明 |
-| `flag.cj` | Flag 定义（长短名/默认值/类型/动作/约束/弃用/ValueHint） |
-| `argument.cj` | 位置参数定义（必需/变长/数量约束/类型） |
-| `context.cj` | 运行时状态管理（Flag 存储/DI 值存储/显式标记/Pass-Through） |
-| `parser.cj` | 两阶段解析引擎（parseOnly + finalize），错误收集与聚合 |
-| `types.cj` | 值类型枚举、FlagAction 枚举、ValueHint 枚举、类型验证/转换 |
-| `errors.cj` | 异常继承体系（5 种专用异常类） |
+| 模块            | 职责                                                            |
+| --------------- | --------------------------------------------------------------- |
+| `app.cj`        | 应用生命周期编排、mockRun 沙箱、帮助/版本生成、配置管道协调     |
+| `command.cj`    | 命令树结构、子命令路由、生命周期钩子注册、约束组声明            |
+| `flag.cj`       | Flag 定义（长短名/默认值/类型/动作/约束/弃用/ValueHint）        |
+| `argument.cj`   | 位置参数定义（必需/变长/数量约束/类型）                         |
+| `context.cj`    | 运行时状态管理（Flag 存储/DI 值存储/显式标记/Pass-Through）     |
+| `parser.cj`     | 两阶段解析引擎（parseOnly + finalize），错误收集与聚合          |
+| `types.cj`      | 值类型枚举、FlagAction 枚举、ValueHint 枚举、类型验证/转换      |
+| `errors.cj`     | 异常继承体系（5 种专用异常类）                                  |
 | `diagnostic.cj` | Clippy 风格诊断消息渲染（Error/Warning/Help/Note + 上下文高亮） |
-| `style.cj` | ANSI 颜色/粗体/下划线，自动检测 `NO_COLOR` 环境 |
-| `suggest.cj` | Damerau-Levenshtein 编辑距离、Did-You-Mean 拼写建议 |
-| `locale.cj` | i18n 接口（60+ 方法），Messages 单例全局路由 |
-| `config.cj` | TOML 子集配置文件发现/解析/合并，行级错误定位 |
-| `input.cj` | InputMock 输入队列、Prompt 交互封装 |
-| `widget.cj` | 终端 UI 组件（Spinner/ProgressBar/Confirm/Select/MultiSelect） |
-| `advanced.cj` | OutputFormatter(JSON/Text)、VersionInfo、DeprecationInfo |
-| `completion.cj` | Bash/Zsh/Fish 补全脚本静态生成 |
-| `snapshot.cj` | Golden Files 快照测试引擎、Diff 比对 |
-| `example.cj` | 完整 DevOps 示例应用构建器 |
+| `style.cj`      | ANSI 颜色/粗体/下划线，自动检测 `NO_COLOR` 环境                 |
+| `suggest.cj`    | Damerau-Levenshtein 编辑距离、Did-You-Mean 拼写建议             |
+| `locale.cj`     | i18n 接口（60+ 方法），Messages 单例全局路由                    |
+| `config.cj`     | TOML 子集配置文件发现/解析/合并，行级错误定位                   |
+| `input.cj`      | InputMock 输入队列、Prompt 交互封装                             |
+| `widget.cj`     | 终端 UI 组件（Spinner/ProgressBar/Confirm/Select/MultiSelect）  |
+| `advanced.cj`   | OutputFormatter(JSON/Text)、VersionInfo、DeprecationInfo        |
+| `completion.cj` | Bash/Zsh/Fish 补全脚本静态生成                                  |
+| `snapshot.cj`   | Golden Files 快照测试引擎、Diff 比对                            |
+| `example.cj`    | 完整 DevOps 示例应用构建器                                      |
 
 ---
 
@@ -208,24 +208,24 @@ Command("cloud").aliases(["c", "infra"])
 
 Parser 处理 4 种 Flag 输入格式：
 
-| 格式 | 示例 | 处理函数 |
-|------|------|----------|
-| `--flag=value` | `--port=8080` | `handleFlagValue` |
-| `--flag value` | `--port 8080` | `handleFlagNoEquals` |
-| `-f value` | `-p 8080` | `handleShortFlagSingle` |
-| `-abc` | `-vvv` | `parseCompositeShortFlags` |
+| 格式           | 示例          | 处理函数                   |
+| -------------- | ------------- | -------------------------- |
+| `--flag=value` | `--port=8080` | `handleFlagValue`          |
+| `--flag value` | `--port 8080` | `handleFlagNoEquals`       |
+| `-f value`     | `-p 8080`     | `handleShortFlagSingle`    |
+| `-abc`         | `-vvv`        | `parseCompositeShortFlags` |
 
 ### FlagAction 分派
 
 每种 Flag 格式的处理函数根据 `FlagAction` 类型决定行为：
 
-| FlagAction | 行为 |
-|------------|------|
-| `Set` | 直接赋值 `ctx.setFlag(name, value)` |
-| `SetTrue` | 布尔开关 `ctx.setFlag(name, "true")` |
-| `SetFalse` | 布尔关闭 `ctx.setFlag(name, "false")` |
-| `Append` | 追加值 `ctx.appendFlag(name, value)` |
-| `Count` | 计数器 `incrementCount(ctx, name)` |
+| FlagAction  | 行为                                           |
+| ----------- | ---------------------------------------------- |
+| `Set`       | 直接赋值 `ctx.setFlag(name, value)`            |
+| `SetTrue`   | 布尔开关 `ctx.setFlag(name, "true")`           |
+| `SetFalse`  | 布尔关闭 `ctx.setFlag(name, "false")`          |
+| `Append`    | 追加值 `ctx.appendFlag(name, value)`           |
+| `Count`     | 计数器 `incrementCount(ctx, name)`             |
 | `Terminate` | 抛出 `TerminateException`，由 App 层捕获并输出 |
 
 ### 复合短选项
@@ -324,11 +324,11 @@ error: unknown key 'prot' in devtool.toml:3
 
 ### 钩子注册维度
 
-| 钩子 | 注册位置 | 触发时机 |
-|------|----------|----------|
-| `persistentPreRun` | `App` 或根 `Command` | 任何命令执行前（全局一次） |
-| `preRun` | `Command` | 该命令的 Action 之前 |
-| `postRun` | `Command` | 该命令的 Action 之后 |
+| 钩子                | 注册位置             | 触发时机                   |
+| ------------------- | -------------------- | -------------------------- |
+| `persistentPreRun`  | `App` 或根 `Command` | 任何命令执行前（全局一次） |
+| `preRun`            | `Command`            | 该命令的 Action 之前       |
+| `postRun`           | `Command`            | 该命令的 Action 之后       |
 | `persistentPostRun` | `App` 或根 `Command` | 任何命令执行后（全局一次） |
 
 ### 信号检查点
@@ -379,19 +379,19 @@ type Middleware = (Context, () -> Int64) -> Int64
 
 ### 约束类型
 
-| 约束 | 注册方式 | 验证时机 |
-|------|----------|----------|
-| 必需 Flag | `Flag.required(true)` | finalize 阶段 |
-| 互斥 | `Flag.conflictsWith("other")` | finalize 阶段 |
-| 依赖 | `Flag.requires("other")` | finalize 阶段 |
-| 必需组 | `Command.requireGroup(name, members)` | finalize 阶段 |
-| 互斥组 | `Command.mutuallyExclusiveGroup(name, members)` | finalize 阶段 |
-| 类型验证 | `Flag.valueType(Int64Type)` | finalize 阶段 |
-| 枚举验证 | `Flag.choices(["a", "b"])` | finalize 阶段 |
-| 自定义验证 | `Flag.validator(fn, message)` | finalize 阶段 |
-| 数量约束 | `Argument.minCount(n)` / `maxCount(n)` | finalize 阶段 |
-| 子命令必需 | `Command.subcommandRequired()` | finalize 后检查 |
-| 无参显示帮助 | `Command.argRequiredElseHelp()` | finalize 后检查 |
+| 约束         | 注册方式                                        | 验证时机        |
+| ------------ | ----------------------------------------------- | --------------- |
+| 必需 Flag    | `Flag.required(true)`                           | finalize 阶段   |
+| 互斥         | `Flag.conflictsWith("other")`                   | finalize 阶段   |
+| 依赖         | `Flag.requires("other")`                        | finalize 阶段   |
+| 必需组       | `Command.requireGroup(name, members)`           | finalize 阶段   |
+| 互斥组       | `Command.mutuallyExclusiveGroup(name, members)` | finalize 阶段   |
+| 类型验证     | `Flag.valueType(Int64Type)`                     | finalize 阶段   |
+| 枚举验证     | `Flag.choices(["a", "b"])`                      | finalize 阶段   |
+| 自定义验证   | `Flag.validator(fn, message)`                   | finalize 阶段   |
+| 数量约束     | `Argument.minCount(n)` / `maxCount(n)`          | finalize 阶段   |
+| 子命令必需   | `Command.subcommandRequired()`                  | finalize 后检查 |
+| 无参显示帮助 | `Command.argRequiredElseHelp()`                 | finalize 后检查 |
 
 ### 错误聚合
 
@@ -458,14 +458,14 @@ CompletionGenerator.generate(rootCommand, ShellType)
 
 ### ValueHint → Shell 动作映射
 
-| ValueHint | Zsh | Fish |
-|-----------|-----|------|
-| `FilePath` | `_files` | `-F` (force file completion) |
-| `DirPath` | `_directories` | `__fish_complete_directories` |
-| `CommandName` | `_command_names` | `-a '(complete -C "")'` |
-| `Username` | `_users` | `-a '(cut -d: -f1 /etc/passwd)'` |
-| `Hostname` | `_hosts` | `-a '(cat /etc/hosts)'` |
-| `Url` | `_urls` | (无特殊映射) |
+| ValueHint     | Zsh              | Fish                             |
+| ------------- | ---------------- | -------------------------------- |
+| `FilePath`    | `_files`         | `-F` (force file completion)     |
+| `DirPath`     | `_directories`   | `__fish_complete_directories`    |
+| `CommandName` | `_command_names` | `-a '(complete -C "")'`          |
+| `Username`    | `_users`         | `-a '(cut -d: -f1 /etc/passwd)'` |
+| `Hostname`    | `_hosts`         | `-a '(cat /etc/hosts)'`          |
+| `Url`         | `_urls`          | (无特殊映射)                     |
 
 ### Count 类型处理
 
@@ -535,11 +535,11 @@ if (!result.matched) {
 
 ### 测试统计
 
-| 里程碑 | 测试数 | 覆盖领域 |
-|--------|--------|----------|
-| M01-M11 | 452 | 核心解析/诊断/生命周期/配置/补全/约束/交互/快照/信号/i18n |
-| M12 | 43 | Count/ValueHint/valueName/subcommandRequired/argRequiredElseHelp/longHelp/envVar 显示 |
-| **总计** | **495** | 全功能覆盖 |
+| 里程碑   | 测试数  | 覆盖领域                                                                              |
+| -------- | ------- | ------------------------------------------------------------------------------------- |
+| M01-M11  | 452     | 核心解析/诊断/生命周期/配置/补全/约束/交互/快照/信号/i18n                             |
+| M12      | 43      | Count/ValueHint/valueName/subcommandRequired/argRequiredElseHelp/longHelp/envVar 显示 |
+| **总计** | **495** | 全功能覆盖                                                                            |
 
 ---
 
@@ -567,10 +567,10 @@ PersistentPreRun → [检查] → Middleware → [检查] → PreRun → [检查
 
 ### 退出码
 
-| 信号 | 退出码 | 含义 |
-|------|--------|------|
-| SIGINT | 130 | Ctrl+C 中断 |
-| SIGTERM | 143 | kill 终止 |
+| 信号    | 退出码 | 含义        |
+| ------- | ------ | ----------- |
+| SIGINT  | 130    | Ctrl+C 中断 |
+| SIGTERM | 143    | kill 终止   |
 
 ---
 
@@ -597,14 +597,14 @@ app.cj ──┬── command.cj ── flag.cj ── types.cj
 
 ## 16. Flag 动作类型系统
 
-| FlagAction | 解析行为 | Context 存储 | 典型用法 |
-|------------|----------|-------------|----------|
-| `Set` | 取下一个 token 作为值 | `setFlag(name, value)` | `--port 8080` |
-| `SetTrue` | 无需值，出现即为 true | `setFlag(name, "true")` | `--verbose` |
-| `SetFalse` | 无需值，出现即为 false | `setFlag(name, "false")` | `--no-color` |
-| `Append` | 取值并追加 | `appendFlag(name, value)` | `--filter a --filter b` |
-| `Count` | 无需值，每次出现计数+1 | `setFlag(name, "N")` | `-vvv` → `"3"` |
-| `Terminate` | 触发回调并终止 | 抛出 `TerminateException` | `--help`, `--version` |
+| FlagAction  | 解析行为               | Context 存储              | 典型用法                |
+| ----------- | ---------------------- | ------------------------- | ----------------------- |
+| `Set`       | 取下一个 token 作为值  | `setFlag(name, value)`    | `--port 8080`           |
+| `SetTrue`   | 无需值，出现即为 true  | `setFlag(name, "true")`   | `--verbose`             |
+| `SetFalse`  | 无需值，出现即为 false | `setFlag(name, "false")`  | `--no-color`            |
+| `Append`    | 取值并追加             | `appendFlag(name, value)` | `--filter a --filter b` |
+| `Count`     | 无需值，每次出现计数+1 | `setFlag(name, "N")`      | `-vvv` → `"3"`          |
+| `Terminate` | 触发回调并终止         | 抛出 `TerminateException` | `--help`, `--version`   |
 
 ### Count 计数器详解
 

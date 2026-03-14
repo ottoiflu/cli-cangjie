@@ -9,3 +9,4 @@
 /example/target
 *.log
 *.tmp
+/testdoc
