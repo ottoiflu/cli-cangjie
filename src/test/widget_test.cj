@@ -409,7 +409,7 @@ class WidgetIntegrationTest {
         let app = App("tool")
             .command(
                 Command("build")
-                    .action({ ctx =>
+                    .action({ _ =>
                         let s = Spinner().message("Compiling...")
                         log.add(s.render())
                         s.tick()
@@ -434,7 +434,7 @@ class WidgetIntegrationTest {
         let app = App("tool")
             .command(
                 Command("download")
-                    .action({ ctx =>
+                    .action({ _ =>
                         let bar = ProgressBar(3).width(10)
                         bar.advance()
                         bar.advance()
@@ -457,7 +457,7 @@ class WidgetIntegrationTest {
         let app = App("tool")
             .command(
                 Command("delete")
-                    .action({ ctx =>
+                    .action({ _ =>
                         let confirm = Confirm("Are you sure?")
                         if (confirm.run(mock)) {
                             log.add("deleted")
@@ -482,7 +482,7 @@ class WidgetIntegrationTest {
         let app = App("tool")
             .command(
                 Command("deploy")
-                    .action({ ctx =>
+                    .action({ _ =>
                         let sel = Select("Environment:")
                             .options(["dev", "staging", "prod"])
                         match (sel.run(mock)) {

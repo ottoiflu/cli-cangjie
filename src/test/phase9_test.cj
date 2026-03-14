@@ -17,7 +17,7 @@ class ChoicesValidationTest {
     func testChoicesAcceptsValidValue() {
         let app = App("tool")
             .flag(Flag("format").choices(["text", "json", "markdown"]))
-            .action({ ctx => 0 })
+            .action({ _ => 0 })
         let result = app.mockRun(["--format", "json"])
         @Expect(result.exitCode, 0)
         let app2 = App("tool")
@@ -33,7 +33,7 @@ class ChoicesValidationTest {
     func testChoicesRejectsInvalidValue() {
         let app = App("tool")
             .flag(Flag("format").choices(["text", "json", "markdown"]))
-            .action({ ctx => 0 })
+            .action({ _ => 0 })
         let result = app.mockRun(["--format", "yaml"])
         @Expect(result.exitCode != 0, true)
         @Expect(result.stderr.contains("Invalid value 'yaml'"), true)
@@ -45,7 +45,7 @@ class ChoicesValidationTest {
     func testChoicesWithDidYouMean() {
         let app = App("tool")
             .flag(Flag("format").choices(["text", "json", "markdown"]))
-            .action({ ctx => 0 })
+            .action({ _ => 0 })
         let result = app.mockRun(["--format", "texr"])
         @Expect(result.exitCode != 0, true)
         @Expect(result.stderr.contains("Did you mean"), true)
@@ -67,7 +67,7 @@ class ChoicesValidationTest {
     func testChoicesInHelpOutput() {
         let app = App("tool")
             .flag(Flag("format").description("Output format").choices(["text", "json", "markdown"]))
-            .action({ ctx => 0 })
+            .action({ _ => 0 })
         let result = app.mockRun(["--help"])
         @Expect(result.stderr.contains("<text|json|markdown>"), true)
     }
@@ -122,7 +122,7 @@ class ValueDelimiterTest {
     func testDelimiterWithChoices() {
         let app = App("tool")
             .flag(Flag("level").delimiter(r',').choices(["warn", "error", "info"]))
-            .action({ ctx => 0 })
+            .action({ _ => 0 })
         let result = app.mockRun(["--level", "warn,error"])
         @Expect(result.exitCode, 0)
         // Invalid choice within delimited values
@@ -200,7 +200,7 @@ class PassThroughArgsTest {
                 @Expect(ctx.getPassthroughArgs().size, 0)
                 0
             })
-        let result = app.mockRun(["--help"])
+        let _ = app.mockRun(["--help"])
         // --help triggers TerminateException, so test without it
         let app2 = App("tool")
             .action({ ctx =>
@@ -249,7 +249,7 @@ class HelpExamplesTest {
             .description("Run lints")
             .example("lint src/", "Lint all files in src directory")
             .example("lint --fix main.cj", "Auto-fix issues in main.cj")
-            .action({ ctx => 0 })
+            .action({ _ => 0 })
         let app = App("tool").command(cmd)
         let result = app.mockRun(["lint", "--help"])
         @Expect(result.stderr.contains("Examples:"), true)
@@ -263,7 +263,7 @@ class HelpExamplesTest {
         let cmd = Command("check")
             .description("Run checks")
             .afterHelp("See https://example.com for more info.")
-            .action({ ctx => 0 })
+            .action({ _ => 0 })
         let app = App("tool").command(cmd)
         let result = app.mockRun(["check", "--help"])
         @Expect(result.stderr.contains("See https://example.com"), true)
@@ -274,7 +274,7 @@ class HelpExamplesTest {
         let cmd = Command("build")
             .description("Build the project")
             .beforeHelp("NOTE: Requires Cangjie 1.0+")
-            .action({ ctx => 0 })
+            .action({ _ => 0 })
         let app = App("tool").command(cmd)
         let result = app.mockRun(["build", "--help"])
         @Expect(result.stderr.contains("NOTE: Requires Cangjie 1.0+"), true)
@@ -289,7 +289,7 @@ class HelpExamplesTest {
             .description("Run tests")
             .example("test --all", "Run all tests")
             .afterHelp("Report issues at: https://github.com/example")
-            .action({ ctx => 0 })
+            .action({ _ => 0 })
         let app = App("tool").command(cmd)
         let result = app.mockRun(["test", "--help"])
         @Expect(result.stderr.contains("Examples:"), true)
@@ -306,20 +306,14 @@ class TerminalWidthTest {
         let app = App("tool")
             .helpWidth(40)
             .flag(Flag("verbose").short(r'v').description("Enable very detailed verbose output for debugging"))
-            .action({ ctx => 0 })
+            .action({ _ => 0 })
         let result = app.mockRun(["--help"])
         // 在窄宽度下应触发折行
         @Expect(result.stderr.contains("Usage:"), true)
         // 原本整行会超过40字符，折行后应有多行
         let lines = result.stderr.split("\n")
-        var hasLongLine = false
-        for (line in lines) {
-            // 允许一些容差
-            if (line.size > 50) {
-                hasLongLine = true
-            }
-        }
         // 应当已折过行
+        @Expect(lines.size > 1, true)
         @Expect(result.stderr.size > 0, true)
     }
 
@@ -327,7 +321,7 @@ class TerminalWidthTest {
     func testDefaultWidth() {
         let app = App("tool")
             .flag(Flag("config").description("Path to config file"))
-            .action({ ctx => 0 })
+            .action({ _ => 0 })
         let result = app.mockRun(["--help"])
         @Expect(result.stderr.contains("config"), true)
     }
@@ -343,7 +337,7 @@ class SubcommandGroupTest {
             .command(Command("build").description("Build project").subcommandGroup("Build Commands"))
             .command(Command("test").description("Run tests").subcommandGroup("Test Commands"))
             .command(Command("fmt").description("Format code").subcommandGroup("Build Commands"))
-            .action({ ctx => 0 })
+            .action({ _ => 0 })
         let result = app.mockRun(["--help"])
         @Expect(result.stderr.contains("Build Commands:"), true)
         @Expect(result.stderr.contains("Test Commands:"), true)
@@ -353,7 +347,7 @@ class SubcommandGroupTest {
     func testDefaultGroupName() {
         let app = App("tool")
             .command(Command("init").description("Initialize"))
-            .action({ ctx => 0 })
+            .action({ _ => 0 })
         let result = app.mockRun(["--help"])
         @Expect(result.stderr.contains("Commands:"), true)
     }
@@ -363,7 +357,7 @@ class SubcommandGroupTest {
         let app = App("tool")
             .command(Command("build").description("Build").subcommandGroup("Dev Commands"))
             .command(Command("help").description("Show help"))
-            .action({ ctx => 0 })
+            .action({ _ => 0 })
         let result = app.mockRun(["--help"])
         @Expect(result.stderr.contains("Dev Commands:"), true)
         @Expect(result.stderr.contains("Commands:"), true)
@@ -377,7 +371,7 @@ class NBestSuggestionTest {
     @TestCase
     func testSingleSuggestion() {
         let app = App("tool")
-            .command(Command("lint").action({ ctx => 0 }))
+            .command(Command("lint").action({ _ => 0 }))
         let result = app.mockRun(["lont"])
         @Expect(result.exitCode != 0, true)
         @Expect(result.stderr.contains("Did you mean 'lint'"), true)
@@ -386,8 +380,8 @@ class NBestSuggestionTest {
     @TestCase
     func testMultipleSuggestions() {
         let app = App("tool")
-            .command(Command("test").action({ ctx => 0 }))
-            .command(Command("text").action({ ctx => 0 }))
+            .command(Command("test").action({ _ => 0 }))
+            .command(Command("text").action({ _ => 0 }))
         let result = app.mockRun(["tex"])
         @Expect(result.exitCode != 0, true)
         // 应提供多个候选建议
@@ -399,7 +393,7 @@ class NBestSuggestionTest {
         let app = App("tool")
             .flag(Flag("config").description("Config path"))
             .flag(Flag("confirm").description("Confirm action").asBool())
-            .action({ ctx => 0 })
+            .action({ _ => 0 })
         let result = app.mockRun(["--confi"])
         @Expect(result.exitCode != 0, true)
         @Expect(result.stderr.contains("Did you mean"), true)
@@ -409,7 +403,7 @@ class NBestSuggestionTest {
     func testChoicesSuggestion() {
         let app = App("tool")
             .flag(Flag("format").choices(["text", "json", "markdown"]))
-            .action({ ctx => 0 })
+            .action({ _ => 0 })
         let result = app.mockRun(["--format", "markdwn"])
         @Expect(result.exitCode != 0, true)
         @Expect(result.stderr.contains("Did you mean 'markdown'"), true)
@@ -459,7 +453,7 @@ class Phase9IntegrationTest {
     func testChoicesInHelpWithDefault() {
         let app = App("tool")
             .flag(Flag("format").choices(["text", "json"]).defaultValue("text").description("Output format"))
-            .action({ ctx => 0 })
+            .action({ _ => 0 })
         let result = app.mockRun(["--help"])
         @Expect(result.stderr.contains("<text|json>"), true)
         @Expect(result.stderr.contains("[default: text]"), true)
@@ -480,7 +474,7 @@ class Phase9IntegrationTest {
             .command(buildCmd)
             .command(testCmd)
             .command(publishCmd)
-            .action({ ctx => 0 })
+            .action({ _ => 0 })
 
         app.getRootCommand().example("pkg build --release", "Build in release mode")
         app.getRootCommand().example("pkg test --all", "Run all tests")

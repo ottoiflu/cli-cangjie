@@ -29,6 +29,12 @@ public class Flag {
     var _choices: ArrayList<String> = ArrayList<String>()
     var _delimiter: Option<Rune> = None
 
+    // Phase 12: clap 对标特性
+    var _valueName: Option<String> = None       // 自定义值占位名 (如 <FILE>)
+    var _valueHint: ValueHint = ValueHint.Default  // Shell 补全提示
+    var _allowHyphenValues: Bool = false         // 允许 -开头的值
+    var _longHelp: Option<String> = None         // --help 时显示的详细描述
+
     public init(longName: String) {
         _longName = longName
     }
@@ -77,6 +83,11 @@ public class Flag {
                 _valueType = BoolType
                 if (_defaultValue.isNone()) {
                     _defaultValue = Some("true")
+                }
+            case Count =>
+                _valueType = Int64Type
+                if (_defaultValue.isNone()) {
+                    _defaultValue = Some("0")
                 }
             case _ => ()
         }
@@ -154,6 +165,30 @@ public class Flag {
         this
     }
 
+    // Phase 12: 自定义值占位名（在帮助中显示为 --output <FILE>）
+    public func valueName(name: String): This {
+        _valueName = Some(name)
+        this
+    }
+
+    // Phase 12: Shell 补全值类型提示
+    public func valueHint(hint: ValueHint): This {
+        _valueHint = hint
+        this
+    }
+
+    // Phase 12: 允许以连字符开头的值（如 --offset -5）
+    public func allowHyphenValues(allow!: Bool = true): This {
+        _allowHyphenValues = allow
+        this
+    }
+
+    // Phase 12: 详细帮助描述（--help 显示，-h 不显示）
+    public func longHelp(text: String): This {
+        _longHelp = Some(text)
+        this
+    }
+
     // Getter 方法
     public func getLongName(): String { _longName }
     public func getShortName(): Option<Rune> { _shortName }
@@ -190,10 +225,44 @@ public class Flag {
     public func getDelimiter(): Option<Rune> { _delimiter }
     public func hasChoices(): Bool { _choices.size > 0 }
 
+    // Phase 12: Getter
+    public func getValueName(): Option<String> { _valueName }
+    public func getValueHint(): ValueHint { _valueHint }
+    public func getAllowHyphenValues(): Bool { _allowHyphenValues }
+    public func getLongHelp(): Option<String> { _longHelp }
+
+    // 获取值的占位符文本（优先 valueName，其次 choices，最后默认）
+    public func getValuePlaceholder(): String {
+        match (_valueName) {
+            case Some(name) => "<${name}>"
+            case None =>
+                if (hasChoices()) {
+                    var cStr = "<"
+                    var fst = true
+                    for (c in _choices) {
+                        if (!fst) { cStr = cStr + "|" }
+                        cStr = cStr + c
+                        fst = false
+                    }
+                    cStr + ">"
+                } else {
+                    Messages.locale().helpValuePlaceholder()
+                }
+        }
+    }
+
     // 是否为布尔开关型 flag
     public func isBoolFlag(): Bool {
         match (_action) {
             case SetTrue | SetFalse => true
+            case _ => false
+        }
+    }
+
+    // 是否为 Count 类型
+    public func isCount(): Bool {
+        match (_action) {
+            case Count => true
             case _ => false
         }
     }

@@ -427,7 +427,7 @@ class DeprecatedFlagTest {
         let app = App("myapp")
             .flag(Flag("old-flag").description("Deprecated").deprecated("Use new-flag.", replacement: "--new-flag"))
             .flag(Flag("new-flag").description("New flag"))
-            .action({ ctx => 0 })
+            .action({ _ => 0 })
         let result = app.mockRun(["--old-flag", "value"])
         @Assert(result.exitCode == 0)
         @Assert(result.stderr.contains("deprecated"))
@@ -440,7 +440,7 @@ class DeprecatedFlagTest {
         let app = App("myapp")
             .flag(Flag("old-flag").description("Old").defaultValue("x").deprecated("Gone."))
             .flag(Flag("new-flag").description("New"))
-            .action({ ctx => 0 })
+            .action({ _ => 0 })
         let result = app.mockRun(["--new-flag", "val"])
         @Assert(result.exitCode == 0)
         // 未使用弃用标志 -> 不应有弃用警告
@@ -452,7 +452,7 @@ class DeprecatedFlagTest {
         let app = App("myapp")
             .flag(Flag("legacy").description("Legacy").deprecatedSince("Removed.", "--modern", "v2.0"))
             .flag(Flag("modern").description("Modern"))
-            .action({ ctx => 0 })
+            .action({ _ => 0 })
         let result = app.mockRun(["--legacy", "val"])
         @Assert(result.exitCode == 0)
         @Assert(result.stderr.contains("since v2.0"))
@@ -468,12 +468,12 @@ class DeprecatedCommandTest {
                 Command("old-cmd")
                     .description("Old command")
                     .deprecated("Replaced.", replacement: "new-cmd")
-                    .action({ ctx => 0 })
+                    .action({ _ => 0 })
             )
             .command(
                 Command("new-cmd")
                     .description("New command")
-                    .action({ ctx => 0 })
+                    .action({ _ => 0 })
             )
         let result = app.mockRun(["old-cmd"])
         @Assert(result.exitCode == 0)
@@ -488,7 +488,7 @@ class DeprecatedCommandTest {
             .command(
                 Command("new-cmd")
                     .description("New command")
-                    .action({ ctx => 0 })
+                    .action({ _ => 0 })
             )
         let result = app.mockRun(["new-cmd"])
         @Assert(result.exitCode == 0)
@@ -541,7 +541,7 @@ class GlobalFlagPropagationTest {
                 Command("sub")
                     .description("Sub command")
                     .flag(Flag("local").description("Local flag"))
-                    .action({ ctx => 0 })
+                    .action({ _ => 0 })
             )
         let result = app.mockRun(["sub", "--help"])
         @Assert(result.exitCode == 0)
@@ -559,7 +559,7 @@ class GlobalFlagPropagationTest {
                 Command("sub")
                     .description("Sub")
                     .flag(Flag("verbose").description("Local verbose").asBool())
-                    .action({ ctx => 0 })
+                    .action({ _ => 0 })
             )
         let result = app.mockRun(["sub", "--verbose"])
         @Assert(result.exitCode == 0)
@@ -648,7 +648,6 @@ class Phase8IntegrationTest {
 
     @TestCase
     func testDeprecatedFlagWithAction() {
-        var usedNew = false
         let app = App("myapp")
             .flag(Flag("old").description("Old way").deprecated("Use --new.", replacement: "--new"))
             .flag(Flag("new").description("New way"))

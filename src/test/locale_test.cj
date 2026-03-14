@@ -201,7 +201,7 @@ class LocaleCustomTest {
         let app = App("test-app")
             .flag(Flag("fix").action(SetTrue).conflictsWith("check"))
             .flag(Flag("check").action(SetTrue))
-            .action({ ctx => 0 })
+            .action({ _ => 0 })
         let result = app.mockRun(["--fix", "--check"])
         @Assert(result.stderr.contains("不能同时使用"))
         @Assert(result.exitCode == 2)
@@ -213,7 +213,7 @@ class LocaleCustomTest {
         Messages.setLocale(ChineseLocale())
         let app = App("test-app")
             .argument(Argument("input").required(true))
-            .action({ ctx => 0 })
+            .action({ _ => 0 })
         let result = app.mockRun([])
         @Assert(result.stderr.contains("必需的参数 'input' 未提供"))
         @Assert(result.exitCode == 2)
@@ -226,7 +226,7 @@ class LocaleCustomTest {
         let handler = SignalHandler()
         let app = App("test-app")
             .signalHandler(handler)
-            .action({ ctx =>
+            .action({ _ =>
                 handler.simulateSignal(SIGINT)
                 0
             })

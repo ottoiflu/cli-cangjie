@@ -90,7 +90,7 @@ class AppIntegrationTest {
             .command(
                 Command("greet")
                     .flag(Flag("name").short(r'n').defaultValue("World"))
-                    .action({ ctx =>
+                    .action({ _ =>
                         0
                     })
             )
@@ -176,7 +176,7 @@ class AppIntegrationTest {
             .command(
                 Command("install")
                     .alias("i")
-                    .action({ ctx => 0 })
+                    .action({ _ => 0 })
             )
 
         let result = app.mockRun(["i"])
@@ -250,9 +250,9 @@ class AppIntegrationTest {
     @TestCase
     func testMockRunBatchCommands() {
         let app = App("tool").commands([
-            Command("lint").description("Lint code").action({ ctx => 0 }),
-            Command("fmt").description("Format code").action({ ctx => 0 }),
-            Command("test").description("Run tests").action({ ctx => 0 })
+            Command("lint").description("Lint code").action({ _ => 0 }),
+            Command("fmt").description("Format code").action({ _ => 0 }),
+            Command("test").description("Run tests").action({ _ => 0 })
         ])
 
         let result1 = app.mockRun(["lint"])

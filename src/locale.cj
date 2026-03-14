@@ -1,7 +1,5 @@
 package cli
 
-import std.collection.*
-
 // =============================================================================
 // 本地化接口 (Localization / i18n)
 //
@@ -91,6 +89,11 @@ public interface Locale {
     }
     func errFlagGroupExclusive(flag1: String, flag2: String, groupName: String): String {
         "Flags '--${flag1}' and '--${flag2}' are mutually exclusive (group '${groupName}')."
+    }
+
+    // ── 子命令错误 ──
+    func errSubcommandRequired(cmdName: String): String {
+        "error: '${cmdName}' requires a subcommand but one was not provided."
     }
 
     // ── 位置参数错误 ──

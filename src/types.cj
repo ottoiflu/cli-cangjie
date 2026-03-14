@@ -8,13 +8,27 @@ public enum ValueType {
     | BoolType
 }
 
-// Flag 动作类型枚举（对标参考实现的 ArgAction）
+// Flag 动作类型枚举（对标 clap 的 ArgAction）
 public enum FlagAction {
     | Set           // 设置值（默认）
     | SetTrue       // 布尔开关：设为 true
     | SetFalse      // 布尔开关：设为 false
     | Append        // 追加模式：支持 --flag a --flag b
+    | Count         // 出现次数计数：-vvv → 3（对标 clap ArgAction::Count）
     | Terminate(() -> String)  // 触发回调并终止（如 --help / --version）
+}
+
+// 值提示枚举（对标 clap 的 ValueHint，用于 Shell 补全提示）
+public enum ValueHint {
+    | Default       // 默认：无特殊提示
+    | AnyPath       // 任意文件系统路径
+    | FilePath      // 文件路径
+    | DirPath       // 目录路径
+    | CommandName   // 可执行命令名
+    | Username      // 用户名
+    | Hostname      // 主机名
+    | Url           // URL
+    | EmailAddress  // 电子邮件地址
 }
 
 // 检查字符串是否为合法整数格式

@@ -141,7 +141,7 @@ class ConfigErrorTest {
     func testDuplicateKey() {
         let loader = ConfigLoader()
         let content = "name = hello\nname = world"
-        let (data, errors) = loader.parse(content, filePath: "test.toml")
+        let (_, errors) = loader.parse(content, filePath: "test.toml")
         @Assert(errors.size == 1)
         @Assert(errors[0].message.contains("duplicate"))
         @Assert(errors[0].line == 2)
@@ -417,7 +417,7 @@ class ConfigErrorIntegrationTest {
             .command(
                 Command("run")
                     .flag(Flag("port"))
-                    .action({ ctx => 0 })
+                    .action({ _ => 0 })
             )
 
         let result = app.mockRunWithConfig(["run"],
@@ -436,7 +436,7 @@ class ConfigErrorIntegrationTest {
                 Command("run")
                     .flag(Flag("host"))
                     .flag(Flag("port"))
-                    .action({ ctx => 0 })
+                    .action({ _ => 0 })
             )
 
         let result = app.mockRunWithConfig(["run"],
@@ -454,7 +454,7 @@ class ConfigErrorIntegrationTest {
             .command(
                 Command("run")
                     .flag(Flag("port"))
-                    .action({ ctx => 0 })
+                    .action({ _ => 0 })
             )
 
         let result = app.mockRunWithConfig(["run"],

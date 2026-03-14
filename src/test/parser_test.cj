@@ -2,7 +2,6 @@ internal package cli.test
 
 import cli.*
 
-import std.collection.*
 import std.unittest.*
 import std.unittest.testmacro.*
 
@@ -54,7 +53,7 @@ class ParserTest {
             .command(
                 Command("lint")
                     .flag(Flag("fix").short(r'f').asBool())
-                    .action({ ctx => 0 })
+                    .action({ _ => 0 })
             )
 
         let parser = Parser()
@@ -74,7 +73,7 @@ class ParserTest {
                             .command(
                                 Command("start")
                                     .flag(Flag("port").short(r'p').valueType(Int64Type))
-                                    .action({ ctx => 0 })
+                                    .action({ _ => 0 })
                             )
                     )
             )
@@ -267,7 +266,7 @@ class ParserTest {
     @TestCase
     func testSubcommandWithAlias() {
         let root = Command("tool")
-            .command(Command("install").alias("i").action({ ctx => 0 }))
+            .command(Command("install").alias("i").action({ _ => 0 }))
 
         let parser = Parser()
         let (matched, _) = parser.parse(root, ["i"])

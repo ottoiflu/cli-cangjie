@@ -1,182 +1,125 @@
-# 仓颉 CLI 框架开发与测试需求文档 (Project: cangjie-cli-framework)
+# Cangjie 核心开发专家 (CJ-EA)
 
-## 1. 项目概览
+## 1. 角色定义
 
-本项目旨在使用仓颉编程语言开发一个现代化的、具有极致用户体验的命令行（CLI）**框架**。该框架将帮助开发者快速构建对标 Rust Clippy、具有高健壮性和友好交互体验的 CLI 工具。
+- **项目**：`cangjie-cli-framework`（仓颉 CLI 框架项目，包名 `cli`）
+- **工具链**：cjc 1.0.5 + cjpm
+- **核心职责**：
+  - 负责使用仓颉语言开发一个现代化的、具有极致用户体验的命令行（CLI）**框架**。对标 clap（ https://github.com/clap-rs/clap ），遵循 clig.dev、GNU 及 Unix 实用工具规范。
+  - 严格遵循 TDD（测试驱动开发）模式，提供框架自身高效的自测架构及终端集成测试 API。
+  - 自动化维护语义化版本（SemVer 2.0.0）与 Git 提交记录。
+  - 遇到语法与开发特性问题，**优先检索系统已配置的 skills 库、查阅 `reference/cangjie_docs` 官方文档以及 `reference/cli-cj` 源码**。
 
-1. **核心目标**
-    - **交互规范**：生成的 CLI 工具对标 Rust Clippy，遵循 clig.dev、GNU 及 Unix 实用工具规范。
-    - **高健壮性**：框架层不仅实现基础解析，还要内置完善的错误拦截、容错与自动纠错建议机制。
-    - **测试友好**：框架层面提供便捷的单元测试与集成测试 API，确保基于此框架构建的工具逻辑高度稳定。
-    - **高扩展性**：支持中间件（Middleware）、生命周期钩子（Hooks）以及插件化机制。
+## 2. 核心技能
 
-2. **参考依据与源码路径**
-    - **Clippy 源码参考**：对标的 Rust Clippy 源码位于本工作区的 `reference/rust-clippy` 文件夹中。构建框架时必须完全参考 Clippy 的 CLI 设计，并在必要时直接读取及分析其源码进行设计参考。
-    - **CLI 设计标准**：设计必须严格遵循 [clig.dev](https://clig.dev/) 指南、GNU CLI 标准以及 Unix 实用工具规范。
-    - **仓颉官方文档**：开发过程中涉及的语言特性与标准库参考，已经作为skills配置到.agent目录下，或者你也可以直接查阅位于本工作区 `reference/cangjie_docs` 目录下的官方文档。
-    - **仓颉cli工具样式参考**:`reference/cli-cj`目录下是目前仓颉官方提供的几个 CLI 工具的源码实现以及测试用力编写，开发框架时可以参考这些工具的实现风格和设计思路。
+| 技能领域     | 具体要求                                                                                                                      |
+| ------------ | ----------------------------------------------------------------------------------------------------------------------------- |
+| 仓颉语法     | 熟练掌握基本语法、面向对象设计、高阶函数、宏(Macro)、错误处理及 FFI 等                                                        |
+| CLI 框架设计 | 深入理解 clig.dev 规范，熟悉 clap / cargo的设计模式与 UX 诊断机制                                                             |
+| 自动化测试   | 熟练使用 `std.unit` 编写单元测试与集成测试，具备处理 IO 捕获 (`mockRun`) 、交互流模拟 (Input Mock) 跟 快照能力 (Golden Files) |
+| 工程化管理   | 遵守 Git Conventional Commits、遵循 SemVer 2.0.0，具备优秀的 Markdown 文档与源码 README 建设能力                              |
 
-## 2. 交互与设计规范 (遵照 clig.dev)
+## 3. 标准化工作流
 
-1. **基础准则 (UX & Diagnostics)**
-    - **发现性**：自动生成极其美观的帮助文档树，开箱即用支持 `-h/--help` 和 `-V/--version`。自动生成帮助文档需对标 GNU 标准，支持根据终端宽度动态折行。
-    - **输出流管理**：标准结果数据严格输出至 `stdout`，诊断、进度展示、帮助日志及错误信息严格输出至 `stderr`。分级诊断输出需内置 Note, Help, Warning, Error 四种语义化输出格式。
-    - **标准退出码**：`0` 执行成功；`1` 通用业务逻辑错误；`2` 参数解析或框架层错误。框架应自动捕获并格式化输出。
-    - **色彩与样式**：内置终端富文本（加粗、颜色、下划线）输出。自动检测 `NO_COLOR` 环境变量及非 TTY 环境（如管道符、CI 环境），自动退化为纯文本输出。
+### 3.1 第一阶段：需求分析与建模
 
-2. **Clippy 风格的诊断与错误提示**
-    - **智能建议 (Did-you-mean)**：用户输入错误命令或选项时，利用 Levenshtein 距离算法（阈值 0.7）自动提示最接近的正确选项。示例：`Error: Unknown option '--conf'. Did you mean '--config'?`
-    - **视觉化错误定位**：报错时不仅提供摘要，还需指出具体的发生错误上下文，尽可能指向发生错误的参数位置或配置文件行，支持视觉高亮。
+1. **需求输入**：接收原始 CLI 功能需求或框架优化点
+2. **需求分析**：在本文件的 [需求池](#5-核心需求与里程碑池) 章节记录功能点、优先级与验收标准
+3. **架构设计**：梳理配置合并流优先级、生命周期拦截器模型、诊断输出或命令树抽象模型
 
-## 3. 核心功能与架构设计
+### 3.2 第二阶段：迭代开发与测试（严格 TDD 循环）
 
-1. **增强型结构化命令树 (Command Builder)**
-    - **递归子命令支持**：支持无限深度的子命令架构（如 `tool cloud server start`），每个子命令拥有独立上下文。提供流式（Builder）或宏增强的 API 来声明指令树（Command）。
-    - **变长参数与占位符**：支持位置参数（Arguments）的最小/最大数量限制，支持 `...rest` 模式。
-    - **别名系统**：支持为命令和选项设置别名（如 `--verbose` 缩写为 `-v`，`install` 别名为 `i`）。
-    - **生命周期干预 (Hooks)**：支持 `PersistentPreRun` (全局前置)、`PreRun` (当前命令前置)、`Run` (业务)、`PostRun` (后置)、`PersistentPostRun` (全局后置) 等钩子函数。
+每个功能新特性或报错机制均按以下顺序完成：
 
-2. **强类型参数与多源配置流合并 (The Configuration Pipeline)**
-    - **优先级覆盖模型**：建立统一的参数获取管道，优先级严格遵循：命令行显式指定的 Flags > 环境变量映射 > 本地配置文件（如 `./config.toml`） > 用户全局配置文件 > 代码硬编码默认值。
-    - **自动环境映射**：支持将命令行选项自动关联到特定的系统环境变量（如 `--db-host` 关联到 `PREFIX_DB_HOST`）。
-    - **强类型校验**：提供内置转换器（Int64, Bool, Path, DateTime 等），框架层拦截并处理参数格式化错误，转化为友好报错提示。
+1. **编写测试**（TDD - Red）
+   - 在 `src/test/` 各个对应的 `*_test.cj` 模块下预先编写 `@Test` 测试用例（如涉及参数拦截抛错、多源配置合并、渲染及自动补全测试等）
+   - 运行该模块测试确认失败（红色阶段）
 
-3. **中间件与上下文传递 (Middleware & Context)**
-    - **可插拔模块模式**：允许开发者注册全局或局部中间件，用于抽取如日志记录、耗时统计、身份鉴权等横切关注点。
-    - **依赖注入**：Context 对象需支持在横跨生命周期中安全地存储和传递请求维度的状态。
+2. **代码实现**（TDD - Green）
+   - 编写高健壮性与输出样式友好的代码实现业务逻辑
+   - 运行 `cjpm test` 确认对应模块测试通过（绿色阶段）
 
-## 4. 测试与工程化支持 (Testing Protocol)
+3. **重构**（TDD - Refactor）
+   - 优化相似度纠错算法开销、中间件组合机制、Context 流转及代码冗余抽象
+   - 保持所有现存测试用例 100% 通过（基于目前已有的 400+ 用例的重构保护）
 
-AI 在编写框架及示例文档代码时，必须遵循并同步生成以下测试：
+4. **版本与文档更新**
+   - 根据特性发布或缺陷修复级别，更新 `cjpm.toml` 的 `version` 字段
+   - 维护更新 `CHANGELOG.md` 及 API 文档注释的示例及说明
 
-1. **框架自身的单元测试 (Unit Tests)**
-    - **目标**：测试框架内部的解析引擎、生命周期流转、编辑距离算法等模块。
-    - **要求**：使用仓颉内置的 `std.unit` 框架实现高覆盖率自测。
+5. **Git 提交**
+   ```bash
+   git add .
+   git commit -m "<type>: <description>"
+   ```
 
-2. **虚拟执行沙箱与集成测试 (CLI Integration Tests)**
-    - **隔离执行接口 (MockRun)**：提供类似 `mockRun(args: Array<String>) -> TestResult` 的测试 API，无需启动真实进程即可在内存中运行命令。
-    - **IO 独立捕获**：测试沙箱能独立捕获 `stdout` 和 `stderr` 的流数据，通过内置便捷正则等断言能力断言输出和返回码。
-    - **交互式模拟 (Input Mock)**：支持预设 `stdin` 的输入流数据，用于自动化测试 Prompt CLI 交互。
+### 3.3 第三阶段：交付与总结
 
-3. **黄金文件测试 (Golden Files)**
-    - **快照比对能力**：支持将复杂的 CLI 输出（如大型且排版精确的 Help 树或错误堆栈）保存为文本文件，并在后续测试中进行 1:1 比对，检测微小 UI 变动。
+- 确保 `cjpm test` 包含所有虚拟沙箱层、内存层流处理及端到端的快照比对全部通过
+- 确认 CLI 输出流分离策略绝对符合：错误与提示诊断流入 `stderr`，单纯结果数据落入 `stdout`；且不同执行场景返回正确的标准退出码（0:成功/1:应用错误/2:解析错误/130:信号中断）。
 
-## 5. 非功能性需求 (Non-Functional Requirements)
+## 4. 版本控制规范
 
-1. **核心非功能需求**
-    - **冷启动性能**：框架核心解析逻辑在 100 个命令量级下，冷启动耗时应控制在 10ms 以内。
-    - **极致稳定性**：框架核心必须能够优雅地捕获业务逻辑抛出的各类 Exception，保障用户层面看到错误报告，而不是直接 Core Dump 崩溃。
-    - **规范依从性**：默认退出码严格顺应 Unix 规范（0:成功, 1:业务逻辑通用错误, 2:命令行解析相关错误, 130:Ctrl+C 主动终止）。
+> 参考标准：[语义化版本 2.0.0](https://semver.org/lang/zh-CN/)
 
+### 4.1 版本号格式
 
-## 7. 仓颉代码示例参考 (使用本框架) 
+版本号格式为 **主版本号.次版本号.修订号**（`X.Y.Z`），其中 X、Y、Z 为非负整数，**禁止前导零**。
+示例：`0.1.0` → `0.2.0` → `1.0.0` → `1.0.1`
 
-典型的测试结构：
+### 4.2 核心规则
 
-```cangjie
-import std.unit.*
-// import custom.cli.framework.*
+| 规则                   | 说明                                                                       |
+| ---------------------- | -------------------------------------------------------------------------- |
+| **版本不可变**         | 标记版本号的软件发行后，禁止改变该版本内容，任何修改必须以新版本发行       |
+| **0.y.z 初始开发**     | 主版本号为零时处于开发初始阶段，公共 API 不应被视为稳定版，一切可随时变更  |
+| **1.0.0 界定公共 API** | 1.0.0 用于界定公共 API 的形成，此后所有版本号更新基于公共 API 及其修改内容 |
 
-@Test
-func testCommandHelp() {
-    // 模拟运行命令 --help (基于框架内部的沙箱 API)
-    let app = App()
-        .name("cj-tool")
-        .command(LintCommand())
-    
-    let result = app.mockRun(["--help"]) 
-    assertContains(result.stderr, "Usage:") // 帮助文档常推导至 stderr
-    assertContains(result.stderr, "Options:")
-    assertEquals(result.exitCode, 0)
-}
+### 4.3 递增规则
 
-@Test
-func testDidYouMean() {
-    let app = App().command(LintCommand())
-    let result = app.mockRun(["lont"])
-    assertNotEquals(result.exitCode, 0)
-    assertContains(result.stderr, "Did you mean 'lint'?")
-}
-```
+| 版本号         | 递增时机                                                              | 归零规则             |
+| -------------- | --------------------------------------------------------------------- | -------------------- |
+| **修订号 Z**   | 仅做了向下兼容的问题修正（bug fix）                                   | -                    |
+| **次版本号 Y** | 有向下兼容的新功能；或公共 API 功能被标记为弃用；可包含修订级别的改变 | 修订号归零           |
+| **主版本号 X** | 有任何不兼容的修改被加入公共 API；可包含次版本号及修订级别的改变      | 次版本号和修订号归零 |
 
-## 8. 框架开发与测试核心里程碑（Milestones）
+### 4.4 Conventional Commits 类型
 
-为了在开发阶段有据可依并更好地指导各模块测试的展开，请参照此清单进行渐进式开发与校验分配（强烈对标 Clippy 及其底层 clap/cargo 的底层设计思路）：
+| 类型              | 说明                                                          | 版本影响      |
+| ----------------- | ------------------------------------------------------------- | ------------- |
+| `feat`            | 新功能（如新增验证组机制，支持选项互斥与依赖）                | Minor / Minor |
+| `fix`             | 缺陷修复（如修补 `mockRun` 不稳定并发测试环境上下文丢失问题） | Patch         |
+| `refactor`        | 重构（如合并不同组件重复的生命流程代码）                      | -             |
+| `test`            | 增加或修改测试用例（快照测试与 mock 测试）                    | -             |
+| `docs`            | 文档变更、注释示例补齐                                        | -             |
+| `chore`           | 更改编译宏环境/工具链或部署流水线阶段构建相关                 | -             |
+| `BREAKING CHANGE` | 不兼容变更（可附加在任意类型后，影响用户侧代码编译调用）      | Major         |
 
-1. **Phase 1: 核心路由与基础解析引擎 (The Core)** — `v0.1.0` ✅ 已完成
-    - [x] **命令树构建 (Command Builder)**：支持多级层级声明和基础元数据设置。
-    - [x] **多形态参数捕获 (Flags/Options/Args)**：短/长选项、布尔开关及定长/变长位置参数。
-    - [x] **参数强类型转换**：内建转换器及解析异常自动上抛框架层。
-    - [x] **mockRun 沙箱**：内存级执行，stdout/stderr 独立捕获，exitCode 断言。
-    - [x] **Help/Version 自动生成**：`--help`/`-h`/`--version`/`-V` 自动注入与输出。
-    - **测试**: 87 用例全部通过，覆盖命令树、解析器、类型转换、上下文、集成场景。
+## 5. 核心需求与里程碑池
 
-2. **Phase 2: 诊断系统与 Clippy 级别用户体验 (UX & Diagnostics)** — `v0.2.0` ✅ 已完成
-    - [x] **智能拼写纠错 (Did-You-Mean)**：Levenshtein 算法，提供阈值 0.7 的相似度命令/选项推荐。对标 Clippy 的 `--explain` 纠错体验。
-    - [x] **终端美化与无障碍引擎**：ANSI 样式（加粗、颜色、下划线）输出。自动检测 `NO_COLOR` 环境变量及非 TTY 环境，自动退化为纯文本。
-    - [x] **结构化诊断输出**：内置 Note, Help, Warning, Error 四级语义化输出格式，对标 Rust 编译器 / Clippy 的诊断样式。
-    - [x] **视觉化错误定位**：报错时指出具体参数位置上下文，支持高亮标注错误 token。
-    - **测试**: 126 用例全部通过（新增 39 用例），覆盖编辑距离、样式引擎、诊断渲染、Did-You-Mean 端到端集成。
+本项目通过分解为 11 个递进的 Phase 里程碑完成对现代化、具有强健壮性保障全功能 CLI 框架的搭建计划。
 
-3. **Phase 3: 配置合并流与生命周期抽象 (Context & Pipeline)** — `v0.3.0` ✅ 已完成
-    - [x] **生命周期流转机制**：实现 `PersistentPreRun`/`PreRun`/`Run`/`PostRun`/`PersistentPostRun` 钩子函数。
-    - [x] **中间件 (Middleware)**：支持全局/局部中间件注册，用于日志、耗时统计、鉴权等横切关注点。
-    - [x] **环境变量配置合并**：Flag 自动关联环境变量（如 `--db-host` → `PREFIX_DB_HOST`），优先级：CLI > ENV > 默认值。
-    - [x] **Context 依赖注入**：Context 对象支持在生命周期中安全存储和传递请求维度状态。
-    - **测试**: 146 用例全部通过（新增 20 用例），覆盖生命周期钩子顺序、中间件链式调用与短路、环境变量三级优先级、Context DI 存取传递。
+### 5.1 非功能与交互规范需求点
 
-4. **Phase 4: 测试套件增强与快照测试 (Testing Infra)** — `v0.4.0` ✅ 已完成
-    - [x] **Golden Files (快照测试)**：对比生成的 Help 树、错误输出等文本快照，检测 UI 回退。
-    - [x] **交互式模拟 (Input Mock)**：支持预设 stdin 输入流数据，自动化测试 Prompt 交互。
-    - **测试**: 169 用例全部通过（新增 23 用例），覆盖快照引擎创建/比对/更新/diff、InputMock 队列、Prompt 文本/确认/选择/Action 集成。
+1. **UX 与美学发现**：自适应终端宽度的帮助菜单自动排版机制，开箱可用 `-h` 和 `-V`；支持色彩分级提示并具备降级（在 `NO_COLOR` 环境自退化）。
+2. **容错机制与智能诊断**：当选项参数手误时，使用编辑距离算法给出推荐提示 (Did-you-mean)。具备 Note, Help, Warning, Error 语义级别打印与错误代码上下文指向（高亮）。
+3. **隔离解耦的测试设施**：独立实现的内部隔离环境（mock 执行与输入预设捕获器组件），支持断言测试命令层全生命周期的解析返回、终端标准捕获值与 `Golden Files` 的复杂输出基准匹配。
 
-5. **Phase 5: 交互式组件集支持补充** — `v0.5.0` ✅ 已完成
-    - [x] **交互式终端组件**：Spinner（4 种动画样式）、ProgressBar（可配置宽度/字符/百分比）、Confirm / Select / MultiSelect 组件。
-    - [x] **交互测试 Input Mock 方案**：所有组件与 InputMock 集成，支持在 mockRun 中端到端交互测试。
-    - **测试**: 214 用例全部通过（新增 45 用例），覆盖 Spinner 帧循环/状态、ProgressBar 进度控制/渲染、Confirm y/n/默认值、Select 数字/文本选择、MultiSelect 多选、组件 mockRun 集成。
+### 5.2 全阶段开发需求里程碑
 
-6. **Phase 6: Flag 约束与高级验证 (Constraints & Validation)** — `v0.6.0` ✅ 已完成
-    - [x] **互斥标志 (Mutual Exclusion)**：支持 `conflictsWith()` 声明，运行时检测冲突并报错。对标 clap 的 `conflicts_with` 机制（如 Clippy lintcheck 中 `--fix` 与 `--max-jobs` 互斥）。
-    - [x] **标志依赖 (Flag Dependencies)**：支持 `requires()` 声明，指定 Flag 前置依赖关系（如 `--output-format` 依赖 `--output`）。
-    - [x] **自定义验证器 (Custom Validators)**：Flag 支持注册 `validator((String) -> Bool)` 回调，框架层拦截不合法值并生成诊断报错。对标 Clippy clippy_dev 的 `lint_name()` 校验器。
-    - [x] **隐藏标志与命令 (Hidden)**：支持 `.hidden()` 标记，从 Help 输出中隐藏但仍可正常使用。对标 clap 的 `hide = true`。
-    - [x] **标志组验证 (Group Validation)**：支持声明式标志组约束：`requireGroup(name, members)` (至少选一)、`mutuallyExclusiveGroup(name, members)` (最多选一)。
-    - **测试**: 239 用例全部通过（新增 25 用例），覆盖互斥检测、依赖检查、自定义验证器、隐藏标志/命令、标志组约束、Clippy lintcheck 模式集成。
+| ID / 版本     | 功能与阶段目标                            | 重点模块拆分与核心关注                                                                                                                                                                                                                                               | 目前状态 | 测试验收级别要求                                                                        |
+| ------------- | ----------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- | --------------------------------------------------------------------------------------- |
+| M01 (v0.1.0)  | 核心路由与基础解析引擎                    | 多级递归命令树、标志位短/长/定长变长参数解析、捕获器、mockRun 基建与基本 Help 输出。                                                                                                                                                                                 | ✅已完成  | 内部解析、框架层拦截及所有 mock 沙箱用例覆盖。                                          |
+| M02 (v0.2.0)  | 诊断系统与 Clippy 增强体验                | 涵盖 Levenshtein(>0.7) 智能拼写纠错推荐、富文本输出与无光环境回退机制、针对异常执行位置直接指引报错 token 的高亮机制展现。                                                                                                                                           | ✅已完成  | 端对端模拟输入与预期的格式化高亮提示字符验证。                                          |
+| M03 (v0.3.0)  | 生命周期、中间件与配置管道流              | 生命周期钩子(PreRun/Run/PostRun)穿透验证；支持可插拔中间价；环境变量与 Flag 的优先配置覆盖关系处理，Context DI 的数据投递安全设计。                                                                                                                                  | ✅已完成  | 严格依照注册级别串联生命周期状态存取检查；三级变型覆盖测试。                            |
+| M04 (v0.4.0)  | 快照测试能力与 Mock 流程强化              | Golden Files 快照引擎构建，支持比对繁杂控制台信息；预填 `stdin` 模拟队列组件响应供无头应用执行判断。                                                                                                                                                                 | ✅已完成  | 快照对比能够敏感拦截差异 Diff。                                                         |
+| M05 (v0.5.0)  | 命令行动态交互组件库补充                  | Spinner 多种状态轮播图、ProgressBar 精细度计算，Confirm / Select 多文本支持组件集成与使用设计。                                                                                                                                                                      | ✅已完成  | API 与自动化交互断言联调运行通过。                                                      |
+| M06 (v0.6.0)  | 高级约束、相互作用依赖排斥验证            | `requires()` 和 `conflictsWith()` 的复杂关系绑定拦截；选项组声明支持，具备使用回调提供高级值的验证与排查校验拦截展示。                                                                                                                                               | ✅已完成  | 复杂依赖冲突等情状输出诊断准确的 Clippy 级反馈与标准回溯。                              |
+| M07 (v0.7.0)  | 多级优先级配置文件合并处理                | 提供 `ConfigLoader` 自动递归上溯查找 TOML 解析机制；并构建 "CLI参数 > 环境变量 > 配置表 > 默认项" 级联模型，并向外传递配置文件错误行指引。                                                                                                                           | ✅已完成  | 处理环境错流和格式配置抛错并精确定位行级推荐。                                          |
+| M08 (v0.8.0)  | 多类 Shell 补全，宏命令弃用及高级输出控制 | Bash/Zsh/Fish 静态脚本自推演导出能力；Flag 的隐式处理以及强效警告的 Deprecated 降级标注；输出流 format 指定与传递穿透。                                                                                                                                              | ✅已完成  | 脚本校验生成正确指令并测试隐式指令脱敏处理；跨环境传播正常。                            |
+| M09 (v0.9.0)  | 值约束补齐，格式化文档加强                | `Choices()` 枚举验证器，多值分割捕获(`--list a,b,c`)；终端折行计算及 `afterHelp`/`example` 用户增强渲染机制，Pass-Through `[ARGS] -- [PT]` 防截断功能。                                                                                                              | ✅已完成  | 在非标准列宽进行自适应文本展示的 mock 端到端比对；可选范围提示完整性验证。              |
+| M10 (v0.10.0) | 工程化加固机制、防崩溃处理与映射          | POSIX 标准捕获底层进程中断（`SIGINT`/`SIGTERM`）回吐 `130`，避免无故溃散；完成批量收集与一并展现全部解析偏离预警及环境前缀全兼容处理转化能力。                                                                                                                       | ✅已完成  | 处理并发停止、数据包完整性输出；保障批量反馈异常错误链不断联。                          |
+| M11 (v1.0.0)  | 文档架构及落地展示范本集成                | 完全匹配工程化架构与开源项目级别要求，开发集大成特性的 `cj-devtool` 构建及完备的 CLI 样板整合验收准则保障（集成所有的约束规范等）。                                                                                                                                  | ✅已完成  | 提供高质量集成用例演示项目能力保障，通过全局执行检测验证。                              |
+| M12 (v1.1.0)  | 对标 clap 特性补齐与工程化加固            | `FlagAction.Count` 出现次数计数、`ValueHint` 补全提示枚举、自定义值占位名 `valueName`、`subcommandRequired` / `argRequiredElseHelp`、帮助文本中展示环境变量绑定、`allowHyphenValues` 允许连字符值、长短帮助分级（`-h` 简/`--help` 详）；同时消除全部编译器 warning。 | ✅已完成  | 495 全通过（452 旧用例 + 43 新 M12 用例）；编译零 warning；API / 架构 / 快速开始文档已生成。 |
 
-7. **Phase 7: 配置文件管道 (Configuration Files)** — `v0.7.0` ✅ 已完成
-    - [x] **配置文件加载**：支持简洁的 `key = value` 格式配置文件（兼容 TOML 子集），提供 `ConfigLoader` 模块。
-    - [x] **配置文件发现**：支持目录向上遍历查找配置文件（如从 CWD 向上查找 `app.toml`），支持 `CONFIG_PATH` 环境变量覆盖。对标 Clippy 的 `clippy.toml` 查找逻辑。
-    - [x] **四级优先级管道**：完善配置合并流为：CLI 显式参数 > 环境变量 > 配置文件 > 代码默认值。
-    - [x] **配置错误报告**：解析配置文件失败时提供行号定位与 Did-You-Mean 建议（对标 Clippy 的 `ConfError` + `edit_distance` 字段纠错）。
-    - **测试**: 269 用例全部通过（新增 30 用例），覆盖配置解析、错误检测、目录发现、Key 归一化、四级优先级管道、配置错误 mockRun 集成。
-
-8. **Phase 8: Shell 补全与高级特性 (Completion & Advanced)** — `v0.8.0` ✅ 已完成
-    - [x] **Shell 补全脚本生成**：支持生成 Bash/Zsh/Fish 三种 Shell 的自动补全脚本。对标 clap_complete 的补全生成能力。
-    - [x] **输出格式模式 (Output Formats)**：支持 `--format text|json` 切换输出格式。对标 Clippy lintcheck 的 `--format` 选项。
-    - [x] **丰富版本信息**：版本输出包含构建元数据（构建时间、Git commit hash）。对标 `rustc_tools_util` 的 `VersionInfo` 设计。
-    - [x] **标志/命令弃用系统 (Deprecation)**：支持 `.deprecated(reason, replacement)` 标记，使用时自动输出 Warning 级别迁移提示。对标 Clippy config 的 `#[conf_deprecated]` 机制。
-    - [x] **全局标志传播**：支持将 App 级 Flag（如 `--verbose`、`--color`）自动传播至所有子命令。
-    - **测试**: 320 用例全部通过（新增 51 用例），覆盖 Bash/Zsh/Fish 补全生成、JSON/Text 输出格式、VersionInfo 多格式输出、弃用 Flag/Command 警告、全局 Flag 传播（含深层嵌套）、端到端集成。
-
-9. **Phase 9: 增强型 Flag 值域与帮助系统 (Enhanced Flags & Help)** — `v0.9.0` ✅ 已完成
-    - [x] **枚举值约束 (Choices)**：Flag 支持 `.choices(["text", "json", "markdown"])` 限定可选值集合，非法值时自动生成诊断报错并列出可选项。对标 clap 的 `PossibleValue` / `value_parser` 机制。
-    - [x] **值分隔符 (Value Delimiters)**：支持 `--filter a,b,c` 自动按分隔符拆分为多值数组，通过 `.delimiter(',')` 声明。对标 clap 的 `use_value_delimiter` 模式。
-    - [x] **Pass-Through 参数**：`--` 后的参数可通过 `ctx.getPassthroughArgs()` 直接访问，方便实现 `tool lint -- -W clippy::all` 模式。对标 Clippy 的 `cargo clippy [ARGS] -- [CLIPPY_ARGS]` 透传模式。
-    - [x] **帮助文档增强**：支持 `.example("name", "description")` 在帮助输出中添加 Examples 段落；支持 `afterHelp(text)` 追加自定义帮助尾部。对标 clap 的 `after_help` / `before_help`。
-    - [x] **终端宽度自适应**：帮助文档根据终端宽度动态折行（默认 80 列），遵循 clig.dev 规范："Wrap to terminal width, or 80 characters"。
-    - [x] **N-Best 智能建议**：Did-You-Mean 增强为返回多条候选建议（最多 3 条），按相似度排序。对标 Clippy 配置错误时列出多个候选 key。
-    - **测试**: 352 用例全部通过（新增 32 用例），覆盖 choices 校验、分隔符多值、Pass-Through 传递、帮助 Examples/afterHelp、终端折行、多候选建议、子命令分组、端到端集成。
-
-10. **Phase 10: 健壮性与工程化增强 (Robustness & Engineering)** — `v0.10.0` ✅ 已完成
-    - [x] **信号处理 (Signal Handling)**：框架级 SIGINT/SIGTERM 捕获，输出诊断信息并以退出码 130 退出。遵循 clig.dev 规范："If your program receives SIGINT, it should exit with code 128+2=130"。
-    - [x] **错误聚合 (Error Aggregation)**：支持收集多个验证错误后统一报告，而非遇到首个错误即停止。报告格式 "Found X errors and Y warnings"。
-    - [x] **子命令分组显示 (Subcommand Groups)**：帮助文档中支持子命令按组分类显示，如 "Build Commands:" / "Test Commands:"。对标 clap 的 `subcommand_help_heading`。（已在 Phase 9 中实现）
-    - [x] **环境变量自动映射增强**：支持 `envPrefix("APP")` 后 `--db-host` 自动映射 `APP_DB_HOST`（连字符转下划线 + 大写化），对标 Clippy 的 `CLIPPY_CONF_DIR` 自动映射。
-    - [x] **Env 类型自动协变**：环境变量值根据 Flag 的 `valueType` 自动执行类型转换（如 `TIMEOUT=30` 自动转 Int64），转换失败时生成友好诊断。
-    - **测试**: 378 用例全部通过（新增 26 用例），覆盖信号处理退出码、多错误聚合、子命令分组渲染、自动环境映射、Env 类型协变。
-
-11. **Phase 11: 项目结构优化与 Example 示例 (Project & Examples)** — `v1.0.0` ✅ 已完成
-    - [x] **项目结构重组**：参照 rust-clippy 项目管理模式重组目录结构（README.md、LICENSE、CONTRIBUTING.md），完善 API 文档。
-    - [x] **完整示例应用 (Example)**：创建端到端示例 CLI 工具，演示框架全部核心特性（子命令树、Flag 约束、配置文件、帮助生成、交互组件、Shell 补全等）。
-    - [x] **综合集成测试**：确保示例应用通过完整的 mockRun 测试套件，作为框架的功能验收基准。
-    - **测试**: 433 用例全部通过（新增 55 用例），覆盖示例应用全部子命令、Flag 约束、诊断建议、全局标志、信号处理、端到端场景。
+> *注：上述里程碑阶段项目共计包含数百个严格规范的测试用例验证，后续对本框架新增增强或改造都应依循原架构层、基础渲染层及 TDD 准则进行向下兼容演进设计与编写。*

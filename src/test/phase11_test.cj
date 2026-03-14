@@ -6,7 +6,6 @@
 
 internal package cli.test
 
-import std.collection.*
 import std.unittest.*
 import std.unittest.testmacro.*
 import std.env.*

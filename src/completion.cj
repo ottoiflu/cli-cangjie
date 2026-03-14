@@ -275,12 +275,28 @@ public class CompletionGenerator {
             case None => f.getLongName()
         }
         var spec = ""
-        if (f.isBoolFlag() || f.isTerminate()) {
+        if (f.isBoolFlag() || f.isTerminate() || f.isCount()) {
             spec = "'--" + f.getLongName() + "[" + desc + "]'"
         } else {
-            spec = "'--" + f.getLongName() + "=[" + desc + "]:value:()'"
+            let action = zshValueAction(f.getValueHint())
+            spec = "'--" + f.getLongName() + "=[" + desc + "]:value:" + action + "'"
         }
         spec
+    }
+
+    // Zsh: 根据 ValueHint 生成补全动作
+    static func zshValueAction(hint: ValueHint): String {
+        match (hint) {
+            case FilePath => "_files"
+            case DirPath => "_directories"
+            case AnyPath => "_files"
+            case CommandName => "_command_names"
+            case Username => "_users"
+            case Hostname => "_hosts"
+            case Url => "()"
+            case EmailAddress => "()"
+            case _ => "()"
+        }
     }
 
     // Fish: 构建单个 flag 的 complete 行
@@ -298,8 +314,14 @@ public class CompletionGenerator {
                 line = line + " -s " + sc.toString()
             case None => ()
         }
-        if (!f.isBoolFlag() && !f.isTerminate()) {
+        if (!f.isBoolFlag() && !f.isTerminate() && !f.isCount()) {
             line = line + " -r"
+            // Fish: 根据 ValueHint 添加路径补全
+            match (f.getValueHint()) {
+                case FilePath | AnyPath => line = line + " -F"
+                case DirPath => line = line + " -xa '(__fish_complete_directories)'"
+                case _ => ()
+            }
         }
         match (f.getDescription()) {
             case Some(d) =>

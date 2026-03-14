@@ -63,7 +63,7 @@ class SignalHandlerTest {
             .command(
                 Command("work")
                     .description("Do work")
-                    .action({ ctx =>
+                    .action({ _ =>
                         // 模拟在 action 中触发信号
                         handler.simulateSignal(SIGINT)
                         0
@@ -81,14 +81,14 @@ class SignalHandlerTest {
         let handler = SignalHandler()
         let app = App("test-app")
             .signalHandler(handler)
-            .persistentPreRun({ ctx =>
+            .persistentPreRun({ _ =>
                 // 模拟在 PersistentPreRun 中触发信号
                 handler.simulateSignal(SIGINT)
             })
             .command(
                 Command("work")
                     .description("Do work")
-                    .action({ ctx => 0 })
+                    .action({ _ => 0 })
             )
 
         let result = app.mockRun(["work"])
@@ -110,7 +110,7 @@ class ErrorAggregationTest {
                     .flag(Flag("host").required(true))
                     .flag(Flag("port").required(true))
                     .flag(Flag("name").required(true))
-                    .action({ ctx => 0 })
+                    .action({ _ => 0 })
             )
 
         let result = app.mockRun(["run"])
@@ -131,7 +131,7 @@ class ErrorAggregationTest {
                     .flag(Flag("verbose").short(r'v').action(SetTrue))
                     .flag(Flag("quiet").short(r'q').action(SetTrue).conflictsWith("verbose"))
                     .flag(Flag("output").required(true))
-                    .action({ ctx => 0 })
+                    .action({ _ => 0 })
             )
 
         // --verbose 与 --quiet 冲突，且缺少 --output
@@ -149,7 +149,7 @@ class ErrorAggregationTest {
                 Command("run")
                     .description("Run")
                     .flag(Flag("host").required(true))
-                    .action({ ctx => 0 })
+                    .action({ _ => 0 })
             )
 
         let result = app.mockRun(["run"])
@@ -183,7 +183,7 @@ class ErrorAggregationTest {
                     .flag(Flag("format-a").action(SetTrue))
                     .flag(Flag("format-b").action(SetTrue))
                     .mutuallyExclusiveGroup("format", ["format-a", "format-b"])
-                    .action({ ctx => 0 })
+                    .action({ _ => 0 })
             )
 
         // 缺少 --input 且 format 组中两个都设置了
@@ -227,7 +227,7 @@ class EnvAutoMappingTest {
         let app = App("test-app")
             .envPrefix("MYAPP")
             .flag(Flag("max-retry-count").valueType(Int64Type))
-            .action({ ctx => 0 })
+            .action({ _ => 0 })
 
         setVariable("MYAPP_MAX_RETRY_COUNT", "5")
         let result = app.mockRun([])
@@ -242,7 +242,7 @@ class EnvAutoMappingTest {
         let app = App("test-app")
             .envPrefix("APP")
             .flag(Flag("host").envVar("CUSTOM_HOST"))
-            .action({ ctx => 0 })
+            .action({ _ => 0 })
 
         setVariable("CUSTOM_HOST", "custom-host")
         setVariable("APP_HOST", "prefix-host")
@@ -284,7 +284,7 @@ class EnvTypeCoercionTest {
     func testInt64Coercion() {
         let app = App("test-app")
             .flag(Flag("timeout").valueType(Int64Type).envVar("TEST_TIMEOUT"))
-            .action({ ctx => 0 })
+            .action({ _ => 0 })
 
         setVariable("TEST_TIMEOUT", "30")
         let result = app.mockRun([])
@@ -297,7 +297,7 @@ class EnvTypeCoercionTest {
     func testInt64CoercionFailure() {
         let app = App("test-app")
             .flag(Flag("timeout").valueType(Int64Type).envVar("TEST_TIMEOUT_BAD"))
-            .action({ ctx => 0 })
+            .action({ _ => 0 })
 
         setVariable("TEST_TIMEOUT_BAD", "not-a-number")
         let result = app.mockRun([])
@@ -313,7 +313,7 @@ class EnvTypeCoercionTest {
     func testBoolCoercion() {
         let app = App("test-app")
             .flag(Flag("debug").valueType(BoolType).envVar("TEST_DEBUG"))
-            .action({ ctx => 0 })
+            .action({ _ => 0 })
 
         setVariable("TEST_DEBUG", "true")
         let result = app.mockRun([])
@@ -326,7 +326,7 @@ class EnvTypeCoercionTest {
     func testBoolCoercionFailure() {
         let app = App("test-app")
             .flag(Flag("debug").valueType(BoolType).envVar("TEST_DEBUG_BAD"))
-            .action({ ctx => 0 })
+            .action({ _ => 0 })
 
         setVariable("TEST_DEBUG_BAD", "maybe")
         let result = app.mockRun([])
@@ -341,7 +341,7 @@ class EnvTypeCoercionTest {
     func testFloat64Coercion() {
         let app = App("test-app")
             .flag(Flag("rate").valueType(Float64Type).envVar("TEST_RATE"))
-            .action({ ctx => 0 })
+            .action({ _ => 0 })
 
         setVariable("TEST_RATE", "3.14")
         let result = app.mockRun([])
@@ -356,7 +356,7 @@ class EnvTypeCoercionTest {
         let app = App("test-app")
             .envPrefix("MYAPP")
             .flag(Flag("max-workers").valueType(Int64Type))
-            .action({ ctx => 0 })
+            .action({ _ => 0 })
 
         setVariable("MYAPP_MAX_WORKERS", "abc")
         let result = app.mockRun([])
@@ -382,7 +382,7 @@ class Phase10IntegrationTest {
                     .flag(Flag("token").required(true))
                     .flag(Flag("verbose").short(r'v').action(SetTrue))
                     .flag(Flag("quiet").short(r'q').action(SetTrue).conflictsWith("verbose"))
-                    .action({ ctx => 0 })
+                    .action({ _ => 0 })
             )
 
         // 缺少 2 个必填 + verbose/quiet 冲突 = 3 个错误
@@ -399,7 +399,7 @@ class Phase10IntegrationTest {
         let app = App("test-app")
             .signalHandler(handler)
             .flag(Flag("timeout").valueType(Int64Type).envVar("TEST_SIGNAL_TIMEOUT"))
-            .action({ ctx => 0 })
+            .action({ _ => 0 })
 
         setVariable("TEST_SIGNAL_TIMEOUT", "60")
         let result = app.mockRun([])
@@ -417,7 +417,7 @@ class Phase10IntegrationTest {
                     .choices(["text", "json", "yaml"])
                     .envVar("TEST_FMT_CHOICE")
             )
-            .action({ ctx => 0 })
+            .action({ _ => 0 })
 
         // 环境变量中设置一个不在 choices 中的值 — 这在 env 层不做 choices 校验
         // （choices 校验只在 CLI 解析时执行）
@@ -447,7 +447,7 @@ class Phase10IntegrationTest {
             .command(
                 Command("serve")
                     .description("Serve")
-                    .action({ ctx =>
+                    .action({ _ =>
                         handler.simulateSignal(SIGTERM)
                         0
                     })

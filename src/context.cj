@@ -196,6 +196,11 @@ public class Context {
         _explicitFlags.contains(name)
     }
 
+    // Phase 12: 检查是否有任何显式设置的 Flag
+    public func hasAnyExplicit(): Bool {
+        _explicitFlags.size > 0
+    }
+
     // Phase 9: Pass-through 参数操作
     public func addPassthroughArg(arg: String): Unit {
         _passthroughArgs.add(arg)

@@ -165,7 +165,7 @@ class SnapshotTest {
     @TestCase
     func testErrorSnapshotRoundtrip() {
         let app = App("tool")
-            .command(Command("run").action({ ctx => 0 }))
+            .command(Command("run").action({ _ => 0 }))
 
         let result = app.mockRun(["--unknown-flag"])
         let errorOutput = result.stderr
@@ -410,7 +410,7 @@ class PromptTest {
         let app = App("tool")
             .command(
                 Command("deploy")
-                    .action({ ctx =>
+                    .action({ _ =>
                         let prompt = Prompt(mock)
                         match (prompt.ask("Environment?")) {
                             case Some(env) => log.add(env)

@@ -82,6 +82,7 @@ public class Prompt {
 
     // 提示并读取一行文本
     public func ask(question: String): Option<String> {
+        let _ = question
         match (_mock) {
             case Some(m) => m.readLine()
             case None =>

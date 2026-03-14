@@ -56,6 +56,11 @@ public class Command {
     // Phase 9: 子命令分组
     var _group: String = "Commands"
 
+    // Phase 12: clap 对标特性
+    var _subcommandRequired: Bool = false        // 必须指定子命令
+    var _argRequiredElseHelp: Bool = false        // 无参数时自动显示帮助
+    var _longAbout: Option<String> = None         // --help 时显示的详细描述
+
     public init(name: String) {
         _name = name
     }
@@ -224,6 +229,24 @@ public class Command {
         this
     }
 
+    // Phase 12: 必须指定子命令（对标 clap SubcommandRequired）
+    public func subcommandRequired(r!: Bool = true): This {
+        _subcommandRequired = r
+        this
+    }
+
+    // Phase 12: 无参数时自动显示帮助（对标 clap ArgRequiredElseHelp）
+    public func argRequiredElseHelp(r!: Bool = true): This {
+        _argRequiredElseHelp = r
+        this
+    }
+
+    // Phase 12: 详细描述（--help 显示，-h 不显示）
+    public func longAbout(text: String): This {
+        _longAbout = Some(text)
+        this
+    }
+
     // 声明标志组：至少选一 (at-least-one)
     public func requireGroup(name: String, members: Array<String>): This {
         let memberList = ArrayList<String>()
@@ -314,6 +337,11 @@ public class Command {
     public func getAfterHelp(): Option<String> { _afterHelp }
     public func getBeforeHelp(): Option<String> { _beforeHelp }
     public func getSubcommandGroup(): String { _group }
+
+    // Phase 12 Getter
+    public func isSubcommandRequired(): Bool { _subcommandRequired }
+    public func isArgRequiredElseHelp(): Bool { _argRequiredElseHelp }
+    public func getLongAbout(): Option<String> { _longAbout }
 
     public func getMaxNameWidth(): Int64 { _maxNameWidth }
 

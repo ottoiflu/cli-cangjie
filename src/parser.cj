@@ -79,7 +79,7 @@ public class Parser {
                 } else {
                     let resolvedFlag = resolveFlag(currentCmd, rootCmd, flagName)
                     handleFlagNoEquals(resolvedFlag, flagName, rawArgs, ctx, argIndex)
-                    if (!resolvedFlag.isBoolFlag() && !resolvedFlag.isTerminate()) {
+                    if (!resolvedFlag.isBoolFlag() && !resolvedFlag.isTerminate() && !resolvedFlag.isCount()) {
                         argIndex++
                     }
                 }
@@ -94,7 +94,7 @@ public class Parser {
                 if (runes.size == 1) {
                     let resolvedFlag = resolveFlagByShort(currentCmd, rootCmd, runes[0])
                     handleShortFlagSingle(resolvedFlag, runes[0], rawArgs, ctx, argIndex)
-                    if (!resolvedFlag.isBoolFlag() && !resolvedFlag.isTerminate()) {
+                    if (!resolvedFlag.isBoolFlag() && !resolvedFlag.isTerminate() && !resolvedFlag.isCount()) {
                         argIndex++
                     }
                 } else {
@@ -200,7 +200,7 @@ public class Parser {
                 } else {
                     let resolvedFlag = resolveFlag(currentCmd, rootCmd, flagName)
                     handleFlagNoEquals(resolvedFlag, flagName, rawArgs, ctx, argIndex)
-                    if (!resolvedFlag.isBoolFlag() && !resolvedFlag.isTerminate()) {
+                    if (!resolvedFlag.isBoolFlag() && !resolvedFlag.isTerminate() && !resolvedFlag.isCount()) {
                         argIndex++
                     }
                 }
@@ -212,7 +212,7 @@ public class Parser {
                 if (runes.size == 1) {
                     let resolvedFlag = resolveFlagByShort(currentCmd, rootCmd, runes[0])
                     handleShortFlagSingle(resolvedFlag, runes[0], rawArgs, ctx, argIndex)
-                    if (!resolvedFlag.isBoolFlag() && !resolvedFlag.isTerminate()) {
+                    if (!resolvedFlag.isBoolFlag() && !resolvedFlag.isTerminate() && !resolvedFlag.isCount()) {
                         argIndex++
                     }
                 } else {
@@ -271,6 +271,9 @@ public class Parser {
             case SetFalse =>
                 ctx.setFlag(flag.getLongName(), "false")
                 ctx.markExplicit(flag.getLongName())
+            case Count =>
+                incrementCount(flag.getLongName(), ctx)
+                ctx.markExplicit(flag.getLongName())
             case Append =>
                 // Phase 9: 分隔符支持
                 let values = splitByDelimiter(rawValue, flag.getDelimiter())
@@ -311,6 +314,9 @@ public class Parser {
             case SetFalse =>
                 ctx.setFlag(flag.getLongName(), "false")
                 ctx.markExplicit(flag.getLongName())
+            case Count =>
+                incrementCount(flag.getLongName(), ctx)
+                ctx.markExplicit(flag.getLongName())
             case _ =>
                 let nextIdx = argIndex + 1
                 if (nextIdx >= rawArgs.size) {
@@ -350,6 +356,9 @@ public class Parser {
             case SetFalse =>
                 ctx.setFlag(flag.getLongName(), "false")
                 ctx.markExplicit(flag.getLongName())
+            case Count =>
+                incrementCount(flag.getLongName(), ctx)
+                ctx.markExplicit(flag.getLongName())
             case _ =>
                 let nextIdx = argIndex + 1
                 if (nextIdx >= rawArgs.size) {
@@ -379,6 +388,8 @@ public class Parser {
     // 解析组合短选项 -abc
     func parseCompositeShortFlags(runes: Array<Rune>, currentCmd: Command, rootCmd: Command,
         rawArgs: Array<String>, ctx: Context, argIndex: Int64): Unit {
+        let _ = rawArgs
+        let _ = argIndex
         var charIdx: Int64 = 0
         while (charIdx < runes.size) {
             let c = runes[charIdx]
@@ -391,6 +402,9 @@ public class Parser {
                     ctx.markExplicit(resolvedFlag.getLongName())
                 case SetFalse =>
                     ctx.setFlag(resolvedFlag.getLongName(), "false")
+                    ctx.markExplicit(resolvedFlag.getLongName())
+                case Count =>
+                    incrementCount(resolvedFlag.getLongName(), ctx)
                     ctx.markExplicit(resolvedFlag.getLongName())
                 case _ =>
                     if (charIdx < runes.size - 1) {
@@ -415,6 +429,13 @@ public class Parser {
             }
             charIdx++
         }
+    }
+
+    // 递增计数器 flag 的值
+    func incrementCount(flagName: String, ctx: Context): Unit {
+        let current = match (ctx.getFlag(flagName)) { case Some(v) => v; case None => "0" }
+        let count = parseSimpleInt(current) + 1
+        ctx.setFlag(flagName, count.toString())
     }
 
     // 在当前命令和根命令中查找长名称匹配的 flag

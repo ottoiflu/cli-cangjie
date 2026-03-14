@@ -220,6 +220,18 @@ public class App {
         this
     }
 
+    // Phase 12: 要求必须指定子命令
+    public func subcommandRequired(r!: Bool = true): This {
+        _rootCommand.subcommandRequired(r: r)
+        this
+    }
+
+    // Phase 12: 无参数时自动显示帮助
+    public func argRequiredElseHelp(r!: Bool = true): This {
+        _rootCommand.argRequiredElseHelp(r: r)
+        this
+    }
+
     // Phase 10: 获取信号处理器（便于在 action 中检查信号）
     public func getSignalHandler(): Option<SignalHandler> { _signalHandler }
 
@@ -287,6 +299,20 @@ public class App {
 
             // 第四级：应用默认值 + 验证 + 位置参数处理
             _parser.finalize(_rootCommand, matchedCmd, ctx, positionalArgs)
+
+            // Phase 12: subcommandRequired — 如果命令要求子命令但未选择子命令
+            if (matchedCmd.isSubcommandRequired() && matchedCmd.getSubcommands().size > 0) {
+                let helpText = generateHelp(matchedCmd)
+                let warnings = _deprecationCollector.formatAll()
+                return TestResult(2, "", warnings + Messages.locale().errSubcommandRequired(matchedCmd.getName()) + "\n\n" + helpText)
+            }
+
+            // Phase 12: argRequiredElseHelp — 如果没有任何显式参数则显示帮助
+            if (matchedCmd.isArgRequiredElseHelp() && !ctx.hasAnyExplicit() && positionalArgs.size == 0) {
+                let helpText = generateHelp(matchedCmd)
+                let warnings = _deprecationCollector.formatAll()
+                return TestResult(0, "", warnings + helpText)
+            }
 
             // Phase 8: 检查弃用 Flag
             checkFlagDeprecation(_rootCommand, ctx)
@@ -678,21 +704,8 @@ public class App {
                                 case None => w = 4
                             }
                             w = w + 2 + f.getLongName().size
-                            if (!f.isBoolFlag() && !f.isTerminate()) {
-                                // Phase 9: 显示 choices 或 <VALUE>
-                                if (f.hasChoices()) {
-                                    var cStr = " <"
-                                    var fst = true
-                                    for (c in f.getChoices()) {
-                                        if (!fst) { cStr = cStr + "|" }
-                                        cStr = cStr + c
-                                        fst = false
-                                    }
-                                    cStr = cStr + ">"
-                                    w = w + cStr.size
-                                } else {
-                                    w = w + 2 + Messages.locale().helpValuePlaceholder().size
-                                }
+                            if (!f.isBoolFlag() && !f.isTerminate() && !f.isCount()) {
+                                w = w + 1 + f.getValuePlaceholder().size
                             }
                             if (w > maxFlagWidth) { maxFlagWidth = w }
                         }
@@ -704,19 +717,8 @@ public class App {
                                 case None => line = line + "    "
                             }
                             line = line + "--${f.getLongName()}"
-                            if (!f.isBoolFlag() && !f.isTerminate()) {
-                                if (f.hasChoices()) {
-                                    line = line + " <"
-                                    var fst = true
-                                    for (c in f.getChoices()) {
-                                        if (!fst) { line = line + "|" }
-                                        line = line + c
-                                        fst = false
-                                    }
-                                    line = line + ">"
-                                } else {
-                                    line = line + " " + Messages.locale().helpValuePlaceholder()
-                                }
+                            if (!f.isBoolFlag() && !f.isTerminate() && !f.isCount()) {
+                                line = line + " " + f.getValuePlaceholder()
                             }
                             match (f.getDescription()) {
                                 case Some(desc) =>
@@ -729,6 +731,12 @@ public class App {
                                 case Some(dv) where !f.isBoolFlag() && !f.isTerminate() =>
                                     line = line + " " + Messages.locale().helpDefaultLabel(dv)
                                 case _ => ()
+                            }
+                            // 显示环境变量信息
+                            match (f.getEnvVar()) {
+                                case Some(envName) =>
+                                    line = line + " [env: ${envName}]"
+                                case None => ()
                             }
                             help = help + wrapLine(line, maxWidth, maxFlagWidth + 6) + "\n"
                         }

@@ -2,7 +2,6 @@ internal package cli.test
 
 import cli.*
 
-import std.collection.*
 import std.unittest.*
 import std.unittest.testmacro.*
 

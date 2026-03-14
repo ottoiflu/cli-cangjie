@@ -18,7 +18,7 @@
 | **生命周期**   | PersistentPreRun → PreRun → Middleware → Action → PostRun → PersistentPostRun       |
 | **交互组件**   | Spinner、ProgressBar、Confirm、Select、MultiSelect                                  |
 | **测试套件**   | mockRun 沙箱、IO 独立捕获、InputMock 交互模拟、Golden Files 快照测试                |
-| **本地化**     | Locale 接口、Messages 单例、App.locale() 构建器、全部用户可见文本可覆盖              |
+| **本地化**     | Locale 接口、Messages 单例、App.locale() 构建器、全部用户可见文本可覆盖             |
 | **工程化**     | Shell 补全 (Bash/Zsh/Fish)、弃用系统、信号处理、错误聚合                            |
 
 ## 快速开始
@@ -189,19 +189,19 @@ let app = App("my-tool")
 
 `Locale` 接口覆盖范围：
 
-| 类别         | 方法数 | 示例                                          |
-| ------------ | ------ | --------------------------------------------- |
-| 诊断标签     | 4      | `labelError()`、`labelWarning()` 等           |
-| 帮助文档     | 11     | `helpUsagePrefix()`、`helpPrintHelp()` 等     |
+| 类别          | 方法数 | 示例                                           |
+| ------------- | ------ | ---------------------------------------------- |
+| 诊断标签      | 4      | `labelError()`、`labelWarning()` 等            |
+| 帮助文档      | 11     | `helpUsagePrefix()`、`helpPrintHelp()` 等      |
 | 命令/选项错误 | 9      | `errUnknownCommand()`、`errUnknownOption()` 等 |
-| 值校验       | 4      | `errInvalidChoiceValue()` 等                  |
-| 约束错误     | 4      | `errFlagConflict()`、`errFlagRequires()` 等   |
-| 位置参数     | 3      | `errArgTooFew()`、`errArgRequired()` 等       |
-| 类型转换     | 3      | `errTypeBool()`、`errTypeInt64()` 等          |
-| 错误聚合     | 4      | `summaryFound()`、`summaryErrors()` 等        |
-| 配置文件     | 5      | `cfgUnknownKey()`、`cfgDidYouMean()` 等       |
-| 弃用/信号    | 5      | `deprecatedWarning()`、`signalTerminated()` 等 |
-| 交互组件     | 4      | `widgetConfirmYes()`、`widgetSpinnerDone()` 等 |
+| 值校验        | 4      | `errInvalidChoiceValue()` 等                   |
+| 约束错误      | 4      | `errFlagConflict()`、`errFlagRequires()` 等    |
+| 位置参数      | 3      | `errArgTooFew()`、`errArgRequired()` 等        |
+| 类型转换      | 3      | `errTypeBool()`、`errTypeInt64()` 等           |
+| 错误聚合      | 4      | `summaryFound()`、`summaryErrors()` 等         |
+| 配置文件      | 5      | `cfgUnknownKey()`、`cfgDidYouMean()` 等        |
+| 弃用/信号     | 5      | `deprecatedWarning()`、`signalTerminated()` 等 |
+| 交互组件      | 4      | `widgetConfirmYes()`、`widgetSpinnerDone()` 等 |
 
 ## 项目结构
 
@@ -259,7 +259,7 @@ cjpm test
 | v0.9.0  | 增强型 Flag 值域与帮助系统     |
 | v0.10.0 | 健壮性与工程化增强             |
 | v1.0.0  | 项目结构优化与示例应用         |
-| v1.1.0  | 本地化接口（Locale / i18n）     |
+| v1.1.0  | 本地化接口（Locale / i18n）    |
 
 ## 许可证
 

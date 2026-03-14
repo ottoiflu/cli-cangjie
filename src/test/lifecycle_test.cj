@@ -18,10 +18,10 @@ class LifecycleTest {
         let app = App("tool")
             .command(
                 Command("run")
-                    .preRun({ ctx =>
+                    .preRun({ _ =>
                         log.add("preRun")
                     })
-                    .action({ ctx =>
+                    .action({ _ =>
                         log.add("action")
                         0
                     })
@@ -40,11 +40,11 @@ class LifecycleTest {
         let app = App("tool")
             .command(
                 Command("run")
-                    .action({ ctx =>
+                    .action({ _ =>
                         log.add("action")
                         0
                     })
-                    .postRun({ ctx =>
+                    .postRun({ _ =>
                         log.add("postRun")
                     })
             )
@@ -60,15 +60,15 @@ class LifecycleTest {
     func testPersistentPreRunHook() {
         let log = ArrayList<String>()
         let app = App("tool")
-            .persistentPreRun({ ctx =>
+            .persistentPreRun({ _ =>
                 log.add("persistentPreRun")
             })
             .command(
                 Command("sub")
-                    .preRun({ ctx =>
+                    .preRun({ _ =>
                         log.add("preRun")
                     })
-                    .action({ ctx =>
+                    .action({ _ =>
                         log.add("action")
                         0
                     })
@@ -86,16 +86,16 @@ class LifecycleTest {
     func testPersistentPostRunHook() {
         let log = ArrayList<String>()
         let app = App("tool")
-            .persistentPostRun({ ctx =>
+            .persistentPostRun({ _ =>
                 log.add("persistentPostRun")
             })
             .command(
                 Command("sub")
-                    .action({ ctx =>
+                    .action({ _ =>
                         log.add("action")
                         0
                     })
-                    .postRun({ ctx =>
+                    .postRun({ _ =>
                         log.add("postRun")
                     })
             )
@@ -112,22 +112,22 @@ class LifecycleTest {
     func testFullLifecycleOrder() {
         let log = ArrayList<String>()
         let app = App("tool")
-            .persistentPreRun({ ctx =>
+            .persistentPreRun({ _ =>
                 log.add("1-persistentPreRun")
             })
-            .persistentPostRun({ ctx =>
+            .persistentPostRun({ _ =>
                 log.add("5-persistentPostRun")
             })
             .command(
                 Command("cmd")
-                    .preRun({ ctx =>
+                    .preRun({ _ =>
                         log.add("2-preRun")
                     })
-                    .action({ ctx =>
+                    .action({ _ =>
                         log.add("3-action")
                         0
                     })
-                    .postRun({ ctx =>
+                    .postRun({ _ =>
                         log.add("4-postRun")
                     })
             )
@@ -147,7 +147,7 @@ class LifecycleTest {
         let app = App("tool")
             .command(
                 Command("run")
-                    .action({ ctx => 42 })
+                    .action({ _ => 42 })
             )
 
         let result = app.mockRun(["run"])
@@ -164,7 +164,7 @@ class MiddlewareTest {
     func testGlobalMiddleware() {
         let log = ArrayList<String>()
         let app = App("tool")
-            .use({ ctx, next =>
+            .use({ _, next =>
                 log.add("mw-before")
                 let code = next()
                 log.add("mw-after")
@@ -172,7 +172,7 @@ class MiddlewareTest {
             })
             .command(
                 Command("run")
-                    .action({ ctx =>
+                    .action({ _ =>
                         log.add("action")
                         0
                     })
@@ -192,11 +192,11 @@ class MiddlewareTest {
         let app = App("tool")
             .command(
                 Command("run")
-                    .use({ ctx, next =>
+                    .use({ _, next =>
                         log.add("local-mw")
                         next()
                     })
-                    .action({ ctx =>
+                    .action({ _ =>
                         log.add("action")
                         0
                     })
@@ -213,21 +213,21 @@ class MiddlewareTest {
     func testMultipleMiddlewareChaining() {
         let log = ArrayList<String>()
         let app = App("tool")
-            .use({ ctx, next =>
+            .use({ _, next =>
                 log.add("global-1")
                 next()
             })
-            .use({ ctx, next =>
+            .use({ _, next =>
                 log.add("global-2")
                 next()
             })
             .command(
                 Command("run")
-                    .use({ ctx, next =>
+                    .use({ _, next =>
                         log.add("local-1")
                         next()
                     })
-                    .action({ ctx =>
+                    .action({ _ =>
                         log.add("action")
                         0
                     })
@@ -246,14 +246,14 @@ class MiddlewareTest {
     func testMiddlewareCanShortCircuit() {
         let log = ArrayList<String>()
         let app = App("tool")
-            .use({ ctx, next =>
+            .use({ _, _ =>
                 log.add("auth-check")
                 // 模拟鉴权失败：不调用 next()，直接返回错误码
                 1
             })
             .command(
                 Command("run")
-                    .action({ ctx =>
+                    .action({ _ =>
                         log.add("action-should-not-run")
                         0
                     })
@@ -269,15 +269,15 @@ class MiddlewareTest {
     func testMiddlewareWithLifecycleHooks() {
         let log = ArrayList<String>()
         let app = App("tool")
-            .persistentPreRun({ ctx => log.add("1-persistentPreRun") })
-            .use({ ctx, next =>
+            .persistentPreRun({ _ => log.add("1-persistentPreRun") })
+            .use({ _, next =>
                 log.add("2-middleware")
                 next()
             })
-            .persistentPostRun({ ctx => log.add("4-persistentPostRun") })
+            .persistentPostRun({ _ => log.add("4-persistentPostRun") })
             .command(
                 Command("run")
-                    .action({ ctx =>
+                    .action({ _ =>
                         log.add("3-action")
                         0
                     })

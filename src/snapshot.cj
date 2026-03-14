@@ -1,7 +1,6 @@
 package cli
 
 import std.fs.*
-import std.io.*
 
 // 快照比对结果
 public class SnapshotResult {
