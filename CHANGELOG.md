@@ -2,21 +2,32 @@
 
 本文件记录版本变更历史，遵循 [语义化版本 2.0.0](https://semver.org/lang/zh-CN/) 规范。
 
-## [1.1.0] - 2026-03-13
+## [1.1.0] - 2026-03-15
 
 ### 新增
+- **对标 clap 核心特性补齐**：完整支持一系列现代 CLI 高级特性
+  - `FlagAction.Count`：支持累计 Flag 出现次数（如传入 `-vvv` 被解析为 `3`）
+  - `ValueHint`：为 Shell 自动补全提供内置外部值类型枚举提示（如 `DirPath`、`Hostname` 等）
+  - `valueName`：允许自定义帮助文档中的选项值占位符名称展示（如 `--port <PORT>`）
+  - `subcommandRequired` 与 `argRequiredElseHelp`：支持强制要求子命令或位置参数录入，未输入时自动打印帮助信息
+  - **连字符值支持**：`allowHyphenValues` 允许位置参数或选项值以连字符或负数开头，防截断解析
+  - **长短帮助格式分级**：支持精简版与详尽版帮助信息分离。`-h` 响应简要结构，`--help` 打印带有附加说明的详情
+- **自动环境变量绑定提示**：生成控制台帮助文本时，会自动收集并标识对应 Flag 所绑定的环境变量信息
+- **整体性架构及 API 文档**：生成统一的 `API.md` 参考字典、`ARCHITECTURE.md` 逻辑架构全景图及 `QUICK_START.md` 快速上手指南
 - **本地化接口 (Locale / i18n)**：为框架所有用户可见字符串提供统一的本地化接入点
-  - `Locale` 接口：定义 ~45 个方法，覆盖诊断标签、帮助文档、命令/选项错误、值校验、约束、类型转换、错误聚合、配置文件、弃用警告、信号处理、交互组件等全部文本
+  - `Locale` 接口：定义 ~45 个方法，覆盖帮助文档、选项错误、值校验、异常诊断标签等组件的全部终端打印文本
   - `DefaultLocale` 类：默认英文实现，使用接口默认方法
-  - `Messages` 单例：`Messages.locale()` 获取当前 Locale，`Messages.setLocale()` 注入自定义实现，`Messages.reset()` 重置为默认
-  - `App.locale(l)` 构建器方法：链式调用设置 Locale
-  - 用户只需实现 `Locale` 接口并覆盖所需方法，即可完成框架全部文本的本地化/翻译
-- **框架内部全面接入**：parser.cj、types.cj、errors.cj、diagnostic.cj、app.cj、config.cj、advanced.cj、widget.cj 全部通过 `Messages.locale()` 获取文本
-- **帮助输出路由兼容**：TerminateException 路由同时检测默认和自定义 locale 的 Usage 前缀，确保本地化帮助正确输出到 stderr
+  - `Messages` 单例：`Messages.locale()` 获取当前 Locale，提供单例注入能力，附带 `App.locale(l)` 供构建器显式初始化配置
+- **帮助输出路由兼容**：TerminateException 路由现已同时检测默认和自定义 locale 的 Usage 前缀，确保本地化安全输出到 stderr
+
+### 修复与优化
+- **重构并移除全量编译器告警**：重构测试用例内冗杂的引入闭包捕获与遗留变量，通过 `cjpm clean && cjpm test` 达成全局源码 `0 warning` 构建
+- **目录文档精简**：剔除陈旧零散的各次重构节点报告（Phase 3~9 等），核心知识体系整合回正规发布型 API 文档结构中
 
 ### 测试
-- 新增 `LocaleDefaultTest` (4)、`LocaleCustomTest` (15)：覆盖默认英文验证、自定义中文 Locale 覆盖、mockRun 端到端集成、帮助生成、Flag 错误、约束冲突、信号处理、交互组件、弃用警告、配置错误、聚合错误、部分覆盖保持默认值
-- 测试总数：433 → 452 (新增 19 用例，通过率 100%)
+- 新增对标 clap 高阶特性的端到端集成用例（覆盖 `FlagAction.Count`、子命令强制拦截等 M12 范畴变更总计 43 个用例记录）
+- 新增 `LocaleDefaultTest` (4)、`LocaleCustomTest` (15)：覆盖默认英文验证、自定义中文 Locale 以及多级聚合错误的反馈验证
+- **框架集成沙箱断言用例池总计扩展至 495 例**，并以 100% 满覆盖通过达成最终框架可靠性目标
 
 ## [1.0.1] - 2026-03-13
 
